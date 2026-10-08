@@ -1395,39 +1395,270 @@
             border-color: var(--accent-color);
         }
 
+    
+        /* ===== Novos Menus Dropdown e Acoes Modernas ===== */
+        .dropdown-popover {
+            position: fixed;
+            background-color: var(--card-bg) !important;
+            border: 1.5px solid var(--accent-color);
+            border-radius: 12px;
+            padding: 14px 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.85), 0 0 0 1px var(--border-color);
+            z-index: 10000000 !important;
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            min-width: 280px;
+            max-width: 400px;
+            opacity: 1 !important;
+            animation: fadeUp 0.15s ease;
+        }
+        .dropdown-popover.show { display: flex; }
+        .dropdown-popover-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--title-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .popover-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+        }
+        .dropdown-list {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            max-height: 280px;
+            overflow-y: auto;
+        }
+        .dropdown-list-item {
+            padding: 8px 10px;
+            border-radius: 6px;
+            background: var(--tab-bg);
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.15s;
+        }
+        .dropdown-list-item:hover {
+            border-color: var(--accent-color);
+            background-color: color-mix(in srgb, var(--accent-color) 15%, var(--tab-bg));
+        }
+        .card-more-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 16px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            opacity: 0.6;
+            transition: opacity 0.15s, background-color 0.15s;
+            line-height: 1;
+            margin-left: auto;
+        }
+        .card-more-btn:hover {
+            opacity: 1;
+            background-color: var(--tab-bg);
+        }
+        .card-popover-menu {
+            position: fixed;
+            z-index: 1000000;
+            background: var(--sidebar-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 4px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.55);
+            display: none;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 190px;
+        }
+        .card-popover-menu.show { display: flex; }
+        .card-popover-item {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            text-align: left;
+            padding: 7px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.12s;
+        }
+        .card-popover-item:hover {
+            background-color: var(--accent-color);
+            color: #fff;
+        }
+        .card-popover-item.danger:hover {
+            background-color: #d9363e;
+            color: #fff;
+        }
+        .fav-filter-active {
+            background-color: #eab308 !important;
+            color: #000 !important;
+            border-color: #ca8a04 !important;
+            font-weight: 700;
+        }
+
+    
+        /* Filtro de apenas favoritos */
+        body.filtering-favorites .item-card:not(.is-favorite) { display: none !important; }
+        body.filtering-favorites .column:not(:has(.item-card.is-favorite)) { display: none !important; }
+
+    
+        /* ===== Modal de Changelog ===== */
+        .changelog-box {
+            width: min(740px, 94vw);
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: var(--sidebar-bg);
+            border: 1.5px solid var(--accent-color);
+            border-radius: 14px;
+            box-shadow: 0 24px 70px rgba(0,0,0,0.65);
+        }
+        .changelog-version-card {
+            background: var(--tab-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .changelog-version-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 6px;
+        }
+        .changelog-version-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--title-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .changelog-badge {
+            background-color: var(--accent-color);
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 99px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .changelog-list {
+            margin: 0;
+            padding-left: 20px;
+            font-size: 12.5px;
+            line-height: 1.6;
+        }
+        .changelog-list li {
+            margin-bottom: 6px;
+        }
+        .changelog-list li strong {
+            color: var(--title-color);
+        }
+
     </style>
 </head>
 <body class="theme-oled">
 
-    <header>
+    <header style="position: relative; z-index: 100000;">
         <h1>Central de Scripts</h1>
         <div class="header-actions">
             <input type="search" class="search-input" id="searchInput" placeholder="🔍 Buscar ou tag:whats (Ctrl+K)" oninput="filterScripts(this.value)">
-            <div class="storage-indicator" id="storageIndicator" onclick="openStorageInfoModal()" title="Uso do armazenamento local (localStorage)">💾 <span id="storageUsageText">0 KB</span></div>
+            
+            <button class="io-btn" id="tabsMenuBtn" onclick="toggleTabsMenu(this, event)" title="Localizar e trocar de aba rapidamente">📑 Abas</button>
+            <button class="io-btn" id="filterFavsBtn" onclick="toggleFavoriteFilter(this)" title="Filtrar somente cards favoritos (⭐)">⭐ Favoritos</button>
+            <button class="io-btn" id="recentsBtn" onclick="toggleRecentsMenu(this, event)" title="Ver últimos scripts copiados">🕒 Recentes</button>
+            <button class="io-btn" id="visualMenuBtn" onclick="toggleVisualMenu(this, event)" title="Ajustar tema, zoom dos cards e disposição">🎨 Visual</button>
+            
             <button class="var-config-btn" onclick="openVarManagerModal()" title="Gerenciar valores padrão de variáveis">⚙️ Variáveis</button>
-
-            <input type="file" id="importFile" style="display: none" accept=".json" onchange="importScripts(event)">
+            <button class="io-btn" onclick="openChangelogModal()" title="Histórico de versões e melhorias">📜 Changelog</button>
+            <div class="storage-indicator" id="storageIndicator" onclick="openStorageInfoModal()" title="Uso do armazenamento local e backups">💾 <span id="storageUsageText">0 KB</span></div>
             <button class="io-btn" onclick="openUserscriptManager()" title="Gerenciar userscripts no formato Tampermonkey">🧩 Userscripts</button>
+            
+            <input type="file" id="importFile" style="display: none" accept=".json" onchange="importScripts(event)">
             <input type="file" id="userscriptFile" style="display: none" accept=".js,.user.js,.txt" multiple="" onchange="importUserscripts(event)">
 
-            <div class="size-ctrl" id="layoutCtrl" title="Disposição dos cards">
-                <button data-mode="grid" onclick="setLayout('grid')" title="Quadro (colunas lado a lado)" class="on">▦</button>
-                <button data-mode="list" onclick="setLayout('list')" title="Lista (colunas empilhadas)" class="">☰</button>
-            </div>
-            <div class="size-ctrl" title="Tamanho dos cards">
-                <button onclick="adjustCardSize(-1)" title="Diminuir cards">−</button>
-                <span id="sizeLabel" onclick="adjustCardSize(0)" title="Clique para voltar a 100%">90%</span>
-                <button onclick="adjustCardSize(1)" title="Aumentar cards">+</button>
-            </div>
-            <select class="theme-select" id="themeSelect" onchange="changeTheme(this.value)">
-                <option value="dark">Modo Cinza</option>
-                <option value="oled">Modo Escuro OLED</option>
-                <option value="light">Modo Claro</option>
-            </select>
             <button class="companion-btn" id="companionBtn" onclick="toggleCompanion()" title="Abrir janela flutuante sempre visível (Alt+Shift+P)">🪟 Janela Companheira</button>
-            <button class="save-html-btn" onclick="saveHtmlFile()">💾 Salvar HTML</button>
             <button class="btn" id="editToggleBtn" onclick="toggleEditMode()">Modo Edição: Desativado</button>
         </div>
+
+        <!-- Menu Dropdown: Visual & Preferências -->
+        <div class="dropdown-popover" id="visualMenuDropdown" data-transient="true" onclick="event.stopPropagation()">
+            <div class="dropdown-popover-title">
+                <span>🎨 Visual & Layout</span>
+                <button class="vm-x" style="width:24px; height:24px; font-size:14px;" onclick="closeAllHeaderDropdowns()">✕</button>
+            </div>
+            <div class="popover-row">
+                <span>Tema:</span>
+                <select class="theme-select" id="themeSelect" onchange="changeTheme(this.value)">
+                    <option value="dark">Modo Cinza</option>
+                    <option value="oled">Modo Escuro OLED</option>
+                    <option value="light">Modo Claro</option>
+                </select>
+            </div>
+            <div class="popover-row">
+                <span>Disposição:</span>
+                <div class="size-ctrl" id="layoutCtrl">
+                    <button data-mode="grid" onclick="setLayout('grid')" title="Quadro lado a lado" class="on">▦ Quadro</button>
+                    <button data-mode="list" onclick="setLayout('list')" title="Lista empilhada">☰ Lista</button>
+                </div>
+            </div>
+            <div class="popover-row">
+                <span>Tamanho dos cards:</span>
+                <div class="size-ctrl">
+                    <button onclick="adjustCardSize(-1)" title="Diminuir cards">−</button>
+                    <span id="sizeLabel" onclick="adjustCardSize(0)" title="Voltar a 100%">100%</span>
+                    <button onclick="adjustCardSize(1)" title="Aumentar cards">+</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Dropdown: Navegador Rápido de Abas -->
+        <div class="dropdown-popover" id="tabsMenuDropdown" data-transient="true" onclick="event.stopPropagation()">
+            <div class="dropdown-popover-title">
+                <span>📑 Todas as Abas</span>
+                <button class="vm-x" style="width:24px; height:24px; font-size:14px;" onclick="closeAllHeaderDropdowns()">✕</button>
+            </div>
+            <input type="text" id="tabFilterInput" class="var-modal-input" placeholder="🔍 Filtrar aba..." oninput="renderTabsDropdownList(this.value)" style="padding:6px 10px; font-size:12px;">
+            <div class="dropdown-list" id="tabsDropdownList"></div>
+        </div>
+
+        <!-- Menu Dropdown: Últimos Scripts Copiados -->
+        <div class="dropdown-popover" id="recentsMenuDropdown" data-transient="true" onclick="event.stopPropagation()">
+            <div class="dropdown-popover-title">
+                <span>🕒 Scripts Recentes</span>
+                <button class="vm-x" style="width:24px; height:24px; font-size:14px;" onclick="closeAllHeaderDropdowns()">✕</button>
+            </div>
+            <p style="margin:0; font-size:11px; opacity:0.75;">Últimos scripts copiados nesta sessão:</p>
+            <div class="dropdown-list" id="recentsDropdownList"></div>
+        </div>
+
+        <!-- Menu de contexto do Card -->
+        <div class="card-popover-menu" id="cardActionMenu" data-transient="true" onclick="event.stopPropagation()"></div>
     </header>
 
     <!-- Barra de comandos rápidos (só aparece no modo edição) -->
@@ -1444,7 +1675,7 @@
     <div class="content-container" id="contentContainer"></div>
 
     <script>
-        const APP_VERSION = '1.8.5';
+        const APP_VERSION = '2.0.1';
         const UPDATE_MANIFEST_URL = 'https://firestrykerfx.github.io/central-de-scripts/version.json';
         const UPDATE_CHECK_INTERVAL = 6 * 60 * 60 * 1000;
         /* ===== 1.8.4: Companion interaction routing ===== */
@@ -2019,6 +2250,477 @@
         function saveAppDataDebounced() {
             clearTimeout(saveTimer);
             saveTimer = setTimeout(saveAppData, 300);
+        }
+
+        
+        /* ===== Gerenciamento de Menus, Recentes e Ações dos Cards ===== */
+        let isFilteringFavoritesOnly = false;
+        const RECENTS_KEY = 'scripts_recent_copies_v1';
+
+        function getRecentCopies() {
+            try {
+                const raw = localStorage.getItem(RECENTS_KEY);
+                return raw ? JSON.parse(raw) : [];
+            } catch (e) { return []; }
+        }
+
+        function addRecentCopy(text) {
+            if (!text || !text.trim()) return;
+            try {
+                let recents = getRecentCopies();
+                recents = recents.filter(item => item !== text);
+                recents.unshift(text);
+                if (recents.length > 10) recents = recents.slice(0, 10);
+                localStorage.setItem(RECENTS_KEY, JSON.stringify(recents));
+            } catch (e) {}
+        }
+
+        function closeAllHeaderDropdowns() {
+            document.querySelectorAll('.dropdown-popover').forEach(el => el.classList.remove('show'));
+            const cardMenu = document.getElementById('cardActionMenu');
+            if (cardMenu) cardMenu.classList.remove('show');
+        }
+
+        function toggleVisualMenu(btn, e) {
+            if (e) e.stopPropagation();
+            const popover = document.getElementById('visualMenuDropdown');
+            const isOpen = popover.classList.contains('show');
+            closeAllHeaderDropdowns();
+            if (!isOpen) {
+                const rect = btn.getBoundingClientRect();
+                popover.style.top = (rect.bottom + 8) + 'px';
+                popover.style.right = Math.max(10, window.innerWidth - rect.right) + 'px';
+                popover.style.left = 'auto';
+                popover.classList.add('show');
+            }
+        }
+
+        function toggleTabsMenu(btn, e) {
+            if (e) e.stopPropagation();
+            const popover = document.getElementById('tabsMenuDropdown');
+            const isOpen = popover.classList.contains('show');
+            closeAllHeaderDropdowns();
+            if (!isOpen) {
+                const rect = btn.getBoundingClientRect();
+                popover.style.top = (rect.bottom + 8) + 'px';
+                let left = rect.left;
+                if (left + 300 > window.innerWidth) left = window.innerWidth - 310;
+                popover.style.left = Math.max(10, left) + 'px';
+                popover.style.right = 'auto';
+                renderTabsDropdownList('');
+                popover.classList.add('show');
+                const inp = document.getElementById('tabFilterInput');
+                if (inp) { inp.value = ''; inp.focus(); }
+            }
+        }
+
+        function renderTabsDropdownList(query) {
+            const listEl = document.getElementById('tabsDropdownList');
+            if (!listEl) return;
+            listEl.innerHTML = '';
+            const q = (query || '').toLowerCase().trim();
+            const data = getAppData();
+
+            // Aba de clientes
+            if ('🔔 Clientes & Alarmes'.toLowerCase().includes(q)) {
+                const clients = getClientsData();
+                const pending = clients.filter(c => c.status !== 'done').length;
+                const item = document.createElement('div');
+                item.className = 'dropdown-list-item';
+                item.innerHTML = '<span>🔔 Clientes & Alarmes</span><span class="header-btn-badge">' + pending + ' pendentes</span>';
+                item.onclick = () => { switchTab('tab_clients_alarm'); closeAllHeaderDropdowns(); };
+                listEl.appendChild(item);
+            }
+
+            Object.keys(data).forEach(tabId => {
+                const tab = data[tabId];
+                if (!q || tab.name.toLowerCase().includes(q)) {
+                    let totalCards = 0;
+                    (tab.groups || []).forEach(g => { totalCards += (g.items || []).length; });
+                    const item = document.createElement('div');
+                    item.className = 'dropdown-list-item';
+                    item.innerHTML = '<span>' + escapeHtml(tab.name) + '</span><span class="header-btn-badge">' + totalCards + ' cards</span>';
+                    item.onclick = () => { switchTab(tabId); closeAllHeaderDropdowns(); };
+                    listEl.appendChild(item);
+                }
+            });
+
+            if (listEl.children.length === 0) {
+                listEl.innerHTML = '<div style="padding:10px; opacity:0.6; font-size:11px; text-align:center;">Nenhuma aba encontrada</div>';
+            }
+        }
+
+        function toggleRecentsMenu(btn, e) {
+            if (e) e.stopPropagation();
+            const popover = document.getElementById('recentsMenuDropdown');
+            const isOpen = popover.classList.contains('show');
+            closeAllHeaderDropdowns();
+            if (!isOpen) {
+                const rect = btn.getBoundingClientRect();
+                popover.style.top = (rect.bottom + 8) + 'px';
+                let left = rect.left;
+                if (left + 320 > window.innerWidth) left = window.innerWidth - 330;
+                popover.style.left = Math.max(10, left) + 'px';
+                popover.style.right = 'auto';
+                renderRecentsDropdownList();
+                popover.classList.add('show');
+            }
+        }
+
+        function renderRecentsDropdownList() {
+            const listEl = document.getElementById('recentsDropdownList');
+            if (!listEl) return;
+            listEl.innerHTML = '';
+            const recents = getRecentCopies();
+
+            if (recents.length === 0) {
+                listEl.innerHTML = '<div style="padding:16px 10px; opacity:0.6; font-size:12px; text-align:center;">Nenhum script copiado recentemente.</div>';
+                return;
+            }
+
+            recents.forEach(txt => {
+                const item = document.createElement('div');
+                item.className = 'dropdown-list-item';
+                const firstLine = firstLineOf(txt);
+                item.innerHTML = '<div style="flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:11px;">' + escapeHtml(firstLine) + '</div><button class="comp-btn comp-copy" style="flex:0 0 auto; padding:3px 8px; font-size:10px;">📋 Copiar</button>';
+                const btn = item.querySelector('.comp-copy');
+                btn.onclick = async (e) => {
+                    e.stopPropagation();
+                    const resolved = await resolveVariables(txt);
+                    if (resolved === null) return;
+                    addRecentCopy(resolved);
+            copyTextToClipboard(resolved).then(ok => {
+                        btn.textContent = ok ? '✅ Copiado!' : '❌';
+                        setTimeout(() => { btn.textContent = '📋 Copiar'; closeAllHeaderDropdowns(); }, 800);
+                    });
+                };
+                listEl.appendChild(item);
+            });
+        }
+
+        function toggleFavoriteFilter(btn) {
+            isFilteringFavoritesOnly = !isFilteringFavoritesOnly;
+            document.body.classList.toggle('filtering-favorites', isFilteringFavoritesOnly);
+            btn.classList.toggle('fav-filter-active', isFilteringFavoritesOnly);
+            btn.title = isFilteringFavoritesOnly ? 'Mostrando apenas favoritos (clique para ver todos)' : 'Filtrar somente cards favoritos (⭐)';
+        }
+
+        let activeTargetCard = null;
+        function toggleCardActionMenu(btn, e) {
+            e.stopPropagation();
+            const menu = document.getElementById('cardActionMenu');
+            if (!menu) return;
+            const card = btn.closest('.item-card');
+            activeTargetCard = card;
+
+            const rect = btn.getBoundingClientRect();
+            menu.innerHTML = '<button class="card-popover-item" onclick="duplicateCurrentCard()">📋 Duplicar Card</button>' +
+                '<button class="card-popover-item" onclick="copyCardRawText()">📄 Copiar Texto Bruto</button>' +
+                '<button class="card-popover-item" onclick="openMoveCardDialog()">📦 Mover para Outra Aba</button>' +
+                '<button class="card-popover-item danger" onclick="deleteCurrentCard()">🗑️ Excluir Card</button>';
+
+            let top = rect.bottom + 4;
+            let left = rect.left - 130;
+            if (left < 10) left = 10;
+            if (top + 160 > window.innerHeight) top = rect.top - 160;
+
+            menu.style.top = top + 'px';
+            menu.style.left = left + 'px';
+            menu.classList.add('show');
+        }
+
+        function duplicateCurrentCard() {
+            if (!activeTargetCard) return;
+            const textarea = activeTargetCard.querySelector('.item-textarea');
+            const tags = [...activeTargetCard.querySelectorAll('.card-tag')].map(t => t.dataset.tagName);
+            const isFav = activeTargetCard.classList.contains('is-favorite');
+            const parent = activeTargetCard.parentElement;
+
+            appendCard(parent, { text: textarea.value, tags: [...tags], alarm: '', favorite: isFav });
+            const newCard = parent.lastElementChild;
+            parent.insertBefore(newCard, activeTargetCard.nextSibling);
+            saveAppData();
+            closeAllHeaderDropdowns();
+        }
+
+        function copyCardRawText() {
+            if (!activeTargetCard) return;
+            const textarea = activeTargetCard.querySelector('.item-textarea');
+            copyTextToClipboard(textarea.value).then(ok => {
+                alert(ok ? 'Texto bruto copiado para a área de transferência!' : 'Falha ao copiar.');
+                closeAllHeaderDropdowns();
+            });
+        }
+
+        function deleteCurrentCard() {
+            if (!activeTargetCard) return;
+            const textarea = activeTargetCard.querySelector('.item-textarea');
+            const hasText = textarea.value.trim() !== '';
+            if (hasText && !confirm('Excluir este card permanentemente?')) return;
+            activeTargetCard.remove();
+            saveAppData();
+            closeAllHeaderDropdowns();
+        }
+
+        function openMoveCardDialog() {
+            if (!activeTargetCard) return;
+            const data = getAppData();
+            const tabIds = Object.keys(data);
+            const cardText = activeTargetCard.querySelector('.item-textarea').value;
+            const tags = [...activeTargetCard.querySelectorAll('.card-tag')].map(t => t.dataset.tagName);
+            const isFav = activeTargetCard.classList.contains('is-favorite');
+
+            const overlay = document.createElement('div');
+            overlay.className = 'var-modal-overlay';
+            overlay.setAttribute('data-transient', 'true');
+
+            let optionsHtml = '';
+            tabIds.forEach(id => {
+                optionsHtml += '<option value="' + id + '">' + escapeHtml(data[id].name) + '</option>';
+            });
+
+            overlay.innerHTML = '<div class="var-modal-box" style="width: 380px;">' +
+                '<div class="var-modal-title">📦 Mover Card para Outra Aba</div>' +
+                '<div class="var-modal-desc">Selecione a aba de destino para transferir este card:</div>' +
+                '<select id="moveTargetTabSelect" class="theme-select" style="width:100%; box-sizing:border-box; margin:8px 0;">' +
+                optionsHtml +
+                '</select>' +
+                '<div class="var-modal-btns">' +
+                '<button class="var-modal-btn var-modal-btn-cancel" id="cancelMoveBtn">Cancelar</button>' +
+                '<button class="var-modal-btn var-modal-btn-confirm" id="confirmMoveBtn">Mover Agora</button>' +
+                '</div></div>';
+
+            overlay.querySelector('#cancelMoveBtn').onclick = () => overlay.remove();
+            overlay.querySelector('#confirmMoveBtn').onclick = () => {
+                const targetTabId = overlay.querySelector('#moveTargetTabSelect').value;
+                if (!targetTabId || !data[targetTabId]) return;
+
+                if (!data[targetTabId].groups || data[targetTabId].groups.length === 0) {
+                    data[targetTabId].groups = [{ title: 'Geral', items: [] }];
+                }
+                data[targetTabId].groups[0].items.unshift({ text: cardText, tags: [...tags], alarm: '', favorite: isFav });
+                setAppData(data);
+
+                activeTargetCard.remove();
+                saveAppData();
+                overlay.remove();
+                closeAllHeaderDropdowns();
+                switchTab(targetTabId);
+            };
+
+            document.body.appendChild(overlay);
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.dropdown-popover, .card-popover-menu, .io-btn, .card-more-btn')) {
+                closeAllHeaderDropdowns();
+            }
+        });
+
+        
+        /* ===== Autocomplete de Variaveis no Textarea ===== */
+        let activeAutocompleteTextarea = null;
+        let autocompleteSelectedIdx = 0;
+
+        function getOrCreateAutocompleteMenu() {
+            let menu = document.getElementById('varAutocompleteMenu');
+            if (!menu) {
+                menu = document.createElement('div');
+                menu.id = 'varAutocompleteMenu';
+                menu.className = 'var-autocomplete';
+                menu.setAttribute('data-transient', 'true');
+                document.body.appendChild(menu);
+            }
+            return menu;
+        }
+
+        function getAllAvailableVars() {
+            const custom = Object.keys(getCustomDefaults()).filter(k => !HIDDEN_VARS.includes(k));
+            const all = [
+                'saudacao', 'nome', 'telefone', 'protocolo', 'data', 'hora', 'hora+2', 'prazo',
+                'plano', 'horas', 'link', 'data_desligamento', 'atendente', 'empresa', 'cidade', 'setor',
+                'usuario', 'senha', 'email', 'cliente', ...custom
+            ];
+            return [...new Set(all)];
+        }
+
+        function handleVarAutocomplete(ta, e) {
+            if (['ArrowDown', 'ArrowUp', 'Enter', 'Tab', 'Escape'].includes(e.key)) return;
+            const pos = ta.selectionStart;
+            const textBefore = ta.value.slice(0, pos);
+            const lastParen = textBefore.lastIndexOf('(');
+            const menu = getOrCreateAutocompleteMenu();
+
+            if (lastParen === -1 || lastParen < textBefore.lastIndexOf('\n')) {
+                menu.classList.remove('show');
+                return;
+            }
+
+            const query = textBefore.slice(lastParen + 1).toLowerCase();
+            if (query.includes(')')) {
+                menu.classList.remove('show');
+                return;
+            }
+
+            const matches = getAllAvailableVars().filter(v => v.toLowerCase().startsWith(query));
+            if (matches.length === 0) {
+                menu.classList.remove('show');
+                return;
+            }
+
+            activeAutocompleteTextarea = ta;
+            autocompleteSelectedIdx = 0;
+            menu.innerHTML = '';
+            matches.slice(0, 8).forEach((varName, idx) => {
+                const item = document.createElement('div');
+                item.className = 'var-autocomplete-item' + (idx === 0 ? ' selected' : '');
+                item.innerHTML = '<strong>(' + varName + ')</strong> <span style="opacity:0.6; font-size:10px;">↵ inserir</span>';
+                item.onmousedown = (ev) => {
+                    ev.preventDefault();
+                    insertAutocompleteVar(ta, lastParen, pos, varName);
+                };
+                menu.appendChild(item);
+            });
+
+            const rect = ta.getBoundingClientRect();
+            menu.style.top = Math.min(window.innerHeight - 180, rect.bottom + 4) + 'px';
+            menu.style.left = Math.max(10, rect.left + 10) + 'px';
+            menu.classList.add('show');
+        }
+
+        function handleVarAutocompleteNav(ta, e) {
+            const menu = document.getElementById('varAutocompleteMenu');
+            if (!menu || !menu.classList.contains('show')) return;
+
+            const items = menu.querySelectorAll('.var-autocomplete-item');
+            if (items.length === 0) return;
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                items[autocompleteSelectedIdx].classList.remove('selected');
+                autocompleteSelectedIdx = (autocompleteSelectedIdx + 1) % items.length;
+                items[autocompleteSelectedIdx].classList.add('selected');
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                items[autocompleteSelectedIdx].classList.remove('selected');
+                autocompleteSelectedIdx = (autocompleteSelectedIdx - 1 + items.length) % items.length;
+                items[autocompleteSelectedIdx].classList.add('selected');
+            } else if (e.key === 'Enter' || e.key === 'Tab') {
+                e.preventDefault();
+                const selectedText = items[autocompleteSelectedIdx].querySelector('strong').textContent.replace(/[()]/g, '');
+                const pos = ta.selectionStart;
+                const textBefore = ta.value.slice(0, pos);
+                const lastParen = textBefore.lastIndexOf('(');
+                insertAutocompleteVar(ta, lastParen, pos, selectedText);
+            } else if (e.key === 'Escape') {
+                menu.classList.remove('show');
+            }
+        }
+
+        function insertAutocompleteVar(ta, start, end, varName) {
+            const val = ta.value;
+            const insertion = '(' + varName + ')';
+            ta.value = val.slice(0, start) + insertion + val.slice(end);
+            ta.selectionStart = ta.selectionEnd = start + insertion.length;
+            ta.focus();
+            const card = ta.closest('.item-card');
+            if (card) {
+                const pre = card.querySelector('.item-text');
+                if (pre) pre.innerText = ta.value;
+            }
+            const menu = document.getElementById('varAutocompleteMenu');
+            if (menu) menu.classList.remove('show');
+            saveAppData();
+        }
+
+        
+        /* ===== Modal de Changelog e Historico de Atualizacoes ===== */
+        function openChangelogModal() {
+            const overlay = document.createElement("div");
+            overlay.className = "var-modal-overlay";
+            overlay.setAttribute("data-transient", "true");
+            overlay.innerHTML = `
+                <div class="changelog-box">
+                    <div class="vm-head">
+                        <div class="vm-title" style="font-size:16px;">📜 Histórico de Atualizações & Changelog</div>
+                        <button class="vm-x" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
+                    </div>
+                    <div class="vm-body" style="padding: 16px 20px; overflow-y: auto;">
+                        
+                        <!-- Versão 2.0.1 -->
+                        <div class="changelog-version-card" style="border-color: var(--accent-color);">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>🚀 Versão 2.0.1</span>
+                                    <span class="changelog-badge">Versão Atual</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">08/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>Limpeza & Otimização do Código:</strong> Remoção de todos os estilos e atributos residuais do Dark Reader, deixando o arquivo mais leve, rápido e sem conflitos visuais.</li>
+                                <li><strong>Servidor de Atualizações:</strong> Repositório oficial apontado para <code>https://firestrykerfx.github.io/central-de-scripts/version.json</code>.</li>
+                                <li><strong>Cards Favoritos e Fixados (⭐):</strong> Botão de estrela para favoritar scripts em cada card (e na Janela Companheira), com destaque dourado e fixação automática no topo da coluna.</li>
+                                <li><strong>Filtro Estrito por Tags:</strong> Busca refinada com suporte a <code>tag:nome</code> e <code>#nome</code>, além de tags clicáveis nos cards para filtrar instantaneamente.</li>
+                                <li><strong>Máscaras e Formatação Automática:</strong> Aplicação de máscaras em tempo real para Telefone <code>(XX) XXXXX-XXXX</code>, CPF e CNPJ nos modais de preenchimento.</li>
+                                <li><strong>Prévia da Mensagem Resolvida:</strong> Tooltip flutuante ao passar o mouse sobre o botão "Copiar", mostrando o texto pronto com saudação, data e variáveis preenchidas.</li>
+                                <li><strong>Gestão de Clientes & Alarmes:</strong>
+                                    <br>• Botões de Soneca rápida (+5m, +15m, +30m, +1h) no alarme sonoro e na Janela Companheira.
+                                    <br>• Desbloqueio pró-ativo de áudio no primeiro clique para evitar bloqueios do navegador.
+                                    <br>• Filtro por status na lista de clientes (Todos, Pendentes, Concluídos) com contadores em tempo real.
+                                </li>
+                                <li><strong>Segurança e Uso do Armazenamento:</strong>
+                                    <br>• Medidor visual de memória (localStorage) em tempo real no cabeçalho.
+                                    <br>• Centralização de Backup (Exportar JSON, Importar JSON e Salvar HTML) dentro do modal de Armazenamento.
+                                    <br>• Botão de segurança para <em>Restaurar Scripts Padrão</em> e opção de <em>Zerar Tudo</em> para limpar a central.
+                                </li>
+                                <li><strong>Menu Unificado de Visual (🎨):</strong> Agrupamento de Tema (Cinza, OLED, Claro), Disposição (Quadro / Lista) e Zoom dos cards em um popover moderno.</li>
+                                <li><strong>Navegador Rápido de Abas (📑):</strong> Menu dropdown com busca para troca imediata de aba sem rolagem horizontal.</li>
+                                <li><strong>Filtro Rápido de Favoritos:</strong> Botão no cabeçalho para exibir somente os cards favoritados de todas as abas.</li>
+                                <li><strong>Histórico de Recentes (🕒):</strong> Registro dos últimos scripts copiados com atalho de cópia instantânea.</li>
+                                <li><strong>Menu de Ações do Card (⋮):</strong> Opções para Duplicar Card, Mover para Outra Aba, Copiar Texto Bruto e Excluir.</li>
+                                <li><strong>Autocomplete de Variáveis:</strong> Sugestão inteligente de variáveis ao digitar <code>(</code> no campo de texto de edição.</li>
+                                <li><strong>Correção de Transparência e Sobreposição:</strong> Menus popovers com posicionamento fixo, prioridade de camada (z-index) e fundo 100% opaco adaptável ao tema.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versão 1.8.5 -->
+                        <div class="changelog-version-card">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>📦 Versão 1.8.5</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">Versão Anterior</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>Janela Companheira:</strong> Modo flutuante Picture-in-Picture e Popup independente com atalho <code>Alt + Shift + P</code>.</li>
+                                <li><strong>Userscripts Integrados:</strong> Suporte para execução de scripts de terceiros compatíveis com o formato Tampermonkey.</li>
+                                <li><strong>Aba Permanente de Clientes:</strong> Cadastro de clientes com agendamento de retorno e disparo de alarme sonoro contínuo.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versões 1.8.0 - 1.8.4 -->
+                        <div class="changelog-version-card">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>🏛️ Versão 1.8.0 - 1.8.4</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">Base do Sistema</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>Quadro Kanban:</strong> Suporte a arrastar e soltar (drag & drop) de cards e colunas no modo de edição.</li>
+                                <li><strong>Persistência Autônoma em HTML:</strong> Recurso "Salvar HTML" para gerar arquivo independente atualizado.</li>
+                                <li><strong>Suporte a Temas:</strong> Modo Cinza, Modo Escuro OLED puro e Modo Claro.</li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <div class="vm-foot" style="padding:12px 20px;">
+                        <button class="var-modal-btn var-modal-btn-confirm" onclick="this.closest('.var-modal-overlay').remove()">Fechar</button>
+                    </div>
+                </div>
+`;
+            overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
+            document.body.appendChild(overlay);
         }
 
         function loadAppData() {
@@ -2822,6 +3524,14 @@
                 autoGrow(this);
                 saveAppDataDebounced();
             };
+            textarea.addEventListener('keyup', (e) => handleVarAutocomplete(textarea, e));
+            textarea.addEventListener('keydown', (e) => handleVarAutocompleteNav(textarea, e));
+            textarea.addEventListener('blur', () => {
+                setTimeout(() => {
+                    const menu = document.getElementById('varAutocompleteMenu');
+                    if (menu) menu.classList.remove('show');
+                }, 180);
+            });
 
             const actionsDiv = document.createElement('div');
             actionsDiv.className = 'card-actions';
@@ -2849,7 +3559,13 @@
             delBtn.textContent = 'Excluir';
             delBtn.onclick = () => deleteCard(delBtn);
 
-            actionsDiv.append(favBtn, copyBtn, copiedMsg, delBtn);
+            const moreBtn = document.createElement('button');
+            moreBtn.className = 'card-more-btn';
+            moreBtn.innerHTML = '⋮';
+            moreBtn.title = 'Mais opções do card';
+            moreBtn.onclick = (e) => toggleCardActionMenu(moreBtn, e);
+
+            actionsDiv.append(favBtn, copyBtn, copiedMsg, delBtn, moreBtn);
 
             newCard.appendChild(headerRow);
             newCard.appendChild(metaBar);
@@ -3474,6 +4190,7 @@
             let resolved = await resolveVariables(text);
             if (resolved === null) return;
 
+            addRecentCopy(resolved);
             copyTextToClipboard(resolved).then(ok => {
                 msg.textContent = ok ? 'Copiado!' : 'Falha ao copiar';
                 msg.style.display = 'block';
