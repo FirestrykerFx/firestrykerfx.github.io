@@ -2017,6 +2017,49 @@
             color: #ffffff !important;
             border-color: #007aff !important;
         }
+
+        /* Correção para menus suspensos (<select>) e setas nativas */
+        select.theme-select, select {
+            display: inline-block !important;
+            vertical-align: middle !important;
+            position: relative !important;
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23007aff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+            background-repeat: no-repeat !important;
+            background-position: calc(100% - 10px) center !important;
+            background-size: 12px 12px !important;
+            padding-right: 32px !important;
+            cursor: pointer !important;
+        }
+
+        /* Estilização da seta de datalists para clique responsivo */
+        input[list]::-webkit-calendar-picker-indicator {
+            cursor: pointer !important;
+            opacity: 0.85 !important;
+            padding: 4px !important;
+            font-size: 13px !important;
+            transition: opacity 0.15s !important;
+        }
+        input[list]::-webkit-calendar-picker-indicator:hover {
+            opacity: 1 !important;
+        }
+
+        /* Painel Lado a Lado (Dual View Chamado + Teste) */
+        .var-modal-box.is-split-view {
+            width: min(1320px, 98vw) !important;
+            max-width: 1320px !important;
+        }
+        .side-test-panel {
+            flex: 1;
+            min-width: 320px;
+            max-width: 650px;
+            border-left: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            background-color: color-mix(in srgb, var(--sidebar-bg) 60%, var(--card-bg));
+        }
 </style>
 </head>
 <body class="theme-oled">
@@ -2124,8 +2167,11 @@
         <button class="shortcut-pill" id="tabsMenuBtn" onclick="toggleTabsMenu(this, event)" title="Localizar e trocar de aba rapidamente">
             📑 Abas
         </button>
-        <button class="shortcut-pill" id="ticketModalBtn" onclick="openTicketFormModal()" title="Gerador rápido de chamado/ordem de serviço">
+        <button class="shortcut-pill" id="ticketModalBtn" onclick="openTicketFormModal()" title="Gerador rápido de chamado/ordem de serviço (OS Técnica)">
             📝 Chamado
+        </button>
+        <button class="shortcut-pill" id="testModalBtn" onclick="openTestFormModal()" title="Gerador rápido de teste de atendimento (Diagnóstico)">
+            🧪 Teste
         </button>
         <button class="shortcut-pill" id="recentsBtn" onclick="toggleRecentsMenu(this, event)" title="Ver últimos scripts copiados">
             🕒 Recentes
@@ -2155,7 +2201,7 @@
     <div class="content-container" id="contentContainer"></div>
 
     <script>
-        const APP_VERSION = '2.4.0';
+        const APP_VERSION = '2.4.2';
         const UPDATE_MANIFEST_URL = 'https://firestrykerfx.github.io/central-de-scripts/version.json';
         const UPDATE_CHECK_INTERVAL = 6 * 60 * 60 * 1000;
         /* ===== 1.8.4: Companion interaction routing ===== */
@@ -3140,12 +3186,74 @@
                     </div>
                     <div class="vm-body" style="padding: 16px 20px; overflow-y: auto;">
                         
-                                                                                                <!-- Versão 2.3.0 -->
+                                                                                                                                                                        <!-- Versão 2.4.2 -->
+                        <div class="changelog-version-card" style="border-color: #007aff;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>⚡ Versão 2.4.2</span>
+                                    <span class="changelog-badge" style="background:#007aff;">Versão Atual</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">08/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>🪟 Painel Lado a Lado (Chamado + Teste):</strong> Novo botão <code>🧪 Abrir Teste ao Lado</code> no gerador de chamado expande a janela em visualização dupla (lado a lado), permitindo preencher a OS e o teste de atendimento na mesma tela sem alternar de janela.</li>
+                                <li><strong>🔧 Ajustes Cumulativos com Vírgula:</strong> No Teste de Atendimento, clicar nos chips de Ajustes agora concatena automaticamente os itens com vírgula (ex: <code>setado canal auto, otimizado canal 5GHz</code>) e permite desmarcar com um segundo clique.</li>
+                                <li><strong>📶 Sinal Óptico com Menos Automático:</strong> Ao digitar no campo de Sinal, o sistema insere e mantém automaticamente o sinal de menos (ex: digitou <code>21</code> vira <code>-21 dBm</code>).</li>
+                                <li><strong>🎯 Ping Dividido (Média e Perda %):</strong> Campos dedicados independentes para digitação da média em ms e porcentagem de perda, formatando automaticamente para <code>média 6 perda 0%</code>.</li>
+                                <li><strong>🌐 DNS (Corrigido / Não Corrigido):</strong> Chips específicos para indicar estritamente se o DNS foi corrigido ou não.</li>
+                                <li><strong>🚨 Sem Acesso Expandido:</strong> Inclusão dos relatos mais solicitados: <code>PON piscando</code>, <code>roteador não liga</code> e <code>onu não liga</code>.</li>
+                                <li><strong>⏰ Horário Cumulativo:</strong> Chips de horário (Manhã, Tarde e Sábado) agora somam opções ao clicar (ex: <code>Manhã, Tarde, Sábado</code>).</li>
+                                <li><strong>📍 Ponto de Acesso em Todos os Chamados:</strong> Campo padronizado em todos os modelos de OS com chips rápidos (<code>Ponto principal</code>, <code>net1</code>, <code>net2</code>) e digitação manual.</li>
+                                <li><strong>🔽 Correção de Menus Suspensos:</strong> Ajuste nos elementos <code>&lt;select&gt;</code> e <code>datalists</code> para garantir abertura imediata tanto ao clicar na seta quanto no corpo do campo.</li>
+                            </ul>
+                        </div>
+
+<!-- Versão 2.4.1 -->
+                        <div class="changelog-version-card" style="border-color: #007aff;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>🧪 Versão 2.4.1</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">08/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>🧪 Novo Gerador de Teste de Atendimento:</strong> Criação do botão <code>🧪 Teste</code> na barra de atalhos e modal dedicado para registro do diagnóstico técnico interno do suporte (Contato, Relato, Sinal óptico, Ping/Perda, Extrato, Ajustes, Reiniciado, MTU/MRU, WAN, DNS e Resumo).</li>
+                                <li><strong>📝 Chamado Técnico Desacoplado:</strong> Abertura de chamado (<code>📝 Chamado</code>) agora contém exclusivamente informações de Ordem de Serviço (Título, Descrição, Telefone, Plano mais vendido, Ponto de acesso, Melhor horário e Valor da visita) para todos os modelos, sem misturar com os parâmetros do teste técnico interno.</li>
+                                <li><strong>Integração Rápida entre Modais:</strong> Atalho dentro do chamado de Lentidão para abrir diretamente o gerador de Teste de Atendimento caso o atendente necessite registrar apenas os testes preliminares.</li>
+                            </ul>
+                        </div>
+
+<!-- Versão 2.4.0 -->
+                        <div class="changelog-version-card" style="border-color: #007aff;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>🚀 Versão 2.4.0</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">08/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>🚀 Ícone Oficial no Cabeçalho (Apple Squircle):</strong> Substituição definitiva de pseudo-elementos CSS por elemento <code>&lt;svg&gt;</code> vetorial inline diretamente no DOM, com gradiente azul Apple e sincronia perfeita com o favicon.</li>
+                                <li><strong>⚡ Planos Mais Vendidos (em MB e GB):</strong> Inclusão dos planos mais vendidos solicitados (<code>500 MB</code>, <code>700 MB</code>, <code>800 MB</code>, <code>1000 MB</code> e <code>1.5 GB</code>) com chips rápidos e digitação livre.</li>
+                                <li><strong>📋 Chamados Dinâmicos por Template:</strong> O botão <strong>📝 Chamado</strong> agora adapta automaticamente os campos de acordo com o modelo selecionado:
+                                    <br>• <strong>🚨 Sem Acesso / LOS:</strong> Título, relato de LOS piscando vermelho com tentativa de reinício sem sucesso, contato com máscara, plano, ponto de acesso e valor.
+                                    <br>• <strong>🐢 Lentidão / Diagnóstico:</strong> Diagnóstico de rede completo com sinal óptico (dBm), ping/perda de pacotes, extrato, ajustes efetuados (canal auto/5GHz), reinicialização, MTU/MRU, porta WAN e DNS.
+                                    <br>• <strong>🏠 Mudança de Endereço:</strong> Coleta todos os dados do script operacional (rua e número, bairro, cidade, ponto de referência, cor da casa/alvenaria ou madeira, telefone, horário, localização GPS, equipamentos e cortesia) com <strong>botão duplo</strong>: <em>Copiar Chamado (Técnico)</em> e <em>Copiar Script p/ Cliente</em> (para WhatsApp/WebChat).
+                                    <br>• <strong>🔌 Passagem de Cabo de Rede:</strong> Assunto, onde é feito o serviço (mesmo cômodo, galpão no mesmo lote, painel solar com vídeo), telefone, plano, horário e cobrança de materiais / R$ 90,00.
+                                    <br>• <strong>🎉 Internet para Evento:</strong> Endereço, localização, data/hora, tipo de rede privada/pública, Wi-Fi/senha, quantidade de pessoas, contato e valor de R$ 500,00 (ciente).
+                                    <br>• <strong>📝 Geral / Outro:</strong> Formulário flexível para chamados técnicos gerais.
+                                </li>
+                                <li><strong>Preservação de Dados ao Trocar de Modelo:</strong> Campos comuns como telefone, horário e plano permanecem preenchidos ao alternar entre os templates.</li>
+                            </ul>
+                        </div>
+
+<!-- Versão 2.3.0 -->
                         <div class="changelog-version-card" style="border-color: #007aff;">
                             <div class="changelog-version-header">
                                 <div class="changelog-version-title">
                                     <span>🍎 Versão 2.3.0</span>
-                                    <span class="changelog-badge" style="background:#007aff;">Design Apple</span>
+                                    <span class="changelog-badge" style="background:#5ac8fa; color:#000;">Design Apple</span>
                                 </div>
                                 <span style="font-size:11px; opacity:0.75;">08/10/2026</span>
                             </div>
@@ -3165,7 +3273,7 @@
                             <div class="changelog-version-header">
                                 <div class="changelog-version-title">
                                     <span>🚀 Versão 2.2.0</span>
-                                    <span class="changelog-badge">Versão Atual</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
                                 </div>
                                 <span style="font-size:11px; opacity:0.75;">08/10/2026</span>
                             </div>
@@ -3184,7 +3292,7 @@
                             <div class="changelog-version-header">
                                 <div class="changelog-version-title">
                                     <span>🚀 Versão 2.1.0</span>
-                                    <span class="changelog-badge" style="background:#22c55e;">Versão Atual</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
                                 </div>
                                 <span style="font-size:11px; opacity:0.75;">08/10/2026</span>
                             </div>
@@ -3204,7 +3312,7 @@
                             <div class="changelog-version-header">
                                 <div class="changelog-version-title">
                                     <span>🚀 Versão 2.0.1</span>
-                                    <span class="changelog-badge">Versão Atual</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
                                 </div>
                                 <span style="font-size:11px; opacity:0.75;">08/10/2026</span>
                             </div>
@@ -3394,19 +3502,298 @@
             URL.revokeObjectURL(url);
         }
 
+
+
+        /* ===== V2.4.2: Lógica Aprimorada de Chamados e Testes de Atendimento ===== */
+        let testModalState = {
+            contato: '',
+            relato: 'lentidão/youtube/whatsapp/netflix',
+            sinal: '-19 dBm',
+            pingMedia: '6',
+            pingPerda: '0',
+            extrato: 'ok',
+            ajustes: 'setado canal auto',
+            reiniciado: 'Sim',
+            mtu: '1492 MRU',
+            wan: '1000Mbps porta fixa ok',
+            dns: 'Corrigido',
+            resumo: ''
+        };
+
+        // Função para alternar chips com vírgula (Ajustes)
+        function toggleAppendChip(inputId, chipVal) {
+            const el = document.getElementById(inputId);
+            if (!el) return;
+            let items = (el.value || '').split(',').map(s => s.trim()).filter(Boolean);
+            const idx = items.indexOf(chipVal);
+            if (idx > -1) {
+                items.splice(idx, 1);
+            } else {
+                items.push(chipVal);
+            }
+            el.value = items.join(', ');
+            el.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+
+        // Função para alternar chips de horário com adição progressiva (Manhã, Tarde, Sábado)
+        function toggleHorarioChip(inputId, chipVal) {
+            const el = document.getElementById(inputId);
+            if (!el) return;
+            if (chipVal === 'Qualquer horário comercial') {
+                el.value = 'Qualquer horário comercial';
+                el.dispatchEvent(new Event('input', { bubbles: true }));
+                return;
+            }
+            let clean = (el.value || '').replace('Qualquer horário comercial', '').trim();
+            let items = clean.split(',').map(s => s.trim()).filter(Boolean);
+            const idx = items.indexOf(chipVal);
+            if (idx > -1) {
+                items.splice(idx, 1);
+            } else {
+                items.push(chipVal);
+            }
+            el.value = items.length > 0 ? items.join(', ') : 'Qualquer horário comercial';
+            el.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+
+        // Formatação automática do campo de sinal com prefixo '-'
+        function handleSinalInput(el) {
+            let raw = el.value.trim();
+            if (!raw) return;
+            let digits = raw.replace(/[^0-9.,]/g, '');
+            if (digits) {
+                el.value = '-' + digits;
+            }
+        }
+
+        /* ===== Gerador de Teste de Atendimento (Diagnóstico Técnico) ===== */
+        function openTestFormModal() {
+            const overlay = document.createElement('div');
+            overlay.className = 'var-modal-overlay';
+            overlay.setAttribute('data-transient', 'true');
+
+            overlay.innerHTML = `
+                <div class="var-modal-box vm-box" style="width: min(650px, 95vw); max-height: 92vh; overflow-y: auto;">
+                    <div class="vm-head" style="border-bottom: 1px solid var(--border-color); padding: 12px 18px;">
+                        <div class="vm-title" style="display:flex; align-items:center; gap:8px;">
+                            <span>🧪</span>
+                            <span>Registro de Teste de Atendimento (Diagnóstico Técnico)</span>
+                        </div>
+                        <button class="vm-x" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
+                    </div>
+
+                    <div class="vm-body" style="padding: 14px 18px; gap: 12px;">
+                        <div style="background:rgba(0,122,255,0.08); border:1px solid rgba(0,122,255,0.25); border-radius:8px; padding:10px 14px; font-size:12px; line-height:1.4;">
+                            <strong>🧪 Teste de Atendimento:</strong> Registro interno dos testes de rede, parâmetros ópticos e procedimentos executados pelo suporte durante o atendimento do cliente.
+                        </div>
+
+                        <!-- Contato -->
+                        <div>
+                            <label style="font-size:11px; font-weight:600; opacity:0.85;">Contato (Telefone / Protocolo):</label>
+                            <input type="text" id="tstContato" class="var-modal-input" style="margin-top:3px;" placeholder="(XX) XXXXX-XXXX ou protocolo" value="${escapeHtml(testModalState.contato)}">
+                        </div>
+
+                        <!-- Relato -->
+                        <div>
+                            <label style="font-size:11px; font-weight:600; opacity:0.85;">Relato:</label>
+                            <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
+                                <span class="ticket-chip" onclick="document.getElementById('tstRelato').value = 'lentidão/youtube/whatsapp/netflix'">YouTube/Netflix</span>
+                                <span class="ticket-chip" onclick="document.getElementById('tstRelato').value = 'Lentidão geral relatada pelo cliente. Extrato e sinal normais.'">Lentidão Geral</span>
+                                <span class="ticket-chip" onclick="document.getElementById('tstRelato').value = 'Quedas e oscilação de sinal frequentes ao longo do dia.'">Quedas / Oscilação</span>
+                                <span class="ticket-chip" onclick="document.getElementById('tstRelato').value = 'Ping alto e travamentos em jogos online.'">Jogos / Ping Alto</span>
+                                <span class="ticket-chip" onclick="document.getElementById('tstRelato').value = 'Velocidade abaixo do contratado em testes via cabo.'">Abaixo do Plano</span>
+                            </div>
+                            <textarea id="tstRelato" class="var-modal-input" style="height:60px; resize:vertical;">${escapeHtml(testModalState.relato)}</textarea>
+                        </div>
+
+                        <!-- Sinal e Ping -->
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+                            <div>
+                                <label style="font-size:11px; font-weight:600; opacity:0.85;">Sinal (digite o número que já coloca o sinal de menos):</label>
+                                <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
+                                    <span class="ticket-chip" onclick="document.getElementById('tstSinal').value = '-19 dBm'">-19 dBm</span>
+                                    <span class="ticket-chip" onclick="document.getElementById('tstSinal').value = '-21 dBm'">-21 dBm</span>
+                                    <span class="ticket-chip" onclick="document.getElementById('tstSinal').value = '-24 dBm'">-24 dBm</span>
+                                    <span class="ticket-chip" onclick="document.getElementById('tstSinal').value = '-27 dBm'">-27 dBm</span>
+                                </div>
+                                <input type="text" id="tstSinal" class="var-modal-input" placeholder="ex: 19 (vira -19 dBm)" value="${escapeHtml(testModalState.sinal || '-19 dBm')}" oninput="handleSinalInput(this)" onblur="if(this.value && !this.value.includes('dBm')) this.value += ' dBm';">
+                            </div>
+                            
+                            <!-- Ping com Média e Perda % separadas -->
+                            <div>
+                                <label style="font-size:11px; font-weight:600; opacity:0.85;">Ping (Média e Perda %):</label>
+                                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:2px;">
+                                    <div>
+                                        <div class="ticket-chip-row" style="margin-bottom:4px;">
+                                            <span class="ticket-chip" onclick="document.getElementById('tstPingMedia').value = '6'">6ms</span>
+                                            <span class="ticket-chip" onclick="document.getElementById('tstPingMedia').value = '15'">15ms</span>
+                                            <span class="ticket-chip" onclick="document.getElementById('tstPingMedia').value = '50'">50ms</span>
+                                        </div>
+                                        <input type="text" id="tstPingMedia" class="var-modal-input" placeholder="Média (ms)" value="${escapeHtml(testModalState.pingMedia || '6')}">
+                                    </div>
+                                    <div>
+                                        <div class="ticket-chip-row" style="margin-bottom:4px;">
+                                            <span class="ticket-chip" onclick="document.getElementById('tstPingPerda').value = '0'">0%</span>
+                                            <span class="ticket-chip" onclick="document.getElementById('tstPingPerda').value = '1'">1%</span>
+                                            <span class="ticket-chip" onclick="document.getElementById('tstPingPerda').value = '5'">5%</span>
+                                        </div>
+                                        <input type="text" id="tstPingPerda" class="var-modal-input" placeholder="Perda (%)" value="${escapeHtml(testModalState.pingPerda || '0')}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Extrato e Ajustes (Com adição cumulativa por vírgula) -->
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+                            <div>
+                                <label style="font-size:11px; font-weight:600; opacity:0.85;">Extrato:</label>
+                                <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
+                                    <span class="ticket-chip" onclick="document.getElementById('tstExtrato').value = 'ok'">OK</span>
+                                    <span class="ticket-chip" onclick="document.getElementById('tstExtrato').value = 'quedas frequentes no extrato'">Quedas</span>
+                                    <span class="ticket-chip" onclick="document.getElementById('tstExtrato').value = 'quedas na madrugada'">Madrugada</span>
+                                </div>
+                                <input type="text" id="tstExtrato" class="var-modal-input" value="${escapeHtml(testModalState.extrato || 'ok')}">
+                            </div>
+                            <div>
+                                <label style="font-size:11px; font-weight:600; opacity:0.85;">Ajustes (clique para ir adicionando com vírgula):</label>
+                                <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
+                                    <span class="ticket-chip" onclick="toggleAppendChip('tstAjustes', 'setado canal auto')">+ Canal Auto</span>
+                                    <span class="ticket-chip" onclick="toggleAppendChip('tstAjustes', 'setado canal fixo e largura 20/40MHz')">+ Fixo 20/40M</span>
+                                    <span class="ticket-chip" onclick="toggleAppendChip('tstAjustes', 'otimizado canal 5GHz')">+ 5GHz Otimizado</span>
+                                    <span class="ticket-chip" onclick="toggleAppendChip('tstAjustes', 'trocado DNS no roteador')">+ DNS Trocado</span>
+                                </div>
+                                <input type="text" id="tstAjustes" class="var-modal-input" value="${escapeHtml(testModalState.ajustes || 'setado canal auto')}">
+                            </div>
+                        </div>
+
+                        <!-- Reiniciado e MTU/MRU -->
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+                            <div>
+                                <label style="font-size:11px; font-weight:600; opacity:0.85;">Reiniciado:</label>
+                                <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
+                                    <span class="ticket-chip" onclick="document.getElementById('tstReiniciado').value = 'Sim'">Sim</span>
+                                    <span class="ticket-chip" onclick="document.getElementById('tstReiniciado').value = 'Não (cliente fora do local)'">Não (fora)</span>
+                                    <span class="ticket-chip" onclick="document.getElementById('tstReiniciado').value = 'Não (já havia reiniciado antes)'">Não (já reiniciou)</span>
+                                </div>
+                                <input type="text" id="tstReiniciado" class="var-modal-input" value="${escapeHtml(testModalState.reiniciado || 'Sim')}">
+                            </div>
+                            <div>
+                                <label style="font-size:11px; font-weight:600; opacity:0.85;">MTU/MRU:</label>
+                                <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
+                                    <span class="ticket-chip" onclick="document.getElementById('tstMtu').value = '1492 MRU'">1492 MRU</span>
+                                    <span class="ticket-chip" onclick="document.getElementById('tstMtu').value = '1500'">1500</span>
+                                </div>
+                                <input type="text" id="tstMtu" class="var-modal-input" value="${escapeHtml(testModalState.mtu || '1492 MRU')}">
+                            </div>
+                        </div>
+
+                        <!-- WAN e DNS (DNS somente se foi corrigido ou não) -->
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+                            <div>
+                                <label style="font-size:11px; font-weight:600; opacity:0.85;">WAN:</label>
+                                <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
+                                    <span class="ticket-chip" onclick="document.getElementById('tstWan').value = '1000Mbps porta fixa ok'">1000Mbps OK</span>
+                                    <span class="ticket-chip" onclick="document.getElementById('tstWan').value = '100Mbps negociado'">100Mbps</span>
+                                </div>
+                                <input type="text" id="tstWan" class="var-modal-input" value="${escapeHtml(testModalState.wan || '1000Mbps porta fixa ok')}">
+                            </div>
+                            <div>
+                                <label style="font-size:11px; font-weight:600; opacity:0.85;">DNS (somente se foi corrigido ou não):</label>
+                                <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
+                                    <span class="ticket-chip" onclick="document.getElementById('tstDns').value = 'Corrigido'">Corrigido</span>
+                                    <span class="ticket-chip" onclick="document.getElementById('tstDns').value = 'Não corrigido'">Não corrigido</span>
+                                    <span class="ticket-chip" onclick="document.getElementById('tstDns').value = 'OK (não precisou de correção)'">OK</span>
+                                </div>
+                                <input type="text" id="tstDns" class="var-modal-input" value="${escapeHtml(testModalState.dns || 'Corrigido')}">
+                            </div>
+                        </div>
+
+                        <!-- Resumo -->
+                        <div>
+                            <label style="font-size:11px; font-weight:600; opacity:0.85;">Resumo:</label>
+                            <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
+                                <span class="ticket-chip" onclick="document.getElementById('tstResumo').value = 'Testes realizados sem melhora. Encaminhado para agendamento técnico.'">Sem Melhora / Agendado</span>
+                                <span class="ticket-chip" onclick="document.getElementById('tstResumo').value = 'Ajustes de canal realizados, cliente testou e normalizou.'">Normalizou</span>
+                                <span class="ticket-chip" onclick="document.getElementById('tstResumo').value = 'Feitos testes preliminares, necessário monitoramento.'">Em Monitoramento</span>
+                            </div>
+                            <input type="text" id="tstResumo" class="var-modal-input" placeholder="Conclusão ou observação do teste" value="${escapeHtml(testModalState.resumo)}">
+                        </div>
+                    </div>
+
+                    <div class="vm-foot" style="padding: 12px 18px; justify-content: space-between; border-top: 1px solid var(--border-color); display:flex; align-items:center;">
+                        <button class="var-modal-btn var-modal-btn-cancel" onclick="this.closest('.var-modal-overlay').remove()">Cancelar</button>
+                        <button class="var-modal-btn var-modal-btn-confirm" id="btnCopyTestOutput" style="background:#007aff;">
+                            📋 Copiar Teste Formatado
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            const phoneInput = overlay.querySelector('#tstContato');
+            if (phoneInput) {
+                phoneInput.oninput = () => {
+                    const clean = phoneInput.value.replace(/\D/g, '');
+                    if (clean.length >= 10) phoneInput.value = maskPhone(phoneInput.value);
+                };
+            }
+
+            overlay.querySelector('#btnCopyTestOutput').onclick = () => {
+                const getVal = id => {
+                    const el = overlay.querySelector('#' + id);
+                    return el ? el.value.trim() : '';
+                };
+
+                testModalState.contato = getVal('tstContato');
+                testModalState.relato = getVal('tstRelato');
+                testModalState.sinal = getVal('tstSinal');
+                testModalState.pingMedia = getVal('tstPingMedia') || '6';
+                testModalState.pingPerda = getVal('tstPingPerda') || '0';
+                testModalState.extrato = getVal('tstExtrato');
+                testModalState.ajustes = getVal('tstAjustes');
+                testModalState.reiniciado = getVal('tstReiniciado');
+                testModalState.mtu = getVal('tstMtu');
+                testModalState.wan = getVal('tstWan');
+                testModalState.dns = getVal('tstDns');
+                testModalState.resumo = getVal('tstResumo');
+
+                const media = testModalState.pingMedia.replace(/ms$/i, '').trim();
+                const perda = testModalState.pingPerda.replace(/%$/, '').trim();
+
+                const text = `- Contato: ${testModalState.contato || 'Não informado'}
+- Relato: ${testModalState.relato || 'lentidão/youtube/whatsapp/netflix'}
+- Sinal: ${testModalState.sinal || '-19 dBm'}
+- Ping: média ${media} perda ${perda}%
+- Extrato: ${testModalState.extrato || 'ok'}
+- Ajustes: ${testModalState.ajustes || 'setado canal auto'}
+- Reiniciado: ${testModalState.reiniciado || 'Sim'}
+- MTU/MRU: ${testModalState.mtu || '1492 MRU'}
+- WAN: ${testModalState.wan || '1000Mbps porta fixa ok'}
+- DNS: ${testModalState.dns || 'Corrigido'}
+- Resumo: ${testModalState.resumo || ''}`;
+
+                copyTextToClipboard(text).then(ok => {
+                    alert(ok ? 'Teste de atendimento copiado com sucesso!' : 'Falha ao copiar.');
+                    overlay.remove();
+                });
+            };
+
+            document.body.appendChild(overlay);
+        }
+
+        /* ===== Gerador de Chamado Técnico com suporte a Painel Lateral de Teste ===== */
         function openTicketFormModal() {
             const overlay = document.createElement('div');
             overlay.className = 'var-modal-overlay';
             overlay.setAttribute('data-transient', 'true');
 
-            // Estado persistente entre troca de templates no modal
+            // Estado persistente do Chamado
             const tkState = {
                 template: 'sem_acesso',
                 phone: '',
                 plan: '700 MB',
-                time: 'Tarde (13:30 às 18:00)',
+                time: 'Qualquer horário comercial',
                 cost: 'verificar no local',
-                ponto: 'ONU principal',
+                ponto: 'Ponto principal',
 
                 // Mudança de endereço
                 rua: '',
@@ -3417,17 +3804,8 @@
                 localizacao: '',
                 equipamentos: 'Sim, já estão no local',
 
-                // Lentidão
-                relato_lentidao: 'Lentidão geral relatada pelo cliente. Extrato e sinal de fibra normais, reiniciado os equipamentos sem melhora.',
-                sinal: 'Normal (-19 a -22 dBm)',
-                ping: 'média 6 perda 0%',
-                extrato: 'ok',
-                ajustes: 'setado canal auto',
-                reiniciado: 'Sim',
-                mtu: '1492 MRU',
-                wan: '1000Mbps porta fixa ok',
-                dns: 'OK',
-                resumo_lentidao: '',
+                // Lentidão (Ordem de Serviço Técnica)
+                problema_lentidao: 'Lentidão geral relatada pelo cliente. Extrato e sinal de fibra normais, reiniciado os equipamentos sem melhora.',
 
                 // Sem acesso
                 titulo_sem_acesso: 'Sem acesso',
@@ -3454,35 +3832,146 @@
             };
 
             overlay.innerHTML = `
-                <div class="var-modal-box vm-box" style="width: min(650px, 95vw); max-height: 92vh; overflow-y: auto;">
-                    <div class="vm-head" style="border-bottom: 1px solid var(--border-color); padding: 12px 18px;">
+                <div class="var-modal-box vm-box" id="tkModalBox" style="width: min(650px, 95vw); max-height: 92vh; overflow-y: auto; transition: width 0.25s ease;">
+                    <div class="vm-head" style="border-bottom: 1px solid var(--border-color); padding: 12px 18px; display:flex; justify-content:space-between; align-items:center;">
                         <div class="vm-title" style="display:flex; align-items:center; gap:8px;">
                             <span>📝</span>
-                            <span>Gerador Rápido de Chamado / Ordem de Serviço</span>
+                            <span>Gerador de Chamado Técnico / Ordem de Serviço</span>
                         </div>
-                        <button class="vm-x" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
-                    </div>
-
-                    <!-- Seletor Dinâmico de Templates estilo Apple Segmented Control -->
-                    <div style="padding: 12px 18px 6px 18px; border-bottom: 1px solid var(--border-color);">
-                        <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.7; margin-bottom: 6px;">
-                            Selecione o Modelo de Chamado:
-                        </div>
-                        <div class="ticket-template-tabs" id="tkTemplateTabs" style="display:flex; gap:6px; overflow-x:auto; padding-bottom:4px;">
-                            <button type="button" class="ticket-template-tab active" data-tpl="sem_acesso">🚨 Sem Acesso</button>
-                            <button type="button" class="ticket-template-tab" data-tpl="lentidao">🐢 Lentidão</button>
-                            <button type="button" class="ticket-template-tab" data-tpl="mudanca_endereco">🏠 Mudança Endereço</button>
-                            <button type="button" class="ticket-template-tab" data-tpl="passagem_cabo">🔌 Passagem de Cabo</button>
-                            <button type="button" class="ticket-template-tab" data-tpl="evento">🎉 Evento</button>
-                            <button type="button" class="ticket-template-tab" data-tpl="geral">📝 Geral / Outro</button>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <button type="button" class="var-modal-btn" id="btnToggleSideTest" style="background:rgba(0,122,255,0.15); color:#007aff; border:1px solid #007aff; padding:4px 10px; font-size:11.5px; font-weight:600;">
+                                🧪 Abrir Teste ao Lado
+                            </button>
+                            <button class="vm-x" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
                         </div>
                     </div>
 
-                    <!-- Área Dinâmica dos Campos -->
-                    <div class="vm-body" id="tkFormBody" style="padding: 14px 18px; gap: 12px;"></div>
+                    <!-- Container Flexível: Coluna de Chamado (Esq) + Painel de Teste (Dir) -->
+                    <div id="tkMainFlexContainer" style="display:flex; flex-direction:row; align-items:stretch; width:100%;">
+                        
+                        <!-- Coluna do Chamado Técnico -->
+                        <div id="tkLeftColumn" style="flex:1; min-width:320px; max-width:650px; display:flex; flex-direction:column;">
+                            <!-- Seletor de Templates -->
+                            <div style="padding: 12px 18px 6px 18px; border-bottom: 1px solid var(--border-color);">
+                                <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.7; margin-bottom: 6px;">
+                                    Selecione o Modelo de Chamado (OS Técnica):
+                                </div>
+                                <div class="ticket-template-tabs" id="tkTemplateTabs" style="display:flex; gap:6px; overflow-x:auto; padding-bottom:4px;">
+                                    <button type="button" class="ticket-template-tab active" data-tpl="sem_acesso">🚨 Sem Acesso</button>
+                                    <button type="button" class="ticket-template-tab" data-tpl="lentidao">🐢 Lentidão (OS)</button>
+                                    <button type="button" class="ticket-template-tab" data-tpl="mudanca_endereco">🏠 Mudança Endereço</button>
+                                    <button type="button" class="ticket-template-tab" data-tpl="passagem_cabo">🔌 Passagem de Cabo</button>
+                                    <button type="button" class="ticket-template-tab" data-tpl="evento">🎉 Evento</button>
+                                    <button type="button" class="ticket-template-tab" data-tpl="geral">📝 Geral / Outro</button>
+                                </div>
+                            </div>
 
-                    <!-- Rodapé com Botões de Ação -->
-                    <div class="vm-foot" id="tkFormFoot" style="padding: 12px 18px; justify-content: space-between; border-top: 1px solid var(--border-color); display:flex; align-items:center; flex-wrap:wrap; gap:8px;">
+                            <!-- Campos do Chamado -->
+                            <div class="vm-body" id="tkFormBody" style="padding: 14px 18px; gap: 12px;"></div>
+
+                            <!-- Rodapé do Chamado -->
+                            <div class="vm-foot" id="tkFormFoot" style="padding: 12px 18px; justify-content: space-between; border-top: 1px solid var(--border-color); display:flex; align-items:center; flex-wrap:wrap; gap:8px;"></div>
+                        </div>
+
+                        <!-- Coluna do Teste ao Lado (Oculta por padrão até ser aberta) -->
+                        <div id="tkRightColumn" class="side-test-panel" style="display:none; padding:14px 18px; gap:12px; overflow-y:auto;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-color); padding-bottom:8px;">
+                                <div style="font-size:13px; font-weight:700; color:var(--title-color); display:flex; align-items:center; gap:6px;">
+                                    <span>🧪</span> <span>Teste de Atendimento (Ao Lado)</span>
+                                </div>
+                                <button type="button" class="vm-x" id="btnCloseSideTest" style="font-size:14px;">✕</button>
+                            </div>
+
+                            <!-- Contato -->
+                            <div>
+                                <label style="font-size:11px; font-weight:600; opacity:0.85;">Contato (Telefone / Protocolo):</label>
+                                <input type="text" id="sideTstContato" class="var-modal-input" placeholder="(XX) XXXXX-XXXX" value="">
+                            </div>
+
+                            <!-- Relato -->
+                            <div>
+                                <label style="font-size:11px; font-weight:600; opacity:0.85;">Relato:</label>
+                                <div class="ticket-chip-row" style="margin-bottom:4px;">
+                                    <span class="ticket-chip" onclick="document.getElementById('sideTstRelato').value = 'lentidão/youtube/whatsapp/netflix'">YouTube/Netflix</span>
+                                    <span class="ticket-chip" onclick="document.getElementById('sideTstRelato').value = 'Lentidão geral relatada pelo cliente. Extrato e sinal normais.'">Lentidão Geral</span>
+                                    <span class="ticket-chip" onclick="document.getElementById('sideTstRelato').value = 'Quedas e oscilação de sinal ao longo do dia.'">Quedas</span>
+                                </div>
+                                <textarea id="sideTstRelato" class="var-modal-input" style="height:55px; resize:vertical;">lentidão/youtube/whatsapp/netflix</textarea>
+                            </div>
+
+                            <!-- Sinal e Ping -->
+                            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+                                <div>
+                                    <label style="font-size:11px; font-weight:600; opacity:0.85;">Sinal (número coloca -):</label>
+                                    <input type="text" id="sideTstSinal" class="var-modal-input" value="-19 dBm" oninput="handleSinalInput(this)" onblur="if(this.value && !this.value.includes('dBm')) this.value += ' dBm';">
+                                </div>
+                                <div>
+                                    <label style="font-size:11px; font-weight:600; opacity:0.85;">Ping (Média / Perda %):</label>
+                                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:4px;">
+                                        <input type="text" id="sideTstPingMedia" class="var-modal-input" placeholder="Média" value="6">
+                                        <input type="text" id="sideTstPingPerda" class="var-modal-input" placeholder="Perda %" value="0">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Extrato e Ajustes com Vírgula -->
+                            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+                                <div>
+                                    <label style="font-size:11px; font-weight:600; opacity:0.85;">Extrato:</label>
+                                    <div class="ticket-chip-row" style="margin-bottom:4px;">
+                                        <span class="ticket-chip" onclick="document.getElementById('sideTstExtrato').value = 'ok'">OK</span>
+                                        <span class="ticket-chip" onclick="document.getElementById('sideTstExtrato').value = 'quedas frequentes'">Quedas</span>
+                                    </div>
+                                    <input type="text" id="sideTstExtrato" class="var-modal-input" value="ok">
+                                </div>
+                                <div>
+                                    <label style="font-size:11px; font-weight:600; opacity:0.85;">Ajustes (+ vírgula):</label>
+                                    <div class="ticket-chip-row" style="margin-bottom:4px;">
+                                        <span class="ticket-chip" onclick="toggleAppendChip('sideTstAjustes', 'setado canal auto')">+ Canal Auto</span>
+                                        <span class="ticket-chip" onclick="toggleAppendChip('sideTstAjustes', 'otimizado 5GHz')">+ 5GHz</span>
+                                        <span class="ticket-chip" onclick="toggleAppendChip('sideTstAjustes', 'DNS trocado')">+ DNS</span>
+                                    </div>
+                                    <input type="text" id="sideTstAjustes" class="var-modal-input" value="setado canal auto">
+                                </div>
+                            </div>
+
+                            <!-- Reiniciado, MTU, WAN e DNS -->
+                            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+                                <div>
+                                    <label style="font-size:11px; font-weight:600; opacity:0.85;">Reiniciado:</label>
+                                    <input type="text" id="sideTstReiniciado" class="var-modal-input" value="Sim">
+                                </div>
+                                <div>
+                                    <label style="font-size:11px; font-weight:600; opacity:0.85;">MTU/MRU:</label>
+                                    <input type="text" id="sideTstMtu" class="var-modal-input" value="1492 MRU">
+                                </div>
+                            </div>
+
+                            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+                                <div>
+                                    <label style="font-size:11px; font-weight:600; opacity:0.85;">WAN:</label>
+                                    <input type="text" id="sideTstWan" class="var-modal-input" value="1000Mbps porta fixa ok">
+                                </div>
+                                <div>
+                                    <label style="font-size:11px; font-weight:600; opacity:0.85;">DNS (se foi corrigido ou não):</label>
+                                    <div class="ticket-chip-row" style="margin-bottom:4px;">
+                                        <span class="ticket-chip" onclick="document.getElementById('sideTstDns').value = 'Corrigido'">Corrigido</span>
+                                        <span class="ticket-chip" onclick="document.getElementById('sideTstDns').value = 'Não corrigido'">Não corrigido</span>
+                                    </div>
+                                    <input type="text" id="sideTstDns" class="var-modal-input" value="Corrigido">
+                                </div>
+                            </div>
+
+                            <!-- Resumo e Botão Copiar Teste -->
+                            <div>
+                                <label style="font-size:11px; font-weight:600; opacity:0.85;">Resumo do Teste:</label>
+                                <input type="text" id="sideTstResumo" class="var-modal-input" placeholder="Conclusão ou observação">
+                            </div>
+
+                            <button type="button" class="var-modal-btn var-modal-btn-confirm" id="btnCopySideTest" style="background:#007aff; margin-top:auto;">
+                                📋 Copiar Teste de Atendimento
+                            </button>
+                        </div>
                     </div>
                 </div>
             `;
@@ -3516,27 +4005,47 @@
                 `;
             }
 
-            // Gerador de chips de horários
+            // Gerador de chips de Ponto de Acesso presente em TODOS os chamados
+            function renderPontoField(currentVal) {
+                const pontos = ['Ponto principal', 'net1', 'net2'];
+                return `
+                    <div>
+                        <label style="font-size:11px; font-weight:600; opacity:0.85;">Ponto de Acesso / Equipamento:</label>
+                        <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
+                            ${pontos.map(pt => `<span class="ticket-chip ${currentVal === pt ? 'active' : ''}" onclick="setFieldVal('tkPonto', '${pt}')">${pt}</span>`).join('')}
+                        </div>
+                        <input type="text" id="tkPonto" list="tkPontoList" class="var-modal-input" placeholder="Selecione acima ou digite manual" value="${escapeHtml(currentVal || 'Ponto principal')}">
+                        <datalist id="tkPontoList">
+                            <option value="Ponto principal">
+                            <option value="net1">
+                            <option value="net2">
+                        </datalist>
+                    </div>
+                `;
+            }
+
+            // Gerador de chips de horários com adição progressiva (Manhã, Tarde, Sábado)
             function renderTimeField(currentVal) {
                 const times = [
-                    { label: 'Qualquer horário', val: 'Qualquer horário comercial' },
-                    { label: 'Manhã', val: 'Manhã (08:00 às 12:00)' },
-                    { label: 'Tarde', val: 'Tarde (13:30 às 18:00)' },
-                    { label: 'Sábado', val: 'Sábado de manhã' }
+                    { label: 'Qualquer horário comercial', val: 'Qualquer horário comercial' },
+                    { label: '+ Manhã', val: 'Manhã' },
+                    { label: '+ Tarde', val: 'Tarde' },
+                    { label: '+ Sábado', val: 'Sábado' }
                 ];
                 return `
                     <div>
-                        <label style="font-size:11px; font-weight:600; opacity:0.85;">Melhor Horário / Disponibilidade:</label>
+                        <label style="font-size:11px; font-weight:600; opacity:0.85;">Melhor Horário / Disponibilidade (clique para ir adicionando):</label>
                         <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
-                            ${times.map(t => `<span class="ticket-chip ${currentVal === t.val ? 'active' : ''}" onclick="setFieldVal('tkTime', '${t.val}')">${t.label}</span>`).join('')}
+                            ${times.map(t => `<span class="ticket-chip ${currentVal && currentVal.includes(t.val) ? 'active' : ''}" onclick="toggleHorarioChip('tkTime', '${t.val}')">${t.label}</span>`).join('')}
                         </div>
                         <input type="text" id="tkTime" list="tkTimeList" class="var-modal-input" placeholder="Selecione acima ou digite horário livre" value="${escapeHtml(currentVal || 'Qualquer horário comercial')}">
                         <datalist id="tkTimeList">
                             <option value="Qualquer horário comercial">
-                            <option value="Manhã (08:00 às 12:00)">
-                            <option value="Tarde (13:30 às 18:00)">
-                            <option value="Sábado de manhã">
-                            <option value="Ligar 20 min antes de ir">
+                            <option value="Manhã, Tarde">
+                            <option value="Manhã, Tarde, Sábado">
+                            <option value="Manhã">
+                            <option value="Tarde">
+                            <option value="Sábado">
                         </datalist>
                     </div>
                 `;
@@ -3596,17 +4105,8 @@
                 if (overlay.querySelector('#tkLoc')) tkState.localizacao = getVal('tkLoc');
                 if (overlay.querySelector('#tkEquip')) tkState.equipamentos = getVal('tkEquip');
 
-                // Lentidão
-                if (overlay.querySelector('#tkRelatoLentidao')) tkState.relato_lentidao = getVal('tkRelatoLentidao');
-                if (overlay.querySelector('#tkSinal')) tkState.sinal = getVal('tkSinal');
-                if (overlay.querySelector('#tkPing')) tkState.ping = getVal('tkPing');
-                if (overlay.querySelector('#tkExtrato')) tkState.extrato = getVal('tkExtrato');
-                if (overlay.querySelector('#tkAjustes')) tkState.ajustes = getVal('tkAjustes');
-                if (overlay.querySelector('#tkReiniciado')) tkState.reiniciado = getVal('tkReiniciado');
-                if (overlay.querySelector('#tkMtu')) tkState.mtu = getVal('tkMtu');
-                if (overlay.querySelector('#tkWan')) tkState.wan = getVal('tkWan');
-                if (overlay.querySelector('#tkDns')) tkState.dns = getVal('tkDns');
-                if (overlay.querySelector('#tkResumoLentidao')) tkState.resumo_lentidao = getVal('tkResumoLentidao');
+                // Lentidão (OS)
+                if (overlay.querySelector('#tkProblemaLentidao')) tkState.problema_lentidao = getVal('tkProblemaLentidao');
 
                 // Sem acesso
                 if (overlay.querySelector('#tkTitleSemAcesso')) tkState.titulo_sem_acesso = getVal('tkTitleSemAcesso');
@@ -3632,11 +4132,46 @@
                 if (overlay.querySelector('#tkProblemaGeral')) tkState.problema_geral = getVal('tkProblemaGeral');
             }
 
+            // Controle do Painel Lado a Lado (Side Test Panel)
+            window.toggleSideTestView = function(forceOpen = null) {
+                const box = overlay.querySelector('#tkModalBox');
+                const rightCol = overlay.querySelector('#tkRightColumn');
+                const btn = overlay.querySelector('#btnToggleSideTest');
+                const leftCol = overlay.querySelector('#tkLeftColumn');
+
+                const isCurrentlyOpen = rightCol.style.display === 'flex';
+                const willOpen = forceOpen !== null ? forceOpen : !isCurrentlyOpen;
+
+                if (willOpen) {
+                    rightCol.style.display = 'flex';
+                    box.classList.add('is-split-view');
+                    leftCol.style.borderRight = '1px solid var(--border-color)';
+                    btn.innerHTML = '✕ Fechar Teste ao Lado';
+                    btn.style.background = '#d9363e';
+                    btn.style.color = '#fff';
+                    btn.style.borderColor = '#d9363e';
+
+                    // Sincroniza telefone para o teste se já digitado
+                    saveCurrentInputs();
+                    const sidePhone = overlay.querySelector('#sideTstContato');
+                    if (sidePhone && !sidePhone.value && tkState.phone) {
+                        sidePhone.value = tkState.phone;
+                    }
+                } else {
+                    rightCol.style.display = 'none';
+                    box.classList.remove('is-split-view');
+                    leftCol.style.borderRight = 'none';
+                    btn.innerHTML = '🧪 Abrir Teste ao Lado';
+                    btn.style.background = 'rgba(0,122,255,0.15)';
+                    btn.style.color = '#007aff';
+                    btn.style.borderColor = '#007aff';
+                }
+            };
+
             function renderTemplateFields(tpl) {
                 saveCurrentInputs();
                 tkState.template = tpl;
 
-                // Atualiza highlight das abas
                 overlay.querySelectorAll('.ticket-template-tab').forEach(b => {
                     b.classList.toggle('active', b.getAttribute('data-tpl') === tpl);
                 });
@@ -3645,19 +4180,17 @@
                 const foot = overlay.querySelector('#tkFormFoot');
 
                 if (tpl === 'mudanca_endereco') {
-                    // TEMPLATE 1: MUDANÇA / TRANSFERÊNCIA DE ENDEREÇO (Conforme Imagem 2)
+                    // MUDANÇA DE ENDEREÇO
                     body.innerHTML = `
                         <div style="background:rgba(0,122,255,0.08); border:1px solid rgba(0,122,255,0.25); border-radius:8px; padding:10px 14px; font-size:12px; line-height:1.4;">
                             <strong>🏠 Transferência de Endereço:</strong> Coleta os dados para abertura da OS no Integrator e permite copiar o script pronto para enviar ao cliente no WebChat/WhatsApp.
                         </div>
 
-                        <!-- Nome da Rua / Endereço -->
                         <div>
                             <label style="font-size:11px; font-weight:600; opacity:0.85;">Nome da Rua e Número:</label>
                             <input type="text" id="tkRua" class="var-modal-input" style="margin-top:3px;" placeholder="ex: Rua Bernardo Locks, nº 150" value="${escapeHtml(tkState.rua)}">
                         </div>
 
-                        <!-- Bairro e Cidade -->
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
                             <div>
                                 <label style="font-size:11px; font-weight:600; opacity:0.85;">Bairro:</label>
@@ -3678,13 +4211,11 @@
                             </div>
                         </div>
 
-                        <!-- Ponto de Referência -->
                         <div>
                             <label style="font-size:11px; font-weight:600; opacity:0.85;">Ponto de Referência:</label>
                             <input type="text" id="tkRef" class="var-modal-input" style="margin-top:3px;" placeholder="ex: Próximo à padaria / Em frente ao mercado X" value="${escapeHtml(tkState.referencia)}">
                         </div>
 
-                        <!-- Cor da casa e se é madeira ou material -->
                         <div>
                             <label style="font-size:11px; font-weight:600; opacity:0.85;">Cor da Casa e se é Madeira ou Material:</label>
                             <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
@@ -3694,12 +4225,10 @@
                                 <span class="ticket-chip" onclick="setFieldVal('tkCorTipo', 'Branca')">Branca</span>
                                 <span class="ticket-chip" onclick="setFieldVal('tkCorTipo', 'Azul')">Azul</span>
                                 <span class="ticket-chip" onclick="setFieldVal('tkCorTipo', 'Amarela')">Amarela</span>
-                                <span class="ticket-chip" onclick="setFieldVal('tkCorTipo', 'Cinza')">Cinza</span>
                             </div>
                             <input type="text" id="tkCorTipo" class="var-modal-input" placeholder="ex: Alvenaria branca / Madeira azul" value="${escapeHtml(tkState.cor_tipo || 'Alvenaria')}">
                         </div>
 
-                        <!-- Telefone e Localização GPS -->
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
                             <div>
                                 <label style="font-size:11px; font-weight:600; opacity:0.85;">Telefone para Contato:</label>
@@ -3711,7 +4240,9 @@
                             </div>
                         </div>
 
-                        <!-- Já foram levados os equipamentos? -->
+                        <!-- Ponto de Acesso em Todos os Chamados -->
+                        ${renderPontoField(tkState.ponto)}
+
                         <div>
                             <label style="font-size:11px; font-weight:600; opacity:0.85;">Já foram levados os equipamentos?:</label>
                             <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
@@ -3722,7 +4253,6 @@
                             <input type="text" id="tkEquip" class="var-modal-input" value="${escapeHtml(tkState.equipamentos || 'Sim, já estão no local')}">
                         </div>
 
-                        <!-- Horário e Valor -->
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
                             ${renderTimeField(tkState.time)}
                             ${renderCostField(tkState.cost || 'cortesia')}
@@ -3741,7 +4271,6 @@
                         </div>
                     `;
 
-                    // Ação de copiar script do cliente
                     overlay.querySelector('#btnCopyScriptCliente').onclick = () => {
                         saveCurrentInputs();
                         const clientMsg = `🏠 TRANSFERÊNCIA DE ENDEREÇO
@@ -3765,154 +4294,31 @@ Já foram levados os equipamentos?: ${tkState.equipamentos || '...'}`;
                     };
 
                 } else if (tpl === 'lentidao') {
-                    // TEMPLATE 2: LENTIDÃO / DIAGNÓSTICO (Conforme Imagem 2)
+                    // LENTIDÃO (CHAMADO / ORDEM DE SERVIÇO TÉCNICO)
                     body.innerHTML = `
-                        <div style="background:rgba(255,149,0,0.08); border:1px solid rgba(255,149,0,0.25); border-radius:8px; padding:10px 14px; font-size:12px; line-height:1.4;">
-                            <strong>🐢 Diagnóstico de Lentidão / Quedas:</strong> Pede todos os dados de rede, sinal óptico, ping, extrato e ajustes realizados conforme o procedimento padrão da equipe técnica.
+                        <div style="background:rgba(0,122,255,0.08); border:1px solid rgba(0,122,255,0.2); border-radius:8px; padding:10px 14px; font-size:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                            <span>💡 Deseja registrar os parâmetros técnicos de rede no atendimento?</span>
+                            <button type="button" class="var-modal-btn" style="padding:4px 10px; font-size:11px; background:#007aff; color:#fff;" onclick="toggleSideTestView(true)">
+                                🧪 Abrir Teste ao Lado
+                            </button>
                         </div>
 
-                        <!-- Contato e Plano -->
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-                            <div>
-                                <label style="font-size:11px; font-weight:600; opacity:0.85;">Contato / Telefone:</label>
-                                <input type="text" id="tkPhone" class="var-modal-input" style="margin-top:3px;" placeholder="(XX) XXXXX-XXXX" value="${escapeHtml(tkState.phone)}">
-                            </div>
-                            ${renderPlanField(tkState.plan)}
-                        </div>
-
-                        <!-- Relato -->
-                        <div>
-                            <label style="font-size:11px; font-weight:600; opacity:0.85;">Relato do Problema:</label>
-                            <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
-                                <span class="ticket-chip" onclick="setFieldVal('tkRelatoLentidao', 'lentidão/youtube/whatsapp/netflix')">YouTube/Netflix</span>
-                                <span class="ticket-chip" onclick="setFieldVal('tkRelatoLentidao', 'Lentidão geral relatada pelo cliente. Extrato e sinal normais.')">Lentidão Geral</span>
-                                <span class="ticket-chip" onclick="setFieldVal('tkRelatoLentidao', 'Quedas e oscilação de sinal ao longo do dia.')">Quedas / Oscilação</span>
-                                <span class="ticket-chip" onclick="setFieldVal('tkRelatoLentidao', 'Ping alto e travamentos em jogos online.')">Jogos / Ping Alto</span>
-                            </div>
-                            <textarea id="tkRelatoLentidao" class="var-modal-input" style="height:60px; resize:vertical;">${escapeHtml(tkState.relato_lentidao)}</textarea>
-                        </div>
-
-                        <!-- Sinal e Ping -->
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-                            <div>
-                                <label style="font-size:11px; font-weight:600; opacity:0.85;">Sinal Óptico:</label>
-                                <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
-                                    <span class="ticket-chip" onclick="setFieldVal('tkSinal', 'Normal (-19 a -22 dBm)')">Normal</span>
-                                    <span class="ticket-chip" onclick="setFieldVal('tkSinal', 'Atenuado (-27 dBm)')">Atenuado</span>
-                                    <span class="ticket-chip" onclick="setFieldVal('tkSinal', 'Oscilando')">Oscilando</span>
-                                </div>
-                                <input type="text" id="tkSinal" class="var-modal-input" value="${escapeHtml(tkState.sinal || 'Normal (-19 a -22 dBm)')}">
-                            </div>
-                            <div>
-                                <label style="font-size:11px; font-weight:600; opacity:0.85;">Ping / Perda de Pacotes:</label>
-                                <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
-                                    <span class="ticket-chip" onclick="setFieldVal('tkPing', 'média 6 perda 0%')">Média 6 perda 0%</span>
-                                    <span class="ticket-chip" onclick="setFieldVal('tkPing', 'média 15ms sem perda')">Média 15ms</span>
-                                    <span class="ticket-chip" onclick="setFieldVal('tkPing', 'perda de 5% a 10%')">Com perda</span>
-                                </div>
-                                <input type="text" id="tkPing" class="var-modal-input" value="${escapeHtml(tkState.ping || 'média 6 perda 0%')}">
-                            </div>
-                        </div>
-
-                        <!-- Extrato e Ajustes -->
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-                            <div>
-                                <label style="font-size:11px; font-weight:600; opacity:0.85;">Extrato:</label>
-                                <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
-                                    <span class="ticket-chip" onclick="setFieldVal('tkExtrato', 'ok')">OK</span>
-                                    <span class="ticket-chip" onclick="setFieldVal('tkExtrato', 'quedas frequentes no extrato')">Quedas</span>
-                                </div>
-                                <input type="text" id="tkExtrato" class="var-modal-input" value="${escapeHtml(tkState.extrato || 'ok')}">
-                            </div>
-                            <div>
-                                <label style="font-size:11px; font-weight:600; opacity:0.85;">Ajustes Realizados:</label>
-                                <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
-                                    <span class="ticket-chip" onclick="setFieldVal('tkAjustes', 'setado canal auto')">Canal Auto</span>
-                                    <span class="ticket-chip" onclick="setFieldVal('tkAjustes', 'otimizado canal 5GHz e 20/40MHz')">5GHz Otimizado</span>
-                                    <span class="ticket-chip" onclick="setFieldVal('tkAjustes', 'trocado DNS no roteador')">DNS Trocado</span>
-                                </div>
-                                <input type="text" id="tkAjustes" class="var-modal-input" value="${escapeHtml(tkState.ajustes || 'setado canal auto')}">
-                            </div>
-                        </div>
-
-                        <!-- Reiniciado, MTU/MRU, WAN e DNS -->
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-                            <div>
-                                <label style="font-size:11px; font-weight:600; opacity:0.85;">Reiniciado Equipamentos?:</label>
-                                <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
-                                    <span class="ticket-chip" onclick="setFieldVal('tkReiniciado', 'Sim')">Sim</span>
-                                    <span class="ticket-chip" onclick="setFieldVal('tkReiniciado', 'Não (cliente fora do local)')">Não (fora)</span>
-                                </div>
-                                <input type="text" id="tkReiniciado" class="var-modal-input" value="${escapeHtml(tkState.reiniciado || 'Sim')}">
-                            </div>
-                            <div>
-                                <label style="font-size:11px; font-weight:600; opacity:0.85;">MTU/MRU:</label>
-                                <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
-                                    <span class="ticket-chip" onclick="setFieldVal('tkMtu', '1492 MRU')">1492 MRU</span>
-                                    <span class="ticket-chip" onclick="setFieldVal('tkMtu', '1500')">1500</span>
-                                </div>
-                                <input type="text" id="tkMtu" class="var-modal-input" value="${escapeHtml(tkState.mtu || '1492 MRU')}">
-                            </div>
-                        </div>
-
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-                            <div>
-                                <label style="font-size:11px; font-weight:600; opacity:0.85;">WAN:</label>
-                                <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
-                                    <span class="ticket-chip" onclick="setFieldVal('tkWan', '1000Mbps porta fixa ok')">1000Mbps OK</span>
-                                    <span class="ticket-chip" onclick="setFieldVal('tkWan', '100Mbps negociado')">100Mbps</span>
-                                </div>
-                                <input type="text" id="tkWan" class="var-modal-input" value="${escapeHtml(tkState.wan || '1000Mbps porta fixa ok')}">
-                            </div>
-                            <div>
-                                <label style="font-size:11px; font-weight:600; opacity:0.85;">DNS:</label>
-                                <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
-                                    <span class="ticket-chip" onclick="setFieldVal('tkDns', 'OK')">OK</span>
-                                    <span class="ticket-chip" onclick="setFieldVal('tkDns', '1.1.1.1 / 8.8.8.8')">Cloudflare/Google</span>
-                                </div>
-                                <input type="text" id="tkDns" class="var-modal-input" value="${escapeHtml(tkState.dns || 'OK')}">
-                            </div>
-                        </div>
-
-                        <!-- Horário e Resumo -->
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-                            ${renderTimeField(tkState.time)}
-                            <div>
-                                <label style="font-size:11px; font-weight:600; opacity:0.85;">Resumo / Observações do Técnico:</label>
-                                <input type="text" id="tkResumoLentidao" class="var-modal-input" style="margin-top:25px;" placeholder="ex: Feitos testes sem melhora. Encaminhado p/ campo." value="${escapeHtml(tkState.resumo_lentidao)}">
-                            </div>
-                        </div>
-                    `;
-
-                    foot.innerHTML = `
-                        <button class="var-modal-btn var-modal-btn-cancel" onclick="this.closest('.var-modal-overlay').remove()">Cancelar</button>
-                        <button class="var-modal-btn var-modal-btn-confirm" id="btnCopyTicket" style="background:#007aff;">
-                            📋 Copiar Diagnóstico Formatado
-                        </button>
-                    `;
-
-                } else if (tpl === 'sem_acesso') {
-                    // TEMPLATE 3: SEM ACESSO / LOS (Conforme Imagem 2)
-                    body.innerHTML = `
-                        <!-- Título -->
                         <div>
                             <label style="font-size:11px; font-weight:600; opacity:0.85;">Título / Assunto:</label>
-                            <input type="text" id="tkTitleSemAcesso" class="var-modal-input" style="margin-top:3px;" value="${escapeHtml(tkState.titulo_sem_acesso || 'Sem acesso')}">
+                            <input type="text" id="tkTitleLentidao" class="var-modal-input" style="margin-top:3px;" value="Lentidão">
                         </div>
 
-                        <!-- Descrição do Problema -->
                         <div>
                             <label style="font-size:11px; font-weight:600; opacity:0.85;">Descrição do Problema:</label>
                             <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
-                                <span class="ticket-chip" onclick="setFieldVal('tkProblemaSemAcesso', 'LOS, reiniciou os equipamentos mas sem sucesso.')">LOS Reiniciou s/ Sucesso</span>
-                                <span class="ticket-chip" onclick="setFieldVal('tkProblemaSemAcesso', 'LOS piscando vermelho, cliente reiniciou os equipamentos mas sem sucesso.')">LOS Piscando Vermelho</span>
-                                <span class="ticket-chip" onclick="setFieldVal('tkProblemaSemAcesso', 'Equipamento totalmente apagado / sem energia elétrica.')">Sem Energia / Apagado</span>
-                                <span class="ticket-chip" onclick="setFieldVal('tkProblemaSemAcesso', 'Cabo óptico rompido / danificado no local.')">Fibra Rompida</span>
+                                <span class="ticket-chip" onclick="setFieldVal('tkProblemaLentidao', 'Lentidão geral relatada pelo cliente. Extrato e sinal de fibra normais, reiniciado os equipamentos sem melhora.')">Lentidão Geral</span>
+                                <span class="ticket-chip" onclick="setFieldVal('tkProblemaLentidao', 'Lentidão e travamentos ao carregar vídeos/streaming (YouTube/Netflix). Teste via cabo abaixo do contratado.')">YouTube / Streaming</span>
+                                <span class="ticket-chip" onclick="setFieldVal('tkProblemaLentidao', 'Conexão oscilando com quedas frequentes ao longo do dia.')">Quedas / Oscilação</span>
+                                <span class="ticket-chip" onclick="setFieldVal('tkProblemaLentidao', 'Ping alto e oscilação de latência em jogos online.')">Jogos / Ping Alto</span>
                             </div>
-                            <textarea id="tkProblemaSemAcesso" class="var-modal-input" style="height:70px; resize:vertical;">${escapeHtml(tkState.problema_sem_acesso)}</textarea>
+                            <textarea id="tkProblemaLentidao" class="var-modal-input" style="height:70px; resize:vertical;">${escapeHtml(tkState.problema_lentidao || 'Lentidão geral relatada pelo cliente. Extrato e sinal de fibra normais, reiniciado os equipamentos sem melhora.')}</textarea>
                         </div>
 
-                        <!-- Telefone e Plano -->
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
                             <div>
                                 <label style="font-size:11px; font-weight:600; opacity:0.85;">Telefone de Contato:</label>
@@ -3923,19 +4329,56 @@ Já foram levados os equipamentos?: ${tkState.equipamentos || '...'}`;
 
                         <!-- Ponto de Acesso e Horário -->
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-                            <div>
-                                <label style="font-size:11px; font-weight:600; opacity:0.85;">Ponto de Acesso / Roteador:</label>
-                                <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
-                                    <span class="ticket-chip" onclick="setFieldVal('tkPonto', 'ONU principal')">ONU Principal</span>
-                                    <span class="ticket-chip" onclick="setFieldVal('tkPonto', 'Ponto adicional')">Ponto Adicional</span>
-                                    <span class="ticket-chip" onclick="setFieldVal('tkPonto', 'Roteador próprio')">Roteador Próprio</span>
-                                </div>
-                                <input type="text" id="tkPonto" class="var-modal-input" value="${escapeHtml(tkState.ponto || 'ONU principal')}">
-                            </div>
+                            ${renderPontoField(tkState.ponto)}
                             ${renderTimeField(tkState.time)}
                         </div>
 
-                        <!-- Valor da Visita -->
+                        <div>
+                            ${renderCostField(tkState.cost || 'verificar no local')}
+                        </div>
+                    `;
+
+                    foot.innerHTML = `
+                        <button class="var-modal-btn var-modal-btn-cancel" onclick="this.closest('.var-modal-overlay').remove()">Cancelar</button>
+                        <button class="var-modal-btn var-modal-btn-confirm" id="btnCopyTicket" style="background:#007aff;">
+                            📋 Copiar Chamado Formatado
+                        </button>
+                    `;
+
+                } else if (tpl === 'sem_acesso') {
+                    // SEM ACESSO / LOS
+                    body.innerHTML = `
+                        <div>
+                            <label style="font-size:11px; font-weight:600; opacity:0.85;">Título / Assunto:</label>
+                            <input type="text" id="tkTitleSemAcesso" class="var-modal-input" style="margin-top:3px;" value="${escapeHtml(tkState.titulo_sem_acesso || 'Sem acesso')}">
+                        </div>
+
+                        <div>
+                            <label style="font-size:11px; font-weight:600; opacity:0.85;">Descrição do Problema (inclui PON piscando / roteador / onu não liga):</label>
+                            <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
+                                <span class="ticket-chip" onclick="setFieldVal('tkProblemaSemAcesso', 'LOS, reiniciou os equipamentos mas sem sucesso.')">LOS Reiniciou s/ Sucesso</span>
+                                <span class="ticket-chip" onclick="setFieldVal('tkProblemaSemAcesso', 'PON piscando')">PON piscando</span>
+                                <span class="ticket-chip" onclick="setFieldVal('tkProblemaSemAcesso', 'roteador não liga')">roteador não liga</span>
+                                <span class="ticket-chip" onclick="setFieldVal('tkProblemaSemAcesso', 'onu não liga')">onu não liga</span>
+                                <span class="ticket-chip" onclick="setFieldVal('tkProblemaSemAcesso', 'LOS piscando vermelho, cliente reiniciou os equipamentos mas sem sucesso.')">LOS Piscando Vermelho</span>
+                                <span class="ticket-chip" onclick="setFieldVal('tkProblemaSemAcesso', 'Cabo óptico rompido / danificado no local.')">Fibra Rompida</span>
+                            </div>
+                            <textarea id="tkProblemaSemAcesso" class="var-modal-input" style="height:70px; resize:vertical;">${escapeHtml(tkState.problema_sem_acesso)}</textarea>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+                            <div>
+                                <label style="font-size:11px; font-weight:600; opacity:0.85;">Telefone de Contato:</label>
+                                <input type="text" id="tkPhone" class="var-modal-input" style="margin-top:3px;" placeholder="(XX) XXXXX-XXXX" value="${escapeHtml(tkState.phone)}">
+                            </div>
+                            ${renderPlanField(tkState.plan)}
+                        </div>
+
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+                            ${renderPontoField(tkState.ponto)}
+                            ${renderTimeField(tkState.time)}
+                        </div>
+
                         <div>
                             ${renderCostField(tkState.cost || 'verificar no local')}
                         </div>
@@ -3949,31 +4392,28 @@ Já foram levados os equipamentos?: ${tkState.equipamentos || '...'}`;
                     `;
 
                 } else if (tpl === 'passagem_cabo') {
-                    // TEMPLATE 4: PASSAGEM DE CABO DE REDE (Conforme Imagem 2)
+                    // PASSAGEM DE CABO DE REDE
                     body.innerHTML = `
                         <div style="background:rgba(88,86,214,0.08); border:1px solid rgba(88,86,214,0.25); border-radius:8px; padding:10px 14px; font-size:12px; line-height:1.4;">
-                            <strong>🔌 Passagem de Cabo de Rede:</strong> Lembretes operacionais — Só é feito dentro do mesmo lote (até 50 metros). Para painel solar, solicitar vídeo do trajeto.
+                            <strong>🔌 Passagem de Cabo de Rede:</strong> Só é feito dentro do mesmo lote (até 50 metros). Para painel solar, solicitar vídeo do trajeto.
                         </div>
 
-                        <!-- Assunto -->
                         <div>
                             <label style="font-size:11px; font-weight:600; opacity:0.85;">Assunto:</label>
                             <input type="text" id="tkAssuntoCabo" class="var-modal-input" style="margin-top:3px;" value="${escapeHtml(tkState.assunto_cabo || 'Passagem de cabo de rede')}">
                         </div>
 
-                        <!-- Onde é feito -->
                         <div>
                             <label style="font-size:11px; font-weight:600; opacity:0.85;">Onde é feito o serviço?:</label>
                             <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
                                 <span class="ticket-chip" onclick="setFieldVal('tkOndeCabo', 'Passar para outros cômodos (mesma casa)')">Outro Cômodo</span>
-                                <span class="ticket-chip" onclick="setFieldVal('tkOndeCabo', 'Passar pra outra casa, galpão ou garagem (mesmo lote)')">Outra Casa/Galpão (Mesmo lote)</span>
+                                <span class="ticket-chip" onclick="setFieldVal('tkOndeCabo', 'Passar pra outra casa, galpão ou garagem (mesmo lote)')">Outra Casa/Galpão</span>
                                 <span class="ticket-chip" onclick="setFieldVal('tkOndeCabo', 'Painel solar (vídeo anexado/recebido)')">Painel Solar</span>
                                 <span class="ticket-chip" onclick="setFieldVal('tkOndeCabo', 'Ponto fixo PC / Smart TV / Console')">Ponto PC / TV</span>
                             </div>
                             <input type="text" id="tkOndeCabo" class="var-modal-input" value="${escapeHtml(tkState.onde_cabo || 'Passar para outros cômodos (mesma casa)')}">
                         </div>
 
-                        <!-- Telefone e Plano -->
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
                             <div>
                                 <label style="font-size:11px; font-weight:600; opacity:0.85;">Telefone de Contato:</label>
@@ -3982,9 +4422,12 @@ Já foram levados os equipamentos?: ${tkState.equipamentos || '...'}`;
                             ${renderPlanField(tkState.plan)}
                         </div>
 
-                        <!-- Horário e Cobrança -->
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+                            ${renderPontoField(tkState.ponto)}
                             ${renderTimeField(tkState.time)}
+                        </div>
+
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
                             <div>
                                 <label style="font-size:11px; font-weight:600; opacity:0.85;">Cobrança / Valores:</label>
                                 <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
@@ -3994,12 +4437,10 @@ Já foram levados os equipamentos?: ${tkState.equipamentos || '...'}`;
                                 </div>
                                 <input type="text" id="tkCost" class="var-modal-input" value="${escapeHtml(tkState.cost || 'Cobrança apenas de materiais')}">
                             </div>
-                        </div>
-
-                        <!-- Observações -->
-                        <div>
-                            <label style="font-size:11px; font-weight:600; opacity:0.85;">Observações e Metragem:</label>
-                            <input type="text" id="tkObsCabo" class="var-modal-input" style="margin-top:3px;" placeholder="ex: Dentro do mesmo lote (até 50m)." value="${escapeHtml(tkState.obs_cabo)}">
+                            <div>
+                                <label style="font-size:11px; font-weight:600; opacity:0.85;">Observações e Metragem:</label>
+                                <input type="text" id="tkObsCabo" class="var-modal-input" style="margin-top:23px;" placeholder="ex: Dentro do mesmo lote (até 50m)." value="${escapeHtml(tkState.obs_cabo)}">
+                            </div>
                         </div>
                     `;
 
@@ -4011,13 +4452,12 @@ Já foram levados os equipamentos?: ${tkState.equipamentos || '...'}`;
                     `;
 
                 } else if (tpl === 'evento') {
-                    // TEMPLATE 5: INTERNET PARA EVENTO (Conforme Imagem 2)
+                    // INTERNET PARA EVENTO
                     body.innerHTML = `
                         <div style="background:rgba(255,45,85,0.08); border:1px solid rgba(255,45,85,0.25); border-radius:8px; padding:10px 14px; font-size:12px; line-height:1.4;">
                             <strong>🎉 Internet para Evento:</strong> Valor padrão R$ 500,00 (ciente). Atendimento no Integrator sob nome "Cliente consumidor", tipo "outros", sem necessidade de iclass.
                         </div>
 
-                        <!-- Endereço e Loc -->
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
                             <div>
                                 <label style="font-size:11px; font-weight:600; opacity:0.85;">Endereço do Evento:</label>
@@ -4029,7 +4469,6 @@ Já foram levados os equipamentos?: ${tkState.equipamentos || '...'}`;
                             </div>
                         </div>
 
-                        <!-- Data/Hora e Tipo de Rede -->
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
                             <div>
                                 <label style="font-size:11px; font-weight:600; opacity:0.85;">Data e Hora do Evento:</label>
@@ -4046,7 +4485,6 @@ Já foram levados os equipamentos?: ${tkState.equipamentos || '...'}`;
                             </div>
                         </div>
 
-                        <!-- Wi-Fi/Senha e Qtd Pessoas -->
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
                             <div>
                                 <label style="font-size:11px; font-weight:600; opacity:0.85;">Nome do Wi-Fi e Senha:</label>
@@ -4058,7 +4496,6 @@ Já foram levados os equipamentos?: ${tkState.equipamentos || '...'}`;
                             </div>
                         </div>
 
-                        <!-- Contato e Valor -->
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
                             <div>
                                 <label style="font-size:11px; font-weight:600; opacity:0.85;">Contato do Responsável:</label>
@@ -4069,11 +4506,13 @@ Já foram levados os equipamentos?: ${tkState.equipamentos || '...'}`;
                                 <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
                                     <span class="ticket-chip" onclick="setFieldVal('tkValorEvento', '500$ (ciente)')">500$ (ciente)</span>
                                     <span class="ticket-chip" onclick="setFieldVal('tkValorEvento', 'R$ 500,00')">R$ 500,00</span>
-                                    <span class="ticket-chip" onclick="setFieldVal('tkValorEvento', 'A combinar')">A combinar</span>
                                 </div>
                                 <input type="text" id="tkValorEvento" class="var-modal-input" value="${escapeHtml(tkState.valor_evento || '500$ (ciente)')}">
                             </div>
                         </div>
+
+                        <!-- Ponto de Acesso -->
+                        ${renderPontoField(tkState.ponto)}
                     `;
 
                     foot.innerHTML = `
@@ -4084,9 +4523,8 @@ Já foram levados os equipamentos?: ${tkState.equipamentos || '...'}`;
                     `;
 
                 } else {
-                    // TEMPLATE 6: GERAL / OUTRO
+                    // GERAL / OUTRO
                     body.innerHTML = `
-                        <!-- Título / Assunto -->
                         <div>
                             <div style="display:flex; justify-content:space-between; align-items:center;">
                                 <label style="font-size:11px; font-weight:600; opacity:0.85;">Título / Assunto:</label>
@@ -4101,20 +4539,19 @@ Já foram levados os equipamentos?: ${tkState.equipamentos || '...'}`;
                             <input type="text" id="tkTitleGeral" class="var-modal-input" style="margin-top:4px;" placeholder="ex: Sem acesso / Lentidão / Passagem de cabo" value="${escapeHtml(tkState.titulo_geral || 'Chamado técnico')}">
                         </div>
 
-                        <!-- Relato / Descrição do Problema com Templates Prontos -->
                         <div>
                             <label style="font-size:11px; font-weight:600; opacity:0.85;">Relato / Descrição do Problema:</label>
                             <div class="ticket-chip-row" style="margin-bottom:6px;">
                                 <span class="ticket-chip" onclick="setFieldVal('tkProblemaGeral', 'LOS piscando vermelho, cliente reiniciou os equipamentos mas sem sucesso.')">🚨 Sem Acesso / LOS</span>
+                                <span class="ticket-chip" onclick="setFieldVal('tkProblemaGeral', 'PON piscando')">PON piscando</span>
+                                <span class="ticket-chip" onclick="setFieldVal('tkProblemaGeral', 'roteador não liga')">roteador não liga</span>
+                                <span class="ticket-chip" onclick="setFieldVal('tkProblemaGeral', 'onu não liga')">onu não liga</span>
                                 <span class="ticket-chip" onclick="setFieldVal('tkProblemaGeral', 'Lentidão geral relatada pelo cliente. Extrato e sinal de fibra normais, reiniciado os equipamentos sem melhora.')">🐢 Lentidão Geral</span>
-                                <span class="ticket-chip" onclick="setFieldVal('tkProblemaGeral', 'Lentidão e travamentos ao carregar vídeos/streaming (YouTube/Netflix). Teste de velocidade via cabo abaixo do plano contratado.')">🎬 Lentidão Streaming/Vídeos</span>
-                                <span class="ticket-chip" onclick="setFieldVal('tkProblemaGeral', 'Conexão oscilando com quedas frequentes ao longo do dia. Feitos testes de cabo e roteador.')">📉 Quedas / Instabilidade</span>
-                                <span class="ticket-chip" onclick="setFieldVal('tkProblemaGeral', 'Mudança de cômodo/ponto. Passagem de cabo de rede interno (mesmo lote).')">🔌 Cabo de Rede</span>
+                                <span class="ticket-chip" onclick="setFieldVal('tkProblemaGeral', 'Conexão oscilando com quedas frequentes ao longo do dia.')">📉 Quedas</span>
                             </div>
-                            <textarea id="tkProblemaGeral" class="var-modal-input" style="height:75px; resize:vertical;" placeholder="Descreva os detalhes do problema ou clique em um template acima...">${escapeHtml(tkState.problema_geral || 'LOS piscando vermelho, cliente reiniciou os equipamentos mas sem sucesso.')}</textarea>
+                            <textarea id="tkProblemaGeral" class="var-modal-input" style="height:75px; resize:vertical;">${escapeHtml(tkState.problema_geral || 'LOS piscando vermelho, cliente reiniciou os equipamentos mas sem sucesso.')}</textarea>
                         </div>
 
-                        <!-- Telefone e Plano -->
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
                             <div>
                                 <label style="font-size:11px; font-weight:600; opacity:0.85;">Telefone de Contato:</label>
@@ -4123,21 +4560,11 @@ Já foram levados os equipamentos?: ${tkState.equipamentos || '...'}`;
                             ${renderPlanField(tkState.plan)}
                         </div>
 
-                        <!-- Ponto de Acesso e Horário -->
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-                            <div>
-                                <label style="font-size:11px; font-weight:600; opacity:0.85;">Ponto de Acesso / Roteador:</label>
-                                <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
-                                    <span class="ticket-chip" onclick="setFieldVal('tkPonto', 'ONU principal')">ONU Principal</span>
-                                    <span class="ticket-chip" onclick="setFieldVal('tkPonto', 'Ponto adicional')">Ponto Adicional</span>
-                                    <span class="ticket-chip" onclick="setFieldVal('tkPonto', 'Roteador próprio')">Roteador Próprio</span>
-                                </div>
-                                <input type="text" id="tkPonto" class="var-modal-input" value="${escapeHtml(tkState.ponto || 'ONU principal')}">
-                            </div>
+                            ${renderPontoField(tkState.ponto)}
                             ${renderTimeField(tkState.time)}
                         </div>
 
-                        <!-- Valor da Visita -->
                         <div>
                             ${renderCostField(tkState.cost || 'verificar no local')}
                         </div>
@@ -4151,13 +4578,11 @@ Já foram levados os equipamentos?: ${tkState.equipamentos || '...'}`;
                     `;
                 }
 
-                // Aplica máscara dinâmica de telefone
                 const phoneInput = overlay.querySelector('#tkPhone');
                 if (phoneInput) {
                     phoneInput.oninput = () => { phoneInput.value = maskPhone(phoneInput.value); };
                 }
 
-                // Configura ação do botão principal de copiar chamado formatado
                 const btnCopy = overlay.querySelector('#btnCopyTicket');
                 if (btnCopy) {
                     btnCopy.onclick = () => {
@@ -4170,24 +4595,21 @@ Já foram levados os equipamentos?: ${tkState.equipamentos || '...'}`;
 - Ponto de referência: ${tkState.referencia || 'Não informado'}${tkState.cor_tipo ? ' (Casa: ' + tkState.cor_tipo + ')' : ''}
 - Localização: ${tkState.localizacao || 'Mesmo endereço'}
 - Telefone: ${tkState.phone || 'Não informado'}
+- Ponto de acesso: ${tkState.ponto || 'Ponto principal'}
 - Melhor horário: ${tkState.time || 'Qualquer horário comercial'}
 - Equipamentos no local: ${tkState.equipamentos || 'Sim, já estão no local'}
 - Valor visita: ${tkState.cost || 'cortesia'}`;
 
                         } else if (tkState.template === 'lentidao') {
-                            text = `- Contato: ${tkState.phone || 'Não informado'}
-- Relato: ${tkState.relato_lentidao || 'Lentidão geral'}
-- Plano: ${tkState.plan || '700 MB'}
-- Sinal: ${tkState.sinal || 'Normal (-19 a -22 dBm)'}
-- Ping: ${tkState.ping || 'média 6 perda 0%'}
-- Extrato: ${tkState.extrato || 'ok'}
-- Ajustes: ${tkState.ajustes || 'setado canal auto'}
-- Reiniciado: ${tkState.reiniciado || 'Sim'}
-- MTU/MRU: ${tkState.mtu || '1492 MRU'}
-- WAN: ${tkState.wan || '1000Mbps porta fixa ok'}
-- DNS: ${tkState.dns || 'OK'}
+                            text = `LENTIDÃO
+
+- Título: Lentidão
+- Descrição problema: ${tkState.problema_lentidao || 'Lentidão relatada pelo cliente'}
 - Melhor horário: ${tkState.time || 'Qualquer horário comercial'}
-- Resumo: ${tkState.resumo_lentidao || 'Testes realizados sem melhora. Encaminhado para verificação.'}`;
+- Telefone: ${tkState.phone || 'Não informado'}
+- Plano: ${tkState.plan || '700 MB'}
+- Ponto de acesso: ${tkState.ponto || 'Ponto principal'}
+- Valor: ${tkState.cost || 'verificar no local'}`;
 
                         } else if (tkState.template === 'sem_acesso') {
                             text = `SEM ACESSO
@@ -4197,7 +4619,7 @@ Já foram levados os equipamentos?: ${tkState.equipamentos || '...'}`;
 - Melhor horário: ${tkState.time || 'Qualquer horário comercial'}
 - Telefone: ${tkState.phone || 'Não informado'}
 - Plano: ${tkState.plan || '700 MB'}
-- Ponto de acesso: ${tkState.ponto || 'ONU principal'}
+- Ponto de acesso: ${tkState.ponto || 'Ponto principal'}
 - Valor: ${tkState.cost || 'verificar no local'}`;
 
                         } else if (tkState.template === 'passagem_cabo') {
@@ -4206,6 +4628,7 @@ Já foram levados os equipamentos?: ${tkState.equipamentos || '...'}`;
 - Onde é feito: ${tkState.onde_cabo || 'Passar para outros cômodos'}
 - Telefone: ${tkState.phone || 'Não informado'}
 - Plano: ${tkState.plan || '700 MB'}
+- Ponto de acesso: ${tkState.ponto || 'Ponto principal'}
 - Melhor horário: ${tkState.time || 'Qualquer horário comercial'}
 - Cobrança / Valor: ${tkState.cost || 'Cobrança apenas de materiais'}
 - Observações: ${tkState.obs_cabo || 'Dentro do mesmo lote (até 50m).'}`;
@@ -4219,6 +4642,7 @@ Endereço: ${tkState.endereco_evento || 'Não informado'}
 - Nome do wifi e senha: ${tkState.wifi_senha_evento || 'A definir'}
 - Quantidade de pessoas: ${tkState.qtd_pessoas_evento || 'Não especificado'}
 - Contato: ${tkState.phone || 'Não informado'}
+- Ponto de acesso: ${tkState.ponto || 'Ponto principal'}
 Valor: ${tkState.valor_evento || '500$ (ciente)'}
 -----------------------------------
 * Abrir atendimento nome do cliente é: Cliente consumidor
@@ -4231,7 +4655,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 - Melhor horário: ${tkState.time || 'Qualquer horário comercial'}
 - Telefone: ${tkState.phone || 'Não informado'}
 - Plano: ${tkState.plan || '700 MB'}
-- Ponto de acesso: ${tkState.ponto || 'ONU principal'}
+- Ponto de acesso: ${tkState.ponto || 'Ponto principal'}
 - Valor: ${tkState.cost || 'verificar no local'}`;
                         }
 
@@ -4250,6 +4674,46 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                     const tpl = btn.getAttribute('data-tpl');
                     renderTemplateFields(tpl);
                 }
+            };
+
+            // Eventos do painel lateral de Teste
+            overlay.querySelector('#btnToggleSideTest').onclick = () => window.toggleSideTestView();
+            overlay.querySelector('#btnCloseSideTest').onclick = () => window.toggleSideTestView(false);
+
+            overlay.querySelector('#btnCopySideTest').onclick = () => {
+                const getVal = id => {
+                    const el = overlay.querySelector('#' + id);
+                    return el ? el.value.trim() : '';
+                };
+
+                const contato = getVal('sideTstContato') || tkState.phone || 'Não informado';
+                const relato = getVal('sideTstRelato') || 'lentidão/youtube/whatsapp/netflix';
+                const sinal = getVal('sideTstSinal') || '-19 dBm';
+                const pingMedia = (getVal('sideTstPingMedia') || '6').replace(/ms$/i, '').trim();
+                const pingPerda = (getVal('sideTstPingPerda') || '0').replace(/%$/, '').trim();
+                const extrato = getVal('sideTstExtrato') || 'ok';
+                const ajustes = getVal('sideTstAjustes') || 'setado canal auto';
+                const reiniciado = getVal('sideTstReiniciado') || 'Sim';
+                const mtu = getVal('sideTstMtu') || '1492 MRU';
+                const wan = getVal('sideTstWan') || '1000Mbps porta fixa ok';
+                const dns = getVal('sideTstDns') || 'Corrigido';
+                const resumo = getVal('sideTstResumo');
+
+                const text = `- Contato: ${contato}
+- Relato: ${relato}
+- Sinal: ${sinal}
+- Ping: média ${pingMedia} perda ${pingPerda}%
+- Extrato: ${extrato}
+- Ajustes: ${ajustes}
+- Reiniciado: ${reiniciado}
+- MTU/MRU: ${mtu}
+- WAN: ${wan}
+- DNS: ${dns}
+- Resumo: ${resumo}`;
+
+                copyTextToClipboard(text).then(ok => {
+                    alert(ok ? 'Teste de atendimento copiado com sucesso!' : 'Falha ao copiar.');
+                });
             };
 
             // Renderiza inicial (Sem Acesso)
@@ -4777,6 +5241,18 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                 }
             } catch (e) {}
         }
+        
+        // Suporte a showPicker nos campos de datalist para abrir ao clicar na seta ou no campo
+        document.addEventListener('click', (e) => {
+            if (e.target && e.target.matches && e.target.matches('input[list]')) {
+                try {
+                    if (typeof e.target.showPicker === 'function') {
+                        e.target.showPicker();
+                    }
+                } catch (err) {}
+            }
+        });
+
         window.addEventListener('click', initAudioUnlock);
         window.addEventListener('keydown', initAudioUnlock);
         window.addEventListener('touchstart', initAudioUnlock);
