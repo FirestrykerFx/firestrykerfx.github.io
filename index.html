@@ -1405,9 +1405,7 @@
             <input type="search" class="search-input" id="searchInput" placeholder="🔍 Buscar ou tag:whats (Ctrl+K)" oninput="filterScripts(this.value)">
             <div class="storage-indicator" id="storageIndicator" onclick="openStorageInfoModal()" title="Uso do armazenamento local (localStorage)">💾 <span id="storageUsageText">0 KB</span></div>
             <button class="var-config-btn" onclick="openVarManagerModal()" title="Gerenciar valores padrão de variáveis">⚙️ Variáveis</button>
-            <button class="io-btn" id="restoreBtn" style="display: none;" onclick="restoreDefaults()" title="Voltar aos scripts padrão deste arquivo">♻️ Restaurar padrão</button>
-            <button class="io-btn" onclick="exportScripts()" title="Exportar scripts para arquivo JSON">📤 Exportar</button>
-            <button class="io-btn" onclick="document.getElementById('importFile').click()" title="Importar scripts de arquivo JSON">📥 Importar</button>
+
             <input type="file" id="importFile" style="display: none" accept=".json" onchange="importScripts(event)">
             <button class="io-btn" onclick="openUserscriptManager()" title="Gerenciar userscripts no formato Tampermonkey">🧩 Userscripts</button>
             <input type="file" id="userscriptFile" style="display: none" accept=".js,.user.js,.txt" multiple="" onchange="importUserscripts(event)">
@@ -3504,7 +3502,7 @@
         function toggleEditMode() {
             isEditing = !isEditing;
             document.body.classList.toggle('editing', isEditing);
-            document.getElementById('restoreBtn').style.display = isEditing ? '' : 'none';
+            const rBtn = document.getElementById('restoreBtn'); if (rBtn) rBtn.style.display = isEditing ? '' : 'none';
             const btn = document.getElementById('editToggleBtn');
 
             if (isEditing) {
@@ -3710,6 +3708,46 @@
             }
         }
 
+        function clearAllScripts() {
+            if (!confirm('⚠️ ATENÇÃO: Deseja realmente excluir TODOS os cards e abas, deixando a central totalmente zerada?\n\n(Recomendamos exportar um backup antes caso queira guardar seus scripts atuais).')) {
+                return;
+            }
+            const emptyData = {
+                tab_principal: {
+                    name: "📝 Meus Scripts",
+                    groups: [
+                        {
+                            title: "Geral",
+                            items: [
+                                { text: "", tags: [], alarm: "", favorite: false }
+                            ]
+                        }
+                    ]
+                }
+            };
+            setAppData(emptyData);
+            currentActiveTabId = 'tab_principal';
+            loadAppData();
+            updateStorageIndicator();
+            alert('Todos os cards foram excluídos. A central está zerada!');
+        }
+
+        function clearFinishedAlarms() {
+            const clients = getClientsData();
+            const pendingOnly = clients.filter(c => c.status !== 'done');
+            const removedCount = clients.length - pendingOnly.length;
+            if (removedCount === 0) {
+                alert('Não há alarmes concluídos no histórico para remover.');
+                return;
+            }
+            if (confirm(`Remover ${removedCount} alarme(s) já concluído(s) do histórico?`)) {
+                setClientsData(pendingOnly);
+                renderClientTable();
+                updateStorageIndicator();
+                alert(`${removedCount} alarme(s) concluído(s) removido(s) com sucesso!`);
+            }
+        }
+
         function openStorageInfoModal() {
             const { kb, pct, breakdown } = getStorageUsage();
             const overlay = document.createElement('div');
@@ -3719,36 +3757,58 @@
             const toKb = b => (b / 1024).toFixed(1) + ' KB';
 
             overlay.innerHTML = `
-                <div class="var-modal-box" style="width: 480px;">
-                    <div class="var-modal-title">💾 Segurança e Uso do Armazenamento</div>
-                    <div class="var-modal-desc">
-                        Seus dados são salvos no <strong>localStorage</strong> deste navegador.<br>
-                        Capacidade padrão: <strong>~5.000 KB (5 MB)</strong>.
+                <div class="var-modal-box vm-box" style="width: min(580px, 94vw); max-height: 90vh; overflow-y: auto;">
+                    <div class="vm-head">
+                        <div class="vm-title">💾 Segurança e Uso do Armazenamento</div>
+                        <button class="vm-x" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
                     </div>
-                    <div style="background: var(--tab-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; font-size: 13px; line-height: 1.6;">
-                        <div style="display:flex; justify-content:space-between; margin-bottom: 8px; font-weight: bold;">
-                            <span>Espaço ocupado:</span>
-                            <span style="color: ${pct >= 85 ? '#ef4444' : (pct >= 70 ? '#f59e0b' : 'var(--title-color)')};">${kb} KB (${pct}%)</span>
+                    <div class="vm-body" style="gap: 16px; padding: 18px 20px;">
+                        <div style="background: var(--tab-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 14px; font-size: 13px;">
+                            <div style="display:flex; justify-content:space-between; margin-bottom: 8px; font-weight: bold; font-size: 14px;">
+                                <span>Armazenamento local (localStorage):</span>
+                                <span style="color: ${pct >= 85 ? '#ef4444' : (pct >= 70 ? '#f59e0b' : 'var(--title-color)')};">${kb} KB de ~5 MB (${pct}%)</span>
+                            </div>
+                            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 11px; opacity: 0.9; margin-top: 8px;">
+                                <div>• Scripts e Abas: <strong>${toKb(breakdown.scripts)}</strong></div>
+                                <div>• Clientes e Alarmes: <strong>${toKb(breakdown.clients)}</strong></div>
+                                <div>• Variáveis salvas: <strong>${toKb(breakdown.vars)}</strong></div>
+                                <div>• Userscripts: <strong>${toKb(breakdown.userscripts)}</strong></div>
+                            </div>
                         </div>
-                        <div style="display:flex; justify-content:space-between; font-size: 11px; opacity: 0.85;">
-                            <span>• Scripts e Abas:</span><span>${toKb(breakdown.scripts)}</span>
+
+                        <div>
+                            <div style="font-weight: 700; color: var(--title-color); font-size: 13px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                                📦 Backup & Importação
+                            </div>
+                            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                <button class="io-btn" onclick="exportScripts();" title="Exportar scripts atuais para arquivo JSON">📤 Exportar Backup (JSON)</button>
+                                <button class="io-btn" onclick="document.getElementById('importFile').click(); this.closest('.var-modal-overlay').remove();" title="Importar scripts de um arquivo JSON">📥 Importar Scripts (JSON)</button>
+                                <button class="save-html-btn" onclick="saveHtmlFile();" title="Salvar arquivo HTML autônomo com as alterações">💾 Salvar HTML</button>
+                            </div>
                         </div>
-                        <div style="display:flex; justify-content:space-between; font-size: 11px; opacity: 0.85;">
-                            <span>• Clientes e Alarmes:</span><span>${toKb(breakdown.clients)}</span>
-                        </div>
-                        <div style="display:flex; justify-content:space-between; font-size: 11px; opacity: 0.85;">
-                            <span>• Variáveis salvas:</span><span>${toKb(breakdown.vars)}</span>
-                        </div>
-                        <div style="display:flex; justify-content:space-between; font-size: 11px; opacity: 0.85;">
-                            <span>• Userscripts instalados:</span><span>${toKb(breakdown.userscripts)}</span>
+
+                        <div style="border-top: 1px solid var(--border-color); padding-top: 14px;">
+                            <div style="font-weight: 700; color: #f59e0b; font-size: 13px; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                                ⚙️ Redefinição e Gerenciamento de Scripts
+                            </div>
+                            <p style="margin: 0 0 10px; font-size: 11px; opacity: 0.8; line-height: 1.5;">
+                                Você pode restaurar todos os scripts padrão inclusos ou apagar todos os cards para começar com a central totalmente zerada:
+                            </p>
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <button class="var-modal-btn" style="background-color: var(--tab-bg); border: 1px solid var(--border-color); color: var(--text-color); font-weight: 600;" onclick="restoreDefaults(); this.closest('.var-modal-overlay').remove();" title="Recarrega todos os scripts padrão inclusos">
+                                    ♻️ Restaurar Scripts Padrão
+                                </button>
+                                <button class="var-modal-btn" style="background-color: #d9363e; color: #fff; font-weight: 600;" onclick="clearAllScripts(); this.closest('.var-modal-overlay').remove();" title="Apaga todos os cards e deixa a central totalmente vazia">
+                                    🗑️ Zerar Tudo (Limpar Cards)
+                                </button>
+                                <button class="comp-btn comp-btn-secondary" style="font-size: 11px;" onclick="clearFinishedAlarms();" title="Limpar histórico de alarmes concluídos">
+                                    🧹 Limpar Alarmes Concluídos
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div style="font-size: 11px; opacity: 0.8; line-height: 1.4;">
-                        💡 <strong>Dica de Segurança:</strong> Exporte regularmente um backup dos scripts em JSON ou utilize a opção <em>Salvar HTML</em> para ter sempre uma cópia física e independente dos seus dados.
-                    </div>
-                    <div class="var-modal-btns" style="justify-content: space-between; margin-top: 10px;">
-                        <button class="io-btn" onclick="exportScripts(); this.closest('.var-modal-overlay').remove();">📤 Exportar Backup</button>
-                        <button class="var-modal-btn var-modal-btn-confirm" onclick="this.closest('.var-modal-overlay').remove();">Entendido</button>
+                    <div class="vm-foot" style="padding: 12px 20px;">
+                        <button class="var-modal-btn var-modal-btn-confirm" onclick="this.closest('.var-modal-overlay').remove();">Fechar</button>
                     </div>
                 </div>
             `;
