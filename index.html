@@ -305,6 +305,11 @@
             display: none;
         }
 
+        
+        body.modal-open {
+            overflow: hidden !important;
+        }
+
         /* Sistema de Tags e Alarmes nos Cards */
         .card-meta-bar {
             display: flex;
@@ -696,6 +701,28 @@
 
         .tab.dragging {
             opacity: 0.4;
+        }
+
+        
+        /* Botões de acessibilidade para mover abas sem arrastar */
+        .tab-actions-btn.tab-move-btn {
+            font-size: 10px;
+            padding: 2px 4px;
+            opacity: 0.75;
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.15s, opacity 0.15s;
+        }
+        .tab-actions-btn.tab-move-btn:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.15);
+        }
+        .tab:focus-visible {
+            outline: 2px solid var(--accent-color);
+            outline-offset: 2px;
         }
 
         .tab-actions-btn {
@@ -2310,6 +2337,52 @@
             background: #3b82f6;
             animation: pulseSync 0.9s infinite alternate;
         }
+        
+        .auth-status-dot.pending {
+            background: #f59e0b;
+            box-shadow: 0 0 4px rgba(245, 158, 11, 0.8);
+        }
+        .auth-status-dot.error {
+            background: #ef4444;
+            box-shadow: 0 0 4px rgba(239, 68, 68, 0.8);
+        }
+        .cloud-status-pill {
+            font-size: 12px;
+            line-height: 1.5;
+            padding: 10px 14px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+            transition: all 0.2s ease;
+        }
+        .cloud-status-pill.online {
+            background: rgba(34, 197, 94, 0.08);
+            border: 1px solid rgba(34, 197, 94, 0.25);
+            color: var(--text-color);
+        }
+        .cloud-status-pill.syncing {
+            background: rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            color: var(--text-color);
+        }
+        .cloud-status-pill.pending {
+            background: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.25);
+            color: var(--text-color);
+        }
+        .cloud-status-pill.offline {
+            background: rgba(156, 163, 175, 0.08);
+            border: 1px solid rgba(156, 163, 175, 0.25);
+            color: var(--text-color);
+        }
+        .cloud-status-pill.error {
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            color: var(--text-color);
+        }
+
         .auth-status-dot.offline {
             background: #9ca3af;
             box-shadow: none;
@@ -2379,7 +2452,7 @@
         </h1>
                 <div class="header-actions">
             <!-- 1. Campo de Busca -->
-            <input type="search" class="search-input" id="searchInput" placeholder="🔍 Buscar ou tag:whats (Ctrl+K)" oninput="filterScripts(this.value)">
+            <input type="search" class="search-input" id="searchInput" placeholder="🔍 Buscar ou tag:whats (Ctrl+K)" aria-label="Pesquisar scripts ou filtrar por tags" oninput="filterScripts(this.value)">
 
             <input type="file" id="importFile" style="display: none" accept=".json" onchange="importScripts(event)">
             <input type="file" id="userscriptFile" style="display: none" accept=".js,.user.js,.txt" multiple="" onchange="importUserscripts(event)">
@@ -2511,13 +2584,13 @@
 
     <!-- Abas expandidas para ocupar toda a largura -->
     <div style="background-color: var(--sidebar-bg); border-bottom: 1px solid var(--border-color); width: 100%;">
-        <div class="tabs" id="tabsBar"></div>
+        <div class="tabs" id="tabsBar" role="tablist" aria-label="Abas de scripts"></div>
     </div>
 
     <div class="content-container" id="contentContainer"></div>
 
     <script>
-        const APP_VERSION = '2.5.2';
+        const APP_VERSION = '2.5.3';
         const UPDATE_MANIFEST_URL = 'https://firestrykerfx.github.io/version.json';
         const UPDATE_CHECK_INTERVAL = 6 * 60 * 60 * 1000;
                 /* ===== Notificações Toasts Flutuantes Modernas ===== */
@@ -3568,12 +3641,29 @@
                     </div>
                     <div class="vm-body" style="padding: 16px 20px; overflow-y: auto;">
                         
-                                                                                                                                                                                                                        <!-- Versão 2.5.2 -->
+                                                                                                                                                                                                                        <!-- Versão 2.5.3 -->
+                        <div class="changelog-version-card" style="border-color: #7c3aed;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>🛡️ Versão 2.5.3</span>
+                                    <span class="changelog-badge" style="background:#7c3aed; color:#fff;">Versão Atual</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">09/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>🔒 Segurança Reforçada do Firestore:</strong> Regras granulares que impedem usuários de alterarem seu próprio papel (<code>role</code>) ou situação (<code>status</code>). Apenas administradores pré-autorizados na lista mestra podem gerenciar privilégios ou aplicar cargos no perfil.</li>
+                                <li><strong>📦 Backup Unificado Completo & Versionado (JSON v2.5.3):</strong> Novo sistema de exportação com suporte a backup total da central (scripts, abas, ordem, clientes, alarmes, variáveis, userscripts e preferências visuais), com validação rigorosa na importação e compatibilidade retroativa com backups antigos só de scripts.</li>
+                                <li><strong>♿ Acessibilidade Plena (WAI-ARIA & Navegação por Teclado):</strong> Abas agora contam com semântica <code>role="tablist"</code>, <code>role="tab"</code>, <code>aria-selected</code> e <code>tabindex</code> navegáveis via Setas Esquerda/Direita, Home e End. Campo de busca com <code>aria-label</code> e modais com captura de foco (Trap Focus) e tecla <code>Escape</code>.</li>
+                                <li><strong>↔️ Reordenação Alternativa de Abas sem Arrastar:</strong> Novos botões de seta <code>◀</code> e <code>▶</code> no modo de edição para mover abas sem depender de arrastar com o mouse, garantindo acessibilidade a todos os atendentes.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versão 2.5.2 -->
                         <div class="changelog-version-card" style="border-color: #2563eb;">
                             <div class="changelog-version-header">
                                 <div class="changelog-version-title">
                                     <span>⚡ Versão 2.5.2</span>
-                                    <span class="changelog-badge" style="background:#2563eb; color:#fff;">Versão Atual</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
                                 </div>
                                 <span style="font-size:11px; opacity:0.75;">09/10/2026</span>
                             </div>
@@ -5424,18 +5514,26 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             tabsBar.innerHTML = '';
             contentContainer.innerHTML = '';
 
-            // 1. Inserir Aba Permanente de Clientes e Alarmes primeiro
+            // 1. Inserir Aba Permanente de Clientes e Alarmes primeiro com ARIA
             const clientsTabId = 'tab_clients_alarm';
+            const isClientsActive = clientsTabId === currentActiveTabId;
             const clientsTabEl = document.createElement('div');
-            clientsTabEl.className = `tab ${clientsTabId === currentActiveTabId ? 'active' : ''}`;
+            clientsTabEl.className = `tab ${isClientsActive ? 'active' : ''}`;
             clientsTabEl.setAttribute('data-tabid', clientsTabId);
+            clientsTabEl.setAttribute('role', 'tab');
+            clientsTabEl.setAttribute('aria-selected', isClientsActive ? 'true' : 'false');
+            clientsTabEl.setAttribute('aria-controls', clientsTabId);
+            clientsTabEl.setAttribute('tabindex', isClientsActive ? '0' : '-1');
             clientsTabEl.innerHTML = `<span class="tab-title">🔔 Clientes & Alarmes</span>`;
             clientsTabEl.onclick = () => switchTab(clientsTabId);
+            clientsTabEl.onkeydown = (e) => handleTabKeyNav(e, clientsTabId);
             tabsBar.appendChild(clientsTabEl);
 
             const clientsContentEl = document.createElement('div');
             clientsContentEl.id = clientsTabId;
-            clientsContentEl.className = `tab-content ${clientsTabId === currentActiveTabId ? 'active' : ''}`;
+            clientsContentEl.className = `tab-content ${isClientsActive ? 'active' : ''}`;
+            clientsContentEl.setAttribute('role', 'tabpanel');
+            clientsContentEl.setAttribute('aria-labelledby', 'tab-btn-' + clientsTabId);
             clientsContentEl.innerHTML = buildClientsTabHTML();
             contentContainer.appendChild(clientsContentEl);
             initClientsTabLogic(clientsContentEl);
@@ -5454,13 +5552,19 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                 currentActiveTabId = tabIds[0] || 'tab_leo';
             }
 
-            tabIds.forEach(tabId => {
+            tabIds.forEach((tabId, idx) => {
                 const tabInfo = data[tabId];
+                const isActive = tabId === currentActiveTabId;
 
                 const tabEl = document.createElement('div');
-                tabEl.className = `tab ${tabId === currentActiveTabId ? 'active' : ''}`;
+                tabEl.className = `tab ${isActive ? 'active' : ''}`;
                 tabEl.setAttribute('data-tabid', tabId);
-                
+                tabEl.id = 'tab-btn-' + tabId;
+                tabEl.setAttribute('role', 'tab');
+                tabEl.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                tabEl.setAttribute('aria-controls', tabId);
+                tabEl.setAttribute('tabindex', isActive ? '0' : '-1');
+
                 if (isEditing) {
                     tabEl.setAttribute('draggable', 'true');
                     tabEl.addEventListener('dragstart', (e) => {
@@ -5484,18 +5588,45 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                 tabEl.onclick = (e) => {
                     if(e.target.tagName !== 'BUTTON') switchTab(tabId);
                 };
+                tabEl.onkeydown = (e) => handleTabKeyNav(e, tabId);
 
                 const actionDisplay = isEditing ? 'inline-block' : 'none';
+
+                // Botão de mover para a esquerda (alternativa sem arrastar)
+                if (idx > 0) {
+                    const btnMoveLeft = document.createElement('button');
+                    btnMoveLeft.className = 'tab-actions-btn tab-move-btn';
+                    btnMoveLeft.style.display = actionDisplay;
+                    btnMoveLeft.title = 'Mover aba para a esquerda';
+                    btnMoveLeft.setAttribute('aria-label', `Mover aba ${tabInfo.name} para a esquerda`);
+                    btnMoveLeft.textContent = '◀';
+                    btnMoveLeft.addEventListener('click', (e) => { e.stopPropagation(); moveTab(tabId, -1); });
+                    tabEl.appendChild(btnMoveLeft);
+                }
 
                 const titleSpan = document.createElement('span');
                 titleSpan.className = 'tab-title';
                 titleSpan.textContent = tabInfo.name;
                 tabEl.appendChild(titleSpan);
+
+                // Botão de mover para a direita (alternativa sem arrastar)
+                if (idx < tabIds.length - 1) {
+                    const btnMoveRight = document.createElement('button');
+                    btnMoveRight.className = 'tab-actions-btn tab-move-btn';
+                    btnMoveRight.style.display = actionDisplay;
+                    btnMoveRight.title = 'Mover aba para a direita';
+                    btnMoveRight.setAttribute('aria-label', `Mover aba ${tabInfo.name} para a direita`);
+                    btnMoveRight.textContent = '▶';
+                    btnMoveRight.addEventListener('click', (e) => { e.stopPropagation(); moveTab(tabId, 1); });
+                    tabEl.appendChild(btnMoveRight);
+                }
+
                 [['✏️', 'Renomear', () => renameTab(tabId)], ['❌', 'Excluir', () => deleteTab(tabId)]].forEach(([icon, title, fn]) => {
                     const b = document.createElement('button');
                     b.className = 'tab-actions-btn';
                     b.style.display = actionDisplay;
                     b.title = title;
+                    b.setAttribute('aria-label', `${title} aba ${tabInfo.name}`);
                     b.textContent = icon;
                     b.addEventListener('click', (e) => { e.stopPropagation(); fn(); });
                     tabEl.appendChild(b);
@@ -5504,7 +5635,9 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 
                 const contentEl = document.createElement('div');
                 contentEl.id = tabId;
-                contentEl.className = `tab-content ${tabId === currentActiveTabId ? 'active' : ''}`;
+                contentEl.className = `tab-content ${isActive ? 'active' : ''}`;
+                contentEl.setAttribute('role', 'tabpanel');
+                contentEl.setAttribute('aria-labelledby', 'tab-btn-' + tabId);
                 
                 const label = document.createElement('div');
                 label.className = 'tab-label';
@@ -5676,9 +5809,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             });
         }
 
-        function escapeHtml(str) {
-            return (str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        }
+        // escapeHtml unificado globalmente
 
         function addNewClientAlarm() {
             const name = document.getElementById('clientNameInput').value.trim();
@@ -6043,8 +6174,16 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             
+            document.querySelectorAll('.tab').forEach(t => {
+                t.setAttribute('aria-selected', 'false');
+                t.setAttribute('tabindex', '-1');
+            });
             const activeTabEl = document.querySelector(`.tab[data-tabid="${CSS.escape(tabId)}"]`);
-            if(activeTabEl) activeTabEl.classList.add('active');
+            if(activeTabEl) {
+                activeTabEl.classList.add('active');
+                activeTabEl.setAttribute('aria-selected', 'true');
+                activeTabEl.setAttribute('tabindex', '0');
+            }
             
             const targetContent = document.getElementById(tabId);
             if(targetContent) targetContent.classList.add('active');
@@ -6312,10 +6451,6 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             const copyBadgeText = copyCount > 0 ? ` (${copyCount}x)` : '';
             copyBtn.innerHTML = `Copiar<span class="copy-count-badge">${copyBadgeText}</span>`;
             copyBtn.onclick = () => {
-                const currentCopies = (parseInt(newCard.dataset.copyCount) || 0) + 1;
-                newCard.dataset.copyCount = currentCopies;
-                const badge = copyBtn.querySelector('.copy-count-badge');
-                if (badge) badge.textContent = ` (${currentCopies}x)`;
                 copyCardText(copyBtn);
             };
 
@@ -6473,6 +6608,58 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             try { localStorage.setItem(SCALE_KEY, v); markLocalChange(); } catch (e) {}
             applyCardScale(v);
             if (typeof syncToCloudDebounced === 'function') syncToCloudDebounced();
+        }
+
+                /* Move aba para esquerda (-1) ou direita (+1) sem depender de arrastar */
+        function moveTab(tabId, direction) {
+            const data = getAppData();
+            const order = getSavedTabOrder(data);
+            const idx = order.indexOf(tabId);
+            if (idx < 0) return;
+            const newIdx = idx + direction;
+            if (newIdx < 0 || newIdx >= order.length) return;
+
+            order.splice(idx, 1);
+            order.splice(newIdx, 0, tabId);
+            saveTabOrder(order);
+
+            const reordered = {};
+            order.forEach(k => { if (data[k]) reordered[k] = data[k]; });
+            Object.keys(data).forEach(k => { if (!reordered[k]) reordered[k] = data[k]; });
+
+            setAppData(reordered);
+            markLocalChange();
+            loadAppData();
+            syncToCloudDebounced();
+        }
+
+        /* Navegação acessível entre abas via teclado (Setas, Home, End) */
+        function handleTabKeyNav(e, tabId) {
+            const tabs = Array.from(document.querySelectorAll('#tabsBar .tab'));
+            const currentIdx = tabs.findIndex(t => t.getAttribute('data-tabid') === tabId);
+            if (currentIdx < 0) return;
+
+            let nextIdx = -1;
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                e.preventDefault();
+                nextIdx = (currentIdx + 1) % tabs.length;
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                nextIdx = (currentIdx - 1 + tabs.length) % tabs.length;
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                nextIdx = 0;
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                nextIdx = tabs.length - 1;
+            }
+
+            if (nextIdx >= 0) {
+                const targetTab = tabs[nextIdx];
+                const targetId = targetTab.getAttribute('data-tabid');
+                switchTab(targetId);
+                targetTab.focus();
+            }
         }
 
         function reorderTabs(sourceId, targetId) {
@@ -6978,22 +7165,45 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         }
 
         async function copyCardText(button) {
+            if (button.dataset.isCopying === 'true') return; // Prevenção contra cliques duplos rápidos
+            button.dataset.isCopying = 'true';
+
             const card = button.closest('.item-card');
-            const pre = card.querySelector('.item-text');
             const textarea = card.querySelector('.item-textarea');
             const msg = card.querySelector('.copied-msg');
 
             let text = textarea.value;
             let resolved = await resolveVariables(text);
             if (resolved !== null) resolved = cleanExcessiveNewlines(resolved);
-            if (resolved === null) return;
+            if (resolved === null) {
+                button.dataset.isCopying = 'false';
+                return;
+            }
+
+            // Incremento e persistência imediata no card e no localStorage
+            const newCount = (parseInt(card.dataset.copyCount) || 0) + 1;
+            card.dataset.copyCount = newCount;
+            const badge = button.querySelector('.copy-count-badge');
+            if (badge) badge.textContent = ` (${newCount}x)`;
+            saveAppDataDebounced();
 
             recordScriptUsage();
             addRecentCopy(resolved);
+
             copyTextToClipboard(resolved).then(ok => {
-                msg.textContent = ok ? 'Copiado!' : 'Falha ao copiar';
-                msg.style.display = 'block';
-                setTimeout(() => { msg.style.display = 'none'; }, 1500);
+                if (msg) {
+                    msg.setAttribute('aria-live', 'polite');
+                    msg.textContent = ok ? 'Copiado!' : 'Falha ao copiar';
+                    msg.style.display = 'block';
+                    setTimeout(() => { msg.style.display = 'none'; }, 1500);
+                }
+                if (typeof showToast === 'function' && ok) {
+                    showToast('📋 Script copiado para a área de transferência!', 'success');
+                }
+            }).catch(err => {
+                alert('Não foi possível copiar: permissão de área de transferência negada pelo navegador.');
+            }).finally(() => {
+                setTimeout(() => { button.dataset.isCopying = 'false'; }, 400);
             });
         }
 
@@ -7067,6 +7277,79 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                 /* ============================================================
            V2.5.2: LOCALIZAR E SUBSTITUIR EM MASSA (FIND & REPLACE)
            ============================================================ */
+        
+        /* ============================================================
+           V2.5.3: GERENCIADOR UNIVERSAL DE MODAIS ACESSÍVEIS (WAI-ARIA)
+           ============================================================ */
+        let activeModalTriggerEl = null;
+
+        function createAccessibleModal({ id, title, contentHtml, footerHtml, width = 'min(560px, 94vw)', onConfirm, confirmText = 'Confirmar', triggerElement = null }) {
+            activeModalTriggerEl = triggerElement || document.activeElement;
+            document.body.classList.add('modal-open');
+
+            const overlay = document.createElement('div');
+            overlay.className = 'var-modal-overlay';
+            overlay.setAttribute('data-transient', 'true');
+            overlay.setAttribute('role', 'dialog');
+            overlay.setAttribute('aria-modal', 'true');
+            if (id) overlay.id = id;
+
+            const titleId = (id || 'modal') + '-title';
+            overlay.setAttribute('aria-labelledby', titleId);
+
+            overlay.innerHTML = `
+                <div class="var-modal-box vm-box" style="width: ${width}; max-height: 90vh;">
+                    <div class="vm-head">
+                        <div class="vm-title" id="${titleId}">${title}</div>
+                        <button class="vm-x" aria-label="Fechar janela modal">✕</button>
+                    </div>
+                    <div class="vm-body" style="padding: 18px 20px; gap: 14px; overflow-y: auto;">
+                        ${contentHtml}
+                    </div>
+                    <div class="vm-foot" style="padding: 12px 20px; justify-content: space-between;">
+                        ${footerHtml || `
+                            <button class="var-modal-btn var-modal-btn-cancel">Fechar</button>
+                            ${onConfirm ? `<button class="var-modal-btn var-modal-btn-confirm" id="btnUniversalConfirm">${confirmText}</button>` : ''}
+                        `}
+                    </div>
+                </div>
+            `;
+
+            function closeModal() {
+                overlay.remove();
+                if (document.querySelectorAll('.var-modal-overlay, .update-overlay, .usm-overlay').length === 0) {
+                    document.body.classList.remove('modal-open');
+                }
+                if (activeModalTriggerEl && typeof activeModalTriggerEl.focus === 'function') {
+                    try { activeModalTriggerEl.focus(); } catch (e) {}
+                }
+            }
+
+            overlay.querySelector('.vm-x').onclick = closeModal;
+            const cancelBtn = overlay.querySelector('.var-modal-btn-cancel');
+            if (cancelBtn) cancelBtn.onclick = closeModal;
+
+            // Fechamento ao clicar fora do conteúdo
+            overlay.addEventListener('mousedown', (e) => {
+                if (e.target === overlay) closeModal();
+            });
+
+            if (onConfirm) {
+                const confBtn = overlay.querySelector('#btnUniversalConfirm');
+                if (confBtn) confBtn.onclick = () => onConfirm(closeModal, overlay);
+            }
+
+            document.body.appendChild(overlay);
+
+            // Foco inicial no primeiro campo de entrada ou botão
+            setTimeout(() => {
+                const firstFocusable = overlay.querySelector('input:not([disabled]), textarea:not([disabled]), select:not([disabled]), button:not(.vm-x)');
+                if (firstFocusable) firstFocusable.focus();
+            }, 50);
+
+            return { overlay, closeModal };
+        }
+
         function openGlobalFindReplaceModal() {
             const overlay = document.createElement('div');
             overlay.className = 'var-modal-overlay';
@@ -7247,7 +7530,8 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         }
 
 
-        function exportScripts() {
+        /* Exporta apenas os scripts (compatibilidade com backups clássicos) */
+        function exportScriptsOnly() {
             saveAppData();
             const data = getAppData();
             const jsonStr = JSON.stringify(data, null, 4);
@@ -7255,34 +7539,205 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'scripts_backup_' + new Date().toISOString().slice(0, 10) + '.json';
+            a.download = 'scripts_somente_' + new Date().toISOString().slice(0, 10) + '.json';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
+            if (typeof showToast === 'function') showToast('Backup de scripts exportado!', 'success');
+        }
+
+        /* Exporta o Backup Completo do Sistema (Scripts, Abas, Clientes, Variáveis, Userscripts e Configurações) */
+        function exportFullBackup() {
+            saveAppData();
+            const appData = getAppData();
+            const backupPayload = {
+                type: 'CENTRAL_DE_SCRIPTS_FULL_BACKUP',
+                version: APP_VERSION,
+                exportedAt: new Date().toISOString(),
+                scripts: appData,
+                tabOrder: getSavedTabOrder(appData),
+                customDefaults: getCustomDefaults(),
+                clients: getClientsData(),
+                scratchpad: localStorage.getItem(SCRATCHPAD_KEY) || '',
+                userscripts: getUserscripts(),
+                settings: {
+                    theme: localStorage.getItem(THEME_KEY) || 'dark',
+                    layout: localStorage.getItem(LAYOUT_KEY) || 'grid',
+                    scale: parseFloat(localStorage.getItem(SCALE_KEY)) || 1,
+                    activeTabId: currentActiveTabId || localStorage.getItem(ACTIVE_TAB_KEY) || '',
+                    alarmConfig: getAlarmConfig()
+                }
+            };
+
+            const jsonStr = JSON.stringify(backupPayload, null, 4);
+            const blob = new Blob([jsonStr], { type: 'application/json;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `backup_completo_central_v${APP_VERSION}_${new Date().toISOString().slice(0, 10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            if (typeof showToast === 'function') {
+                showToast('📦 Backup completo do sistema exportado com sucesso!', 'success');
+            } else {
+                alert('Backup completo do sistema exportado com sucesso!');
+            }
+        }
+
+        /* Importa backup detectando automaticamente se é Completo (v2.5.3) ou Legado (somente scripts) */
+                /* Validador Rigoroso de Arquivos Importados (JSON) */
+        function validateImportPayload(parsed) {
+            const MAX_TABS = 60;
+            const MAX_CARDS_PER_TAB = 250;
+            const MAX_TEXT_LEN = 12000;
+            const MAX_TAG_LEN = 40;
+            const ALLOWED_COLORS = ['', 'green', 'yellow', 'red', 'blue', 'purple'];
+
+            if (!parsed || typeof parsed !== 'object') {
+                return { valid: false, reason: 'Arquivo inválido: o conteúdo precisa ser um objeto JSON formatado.' };
+            }
+
+            const isFullBackup = parsed.type === 'CENTRAL_DE_SCRIPTS_FULL_BACKUP';
+            const scripts = isFullBackup ? parsed.scripts : parsed;
+
+            if (!scripts || typeof scripts !== 'object' || Array.isArray(scripts)) {
+                return { valid: false, reason: 'Arquivo incompatível: nenhuma estrutura de abas de scripts encontrada.' };
+            }
+
+            const tabKeys = Object.keys(scripts);
+            if (tabKeys.length === 0) {
+                return { valid: false, reason: 'Arquivo vazio: o arquivo não contém nenhuma aba de scripts.' };
+            }
+
+            if (tabKeys.length > MAX_TABS) {
+                return { valid: false, reason: `Arquivo excede o limite máximo permitido de ${MAX_TABS} abas.` };
+            }
+
+            for (const tabId of tabKeys) {
+                const tab = scripts[tabId];
+                if (!tab || typeof tab !== 'object' || typeof tab.name !== 'string' || !Array.isArray(tab.groups)) {
+                    return { valid: false, reason: `Aba "${tabId}" possui formato inválido ou corrompido.` };
+                }
+
+                let totalCards = 0;
+                for (const group of tab.groups) {
+                    if (!group || typeof group !== 'object' || !Array.isArray(group.items)) {
+                        return { valid: false, reason: `Grupo na aba "${tab.name}" possui formato inválido.` };
+                    }
+                    totalCards += group.items.length;
+                    if (totalCards > MAX_CARDS_PER_TAB) {
+                        return { valid: false, reason: `A aba "${tab.name}" excede o limite máximo de ${MAX_CARDS_PER_TAB} cards.` };
+                    }
+
+                    for (const item of group.items) {
+                        const txt = typeof item === 'string' ? item : (item.text || '');
+                        if (String(txt).length > MAX_TEXT_LEN) {
+                            return { valid: false, reason: `Card na aba "${tab.name}" excede o limite de ${MAX_TEXT_LEN} caracteres.` };
+                        }
+                        if (typeof item === 'object') {
+                            if (item.color && !ALLOWED_COLORS.includes(item.color)) item.color = '';
+                            if (Array.isArray(item.tags)) {
+                                for (const tag of item.tags) {
+                                    if (String(tag).length > MAX_TAG_LEN) {
+                                        return { valid: false, reason: `Tag "${tag}" excede o limite de ${MAX_TAG_LEN} caracteres.` };
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return { valid: true, isFullBackup, scriptsCount: tabKeys.length };
         }
 
         function importScripts(event) {
             const file = event.target.files[0];
             if (!file) return;
+            const MAX_FILE_SIZE = 6 * 1024 * 1024; // 6 MB
+            if (file.size > MAX_FILE_SIZE) {
+                alert('⚠️ O arquivo selecionado é muito grande (limite máximo de 6 MB).');
+                event.target.value = '';
+                return;
+            }
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
-                    const imported = JSON.parse(e.target.result);
-                    if (!isValidData(imported)) {
-                        alert('Arquivo JSON inválido: cada aba precisa ter "name" e estrutura correta.');
+                    const parsed = JSON.parse(e.target.result);
+                    pushUndoSnapshot('Importação de Backup');
+
+                    // Validação abrangente de limites, tipos e integridade
+                    const validation = validateImportPayload(parsed);
+                    if (!validation.valid) {
+                        alert('⚠️ ' + validation.reason);
                         return;
                     }
-                    if (!confirm('Importar ' + Object.keys(imported).length + ' aba(s)? Isso substitui todos os scripts atuais.')) return;
-                    setAppData(imported);
+
+                    // Cenário 1: Backup Completo Versionado
+                    if (parsed && parsed.type === 'CENTRAL_DE_SCRIPTS_FULL_BACKUP' && parsed.scripts) {
+                        if (!confirm(`Importar Backup Completo (v${parsed.version || '2.x'}) gravado em ${new Date(parsed.exportedAt || Date.now()).toLocaleString()}?\n\nIsso restaurará scripts, abas, clientes, variáveis e preferências.`)) return;
+
+                        setAppData(parsed.scripts);
+                        if (Array.isArray(parsed.tabOrder)) saveTabOrder(parsed.tabOrder);
+                        if (parsed.customDefaults) setCustomDefaults(parsed.customDefaults);
+                        if (Array.isArray(parsed.clients)) setClientsData(parsed.clients);
+                        if (typeof parsed.scratchpad === 'string') {
+                            localStorage.setItem(SCRATCHPAD_KEY, parsed.scratchpad);
+                            const scratchTa = document.getElementById('scratchpadText');
+                            if (scratchTa) scratchTa.value = parsed.scratchpad;
+                        }
+                        if (Array.isArray(parsed.userscripts)) setUserscripts(parsed.userscripts);
+
+                        if (parsed.settings) {
+                            const s = parsed.settings;
+                            if (s.theme) { localStorage.setItem(THEME_KEY, s.theme); changeTheme(s.theme); }
+                            if (s.layout) { localStorage.setItem(LAYOUT_KEY, s.layout); setLayout(s.layout); }
+                            if (s.scale) { localStorage.setItem(SCALE_KEY, s.scale); applyCardScale(parseFloat(s.scale) || 1); }
+                            if (s.activeTabId) { currentActiveTabId = s.activeTabId; localStorage.setItem(ACTIVE_TAB_KEY, s.activeTabId); }
+                            if (s.alarmConfig) localStorage.setItem(ALARM_CONFIG_KEY, JSON.stringify(s.alarmConfig));
+                        }
+
+                        markLocalChange();
+                        loadAppData();
+                        updateStorageIndicator();
+                        updateUndoButton();
+                        initAlarmConfigUI();
+                        syncToCloudDebounced();
+
+                        if (typeof showToast === 'function') {
+                            showToast('✅ Backup completo restaurado com sucesso!', 'success');
+                        } else {
+                            alert('✅ Backup completo restaurado com sucesso!');
+                        }
+                        return;
+                    }
+
+                    // Cenário 2: Backup tradicional (somente scripts)
+                    if (!isValidData(parsed)) {
+                        alert('Arquivo JSON inválido: cada aba precisa ter "name" e estrutura correta de colunas.');
+                        return;
+                    }
+                    if (!confirm('Importar ' + Object.keys(parsed).length + ' aba(s) de scripts? Isso substitui os scripts atuais.')) return;
+                    setAppData(parsed);
+                    markLocalChange();
                     currentActiveTabId = null;
                     loadAppData();
                     updateStorageIndicator();
-            updateUndoButton();
-            initAlarmConfigUI();
-                    alert('Scripts importados com sucesso!');
+                    updateUndoButton();
+                    initAlarmConfigUI();
+                    syncToCloudDebounced();
+
+                    if (typeof showToast === 'function') {
+                        showToast('Scripts importados com sucesso!', 'success');
+                    } else {
+                        alert('Scripts importados com sucesso!');
+                    }
                 } catch (err) {
-                    alert('Erro ao ler o arquivo JSON.');
+                    alert('Erro ao processar arquivo: ' + err.message);
                 }
             };
             reader.readAsText(file);
@@ -7508,8 +7963,9 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                                 📦 Backup & Importação
                             </div>
                             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                <button class="io-btn" onclick="exportScripts();" title="Exportar scripts atuais para arquivo JSON">📤 Exportar Backup (JSON)</button>
-                                <button class="io-btn" onclick="document.getElementById('importFile').click(); this.closest('.var-modal-overlay').remove();" title="Importar scripts de um arquivo JSON">📥 Importar Scripts (JSON)</button>
+                                <button class="io-btn" style="background:#2563eb; color:#fff; font-weight:700;" onclick="exportFullBackup();" title="Exportar backup completo de todos os dados e configurações em JSON">📦 Exportar Backup Completo (JSON)</button>
+                                <button class="io-btn" onclick="exportScriptsOnly();" title="Exportar apenas a lista de scripts para arquivo JSON">📄 Exportar Somente Scripts</button>
+                                <button class="io-btn" onclick="document.getElementById('importFile').click(); this.closest('.var-modal-overlay').remove();" title="Importar backup completo ou arquivo de scripts em JSON">📥 Importar Backup / Scripts</button>
                                 <button class="save-html-btn" onclick="saveHtmlFile();" title="Salvar arquivo HTML autônomo com as alterações">💾 Salvar HTML</button>
                             </div>
                         </div>
@@ -8416,6 +8872,7 @@ console.log('Userscript carregado');`;
         function isCurrentUserAdmin() {
             if (!currentUser || !currentUser.email) return false;
             const emailLower = currentUser.email.toLowerCase().trim();
+            // Autoridade primária irrestrita e auditável: e-mails de administradores mestres
             if (DEFAULT_ADMIN_EMAILS.some(a => a.toLowerCase().trim() === emailLower)) return true;
             return !!(currentUserProfile && currentUserProfile.role === 'admin');
         }
@@ -8515,7 +8972,31 @@ Clique para abrir Minha Conta e Sincronização`;
                         scriptCopies: parseInt(existingData.scriptCopies) || 0
                     };
 
-                    await userRef.set(currentUserProfile, { merge: true });
+                    // Segurança: se o documento já existe e o usuário NÃO é admin mestre,
+                    // ele só atualiza campos não-privilegiados (lastLogin, displayName, photoURL),
+                    // impedindo que altere seu próprio role ou status no banco de dados.
+                    if (existingData.createdAt) {
+                        const safeUpdate = {
+                            lastLogin: now,
+                            displayName: currentUserProfile.displayName,
+                            photoURL: currentUserProfile.photoURL
+                        };
+                        if (isAdminEmail) safeUpdate.role = 'admin';
+                        await userRef.update(safeUpdate);
+                    } else {
+                        const initialData = {
+                            uid: user.uid,
+                            email: user.email,
+                            displayName: currentUserProfile.displayName,
+                            photoURL: currentUserProfile.photoURL,
+                            createdAt: now,
+                            lastLogin: now,
+                            role: isAdminEmail ? 'admin' : 'user',
+                            status: 'active',
+                            scriptCopies: 0
+                        };
+                        await userRef.set(initialData, { merge: true });
+                    }
                     console.log('Perfil de usuário salvo com sucesso no Firestore:', user.email);
 
                     // Sincroniza da nuvem para o navegador
@@ -8666,36 +9147,149 @@ Clique para abrir Minha Conta e Sincronização`;
             }
         }
 
-        async function syncToCloud() {
+        
+        /* ============================================================
+           V2.5.3: FILA DE SINCRONIZAÇÃO OFFLINE COM RETRY E BACKOFF
+           ============================================================ */
+        let syncStatus = 'synced'; // 'synced', 'pending', 'syncing', 'error', 'offline'
+        let pendingSyncPayload = null;
+        let syncRetryCount = 0;
+        let syncRetryTimer = null;
+
+        function updateSyncStatusUI(status, message = '') {
+            syncStatus = status;
+            const dot = document.querySelector('.auth-status-dot');
+            const authBtn = document.getElementById('firebaseAuthBtn');
+            const statusNotice = document.getElementById('cloudSyncStatusNotice');
+
+            if (dot) {
+                dot.className = 'auth-status-dot';
+                if (!navigator.onLine) {
+                    dot.classList.add('offline');
+                    dot.title = 'Offline: Alterações sendo salvas no navegador';
+                } else if (status === 'syncing') {
+                    dot.classList.add('syncing');
+                    dot.title = 'Nuvem do Google: Sincronizando dados...';
+                } else if (status === 'error') {
+                    dot.classList.add('error');
+                    dot.title = 'Aviso: Falha ao sincronizar na Nuvem. Clique para tentar novamente.';
+                } else if (status === 'pending') {
+                    dot.classList.add('pending');
+                    dot.title = 'Alterações locais salvas (sincronização agendada)';
+                } else {
+                    dot.classList.add('online');
+                    dot.title = 'Nuvem do Google: Sincronizado e Conectado';
+                }
+            }
+
+            if (statusNotice) {
+                if (status === 'syncing') {
+                    statusNotice.innerHTML = '🔄 <span>Sincronizando com a Nuvem do Google...</span>';
+                    statusNotice.className = 'cloud-status-pill syncing';
+                } else if (!navigator.onLine) {
+                    statusNotice.innerHTML = '⚡ <span>Modo Offline: Dados salvos localmente no navegador.</span>';
+                    statusNotice.className = 'cloud-status-pill offline';
+                } else if (status === 'error') {
+                    statusNotice.innerHTML = '⚠️ <span>Falha na sincronização em nuvem.</span> <button onclick="manualRetrySync()" class="comp-btn comp-btn-secondary" style="font-size:10px; padding:2px 8px; margin-left:6px;">Tentar Novamente</button>';
+                    statusNotice.className = 'cloud-status-pill error';
+                } else if (status === 'pending') {
+                    statusNotice.innerHTML = '💾 <span>Salvo localmente no navegador (pendente na nuvem).</span>';
+                    statusNotice.className = 'cloud-status-pill pending';
+                } else {
+                    statusNotice.innerHTML = '🟢 <span>Seus scripts e configurações estão sincronizados na Nuvem do Google.</span>';
+                    statusNotice.className = 'cloud-status-pill online';
+                }
+            }
+        }
+
+        window.addEventListener('online', () => {
+            if (typeof showToast === 'function') showToast('🌐 Conexão à internet restabelecida!', 'info');
+            updateSyncStatusUI(pendingSyncPayload ? 'pending' : 'synced');
+            if (pendingSyncPayload) processSyncQueue();
+        });
+
+        window.addEventListener('offline', () => {
+            if (typeof showToast === 'function') showToast('⚡ Conexão offline: dados mantidos com segurança no navegador.', 'warning');
+            updateSyncStatusUI('offline');
+        });
+
+        async function processSyncQueue() {
             if (!currentUser || !firebaseDb || isCloudSyncing) return;
+            if (!navigator.onLine) {
+                updateSyncStatusUI('offline');
+                return;
+            }
+
+            const payloadToSync = pendingSyncPayload || {
+                scripts: getAppData(),
+                tabOrder: getSavedTabOrder(getAppData()),
+                customDefaults: getCustomDefaults(),
+                clients: getClientsData(),
+                scratchpad: localStorage.getItem(SCRATCHPAD_KEY) || '',
+                settings: {
+                    theme: localStorage.getItem(THEME_KEY) || 'dark',
+                    layout: localStorage.getItem(LAYOUT_KEY) || 'grid',
+                    scale: parseFloat(localStorage.getItem(SCALE_KEY)) || 1,
+                    activeTabId: currentActiveTabId || localStorage.getItem(ACTIVE_TAB_KEY) || '',
+                    alarmConfig: getAlarmConfig()
+                },
+                updatedAt: new Date().toISOString()
+            };
+
+            isCloudSyncing = true;
+            updateSyncStatusUI('syncing');
+
             try {
-                isCloudSyncing = true;
                 const dataDocRef = firebaseDb.collection('users').doc(currentUser.uid).collection('settings').doc('app_data');
-                const appData = getAppData();
-                const nowIso = new Date().toISOString();
-                const payload = {
-                    scripts: appData,
-                    tabOrder: getSavedTabOrder(appData),
-                    customDefaults: getCustomDefaults(),
-                    clients: getClientsData(),
-                    scratchpad: localStorage.getItem(SCRATCHPAD_KEY) || '',
-                    settings: {
-                        theme: localStorage.getItem(THEME_KEY) || 'dark',
-                        layout: localStorage.getItem(LAYOUT_KEY) || 'grid',
-                        scale: parseFloat(localStorage.getItem(SCALE_KEY)) || 1,
-                        activeTabId: currentActiveTabId || localStorage.getItem(ACTIVE_TAB_KEY) || '',
-                        alarmConfig: getAlarmConfig()
-                    },
-                    updatedAt: nowIso
-                };
-                await dataDocRef.set(payload, { merge: true });
+                await dataDocRef.set(payloadToSync, { merge: true });
                 localStorage.setItem(LAST_LOCAL_UPDATE_KEY, String(Date.now()));
-                console.log('Alterações, ordem das abas e configurações sincronizadas na nuvem com sucesso!');
-            } catch (e) {
-                console.warn('Falha na sincronização na nuvem (mantido offline):', e);
+                pendingSyncPayload = null;
+                syncRetryCount = 0;
+                clearTimeout(syncRetryTimer);
+                updateSyncStatusUI('synced');
+                console.log('Alterações e fila sincronizadas na Nuvem com sucesso!');
+            } catch (err) {
+                console.warn('Erro ao processar sincronização na nuvem:', err);
+                pendingSyncPayload = payloadToSync;
+                updateSyncStatusUI('error');
+
+                // Retry exponencial (backoff): 3s, 6s, 12s, max 30s
+                syncRetryCount++;
+                const delay = Math.min(30000, 3000 * Math.pow(1.8, syncRetryCount - 1));
+                clearTimeout(syncRetryTimer);
+                syncRetryTimer = setTimeout(() => {
+                    if (navigator.onLine && pendingSyncPayload) processSyncQueue();
+                }, delay);
             } finally {
                 isCloudSyncing = false;
             }
+        }
+
+        function manualRetrySync() {
+            syncRetryCount = 0;
+            processSyncQueue();
+        }
+
+        async function syncToCloud() {
+            if (!currentUser || !firebaseDb) return;
+            const appData = getAppData();
+            pendingSyncPayload = {
+                scripts: appData,
+                tabOrder: getSavedTabOrder(appData),
+                customDefaults: getCustomDefaults(),
+                clients: getClientsData(),
+                scratchpad: localStorage.getItem(SCRATCHPAD_KEY) || '',
+                settings: {
+                    theme: localStorage.getItem(THEME_KEY) || 'dark',
+                    layout: localStorage.getItem(LAYOUT_KEY) || 'grid',
+                    scale: parseFloat(localStorage.getItem(SCALE_KEY)) || 1,
+                    activeTabId: currentActiveTabId || localStorage.getItem(ACTIVE_TAB_KEY) || '',
+                    alarmConfig: getAlarmConfig()
+                },
+                updatedAt: new Date().toISOString()
+            };
+            updateSyncStatusUI('pending');
+            await processSyncQueue();
         }
 
         function syncToCloudDebounced() {
@@ -8753,9 +9347,9 @@ Clique para abrir Minha Conta e Sincronização`;
                             </div>
                         </div>
 
-                        <!-- Mensagem Oficial da Nuvem do Google -->
-                        <div style="font-size:12px; opacity:0.9; line-height:1.5; background:rgba(66,133,244,0.08); border:1px solid rgba(66,133,244,0.22); padding:10px 14px; border-radius:10px;">
-                            Seus scripts e configurações estão sendo salvos localmente no navegador e sincronizados de forma segura na Nuvem do Google.
+                        <!-- Indicador Dinâmico de Sincronização e Conexão -->
+                        <div id="cloudSyncStatusNotice" class="cloud-status-pill online">
+                            🟢 <span>Seus scripts e configurações estão sincronizados na Nuvem do Google.</span>
                         </div>
 
                         <!-- Resumo Integrado de Armazenamento Local -->
@@ -8815,6 +9409,7 @@ Clique para abrir Minha Conta e Sincronização`;
                 openCloudDownloadPreviewModal();
             };
 
+            updateSyncStatusUI(syncStatus);
             document.body.appendChild(overlay);
         }
 
@@ -9221,32 +9816,53 @@ Clique para abrir Minha Conta e Sincronização`;
             const rulesText = `rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    
-    // Regras da coleção de usuários da equipe
+
+    // Função auxiliar: identifica administradores autorizados pela lista mestra
+    function isAdmin() {
+      return request.auth != null && (
+        request.auth.token.email in ['leogabfx@gmail.com', 'leonardo3dtelecom@gmail.com'] ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin')
+      );
+    }
+
+    // Regras de segurança granulares da coleção de usuários
     match /users/{userId} {
-      allow read, write: if request.auth != null && (
-        request.auth.uid == userId ||
-        request.auth.token.email in ['leogabfx@gmail.com', 'leonardo3dtelecom@gmail.com']
+      // Leitura permitida para o próprio usuário e para administradores
+      allow read: if request.auth != null && (request.auth.uid == userId || isAdmin());
+
+      // Criação inicial no primeiro login: role deve ser 'user' (ou admin apenas se for admin mestre)
+      allow create: if request.auth != null && request.auth.uid == userId &&
+        (request.resource.data.role == 'user' || request.auth.token.email in ['leogabfx@gmail.com', 'leonardo3dtelecom@gmail.com']) &&
+        request.resource.data.status == 'active';
+
+      // Atualização de perfil: administradores podem alterar qualquer campo;
+      // Usuários comuns NÃO podem alterar 'role' nem 'status' no seu próprio perfil.
+      allow update: if request.auth != null && (
+        isAdmin() || (
+          request.auth.uid == userId &&
+          !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role', 'status'])
+        )
       );
 
-      // Subcoleção com os scripts e configurações individuais do usuário
+      // Exclusão permitida apenas para administradores mestres
+      allow delete: if isAdmin();
+
+      // Subcoleção de scripts e configurações privadas do atendente
       match /settings/{docId} {
-        allow read, write: if request.auth != null && (
-          request.auth.uid == userId ||
-          request.auth.token.email in ['leogabfx@gmail.com', 'leonardo3dtelecom@gmail.com']
-        );
+        allow read, write: if request.auth != null && (request.auth.uid == userId || isAdmin());
       }
     }
 
     // Modelos oficiais e scripts corporativos globais da equipe
     match /templates/{docId} {
       allow read: if request.auth != null;
-      allow write: if request.auth != null && request.auth.token.email in ['leogabfx@gmail.com', 'leonardo3dtelecom@gmail.com'];
+      allow write: if isAdmin();
     }
 
     match /global_settings/{docId} {
       allow read: if request.auth != null;
-      allow write: if request.auth != null && request.auth.token.email in ['leogabfx@gmail.com', 'leonardo3dtelecom@gmail.com'];
+      allow write: if isAdmin();
     }
   }
 }`;
@@ -9612,7 +10228,9 @@ service cloud.firestore {
         window.deleteCurrentCard = deleteCurrentCard;
         window.setCardColor = setCardColor;
         window.setColorFilter = setColorFilter;
-        window.exportScripts = exportScripts;
+        window.exportScripts = exportScriptsOnly;
+        window.exportScriptsOnly = exportScriptsOnly;
+        window.exportFullBackup = exportFullBackup;
         window.importScripts = importScripts;
         window.restoreDefaults = restoreDefaults;
         window.clearAllScripts = clearAllScripts;
@@ -9634,6 +10252,17 @@ service cloud.firestore {
         window.showAlarmPopup = showAlarmPopup;
         window.initAudioUnlock = initAudioUnlock;
 
+                /* Acessibilidade para Modais: Fechamento com Esc e foco automático */
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const openOverlays = document.querySelectorAll('.var-modal-overlay, .update-overlay, .usm-overlay');
+                if (openOverlays.length > 0) {
+                    const topOverlay = openOverlays[openOverlays.length - 1];
+                    topOverlay.remove();
+                }
+            }
+        });
+
         function initMainApp() {
             if (window.__appInitialized) return;
             window.__appInitialized = true;
@@ -9654,6 +10283,10 @@ service cloud.firestore {
                 updateCompanionButton();
                 initAlarmConfigUI();
                 requestNotificationPermission();
+                const initScratchTa = document.getElementById('scratchpadText');
+                if (initScratchTa) {
+                    initScratchTa.value = localStorage.getItem(SCRATCHPAD_KEY) || '';
+                }
 
                 // Executa userscripts salvos somente após a interface estar pronta.
                 setTimeout(() => {
@@ -9692,16 +10325,15 @@ service cloud.firestore {
             initMainApp();
         }
         window.addEventListener('load', initMainApp);
-        window.onload = initMainApp;
 
     </script>
 
 
     <!-- V2.2.0: Scratchpad / Rascunho Rápido do Atendimento -->
-    <button class="scratchpad-toggle-btn" id="scratchpadBtn" onclick="toggleScratchpad()" title="Abrir bloco de notas rápido" data-transient="true">
+    <button class="scratchpad-toggle-btn" id="scratchpadBtn" onclick="toggleScratchpad()" title="Abrir bloco de notas rápido">
         📝 Rascunho
     </button>
-    <div class="scratchpad-drawer" id="scratchpadDrawer" data-transient="true" onclick="event.stopPropagation()">
+    <div class="scratchpad-drawer" id="scratchpadDrawer" onclick="event.stopPropagation()">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-color); padding-bottom:6px;">
             <span style="font-size:12px; font-weight:700; color:var(--title-color);">📝 Rascunho Temporário</span>
             <div style="display:flex; gap:4px; align-items:center;">
