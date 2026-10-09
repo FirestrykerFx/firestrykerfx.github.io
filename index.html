@@ -3023,8 +3023,44 @@
         const THEME_KEY = 'scripts_theme';
         const VARS_KEY = 'scripts_custom_defaults_v4';
         const CLIENTS_KEY = 'scripts_clients_alarms_v4';
+        const TAB_ORDER_KEY = 'scripts_tab_order_v1';
+        const ACTIVE_TAB_KEY = 'scripts_active_tab_id_v1';
+        const LAST_LOCAL_UPDATE_KEY = 'scripts_last_local_update_v1';
 
         let currentActiveTabId = null;
+        function markLocalChange() {
+            try { localStorage.setItem(LAST_LOCAL_UPDATE_KEY, String(Date.now())); } catch (e) {}
+        }
+
+        function getSavedTabOrder(data) {
+            const currentData = data || getAppData();
+            const validIds = Object.keys(currentData);
+            let savedOrder = [];
+            try {
+                const raw = localStorage.getItem(TAB_ORDER_KEY);
+                if (raw) savedOrder = JSON.parse(raw);
+            } catch (e) {}
+
+            const result = [];
+            if (Array.isArray(savedOrder)) {
+                savedOrder.forEach(id => {
+                    if (validIds.includes(id) && !result.includes(id)) result.push(id);
+                });
+            }
+            validIds.forEach(id => {
+                if (!result.includes(id)) result.push(id);
+            });
+            return result;
+        }
+
+        function saveTabOrder(orderArray) {
+            if (!Array.isArray(orderArray)) return;
+            try {
+                localStorage.setItem(TAB_ORDER_KEY, JSON.stringify(orderArray));
+                markLocalChange();
+            } catch (e) {}
+        }
+
         let isEditing = false;
         let draggedTabId = null;
         let draggedCard = null;
@@ -3549,6 +3585,7 @@
                                 <li><strong>🔒 Acesso Restrito a Chaves do Firebase:</strong> Usuários comuns da equipe não têm acesso às chaves nem ao painel de administração.</li>
                                 <li><strong>🍞 Toasts Flutuantes:</strong> Notificações elegantes e não intrusivas para cópia de scripts e avisos rápidos, eliminando caixas de alerta que travavam a tela.</li>
                                 <li><strong>💾 Armazenamento e Salvar HTML Unificados:</strong> O indicador de espaço do navegador e o download do arquivo HTML agora ficam organizados dentro de <em>Minha Conta</em>.</li>
+                                <li><strong>📌 Persistência Total da Ordem das Abas & Configurações:</strong> A ordem personalizada das abas arrastadas pelo atendente agora é preservada com precisão tanto no navegador quanto na Nuvem do Google (Firestore), juntamente com o tema ativo, modo de exibição (Grade/Lista), zoom e última aba ativa, impedindo que a página resete a disposição ao atualizar.</li>
                             </ul>
                         </div>
 
@@ -5377,8 +5414,16 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             contentContainer.appendChild(clientsContentEl);
             initClientsTabLogic(clientsContentEl);
 
-            // 2. Inserir demais abas de scripts
-            const tabIds = Object.keys(data);
+            // 2. Inserir demais abas de scripts respeitando a ordem personalizada salva
+            const tabIds = getSavedTabOrder(data);
+            if (!currentActiveTabId) {
+                try {
+                    const savedActive = localStorage.getItem(ACTIVE_TAB_KEY);
+                    if (savedActive && (data[savedActive] || savedActive === clientsTabId)) {
+                        currentActiveTabId = savedActive;
+                    }
+                } catch (e) {}
+            }
             if (!currentActiveTabId || (!data[currentActiveTabId] && currentActiveTabId !== clientsTabId)) {
                 currentActiveTabId = tabIds[0] || 'tab_leo';
             }
@@ -5919,10 +5964,12 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             clearTimeout(saveTimer);
             if (!document.querySelector('.tab')) return;
             const newData = {};
+            const domTabOrder = [];
 
             document.querySelectorAll('.tab').forEach(tabEl => {
                 const tabId = tabEl.getAttribute('data-tabid');
-                if (tabId === 'tab_clients_alarm') return;
+                if (!tabId || tabId === 'tab_clients_alarm') return;
+                domTabOrder.push(tabId);
                 const name = tabEl.querySelector('.tab-title').textContent;
                 const tabContent = document.getElementById(tabId);
                 const groups = [];
@@ -5951,7 +5998,12 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                 newData[tabId] = { name: name, groups: groups };
             });
 
+            if (domTabOrder.length > 0) {
+                saveTabOrder(domTabOrder);
+            }
+
             setAppData(newData);
+            markLocalChange();
             updateStorageIndicator();
             updateUndoButton();
             initAlarmConfigUI();
@@ -5961,6 +6013,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 
         function switchTab(tabId) {
             currentActiveTabId = tabId;
+            try { localStorage.setItem(ACTIVE_TAB_KEY, tabId); } catch (e) {}
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             
@@ -6376,7 +6429,8 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         function setLayout(mode) {
             document.documentElement.classList.toggle('layout-list', mode === 'list');
             document.querySelectorAll('#layoutCtrl button').forEach(b => b.classList.toggle('on', b.dataset.mode === mode));
-            try { localStorage.setItem(LAYOUT_KEY, mode); } catch (e) {}
+            try { localStorage.setItem(LAYOUT_KEY, mode); markLocalChange(); } catch (e) {}
+            if (typeof syncToCloudDebounced === 'function') syncToCloudDebounced();
         }
 
         const SCALE_KEY = 'scripts_card_scale';
@@ -6390,27 +6444,35 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         function adjustCardSize(dir) {
             let v = parseFloat(localStorage.getItem(SCALE_KEY)) || 1;
             v = dir === 0 ? 1 : Math.min(1.6, Math.max(0.7, Math.round((v + dir * 0.1) * 10) / 10));
-            try { localStorage.setItem(SCALE_KEY, v); } catch (e) {}
+            try { localStorage.setItem(SCALE_KEY, v); markLocalChange(); } catch (e) {}
             applyCardScale(v);
+            if (typeof syncToCloudDebounced === 'function') syncToCloudDebounced();
         }
 
         function reorderTabs(sourceId, targetId) {
             const data = getAppData();
-            const keys = Object.keys(data);
-            const sourceIndex = keys.indexOf(sourceId);
-            const targetIndex = keys.indexOf(targetId);
+            const currentOrder = getSavedTabOrder(data);
+            const sourceIndex = currentOrder.indexOf(sourceId);
+            const targetIndex = currentOrder.indexOf(targetId);
 
             if (sourceIndex > -1 && targetIndex > -1) {
-                keys.splice(sourceIndex, 1);
-                keys.splice(targetIndex, 0, sourceId);
+                currentOrder.splice(sourceIndex, 1);
+                currentOrder.splice(targetIndex, 0, sourceId);
+
+                saveTabOrder(currentOrder);
 
                 const reorderedData = {};
-                keys.forEach(k => {
-                    reorderedData[k] = data[k];
+                currentOrder.forEach(k => {
+                    if (data[k]) reorderedData[k] = data[k];
+                });
+                Object.keys(data).forEach(k => {
+                    if (!reorderedData[k]) reorderedData[k] = data[k];
                 });
 
                 setAppData(reorderedData);
+                markLocalChange();
                 loadAppData();
+                syncToCloudDebounced();
             }
         }
 
@@ -6426,12 +6488,19 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                 groups: [{ title: 'Geral', items: [{ text: '', tags: [], alarm: '' }] }]
             };
 
+            const order = getSavedTabOrder(data);
+            if (!order.includes(tabId)) order.push(tabId);
+            saveTabOrder(order);
+
             setAppData(data);
+            markLocalChange();
             currentActiveTabId = tabId;
+            try { localStorage.setItem(ACTIVE_TAB_KEY, tabId); } catch (e) {}
             loadAppData();
             updateStorageIndicator();
             updateUndoButton();
             initAlarmConfigUI();
+            syncToCloudDebounced();
         }
 
         function renameTab(tabId) {
@@ -6460,9 +6529,13 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 
             if (confirm("Tem certeza que deseja excluir esta aba e todos os seus itens?")) {
                 delete data[tabId];
+                const order = getSavedTabOrder(data).filter(id => id !== tabId);
+                saveTabOrder(order);
                 setAppData(data);
+                markLocalChange();
                 currentActiveTabId = null;
                 loadAppData();
+                syncToCloudDebounced();
             }
         }
 
@@ -6945,6 +7018,8 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             const tc = document.querySelector('meta[name="theme-color"]');
             if (tc) tc.content = current === 'oled' ? '#000000' : (current === 'light' ? '#f4f5f8' : '#1e1e1e');
             localStorage.setItem(THEME_KEY, current);
+            markLocalChange();
+            if (typeof syncToCloudDebounced === 'function') syncToCloudDebounced();
             syncCompanionTheme();
 
             // Atualiza botões segmentados de tema
@@ -8308,7 +8383,7 @@ Clique para abrir Minha Conta e Sincronização`;
             }
         }
 
-        /* Sincronização em Nuvem (Firestore) */
+        /* Sincronização em Nuvem (Firestore) com Preservação de Ordem e Configurações */
         async function syncFromCloud() {
             if (!currentUser || !firebaseDb) return;
             try {
@@ -8317,21 +8392,59 @@ Clique para abrir Minha Conta e Sincronização`;
                 if (snap.exists) {
                     const cloudData = snap.data();
                     if (cloudData && cloudData.scripts && isValidData(cloudData.scripts)) {
+                        // Verifica se os dados locais são mais recentes que a nuvem para evitar sobrescrever edições recentes
+                        const cloudTime = cloudData.updatedAt ? new Date(cloudData.updatedAt).getTime() : 0;
+                        const localTime = parseInt(localStorage.getItem(LAST_LOCAL_UPDATE_KEY) || '0', 10);
+
+                        if (localTime > (cloudTime + 2000)) {
+                            console.log('Alterações locais mais recentes detectadas. Sincronizando do navegador para a Nuvem...');
+                            await syncToCloud();
+                            return;
+                        }
+
                         localStorage.setItem(STORAGE_KEY, JSON.stringify(cloudData.scripts));
+                        if (Array.isArray(cloudData.tabOrder)) {
+                            localStorage.setItem(TAB_ORDER_KEY, JSON.stringify(cloudData.tabOrder));
+                        }
                         if (cloudData.customDefaults) {
                             localStorage.setItem(VARS_KEY, JSON.stringify(cloudData.customDefaults));
                         }
                         if (cloudData.clients) {
                             localStorage.setItem(CLIENTS_KEY, JSON.stringify(cloudData.clients));
                         }
+
+                        // Restaura configurações de interface salvas na nuvem
+                        if (cloudData.settings) {
+                            const s = cloudData.settings;
+                            if (s.theme) {
+                                localStorage.setItem(THEME_KEY, s.theme);
+                                changeTheme(s.theme);
+                            }
+                            if (s.layout) {
+                                localStorage.setItem(LAYOUT_KEY, s.layout);
+                                setLayout(s.layout);
+                            }
+                            if (s.scale) {
+                                localStorage.setItem(SCALE_KEY, s.scale);
+                                applyCardScale(parseFloat(s.scale) || 1);
+                            }
+                            if (s.activeTabId) {
+                                currentActiveTabId = s.activeTabId;
+                                localStorage.setItem(ACTIVE_TAB_KEY, s.activeTabId);
+                            }
+                            if (s.alarmConfig) {
+                                localStorage.setItem(ALARM_CONFIG_KEY, JSON.stringify(s.alarmConfig));
+                            }
+                        }
+
                         loadAppData();
                         updateStorageIndicator();
                         updateUndoButton();
                         initAlarmConfigUI();
-                        console.log('Dados sincronizados da nuvem com sucesso!');
+                        console.log('Dados, ordem das abas e configurações sincronizados da nuvem com sucesso!');
                     }
                 } else {
-                    // Primeiro login: salva os dados locais atuais na nuvem
+                    // Primeiro login do usuário: salva os dados locais atuais na nuvem
                     await syncToCloud();
                 }
             } catch (e) {
@@ -8344,14 +8457,25 @@ Clique para abrir Minha Conta e Sincronização`;
             try {
                 isCloudSyncing = true;
                 const dataDocRef = firebaseDb.collection('users').doc(currentUser.uid).collection('settings').doc('app_data');
+                const appData = getAppData();
+                const nowIso = new Date().toISOString();
                 const payload = {
-                    scripts: getAppData(),
+                    scripts: appData,
+                    tabOrder: getSavedTabOrder(appData),
                     customDefaults: getCustomDefaults(),
                     clients: getClientsData(),
-                    updatedAt: new Date().toISOString()
+                    settings: {
+                        theme: localStorage.getItem(THEME_KEY) || 'dark',
+                        layout: localStorage.getItem(LAYOUT_KEY) || 'grid',
+                        scale: parseFloat(localStorage.getItem(SCALE_KEY)) || 1,
+                        activeTabId: currentActiveTabId || localStorage.getItem(ACTIVE_TAB_KEY) || '',
+                        alarmConfig: getAlarmConfig()
+                    },
+                    updatedAt: nowIso
                 };
                 await dataDocRef.set(payload, { merge: true });
-                console.log('Alterações sincronizadas na nuvem!');
+                localStorage.setItem(LAST_LOCAL_UPDATE_KEY, String(Date.now()));
+                console.log('Alterações, ordem das abas e configurações sincronizadas na nuvem com sucesso!');
             } catch (e) {
                 console.warn('Falha na sincronização na nuvem (mantido offline):', e);
             } finally {
@@ -8623,7 +8747,9 @@ Clique para abrir Minha Conta e Sincronização`;
                 }
 
                 const cloudScripts = cloudData.scripts;
-                const cloudTabIds = Object.keys(cloudScripts);
+                const cloudTabIds = Array.isArray(cloudData.tabOrder) && cloudData.tabOrder.length
+                    ? cloudData.tabOrder.filter(id => cloudScripts[id])
+                    : Object.keys(cloudScripts);
                 let cloudTotalCards = 0;
                 const cloudTabSummary = [];
 
@@ -8707,21 +8833,37 @@ Clique para abrir Minha Conta e Sincronização`;
                 `;
 
                 overlay.querySelector('#btnConfirmDownloadAction').onclick = () => {
-                    pushUndoAction('Download da Nuvem', getAppData());
+                    pushUndoSnapshot('Download da Nuvem');
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(cloudData.scripts));
+                    if (Array.isArray(cloudData.tabOrder)) {
+                        localStorage.setItem(TAB_ORDER_KEY, JSON.stringify(cloudData.tabOrder));
+                    }
                     if (cloudData.customDefaults) {
                         localStorage.setItem(VARS_KEY, JSON.stringify(cloudData.customDefaults));
                     }
                     if (cloudData.clients) {
                         localStorage.setItem(CLIENTS_KEY, JSON.stringify(cloudData.clients));
                     }
+                    if (cloudData.settings) {
+                        const s = cloudData.settings;
+                        if (s.theme) { localStorage.setItem(THEME_KEY, s.theme); changeTheme(s.theme); }
+                        if (s.layout) { localStorage.setItem(LAYOUT_KEY, s.layout); setLayout(s.layout); }
+                        if (s.scale) { localStorage.setItem(SCALE_KEY, s.scale); applyCardScale(parseFloat(s.scale) || 1); }
+                        if (s.activeTabId) { currentActiveTabId = s.activeTabId; localStorage.setItem(ACTIVE_TAB_KEY, s.activeTabId); }
+                        if (s.alarmConfig) { localStorage.setItem(ALARM_CONFIG_KEY, JSON.stringify(s.alarmConfig)); }
+                    }
+                    localStorage.setItem(LAST_LOCAL_UPDATE_KEY, String(Date.now()));
                     loadAppData();
                     updateStorageIndicator();
                     updateUndoButton();
                     initAlarmConfigUI();
 
                     overlay.remove();
-                    alert('✅ Scripts e configurações baixados e restaurados da Nuvem com sucesso!');
+                    if (typeof showToast === 'function') {
+                        showToast('✅ Scripts e configurações restaurados da Nuvem com sucesso!', 'success');
+                    } else {
+                        alert('✅ Scripts e configurações baixados e restaurados da Nuvem com sucesso!');
+                    }
                 };
 
                 document.body.appendChild(overlay);
@@ -8860,14 +9002,14 @@ Clique para abrir Minha Conta e Sincronização`;
 service cloud.firestore {
   match /databases/{database}/documents {
     
-    // Regras de acesso da coleção de usuários
+    // Regras da coleção de usuários da equipe
     match /users/{userId} {
       allow read, write: if request.auth != null && (
         request.auth.uid == userId ||
         request.auth.token.email in ['leogabfx@gmail.com', 'leonardo3dtelecom@gmail.com']
       );
 
-      // Subcoleção com os scripts do usuário
+      // Subcoleção com os scripts e configurações individuais do usuário
       match /settings/{docId} {
         allow read, write: if request.auth != null && (
           request.auth.uid == userId ||
@@ -8876,8 +9018,13 @@ service cloud.firestore {
       }
     }
 
-    // Scripts padrão globais da equipe
+    // Modelos oficiais e scripts corporativos globais da equipe
     match /templates/{docId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.token.email in ['leogabfx@gmail.com', 'leonardo3dtelecom@gmail.com'];
+    }
+
+    match /global_settings/{docId} {
       allow read: if request.auth != null;
       allow write: if request.auth != null && request.auth.token.email in ['leogabfx@gmail.com', 'leonardo3dtelecom@gmail.com'];
     }
@@ -9165,14 +9312,29 @@ service cloud.firestore {
             overlay.querySelector('#admBtnPushDefaults').onclick = async () => {
                 if (!confirm('Deseja salvar a lista atual de scripts como o modelo padrão global da empresa no Firestore? Novos atendentes que conectarem receberão esta base.')) return;
                 try {
+                    const appData = getAppData();
                     const payload = {
-                        scripts: getAppData(),
+                        scripts: appData,
+                        tabOrder: getSavedTabOrder(appData),
                         customDefaults: getCustomDefaults(),
+                        settings: {
+                            theme: localStorage.getItem(THEME_KEY) || 'dark',
+                            layout: localStorage.getItem(LAYOUT_KEY) || 'grid',
+                            scale: parseFloat(localStorage.getItem(SCALE_KEY)) || 1
+                        },
                         updatedBy: currentUser.email,
                         updatedAt: new Date().toISOString()
                     };
-                    await firebaseDb.collection('global_settings').doc('default_scripts').set(payload);
-                    alert('Scripts padrão corporativos atualizados na nuvem com sucesso!');
+                    // Salva em templates/default_scripts e global_settings/default_scripts para compatibilidade total
+                    await Promise.all([
+                        firebaseDb.collection('templates').doc('default_scripts').set(payload, { merge: true }),
+                        firebaseDb.collection('global_settings').doc('default_scripts').set(payload, { merge: true })
+                    ]);
+                    if (typeof showToast === 'function') {
+                        showToast('Scripts padrão corporativos atualizados na nuvem com sucesso!', 'success');
+                    } else {
+                        alert('Scripts padrão corporativos atualizados na nuvem com sucesso!');
+                    }
                 } catch(e) {
                     alert('Erro ao salvar scripts corporativos: ' + (e.message || e));
                 }
