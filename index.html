@@ -310,6 +310,58 @@
             overflow: hidden !important;
         }
 
+        
+        /* ============================================================
+           SISTEMA DE TEMAS VISUAIS: CINZA (PADRÃO), OLED (ESCURO) E CLARO
+           ============================================================ */
+        body.theme-dark {
+            --bg-color: #1e1e1e !important;
+            --sidebar-bg: #252526 !important;
+            --tab-bg: #2d2d2d !important;
+            --tab-active: #1e1e1e !important;
+            --card-bg: #252526 !important;
+            --text-color: #d4d4d4 !important;
+            --title-color: #4ec9b0 !important;
+            --border-color: #3f3f46 !important;
+            --accent-color: #007acc !important;
+            --tag-bg: #383838 !important;
+            --textarea-bg: #1e1e1e !important;
+            background-color: var(--bg-color) !important;
+            color: var(--text-color) !important;
+        }
+
+        body.theme-oled {
+            --bg-color: #000000 !important;
+            --sidebar-bg: #0a0a0a !important;
+            --tab-bg: #121212 !important;
+            --tab-active: #000000 !important;
+            --card-bg: #0a0a0a !important;
+            --text-color: #e5e7eb !important;
+            --title-color: #38bdf8 !important;
+            --border-color: #222222 !important;
+            --accent-color: #0284c7 !important;
+            --tag-bg: #1a1a1a !important;
+            --textarea-bg: #000000 !important;
+            background-color: var(--bg-color) !important;
+            color: var(--text-color) !important;
+        }
+
+        body.theme-light {
+            --bg-color: #f4f5f8 !important;
+            --sidebar-bg: #ffffff !important;
+            --tab-bg: #e5e7eb !important;
+            --tab-active: #ffffff !important;
+            --card-bg: #ffffff !important;
+            --text-color: #1f2937 !important;
+            --title-color: #0f766e !important;
+            --border-color: #d1d5db !important;
+            --accent-color: #2563eb !important;
+            --tag-bg: #e5e7eb !important;
+            --textarea-bg: #f9fafb !important;
+            background-color: var(--bg-color) !important;
+            color: var(--text-color) !important;
+        }
+
         /* Sistema de Tags e Alarmes nos Cards */
         .card-meta-bar {
             display: flex;
@@ -2614,7 +2666,7 @@
                 .replace(/'/g, '&#039;');
         }
 
-        const APP_VERSION = '2.5.7';
+        const APP_VERSION = '2.6.1';
         const UPDATE_MANIFEST_URL = 'https://firestrykerfx.github.io/version.json';
         const UPDATE_CHECK_INTERVAL = 6 * 60 * 60 * 1000;
                 /* ===== Notificações Toasts Flutuantes Modernas ===== */
@@ -2658,7 +2710,10 @@
                     {
                         "text": "🌞 Olá!\n\n📢 Agora contamos com nosso próprio WebChat! Um canal muito mais seguro e de fácil comunicação, assim deixando uma comunicação mais limpa e clara.\n\n📱 Você também poderá dar continuidade à conversa por outros aparelhos, desde que tenha seu CPF ou CNPJ em mãos, basta acessar o link que foi enviado.\n\n🔗 Deixarei um link abaixo do nosso WebChat, que você poderá acessar sempre que precisar falar conosco.\n\n💬 Estamos à disposição para ajudar!",
                         "tags": [],
-                        "alarm": ""
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
                     }
                 ]
             },
@@ -2668,12 +2723,18 @@
                     {
                         "text": "(saudacao), sou o (nome)\nFaço parte do time de suporte da 3D Telecom, e farei o seu atendimento! 😊\nCerto para poder te ajudar preciso de algumas informações:\nCom quem eu falo? Qual seu número para contato?\n\nSeu protocolo é: ",
                         "tags": [],
-                        "alarm": ""
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
                     },
                     {
                         "text": "Vi que você já interagiu pelo nosso novo WebChat. 😊\n\nCaso precise solicitar um novo atendimento futuramente, você pode entrar em contato diretamente por lá.\n\n🔗 Para facilitar, deixarei abaixo o link de acesso, assim você poderá nos chamar sempre que precisar.\n\n💬 Conte conosco!\n\nLink WebChat: https://3dtelecom.web.vmix.chat/login",
                         "tags": [],
-                        "alarm": ""
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
                     }
                 ]
             },
@@ -2683,7 +2744,10 @@
                     {
                         "text": "👋 Seja bem-vindo ao nosso novo WebChat!\n💬 Aqui, podemos conversar de uma maneira mais segura e versátil.\n\n(saudacao), sou o Leonardo\nFaço parte do time de suporte da 3D Telecom, e farei o seu atendimento! 😊\nCerto para poder te ajudar preciso de algumas informações:\nCom quem eu falo? Qual seu número para contato?\n\nSeu protocolo é: ",
                         "tags": [],
-                        "alarm": ""
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
                     }
                 ]
             },
@@ -2693,12 +2757,18 @@
                     {
                         "text": "🔍 PERGUNTAS DE TRIAGEM:\n• Com quem eu falo e no que eu posso ajudar? 😊\n• Certo para poder te ajudar preciso de algumas informações: Com quem eu falo? Qual seu número para contato?\n• Entendi, onde você está notando a lentidão? Em quais aplicativos e dispositivos? Para eu poder identificar o problema e lhe ajudar melhor.\n• Certo, você consegue me descrever melhor o problema? Preciso de mais detalhes como os aplicativos que estavam travando, se era somente no Wi-Fi, se era algum cômodo da residência que estava tendo dificuldade de sinal.\n• Poderia me dizer como percebe a instabilidade? Seria em algum aplicativo ou dispositivo em específico?",
                         "tags": [],
-                        "alarm": ""
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
                     },
                     {
                         "text": "📅 DISPONIBILIDADE E AGENDAMENTO\n• Só precisamos saber quais horários você tem disponibilidade todos os dias. Na parte da manhã/tarde ou o dia todo?\n• Certo, que horários normalmente tem alguém em casa todos os dias? Lembrando que o chamado tem um prazo máximo de 3 dias úteis mas vamos fazer o possível para lhe atender o quanto antes.\n• Certo vou abrir seu chamado, ele tem um prazo máximo de 3 dias úteis mas vamos fazer o possível para lhe atender o quanto antes. O técnico vai lhe ligar uns 15-20 minutos antes de ir ao local avisando que está indo. Teria algo mais em que posso te ajudar?",
                         "tags": [],
-                        "alarm": ""
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
                     }
                 ]
             },
@@ -2708,164 +2778,70 @@
                     {
                         "text": "Teria mais alguma dúvida ou poderia lhe ajudar em algo mais?",
                         "tags": [],
-                        "alarm": ""
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
                     }
                 ]
             }
-        ]
-    },
-    "tab_1791383391772": {
-        "name": "📞Telefone",
-        "groups": [
+        ],
+        "items": [
             {
-                "title": "📞 TENTATIVAS DE CONTATO / LIGAÇÕES NÃO ATENDIDAS",
-                "items": [
-                    {
-                        "text": "Tentado contato via telefone, chamou até cair na caixa de mensagens.",
-                        "tags": [],
-                        "alarm": ""
-                    },
-                    {
-                        "text": " Tentado contato via telefone, caiu direto na caixa de mensagens.",
-                        "tags": [],
-                        "alarm": ""
-                    },
-                    {
-                        "text": "Chamou até dar ''Este telefone está impossibilitado de receber este tipo de chamada neste momento''\n",
-                        "tags": [],
-                        "alarm": ""
-                    }
-                ]
-            }
-        ]
-    },
-    "tab_visita": {
-        "name": "🛠️Script Visita",
-        "groups": [
-            {
-                "title": "Geral",
-                "items": [
-                    {
-                        "text": "- Título: \n- Descrição problema: \n- Melhor horário: \n- Telefone: \n- Plano:  \n- Ponto de acesso: \n- valor: verificar no local",
-                        "tags": [],
-                        "alarm": ""
-                    },
-                    {
-                        "text": "- Contato: \n- Relato: lentidão/youtube/whatsapp/netflix\n- Sinal: \n- Ping: média 6 perda 0%\n- Extrato: ok\n- Ajustes: setado canal auto\n- Reiniciado: Sim / Nao (se for nao justificar)\n- MTU/MRU: 1492 MRU\n- WAN: 1000Mbps porta fixa ok\n- DNS: OK\n- Resumo: ",
-                        "tags": [],
-                        "alarm": ""
-                    },
-                    {
-                        "text": "SEM ACESSO\n\n- Título: Sem acesso\n- Descrição problema: LOS, reiniciou os equipamentos mas sem sucesso.\n\n- Melhor horário: \n- Telefone: \n- Plano:   \n- Ponto de acesso: \n- valor: verificar no local",
-                        "tags": [],
-                        "alarm": ""
-                    },
-                    {
-                        "text": "🔌 PASSAGEM DE CABO DE REDE\nAssunto: Passagem de cabo de rede.\n\nOnde é feito?\n- Passar para outros cômodos\n- Passar pra outra casa, galpão ou garagem (se for dentro do mesmo lote)\n\nOnde não é feito em hipótese alguma?\n- Quando for sair pra outro lote.\n- Quando passa de 50 metros.\n\nO que cobrar? Quais valores?\n- Para casas: \n*Se for só uma mudança de cômodo cobra só o material\n-Se for pra fora da casa:\n*Cobrar serviço visita técnica R$ 90,00 + materiais.\n\n- Empresas: Qualquer lugar, R$ 90,00 por hora + material (valores padrões).\nFração de hora como que fica?\n(técnico levou 30 minutos, 15 minutos, 45 minutos), cobrado sempre mínimo R$ 90,00\n\n**Se for pra painel solar, precisa de vídeo de onde deverá passar o cabo de rede.",
-                        "tags": [],
-                        "alarm": ""
-                    }
-                ]
+                "text": "🌞 Olá!\n\n📢 Agora contamos com nosso próprio WebChat! Um canal muito mais seguro e de fácil comunicação, assim deixando uma comunicação mais limpa e clara.\n\n📱 Você também poderá dar continuidade à conversa por outros aparelhos, desde que tenha seu CPF ou CNPJ em mãos, basta acessar o link que foi enviado.\n\n🔗 Deixarei um link abaixo do nosso WebChat, que você poderá acessar sempre que precisar falar conosco.\n\n💬 Estamos à disposição para ajudar!",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
             },
             {
-                "title": "Transferência de endereço",
-                "items": [
-                    {
-                        "text": "🏠 TRANSFERÊNCIA DE ENDEREÇO\nPara a mudança de endereço vamos precisar de alguns dados para o agendamento como.\n\n- Nome da rua:\n- Bairro: \n- Cidade:\n- Ponto de referencia: \n- Cor da casa e se é madeira ou material: \n- Telefone que atenda para contato:\n- Horário que teria gente no local para atender o técnico: \n(dentro do horário comercial ou aos sábados ate meio dia)\nPrazo: 2 dias úteis.\nLocalização:\nJá foram levados os equipamentos?",
-                        "tags": [],
-                        "alarm": ""
-                    },
-                    {
-                        "text": "- Melhor horário: qualquer horário\n- Telefone:\n- Endereço:\n- Localização:\n- Equipamentos no local: \n- Valor visita: cortesia",
-                        "tags": [],
-                        "alarm": ""
-                    }
-                ]
+                "text": "(saudacao), sou o (nome)\nFaço parte do time de suporte da 3D Telecom, e farei o seu atendimento! 😊\nCerto para poder te ajudar preciso de algumas informações:\nCom quem eu falo? Qual seu número para contato?\n\nSeu protocolo é: ",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
             },
             {
-                "title": "Evento",
-                "items": [
-                    {
-                        "text": "🎉 INTERNET PARA EVENTO\nEndereço:  \n-Loc: \n-Data e hora:\n-Rede: Privado ou Publico\n-Nome do wifi e senha:\n-Quantidade de pessoas:\n-Contato:  \n\nValor: 500$ (ciente)\n-----------------------------------\n*Abrir atendimento nome do cliente é: Cliente consumidor\n*Tipo de atendimento: outros\n*Não precisa de iclass",
-                        "tags": [],
-                        "alarm": ""
-                    }
-                ]
+                "text": "Vi que você já interagiu pelo nosso novo WebChat. 😊\n\nCaso precise solicitar um novo atendimento futuramente, você pode entrar em contato diretamente por lá.\n\n🔗 Para facilitar, deixarei abaixo o link de acesso, assim você poderá nos chamar sempre que precisar.\n\n💬 Conte conosco!\n\nLink WebChat: https://3dtelecom.web.vmix.chat/login",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
             },
             {
-                "title": "Agendamento",
-                "items": [
-                    {
-                        "text": " Só precisamos saber quais horários você tem disponibilidade todos os dias. Na parte da manhã/tarde ou o dia todo?\n",
-                        "tags": [],
-                        "alarm": ""
-                    },
-                    {
-                        "text": "\nCerto, que horários normalmente tem alguém em casa todos os dias? Lembrando que o chamado tem um prazo máximo de 3 dias úteis mas vamos fazer o possível para lhe atender o quanto antes.\n",
-                        "tags": [],
-                        "alarm": ""
-                    },
-                    {
-                        "text": " Certo vou abrir seu chamado, ele tem um prazo máximo de 3 dias úteis mas vamos fazer o possível para lhe atender o quanto antes. O técnico vai lhe ligar uns 15-20 minutos antes de ir ao local avisando que está indo. Teria algo mais em que posso te ajudar?",
-                        "tags": [],
-                        "alarm": ""
-                    }
-                ]
-            }
-        ]
-    },
-    "tab_valores": {
-        "name": "💰Valores & Equipamentos",
-        "groups": [
-            {
-                "title": "Geral",
-                "items": [
-                    {
-                        "text": "📡 ROTEADORES E EQUIPAMENTOS\n• Roteador AX2: R$ 250,00 à vista / R$ 275,00 a prazo\n• Roteador AX2S: R$ 250,00 à vista / R$ 275,00 a prazo\n• Roteador AX3: R$ 340,00 à vista / R$ 380,00 a prazo\n• Roteador AX3S: R$ 250,00 à vista / R$ 275,00 a prazo\n• Roteador EX511 (TP-Link): R$ 250,00 à vista / R$ 275,00 a prazo\n• Roteador EX510 Pro (TP-Link): R$ 480,00 à vista / R$ 535,00 a prazo\n• UNIFI: R$ 980,00 à vista / R$ 1.100,00 a prazo\n• TV Box: R$ 250,00 à vista\n• Mini Nobreak: R$ 350,00 à vista / R$ 375,00 a prazo\n• Hub 5 Portas: R$ 110,00 à vista / R$ 145,00 a prazo\n• Hub 8 Portas: R$ 195,00 à vista / R$ 210,00 a prazo\n• Telefone IP: R$ 410,00 à vista / R$ 435,00 a prazo\n• ATA (SPA2102): R$ 260,00 à vista / R$ 280,00 a prazo (Garantia de 6 meses | Fonte ATA: R$ 60,00)",
-                        "tags": [],
-                        "alarm": ""
-                    }
-                ]
+                "text": "👋 Seja bem-vindo ao nosso novo WebChat!\n💬 Aqui, podemos conversar de uma maneira mais segura e versátil.\n\n(saudacao), sou o Leonardo\nFaço parte do time de suporte da 3D Telecom, e farei o seu atendimento! 😊\nCerto para poder te ajudar preciso de algumas informações:\nCom quem eu falo? Qual seu número para contato?\n\nSeu protocolo é: ",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
             },
             {
-                "title": "Nova coluna",
-                "items": [
-                    {
-                        "text": "🔌 CABOS, CONECTORES E ACESSÓRIOS\n• Cabo de Rede (Drop / Padrão): R$ 1,50 a R$ 2,00 o metro\n• Cabo de Rede Blindado: R$ 4,90 a R$ 6,00 o metro (conforme aplicação)\n• Conector RJ45: R$ 2,50 cada\n• Régua de Tomada: R$ 50,00 à vista / R$ 55,00 a prazo\n• Controle Box: R$ 25,00 à vista\n• Cabo HDMI (1 MT): R$ 25,00 à vista\n• Cabo HDMI (5 MT): R$ 50,00 à vista\n• Equipamento Ponto a Ponto (Par): R$ 700,00 (não inclui metragem de cabo)\n• Equipamento Ponto a Ponto (Par + 2 Módulos SFP): R$ 700,00 (necessita análise prévia)",
-                        "tags": [],
-                        "alarm": ""
-                    }
-                ]
+                "text": "🔍 PERGUNTAS DE TRIAGEM:\n• Com quem eu falo e no que eu posso ajudar? 😊\n• Certo para poder te ajudar preciso de algumas informações: Com quem eu falo? Qual seu número para contato?\n• Entendi, onde você está notando a lentidão? Em quais aplicativos e dispositivos? Para eu poder identificar o problema e lhe ajudar melhor.\n• Certo, você consegue me descrever melhor o problema? Preciso de mais detalhes como os aplicativos que estavam travando, se era somente no Wi-Fi, se era algum cômodo da residência que estava tendo dificuldade de sinal.\n• Poderia me dizer como percebe a instabilidade? Seria em algum aplicativo ou dispositivo em específico?",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
             },
             {
-                "title": "Nova coluna",
-                "items": [
-                    {
-                        "text": "📍 TAXA DE VISITA / MANUTENÇÃO E MÃO DE OBRA\n• Taxa de Visita / Manutenção: R$ 90,00 (valor fixo único para qualquer chamado de qualquer cidade atendida + materiais utilizados).\n• Visita / Mão de Obra para Empresas: R$ 90,00 por hora (cobrado o mínimo de 1 hora ou fração, ex: 15, 30 ou 45 minutos = R$ 90,00) + materiais.\n• Instalações Novas: Até 30 metros de cabo de rede gratuito e mão de obra gratuita (mesmo fora da casa) para instalações realizadas a partir de 03/10/2024.\n• Passagem de Cabo Interno (mesmo lote / mesma casa): Cobra-se apenas o material (cabo e conectores RJ45), com mão de obra gratuita.\n• Passagem de Cabo Externo / Fora da casa: Cobra-se a taxa de visita de R$ 90,00 + materiais utilizados.",
-                        "tags": [],
-                        "alarm": ""
-                    }
-                ]
-            }
-        ]
-    },
-    "tab_apps": {
-        "name": "💡Explicações clientes",
-        "groups": [
+                "text": "📅 DISPONIBILIDADE E AGENDAMENTO\n• Só precisamos saber quais horários você tem disponibilidade todos os dias. Na parte da manhã/tarde ou o dia todo?\n• Certo, que horários normalmente tem alguém em casa todos os dias? Lembrando que o chamado tem um prazo máximo de 3 dias úteis mas vamos fazer o possível para lhe atender o quanto antes.\n• Certo vou abrir seu chamado, ele tem um prazo máximo de 3 dias úteis mas vamos fazer o possível para lhe atender o quanto antes. O técnico vai lhe ligar uns 15-20 minutos antes de ir ao local avisando que está indo. Teria algo mais em que posso te ajudar?",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
             {
-                "title": "Geral",
-                "items": [
-                    {
-                        "text": "🚀 EXPLICAÇÃO BITS vs BYTES (VELOCIDADE DE DOWNLOAD)\n\"É bem comum essa confusão! A diferença está na unidade de medida:\n• Mbps (Mega): Velocidade entregue pelo provedor (ex: plano de 1000).\n• MB/s: Como o computador/console mede o tamanho do arquivo baixando.\nA conta é simples: 1 Byte equivale a 8 Bits. Para saber a velocidade de download, divida seu plano por 8:\n✅ 1000 Mbps ÷ 8 = 125 MB/s.\nSe o download está na casa de 125 MB/s, sua internet entrega 100% da velocidade contratada! Para teste oficial, utilize speedtest.net.\"",
-                        "tags": [],
-                        "alarm": ""
-                    },
-                    {
-                        "text": "(cliente) deixe-me explicar alguns detalhes para você.\nO seu plano é de 400 megas. Isso não significa que enviamos 400 Mbps para cada aparelho, e sim que esse é a banda liberada e compartilhada entre todos os dispositivos conectados. Ou seja, os 400 Mbps são divididos e consumidos conforme a quantidade de aparelhos usando a internet ao mesmo tempo, e tipo de serviço.\n\nAlém disso, se o teste de velocidade foi feito via Wi-Fi (como no celular), ele não é considerado válido, pois o Wi-Fi sofre naturalmente interferências . O teste válido deve ser feito via cabo, em um computador ou note\nNo momento, há 4 aparelhos conectados simultaneamente. E mesmo a TV, quando conectada via cabo, pode apresentar limitação de velocidade devido ao próprio hardware. Isso não é necessariamente um problema, pois a maioria dos serviços não exige toda a velocidade da sua conexão\nAcessar sites não devem consumir mais que 5 mbps\nVídeos em 4K no YouTube consomem no máximo 20 Mbps (e às vezes até menos).\nJogos online pesados não passam de 50 Mbps.\n\nEntão, por que 400 megas? Para que você possa usar vários aparelhos ao mesmo tempo, de forma confortável, sem travamentos, já que a banda total é compartilhada.",
-                        "tags": [],
-                        "alarm": ""
-                    }
-                ]
+                "text": "Teria mais alguma dúvida ou poderia lhe ajudar em algo mais?",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
             }
         ]
     },
@@ -2878,17 +2854,26 @@
                     {
                         "text": "Perfeito! Para seguirmos com a ativação, por gentileza, confirme se os dados abaixo estão corretos:\nE-mail: (email)\nTelefone: (telefone)",
                         "tags": [],
-                        "alarm": ""
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
                     },
                     {
                         "text": "Acesse via numero de celular e escolha o aplicativo correspondente clicando em \"salvar\" (símbolo de disquete no final da pagina) caso seja necessário.\nAcesse o link abaixo para realizar este procedimento\nhttps://www.portaldoassinante.com/3dtelecom\n\nassim que finalizar este procedimento me informe que lhe passo a segunda parte, qualquer dúvida só me pedir.\n",
                         "tags": [],
-                        "alarm": ""
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
                     },
                     {
                         "text": "Acesse o link abaixo, escolha o serviço contratado e clique em \"Primeiro acesso\" para visualizar o PDF detalhado:\n🔗 https://playhub.rds.land/como-logar-brasil\n",
                         "tags": [],
-                        "alarm": ""
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
                     }
                 ]
             },
@@ -2898,7 +2883,10 @@
                     {
                         "text": "🎧 Passo a Passo para Ativação do Deezer:\n1. Acesse o site: https://ativardeezer.com.br/\n2. Digite seu número de celular.\n3. Você receberá um código de confirmação via WhatsApp ou SMS.\n4. Insira o código no site e clique em \"Continuar\".\n5. Em seguida, acesse: https://www.deezer.com/br/activate/playhubbr\n6. Informe novamente o seu número de celular.\n7. Clique no link recebido por SMS.\n8. Se não tinha conta gratuita no Deezer, clique em \"Cadastrar\". Se já tinha conta, clique em \"Login\", depois em \"Fazer login com endereço de e-mail\" e insira suas credenciais.\n*(Nota: Utilize o e-mail apenas na ativação; depois poderá logar com Google, Facebook ou Apple ID).*\n",
                         "tags": [],
-                        "alarm": ""
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
                     }
                 ]
             },
@@ -2908,7 +2896,10 @@
                     {
                         "text": "🎬 Tutoriais em Vídeo de Parcerias:\n• Tutorial Globoplay: https://drive.google.com/file/d/1yV0BEVB11tXibon39sskAJiaUlwIoWVe/view\n• Tutorial Premiere: https://drive.google.com/file/d/11P7_b1m5ZDrh311zmY3UmVVeqroMaVli/view\n• Tutorial Telecine: https://drive.google.com/file/d/1uyzT0mtV2TUbKOG9tBfu84IV2Hcvc_qq/view\n",
                         "tags": [],
-                        "alarm": ""
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
                     }
                 ]
             },
@@ -2918,7 +2909,10 @@
                     {
                         "text": "Acesse https://www.looke.com.br/, clique em \"Login com operadora\" e após em \"Outros parceiros\".\n• Usuário: (usuario)\n• Senha: (senha)\n*(Alternativa 2: Clicar em \"Ative seu plano\" no canto direito e informar o telefone e CPF do titular do contrato).*",
                         "tags": [],
-                        "alarm": ""
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
                     }
                 ]
             },
@@ -2928,7 +2922,10 @@
                     {
                         "text": "Acesse o site https://auth.hbomax.com/login, clique em \"Crie uma conta HBO\", procure na lista por \"PLAYHUB\" e selecione-o. Insira seu número de telefone e valide com o código recebido via SMS.\n",
                         "tags": [],
-                        "alarm": ""
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
                     }
                 ]
             },
@@ -2938,9 +2935,154 @@
                     {
                         "text": "+:\nAcesse: https://ativefacil.com.br/\n• Passo 1: Abra o link no celular com a conta Disney+ já ativa: https://www.disneyplus.com/identity/begin?cid=DSS-OFFDEVICE-LP\n• Passo 2: Abra o aplicativo da Disney+ na TV e insira o código exibido na tela.\n• Passo 3: Serviço ativado com sucesso!",
                         "tags": [],
-                        "alarm": ""
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
                     }
                 ]
+            }
+        ],
+        "items": [
+            {
+                "text": "Perfeito! Para seguirmos com a ativação, por gentileza, confirme se os dados abaixo estão corretos:\nE-mail: (email)\nTelefone: (telefone)",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "Acesse via numero de celular e escolha o aplicativo correspondente clicando em \"salvar\" (símbolo de disquete no final da pagina) caso seja necessário.\nAcesse o link abaixo para realizar este procedimento\nhttps://www.portaldoassinante.com/3dtelecom\n\nassim que finalizar este procedimento me informe que lhe passo a segunda parte, qualquer dúvida só me pedir.\n",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "Acesse o link abaixo, escolha o serviço contratado e clique em \"Primeiro acesso\" para visualizar o PDF detalhado:\n🔗 https://playhub.rds.land/como-logar-brasil\n",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "🎧 Passo a Passo para Ativação do Deezer:\n1. Acesse o site: https://ativardeezer.com.br/\n2. Digite seu número de celular.\n3. Você receberá um código de confirmação via WhatsApp ou SMS.\n4. Insira o código no site e clique em \"Continuar\".\n5. Em seguida, acesse: https://www.deezer.com/br/activate/playhubbr\n6. Informe novamente o seu número de celular.\n7. Clique no link recebido por SMS.\n8. Se não tinha conta gratuita no Deezer, clique em \"Cadastrar\". Se já tinha conta, clique em \"Login\", depois em \"Fazer login com endereço de e-mail\" e insira suas credenciais.\n*(Nota: Utilize o e-mail apenas na ativação; depois poderá logar com Google, Facebook ou Apple ID).*\n",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "🎬 Tutoriais em Vídeo de Parcerias:\n• Tutorial Globoplay: https://drive.google.com/file/d/1yV0BEVB11tXibon39sskAJiaUlwIoWVe/view\n• Tutorial Premiere: https://drive.google.com/file/d/11P7_b1m5ZDrh311zmY3UmVVeqroMaVli/view\n• Tutorial Telecine: https://drive.google.com/file/d/1uyzT0mtV2TUbKOG9tBfu84IV2Hcvc_qq/view\n",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "Acesse https://www.looke.com.br/, clique em \"Login com operadora\" e após em \"Outros parceiros\".\n• Usuário: (usuario)\n• Senha: (senha)\n*(Alternativa 2: Clicar em \"Ative seu plano\" no canto direito e informar o telefone e CPF do titular do contrato).*",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "Acesse o site https://auth.hbomax.com/login, clique em \"Crie uma conta HBO\", procure na lista por \"PLAYHUB\" e selecione-o. Insira seu número de telefone e valide com o código recebido via SMS.\n",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "+:\nAcesse: https://ativefacil.com.br/\n• Passo 1: Abra o link no celular com a conta Disney+ já ativa: https://www.disneyplus.com/identity/begin?cid=DSS-OFFDEVICE-LP\n• Passo 2: Abra o aplicativo da Disney+ na TV e insira o código exibido na tela.\n• Passo 3: Serviço ativado com sucesso!",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            }
+        ]
+    },
+    "tab_1791383391772": {
+        "name": "📞Telefone",
+        "groups": [
+            {
+                "title": "📞 TENTATIVAS DE CONTATO / LIGAÇÕES NÃO ATENDIDAS",
+                "items": [
+                    {
+                        "text": "Tentado contato via telefone, chamou até cair na caixa de mensagens.",
+                        "tags": [],
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
+                    },
+                    {
+                        "text": " Tentado contato via telefone, caiu direto na caixa de mensagens.",
+                        "tags": [],
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
+                    },
+                    {
+                        "text": "Chamou até dar ''Este telefone está impossibilitado de receber este tipo de chamada neste momento''\n",
+                        "tags": [],
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
+                    },
+                    {
+                        "text": "Chamou até dar como ocupado.\n",
+                        "tags": [],
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "text": "Tentado contato via telefone, chamou até cair na caixa de mensagens.",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": " Tentado contato via telefone, caiu direto na caixa de mensagens.",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "Chamou até dar ''Este telefone está impossibilitado de receber este tipo de chamada neste momento''\n",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "Chamou até dar como ocupado.\n",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
             }
         ]
     },
@@ -2953,17 +3095,26 @@
                     {
                         "text": "🔒 BLOQUEIO E DESBLOQUEIO\n• Verificação de Faturas em Aberto:\nO sistema interpreta como quase duas faturas em aberto quando há uma fatura pós-paga vencida do mês anterior e a fatura atual já se encontra em aberto, impedindo a liberação automática pelo WhatsApp.\n\n• Desbloqueio de Confiança:\n\"Verifiquei aqui que o desbloqueio de confiança já foi utilizado, e infelizmente ele só pode ser aplicado uma única vez. Mas quero te ajudar da melhor forma! Assim que o pagamento for realizado, sua conexão é liberada automaticamente. Para facilitar posso te encaminhar a fatura ou através do link https://portal.3dtelecom.com.br/login o pagamento pode ser feito via Pix ou cartão 😊.\"\n\n• Sistema PERMITIU liberar:\n\"Verifiquei aqui que sua conexão está bloqueada devido a uma fatura em atraso, fiz a liberação pra você por 48 horas. Para facilitar o pagamento e evitar que bloqueie novamente, deixarei nosso site abaixo:\nhttps://portal.3dtelecom.com.br/login \nA fatura em atraso estará na cor vermelha e com a data escrita!!\"",
                         "tags": [],
-                        "alarm": ""
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
                     },
                     {
                         "text": "\nSó lembrando que quando você copiar daqui do whats app para o pix copia e cola do banco você deve remover o '' HTTPS:// '' do inicio do código pix pois o whats app adiciona o mesmo quando é enviado aqui.\n",
                         "tags": [],
-                        "alarm": ""
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
                     },
                     {
                         "text": "você pode retirar através do nosso site https://portal.3dtelecom.com.br/login logando com o CPF/ CNPJ do titular do contrato e realizar o pagamento via boleto( código de barras ), pix, e cartão de crédito.",
                         "tags": [],
-                        "alarm": ""
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
                     }
                 ]
             },
@@ -2973,7 +3124,10 @@
                     {
                         "text": "📄 NOTAS FISCAIS (SEFAZ / NFCOM)\n• Mudança de Modelo: A SEFAZ mudou o modelo de notas para os provedores; agora todas as novas notas fiscais vêm no formato NFCOM.\n• Script de Envio:\n\"Segue a NFE NFCOM. A NFE de serviço será enviada a você através do e-mail entre 24 e 48 horas, tudo bem?\"",
                         "tags": [],
-                        "alarm": ""
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
                     }
                 ]
             },
@@ -2983,7 +3137,10 @@
                     {
                         "text": "📞 CONTATOS E DEPARTAMENTOS FINANCEIROS\n• Financeiro/NFE: Samira\n• Negociações Financeiras / Liberações Especiais: Jonis\n• Faturas (WhatsApp): (48) 9.9968-1169 (Digite #ativar para ativar as notificações)",
                         "tags": [],
-                        "alarm": ""
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
                     }
                 ]
             },
@@ -2993,99 +3150,176 @@
                     {
                         "text": "  \"Só lembrando que quando você copiar daqui do WhatsApp para o Pix e colar no banco, você deve remover o 'HTTPS://' do início do código Pix, pois o WhatsApp adiciona o mesmo quando é enviado aqui.\"\n",
                         "tags": [],
-                        "alarm": ""
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
                     }
                 ]
             }
+        ],
+        "items": [
+            {
+                "text": "🔒 BLOQUEIO E DESBLOQUEIO\n• Verificação de Faturas em Aberto:\nO sistema interpreta como quase duas faturas em aberto quando há uma fatura pós-paga vencida do mês anterior e a fatura atual já se encontra em aberto, impedindo a liberação automática pelo WhatsApp.\n\n• Desbloqueio de Confiança:\n\"Verifiquei aqui que o desbloqueio de confiança já foi utilizado, e infelizmente ele só pode ser aplicado uma única vez. Mas quero te ajudar da melhor forma! Assim que o pagamento for realizado, sua conexão é liberada automaticamente. Para facilitar posso te encaminhar a fatura ou através do link https://portal.3dtelecom.com.br/login o pagamento pode ser feito via Pix ou cartão 😊.\"\n\n• Sistema PERMITIU liberar:\n\"Verifiquei aqui que sua conexão está bloqueada devido a uma fatura em atraso, fiz a liberação pra você por 48 horas. Para facilitar o pagamento e evitar que bloqueie novamente, deixarei nosso site abaixo:\nhttps://portal.3dtelecom.com.br/login \nA fatura em atraso estará na cor vermelha e com a data escrita!!\"",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "\nSó lembrando que quando você copiar daqui do whats app para o pix copia e cola do banco você deve remover o '' HTTPS:// '' do inicio do código pix pois o whats app adiciona o mesmo quando é enviado aqui.\n",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "você pode retirar através do nosso site https://portal.3dtelecom.com.br/login logando com o CPF/ CNPJ do titular do contrato e realizar o pagamento via boleto( código de barras ), pix, e cartão de crédito.",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "📄 NOTAS FISCAIS (SEFAZ / NFCOM)\n• Mudança de Modelo: A SEFAZ mudou o modelo de notas para os provedores; agora todas as novas notas fiscais vêm no formato NFCOM.\n• Script de Envio:\n\"Segue a NFE NFCOM. A NFE de serviço será enviada a você através do e-mail entre 24 e 48 horas, tudo bem?\"",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "📞 CONTATOS E DEPARTAMENTOS FINANCEIROS\n• Financeiro/NFE: Samira\n• Negociações Financeiras / Liberações Especiais: Jonis\n• Faturas (WhatsApp): (48) 9.9968-1169 (Digite #ativar para ativar as notificações)",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "  \"Só lembrando que quando você copiar daqui do WhatsApp para o Pix e colar no banco, você deve remover o 'HTTPS://' do início do código Pix, pois o WhatsApp adiciona o mesmo quando é enviado aqui.\"\n",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            }
         ]
     },
-    "tab_oletv": {
-        "name": "📺🎬Olé TV/IPTV",
+    "tab_apps": {
+        "name": "💡Explicações clientes",
         "groups": [
             {
                 "title": "Geral",
                 "items": [
                     {
-                        "text": "Perfeito! Para seguirmos com a ativação, por gentileza, confirme se os dados abaixo estão corretos:\nE-mail: (email)\nTelefone: (telefone)",
+                        "text": "🚀 EXPLICAÇÃO BITS vs BYTES (VELOCIDADE DE DOWNLOAD)\n\"É bem comum essa confusão! A diferença está na unidade de medida:\n• Mbps (Mega): Velocidade entregue pelo provedor (ex: plano de 1000).\n• MB/s: Como o computador/console mede o tamanho do arquivo baixando.\nA conta é simples: 1 Byte equivale a 8 Bits. Para saber a velocidade de download, divida seu plano por 8:\n✅ 1000 Mbps ÷ 8 = 125 MB/s.\nSe o download está na casa de 125 MB/s, sua internet entrega 100% da velocidade contratada! Para teste oficial, utilize speedtest.net.\"",
                         "tags": [],
-                        "alarm": ""
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
                     },
                     {
-                        "text": "📋 PROCEDIMENTO DE CADASTRO E ATIVAÇÃO\n💬 Instrução de envio de senha:\n\"Certo, vou solicitar ao setor responsável e eles vão lhe enviar um e-mail da Olé TV. Você terá 5 minutos para abrir o e-mail, clicar em 'Clique aqui' na parte azul e cadastrar uma nova senha com no mínimo 8 caracteres (recomendamos apenas números para facilitar o acesso na TV). Te aviso assim que enviarem o e-mail.\"",
+                        "text": "(cliente) deixe-me explicar alguns detalhes para você.\nO seu plano é de 400 megas. Isso não significa que enviamos 400 Mbps para cada aparelho, e sim que esse é a banda liberada e compartilhada entre todos os dispositivos conectados. Ou seja, os 400 Mbps são divididos e consumidos conforme a quantidade de aparelhos usando a internet ao mesmo tempo, e tipo de serviço.\n\nAlém disso, se o teste de velocidade foi feito via Wi-Fi (como no celular), ele não é considerado válido, pois o Wi-Fi sofre naturalmente interferências . O teste válido deve ser feito via cabo, em um computador ou note\nNo momento, há 4 aparelhos conectados simultaneamente. E mesmo a TV, quando conectada via cabo, pode apresentar limitação de velocidade devido ao próprio hardware. Isso não é necessariamente um problema, pois a maioria dos serviços não exige toda a velocidade da sua conexão\nAcessar sites não devem consumir mais que 5 mbps\nVídeos em 4K no YouTube consomem no máximo 20 Mbps (e às vezes até menos).\nJogos online pesados não passam de 50 Mbps.\n\nEntão, por que 400 megas? Para que você possa usar vários aparelhos ao mesmo tempo, de forma confortável, sem travamentos, já que a banda total é compartilhada.",
                         "tags": [],
-                        "alarm": ""
-                    }
-                ]
-            },
-            {
-                "title": "Avisos",
-                "items": [
-                    {
-                        "text": "❌ APARELHOS NÃO HOMOLOGADOS (BTV / IPTV)\n\"Entendo perfeitamente, mas estes aparelhos não são homologados pela Anatel e, por isso, não conseguimos garantir o pleno funcionamento de serviços de terceiros que utilizam sistemas de rotas aos quais não temos acesso e que frequentemente sofrem bloqueios ou restrições, o que ocasiona travamentos.\"",
-                        "tags": [],
-                        "alarm": ""
-                    },
-                    {
-                        "text": "⚠ AVISOS DA FABRICANTE (APLICATIVOS ABAIXO DOS CANAIS)\n\"Identificamos que alguns aplicativos que apareciam abaixo dos canais da Olé TV não estão mais disponíveis. Isso ocorreu devido a uma atualização realizada pela fabricante do aparelho, que removeu esses aplicativos sem possibilidade de intervenção da nossa parte.\"",
-                        "tags": [],
-                        "alarm": ""
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
                     }
                 ]
             }
-        ]
-    },
-    "tab_rompimento": {
-        "name": "⚠️Rompimento",
-        "groups": [
+        ],
+        "items": [
             {
-                "title": "Rompimento",
-                "items": [
-                    {
-                        "text": "Olá, identificamos uma interrupção de sinal na região que você mora.\nNossa equipe já está trabalhando para solucionar o ocorrido.\nA previsão para restabelecimento é até as (hora) horas\nPedimos desculpas pelo transtorno, porém já estamos trabalhando para a solução.\nAtenciosamente - Suporte Técnico 3D Telecom",
-                        "tags": [],
-                        "alarm": ""
-                    }
-                ]
+                "text": "🚀 EXPLICAÇÃO BITS vs BYTES (VELOCIDADE DE DOWNLOAD)\n\"É bem comum essa confusão! A diferença está na unidade de medida:\n• Mbps (Mega): Velocidade entregue pelo provedor (ex: plano de 1000).\n• MB/s: Como o computador/console mede o tamanho do arquivo baixando.\nA conta é simples: 1 Byte equivale a 8 Bits. Para saber a velocidade de download, divida seu plano por 8:\n✅ 1000 Mbps ÷ 8 = 125 MB/s.\nSe o download está na casa de 125 MB/s, sua internet entrega 100% da velocidade contratada! Para teste oficial, utilize speedtest.net.\"",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
             },
             {
-                "title": "lnstabilidade Link",
-                "items": [
-                    {
-                        "text": "Olá, identificamos uma instabilidade na região que você mora.\nNossa equipe já está trabalhando para solucionar o ocorrido.\nA previsão para restabelecimento é até as (horas)\nPedimos desculpas pelo transtorno, porém já estamos trabalhando para a solução.\nAtenciosamente - Suporte Técnico 3D Telecom",
-                        "tags": [],
-                        "alarm": ""
-                    },
-                    {
-                        "text": "Identificamos uma instabilidade na região que você mora, porém já estamos trabalhando na solução. Pedimos desculpas pelo transtorno. Qualquer dúvida estaremos a disposição.\n\nPrevisão de finalização até as (horas) horas de hoje.\n\nTeria mais alguma dúvida ou poderia lhe ajudar em algo mais?",
-                        "tags": [],
-                        "alarm": ""
-                    }
-                ]
-            },
-            {
-                "title": "• Aviso Rádio (Obstruções / Desligamento):",
-                "items": [
-                    {
-                        "text": "\"Olá, vimos que você acabou ficando sem internet devido a obstruções de causas naturais (crescimento de árvores e matos próximo às torres). Informamos também o desligamento definitivo do sinal de rádio na sua região em (data), visto que sua residência não possui viabilidade para rede de fibra óptica no momento.\"",
-                        "tags": [],
-                        "alarm": ""
-                    }
-                ]
+                "text": "(cliente) deixe-me explicar alguns detalhes para você.\nO seu plano é de 400 megas. Isso não significa que enviamos 400 Mbps para cada aparelho, e sim que esse é a banda liberada e compartilhada entre todos os dispositivos conectados. Ou seja, os 400 Mbps são divididos e consumidos conforme a quantidade de aparelhos usando a internet ao mesmo tempo, e tipo de serviço.\n\nAlém disso, se o teste de velocidade foi feito via Wi-Fi (como no celular), ele não é considerado válido, pois o Wi-Fi sofre naturalmente interferências . O teste válido deve ser feito via cabo, em um computador ou note\nNo momento, há 4 aparelhos conectados simultaneamente. E mesmo a TV, quando conectada via cabo, pode apresentar limitação de velocidade devido ao próprio hardware. Isso não é necessariamente um problema, pois a maioria dos serviços não exige toda a velocidade da sua conexão\nAcessar sites não devem consumir mais que 5 mbps\nVídeos em 4K no YouTube consomem no máximo 20 Mbps (e às vezes até menos).\nJogos online pesados não passam de 50 Mbps.\n\nEntão, por que 400 megas? Para que você possa usar vários aparelhos ao mesmo tempo, de forma confortável, sem travamentos, já que a banda total é compartilhada.",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
             }
         ]
     },
-    "tab_senhas": {
-        "name": "🔑Senhas & Config",
+    "tab_valores": {
+        "name": "💰Valores & Equipamentos",
         "groups": [
             {
                 "title": "Geral",
                 "items": [
                     {
-                        "text": "🌐 CONFIGURAÇÕES DE REDE, IP E DNS\n• Servidores IPv4:\n  - DNS 1: 177.126.23.200\n  - DNS 2: 170.233.212.235\n• Servidores IPv6:\n  - DNS 1: 2804:c70:3d:9::3d\n  - DNS 2: 2804:c70:403d:3d::3d\n• Configuração VoIP:\n  - Servidor: voip.interip.com.br\n  - Porta VoIP: 65210",
+                        "text": "📡 ROTEADORES E EQUIPAMENTOS\n• Roteador AX2: R$ 250,00 à vista / R$ 275,00 a prazo\n• Roteador AX2S: R$ 250,00 à vista / R$ 275,00 a prazo\n• Roteador AX3: R$ 340,00 à vista / R$ 380,00 a prazo\n• Roteador AX3S: R$ 250,00 à vista / R$ 275,00 a prazo\n• Roteador EX511 (TP-Link): R$ 250,00 à vista / R$ 275,00 a prazo\n• Roteador EX510 Pro (TP-Link): R$ 480,00 à vista / R$ 535,00 a prazo\n• UNIFI: R$ 980,00 à vista / R$ 1.100,00 a prazo\n• TV Box: R$ 250,00 à vista\n• Mini Nobreak: R$ 350,00 à vista / R$ 375,00 a prazo\n• Hub 5 Portas: R$ 110,00 à vista / R$ 145,00 a prazo\n• Hub 8 Portas: R$ 195,00 à vista / R$ 210,00 a prazo\n• Telefone IP: R$ 410,00 à vista / R$ 435,00 a prazo\n• ATA (SPA2102): R$ 260,00 à vista / R$ 280,00 a prazo (Garantia de 6 meses | Fonte ATA: R$ 60,00)",
                         "tags": [],
-                        "alarm": ""
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
                     }
                 ]
+            },
+            {
+                "title": "Nova coluna",
+                "items": [
+                    {
+                        "text": "🔌 CABOS, CONECTORES E ACESSÓRIOS\n• Cabo de Rede (Drop / Padrão): R$ 1,50 a R$ 2,00 o metro\n• Cabo de Rede Blindado: R$ 4,90 a R$ 6,00 o metro (conforme aplicação)\n• Conector RJ45: R$ 2,50 cada\n• Régua de Tomada: R$ 50,00 à vista / R$ 55,00 a prazo\n• Controle Box: R$ 25,00 à vista\n• Cabo HDMI (1 MT): R$ 25,00 à vista\n• Cabo HDMI (5 MT): R$ 50,00 à vista\n• Equipamento Ponto a Ponto (Par): R$ 700,00 (não inclui metragem de cabo)\n• Equipamento Ponto a Ponto (Par + 2 Módulos SFP): R$ 700,00 (necessita análise prévia)",
+                        "tags": [],
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
+                    }
+                ]
+            },
+            {
+                "title": "Nova coluna",
+                "items": [
+                    {
+                        "text": "📍 TAXA DE VISITA / MANUTENÇÃO E MÃO DE OBRA\n• Taxa de Visita / Manutenção: R$ 90,00 (valor fixo único para qualquer chamado de qualquer cidade atendida + materiais utilizados).\n• Visita / Mão de Obra para Empresas: R$ 90,00 por hora (cobrado o mínimo de 1 hora ou fração, ex: 15, 30 ou 45 minutos = R$ 90,00) + materiais.\n• Instalações Novas: Até 30 metros de cabo de rede gratuito e mão de obra gratuita (mesmo fora da casa) para instalações realizadas a partir de 03/10/2024.\n• Passagem de Cabo Interno (mesmo lote / mesma casa): Cobra-se apenas o material (cabo e conectores RJ45), com mão de obra gratuita.\n• Passagem de Cabo Externo / Fora da casa: Cobra-se a taxa de visita de R$ 90,00 + materiais utilizados.",
+                        "tags": [],
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "text": "📡 ROTEADORES E EQUIPAMENTOS\n• Roteador AX2: R$ 250,00 à vista / R$ 275,00 a prazo\n• Roteador AX2S: R$ 250,00 à vista / R$ 275,00 a prazo\n• Roteador AX3: R$ 340,00 à vista / R$ 380,00 a prazo\n• Roteador AX3S: R$ 250,00 à vista / R$ 275,00 a prazo\n• Roteador EX511 (TP-Link): R$ 250,00 à vista / R$ 275,00 a prazo\n• Roteador EX510 Pro (TP-Link): R$ 480,00 à vista / R$ 535,00 a prazo\n• UNIFI: R$ 980,00 à vista / R$ 1.100,00 a prazo\n• TV Box: R$ 250,00 à vista\n• Mini Nobreak: R$ 350,00 à vista / R$ 375,00 a prazo\n• Hub 5 Portas: R$ 110,00 à vista / R$ 145,00 a prazo\n• Hub 8 Portas: R$ 195,00 à vista / R$ 210,00 a prazo\n• Telefone IP: R$ 410,00 à vista / R$ 435,00 a prazo\n• ATA (SPA2102): R$ 260,00 à vista / R$ 280,00 a prazo (Garantia de 6 meses | Fonte ATA: R$ 60,00)",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "🔌 CABOS, CONECTORES E ACESSÓRIOS\n• Cabo de Rede (Drop / Padrão): R$ 1,50 a R$ 2,00 o metro\n• Cabo de Rede Blindado: R$ 4,90 a R$ 6,00 o metro (conforme aplicação)\n• Conector RJ45: R$ 2,50 cada\n• Régua de Tomada: R$ 50,00 à vista / R$ 55,00 a prazo\n• Controle Box: R$ 25,00 à vista\n• Cabo HDMI (1 MT): R$ 25,00 à vista\n• Cabo HDMI (5 MT): R$ 50,00 à vista\n• Equipamento Ponto a Ponto (Par): R$ 700,00 (não inclui metragem de cabo)\n• Equipamento Ponto a Ponto (Par + 2 Módulos SFP): R$ 700,00 (necessita análise prévia)",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "📍 TAXA DE VISITA / MANUTENÇÃO E MÃO DE OBRA\n• Taxa de Visita / Manutenção: R$ 90,00 (valor fixo único para qualquer chamado de qualquer cidade atendida + materiais utilizados).\n• Visita / Mão de Obra para Empresas: R$ 90,00 por hora (cobrado o mínimo de 1 hora ou fração, ex: 15, 30 ou 45 minutos = R$ 90,00) + materiais.\n• Instalações Novas: Até 30 metros de cabo de rede gratuito e mão de obra gratuita (mesmo fora da casa) para instalações realizadas a partir de 03/10/2024.\n• Passagem de Cabo Interno (mesmo lote / mesma casa): Cobra-se apenas o material (cabo e conectores RJ45), com mão de obra gratuita.\n• Passagem de Cabo Externo / Fora da casa: Cobra-se a taxa de visita de R$ 90,00 + materiais utilizados.",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
             }
         ]
     },
@@ -3098,7 +3332,10 @@
                     {
                         "text": "Procedimentos para encerrar clientes sem comunicação\n\n\n- Não interagiu nada com técnico e não teve mensagem durante o robô. (Encerrar após 4 horas durante o dia ou final do expediente a tarde)\n\n- Interagiu apenas no início relatando o problema e sumiu. (Abrir att, anotar teste, realizar procedimentos e avisar que foi feito procedimentos que ele pode testar, se não aparecer em 12 horas de att ou final do expediente a tarde, pode encerrar e abrir no outro dia caso entre a tarde) Nesse período de aguardo, precisa ter tentativas de ligações em horários diferente.\n\n- Interagiu tudo certinho, fez ajustes e combinou de chamar tal horário pra confirmar uso, se o cliente não interagir em 1 hora no horário combinado ou ate final do período a tarde, pode encerrar deixando ciente que estamos e disposição. Precisa ter tentativa de ligações.\n\n - Cliente de ativação de app que sumiu do nada, caso passe 4 horas sem interação, pode deixar passo a passo de como ativar e encerrar, deixando ciente que se tiver dúvidas pode nos chamar de novo\n\n- Financeiro que interagiu com confirmação de dados e sumiu, caso note que tem fatura em aberto ou atraso, se sumir em 1 hora, encerrar e deixar nosso site para que possa efetuar o pagamento\n",
                         "tags": [],
-                        "alarm": ""
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
                     }
                 ]
             },
@@ -3108,9 +3345,412 @@
                     {
                         "text": "Procedimentos para encerrar clientes sem comunicação\n\n- Entrou como problema de conexão apenas sem mencionar cancelamento “indiretamente” ou algo que mencione insatisfação. (Anotar teste, realizar procedimentos padrão, se não aparecer em 12 horas de att ou completando 2 expedientes completos, pode encerrar) Nesse período de aguardo, precisa ter tentativas de ligações em horários diferente.\n\n- Entrou como problema de conexão e mencionou cancelamento ou algo que mencione insatisfação. (Anotar teste, realizar procedimentos padrão, se não aparecer em 24 horas de att ou completando 4 expedientes completos, pode encerrar e abrir MPC) Nesse período de aguardo, precisa ter tentativas de ligações em horários diferente.\n\n- Interagiu ou atendeu fez ajustes e combinou de chamar tal horário pra confirmar uso, se o cliente não interagir em 1 hora no horário combinado ou ate final do período a tarde, pode encerrar deixando ciente que estamos e disposição. Precisa ter tentativa de ligações.\n\n - Cliente de ativação de app que não interagiu e não atendeu, caso passe 12 horas sem interação, pode encerrar.",
                         "tags": [],
-                        "alarm": ""
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
                     }
                 ]
+            }
+        ],
+        "items": [
+            {
+                "text": "Procedimentos para encerrar clientes sem comunicação\n\n\n- Não interagiu nada com técnico e não teve mensagem durante o robô. (Encerrar após 4 horas durante o dia ou final do expediente a tarde)\n\n- Interagiu apenas no início relatando o problema e sumiu. (Abrir att, anotar teste, realizar procedimentos e avisar que foi feito procedimentos que ele pode testar, se não aparecer em 12 horas de att ou final do expediente a tarde, pode encerrar e abrir no outro dia caso entre a tarde) Nesse período de aguardo, precisa ter tentativas de ligações em horários diferente.\n\n- Interagiu tudo certinho, fez ajustes e combinou de chamar tal horário pra confirmar uso, se o cliente não interagir em 1 hora no horário combinado ou ate final do período a tarde, pode encerrar deixando ciente que estamos e disposição. Precisa ter tentativa de ligações.\n\n - Cliente de ativação de app que sumiu do nada, caso passe 4 horas sem interação, pode deixar passo a passo de como ativar e encerrar, deixando ciente que se tiver dúvidas pode nos chamar de novo\n\n- Financeiro que interagiu com confirmação de dados e sumiu, caso note que tem fatura em aberto ou atraso, se sumir em 1 hora, encerrar e deixar nosso site para que possa efetuar o pagamento\n",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "Procedimentos para encerrar clientes sem comunicação\n\n- Entrou como problema de conexão apenas sem mencionar cancelamento “indiretamente” ou algo que mencione insatisfação. (Anotar teste, realizar procedimentos padrão, se não aparecer em 12 horas de att ou completando 2 expedientes completos, pode encerrar) Nesse período de aguardo, precisa ter tentativas de ligações em horários diferente.\n\n- Entrou como problema de conexão e mencionou cancelamento ou algo que mencione insatisfação. (Anotar teste, realizar procedimentos padrão, se não aparecer em 24 horas de att ou completando 4 expedientes completos, pode encerrar e abrir MPC) Nesse período de aguardo, precisa ter tentativas de ligações em horários diferente.\n\n- Interagiu ou atendeu fez ajustes e combinou de chamar tal horário pra confirmar uso, se o cliente não interagir em 1 hora no horário combinado ou ate final do período a tarde, pode encerrar deixando ciente que estamos e disposição. Precisa ter tentativa de ligações.\n\n - Cliente de ativação de app que não interagiu e não atendeu, caso passe 12 horas sem interação, pode encerrar.",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            }
+        ]
+    },
+    "tab_senhas": {
+        "name": "🔑Senhas & Config",
+        "groups": [
+            {
+                "title": "Geral",
+                "items": [
+                    {
+                        "text": "🌐 CONFIGURAÇÕES DE REDE, IP E DNS\n• Servidores IPv4:\n  - DNS 1: 177.126.23.200\n  - DNS 2: 170.233.212.235\n• Servidores IPv6:\n  - DNS 1: 2804:c70:3d:9::3d\n  - DNS 2: 2804:c70:403d:3d::3d\n• Configuração VoIP:\n  - Servidor: voip.interip.com.br\n  - Porta VoIP: 65210",
+                        "tags": [],
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "text": "🌐 CONFIGURAÇÕES DE REDE, IP E DNS\n• Servidores IPv4:\n  - DNS 1: 177.126.23.200\n  - DNS 2: 170.233.212.235\n• Servidores IPv6:\n  - DNS 1: 2804:c70:3d:9::3d\n  - DNS 2: 2804:c70:403d:3d::3d\n• Configuração VoIP:\n  - Servidor: voip.interip.com.br\n  - Porta VoIP: 65210",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            }
+        ]
+    },
+    "tab_rompimento": {
+        "name": "⚠️Rompimento",
+        "groups": [
+            {
+                "title": "Rompimento",
+                "items": [
+                    {
+                        "text": "Olá, identificamos uma interrupção de sinal na região que você mora.\nNossa equipe já está trabalhando para solucionar o ocorrido.\nA previsão para restabelecimento é até as (hora) horas\nPedimos desculpas pelo transtorno, porém já estamos trabalhando para a solução.\nAtenciosamente - Suporte Técnico 3D Telecom",
+                        "tags": [],
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
+                    }
+                ]
+            },
+            {
+                "title": "lnstabilidade Link",
+                "items": [
+                    {
+                        "text": "Olá, identificamos uma instabilidade na região que você mora.\nNossa equipe já está trabalhando para solucionar o ocorrido.\nA previsão para restabelecimento é até as (horas)\nPedimos desculpas pelo transtorno, porém já estamos trabalhando para a solução.\nAtenciosamente - Suporte Técnico 3D Telecom",
+                        "tags": [],
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
+                    },
+                    {
+                        "text": "Identificamos uma instabilidade na região que você mora, porém já estamos trabalhando na solução. Pedimos desculpas pelo transtorno. Qualquer dúvida estaremos a disposição.\n\nPrevisão de finalização até as (horas) horas de hoje.\n\nTeria mais alguma dúvida ou poderia lhe ajudar em algo mais?",
+                        "tags": [],
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
+                    }
+                ]
+            },
+            {
+                "title": "• Aviso Rádio (Obstruções / Desligamento):",
+                "items": [
+                    {
+                        "text": "\"Olá, vimos que você acabou ficando sem internet devido a obstruções de causas naturais (crescimento de árvores e matos próximo às torres). Informamos também o desligamento definitivo do sinal de rádio na sua região em (data), visto que sua residência não possui viabilidade para rede de fibra óptica no momento.\"",
+                        "tags": [],
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "text": "Olá, identificamos uma interrupção de sinal na região que você mora.\nNossa equipe já está trabalhando para solucionar o ocorrido.\nA previsão para restabelecimento é até as (hora) horas\nPedimos desculpas pelo transtorno, porém já estamos trabalhando para a solução.\nAtenciosamente - Suporte Técnico 3D Telecom",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "Olá, identificamos uma instabilidade na região que você mora.\nNossa equipe já está trabalhando para solucionar o ocorrido.\nA previsão para restabelecimento é até as (horas)\nPedimos desculpas pelo transtorno, porém já estamos trabalhando para a solução.\nAtenciosamente - Suporte Técnico 3D Telecom",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "Identificamos uma instabilidade na região que você mora, porém já estamos trabalhando na solução. Pedimos desculpas pelo transtorno. Qualquer dúvida estaremos a disposição.\n\nPrevisão de finalização até as (horas) horas de hoje.\n\nTeria mais alguma dúvida ou poderia lhe ajudar em algo mais?",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "\"Olá, vimos que você acabou ficando sem internet devido a obstruções de causas naturais (crescimento de árvores e matos próximo às torres). Informamos também o desligamento definitivo do sinal de rádio na sua região em (data), visto que sua residência não possui viabilidade para rede de fibra óptica no momento.\"",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            }
+        ]
+    },
+    "tab_visita": {
+        "name": "🛠️Script Visita",
+        "groups": [
+            {
+                "title": "Geral",
+                "items": [
+                    {
+                        "text": "- Título: \n- Descrição problema: \n- Melhor horário: \n- Telefone: \n- Plano:  \n- Ponto de acesso: \n- valor: verificar no local",
+                        "tags": [],
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
+                    },
+                    {
+                        "text": "- Contato: \n- Relato: lentidão/youtube/whatsapp/netflix\n- Sinal: \n- Ping: média 6 perda 0%\n- Extrato: ok\n- Ajustes: setado canal auto\n- Reiniciado: Sim / Nao (se for nao justificar)\n- MTU/MRU: 1492 MRU\n- WAN: 1000Mbps porta fixa ok\n- DNS: OK\n- Resumo: ",
+                        "tags": [],
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
+                    },
+                    {
+                        "text": "SEM ACESSO\n\n- Título: Sem acesso\n- Descrição problema: LOS, reiniciou os equipamentos mas sem sucesso.\n\n- Melhor horário: \n- Telefone: \n- Plano:   \n- Ponto de acesso: \n- valor: verificar no local",
+                        "tags": [],
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
+                    },
+                    {
+                        "text": "🔌 PASSAGEM DE CABO DE REDE\nAssunto: Passagem de cabo de rede.\n\nOnde é feito?\n- Passar para outros cômodos\n- Passar pra outra casa, galpão ou garagem (se for dentro do mesmo lote)\n\nOnde não é feito em hipótese alguma?\n- Quando for sair pra outro lote.\n- Quando passa de 50 metros.\n\nO que cobrar? Quais valores?\n- Para casas: \n*Se for só uma mudança de cômodo cobra só o material\n-Se for pra fora da casa:\n*Cobrar serviço visita técnica R$ 90,00 + materiais.\n\n- Empresas: Qualquer lugar, R$ 90,00 por hora + material (valores padrões).\nFração de hora como que fica?\n(técnico levou 30 minutos, 15 minutos, 45 minutos), cobrado sempre mínimo R$ 90,00\n\n**Se for pra painel solar, precisa de vídeo de onde deverá passar o cabo de rede.",
+                        "tags": [],
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
+                    }
+                ]
+            },
+            {
+                "title": "Transferência de endereço",
+                "items": [
+                    {
+                        "text": "🏠 TRANSFERÊNCIA DE ENDEREÇO\nPara a mudança de endereço vamos precisar de alguns dados para o agendamento como.\n\n- Nome da rua:\n- Bairro: \n- Cidade:\n- Ponto de referencia: \n- Cor da casa e se é madeira ou material: \n- Telefone que atenda para contato:\n- Horário que teria gente no local para atender o técnico: \n(dentro do horário comercial ou aos sábados ate meio dia)\nPrazo: 2 dias úteis.\nLocalização:\nJá foram levados os equipamentos?",
+                        "tags": [],
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
+                    },
+                    {
+                        "text": "- Melhor horário: qualquer horário\n- Telefone:\n- Endereço:\n- Localização:\n- Equipamentos no local: \n- Valor visita: cortesia",
+                        "tags": [],
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
+                    }
+                ]
+            },
+            {
+                "title": "Evento",
+                "items": [
+                    {
+                        "text": "🎉 INTERNET PARA EVENTO\nEndereço:  \n-Loc: \n-Data e hora:\n-Rede: Privado ou Publico\n-Nome do wifi e senha:\n-Quantidade de pessoas:\n-Contato:  \n\nValor: 500$ (ciente)\n-----------------------------------\n*Abrir atendimento nome do cliente é: Cliente consumidor\n*Tipo de atendimento: outros\n*Não precisa de iclass",
+                        "tags": [],
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
+                    }
+                ]
+            },
+            {
+                "title": "Agendamento",
+                "items": [
+                    {
+                        "text": " Só precisamos saber quais horários você tem disponibilidade todos os dias. Na parte da manhã/tarde ou o dia todo?\n",
+                        "tags": [],
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
+                    },
+                    {
+                        "text": "\nCerto, que horários normalmente tem alguém em casa todos os dias? Lembrando que o chamado tem um prazo máximo de 3 dias úteis mas vamos fazer o possível para lhe atender o quanto antes.\n",
+                        "tags": [],
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
+                    },
+                    {
+                        "text": " Certo vou abrir seu chamado, ele tem um prazo máximo de 3 dias úteis mas vamos fazer o possível para lhe atender o quanto antes. O técnico vai lhe ligar uns 15-20 minutos antes de ir ao local avisando que está indo. Teria algo mais em que posso te ajudar?",
+                        "tags": [],
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "text": "- Título: \n- Descrição problema: \n- Melhor horário: \n- Telefone: \n- Plano:  \n- Ponto de acesso: \n- valor: verificar no local",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "- Contato: \n- Relato: lentidão/youtube/whatsapp/netflix\n- Sinal: \n- Ping: média 6 perda 0%\n- Extrato: ok\n- Ajustes: setado canal auto\n- Reiniciado: Sim / Nao (se for nao justificar)\n- MTU/MRU: 1492 MRU\n- WAN: 1000Mbps porta fixa ok\n- DNS: OK\n- Resumo: ",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "SEM ACESSO\n\n- Título: Sem acesso\n- Descrição problema: LOS, reiniciou os equipamentos mas sem sucesso.\n\n- Melhor horário: \n- Telefone: \n- Plano:   \n- Ponto de acesso: \n- valor: verificar no local",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "🔌 PASSAGEM DE CABO DE REDE\nAssunto: Passagem de cabo de rede.\n\nOnde é feito?\n- Passar para outros cômodos\n- Passar pra outra casa, galpão ou garagem (se for dentro do mesmo lote)\n\nOnde não é feito em hipótese alguma?\n- Quando for sair pra outro lote.\n- Quando passa de 50 metros.\n\nO que cobrar? Quais valores?\n- Para casas: \n*Se for só uma mudança de cômodo cobra só o material\n-Se for pra fora da casa:\n*Cobrar serviço visita técnica R$ 90,00 + materiais.\n\n- Empresas: Qualquer lugar, R$ 90,00 por hora + material (valores padrões).\nFração de hora como que fica?\n(técnico levou 30 minutos, 15 minutos, 45 minutos), cobrado sempre mínimo R$ 90,00\n\n**Se for pra painel solar, precisa de vídeo de onde deverá passar o cabo de rede.",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "🏠 TRANSFERÊNCIA DE ENDEREÇO\nPara a mudança de endereço vamos precisar de alguns dados para o agendamento como.\n\n- Nome da rua:\n- Bairro: \n- Cidade:\n- Ponto de referencia: \n- Cor da casa e se é madeira ou material: \n- Telefone que atenda para contato:\n- Horário que teria gente no local para atender o técnico: \n(dentro do horário comercial ou aos sábados ate meio dia)\nPrazo: 2 dias úteis.\nLocalização:\nJá foram levados os equipamentos?",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "- Melhor horário: qualquer horário\n- Telefone:\n- Endereço:\n- Localização:\n- Equipamentos no local: \n- Valor visita: cortesia",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "🎉 INTERNET PARA EVENTO\nEndereço:  \n-Loc: \n-Data e hora:\n-Rede: Privado ou Publico\n-Nome do wifi e senha:\n-Quantidade de pessoas:\n-Contato:  \n\nValor: 500$ (ciente)\n-----------------------------------\n*Abrir atendimento nome do cliente é: Cliente consumidor\n*Tipo de atendimento: outros\n*Não precisa de iclass",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": " Só precisamos saber quais horários você tem disponibilidade todos os dias. Na parte da manhã/tarde ou o dia todo?\n",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "\nCerto, que horários normalmente tem alguém em casa todos os dias? Lembrando que o chamado tem um prazo máximo de 3 dias úteis mas vamos fazer o possível para lhe atender o quanto antes.\n",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": " Certo vou abrir seu chamado, ele tem um prazo máximo de 3 dias úteis mas vamos fazer o possível para lhe atender o quanto antes. O técnico vai lhe ligar uns 15-20 minutos antes de ir ao local avisando que está indo. Teria algo mais em que posso te ajudar?",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            }
+        ]
+    },
+    "tab_oletv": {
+        "name": "📺🎬Olé TV/IPTV",
+        "groups": [
+            {
+                "title": "Geral",
+                "items": [
+                    {
+                        "text": "Perfeito! Para seguirmos com a ativação, por gentileza, confirme se os dados abaixo estão corretos:\nE-mail: (email)\nTelefone: (telefone)",
+                        "tags": [],
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
+                    },
+                    {
+                        "text": "📋 PROCEDIMENTO DE CADASTRO E ATIVAÇÃO\n💬 Instrução de envio de senha:\n\"Certo, vou solicitar ao setor responsável e eles vão lhe enviar um e-mail da Olé TV. Você terá 5 minutos para abrir o e-mail, clicar em 'Clique aqui' na parte azul e cadastrar uma nova senha com no mínimo 8 caracteres (recomendamos apenas números para facilitar o acesso na TV). Te aviso assim que enviarem o e-mail.\"",
+                        "tags": [],
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
+                    }
+                ]
+            },
+            {
+                "title": "Avisos",
+                "items": [
+                    {
+                        "text": "❌ APARELHOS NÃO HOMOLOGADOS (BTV / IPTV)\n\"Entendo perfeitamente, mas estes aparelhos não são homologados pela Anatel e, por isso, não conseguimos garantir o pleno funcionamento de serviços de terceiros que utilizam sistemas de rotas aos quais não temos acesso e que frequentemente sofrem bloqueios ou restrições, o que ocasiona travamentos.\"",
+                        "tags": [],
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
+                    },
+                    {
+                        "text": "⚠ AVISOS DA FABRICANTE (APLICATIVOS ABAIXO DOS CANAIS)\n\"Identificamos que alguns aplicativos que apareciam abaixo dos canais da Olé TV não estão mais disponíveis. Isso ocorreu devido a uma atualização realizada pela fabricante do aparelho, que removeu esses aplicativos sem possibilidade de intervenção da nossa parte.\"",
+                        "tags": [],
+                        "alarm": "",
+                        "favorite": false,
+                        "color": "",
+                        "copies": 0
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "text": "Perfeito! Para seguirmos com a ativação, por gentileza, confirme se os dados abaixo estão corretos:\nE-mail: (email)\nTelefone: (telefone)",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "📋 PROCEDIMENTO DE CADASTRO E ATIVAÇÃO\n💬 Instrução de envio de senha:\n\"Certo, vou solicitar ao setor responsável e eles vão lhe enviar um e-mail da Olé TV. Você terá 5 minutos para abrir o e-mail, clicar em 'Clique aqui' na parte azul e cadastrar uma nova senha com no mínimo 8 caracteres (recomendamos apenas números para facilitar o acesso na TV). Te aviso assim que enviarem o e-mail.\"",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "❌ APARELHOS NÃO HOMOLOGADOS (BTV / IPTV)\n\"Entendo perfeitamente, mas estes aparelhos não são homologados pela Anatel e, por isso, não conseguimos garantir o pleno funcionamento de serviços de terceiros que utilizam sistemas de rotas aos quais não temos acesso e que frequentemente sofrem bloqueios ou restrições, o que ocasiona travamentos.\"",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
+            },
+            {
+                "text": "⚠ AVISOS DA FABRICANTE (APLICATIVOS ABAIXO DOS CANAIS)\n\"Identificamos que alguns aplicativos que apareciam abaixo dos canais da Olé TV não estão mais disponíveis. Isso ocorreu devido a uma atualização realizada pela fabricante do aparelho, que removeu esses aplicativos sem possibilidade de intervenção da nossa parte.\"",
+                "tags": [],
+                "alarm": "",
+                "favorite": false,
+                "color": "",
+                "copies": 0
             }
         ]
     }
@@ -3665,12 +4305,73 @@
                     </div>
                     <div class="vm-body" style="padding: 16px 20px; overflow-y: auto;">
                         
-                                                                                                                                                                                                                        <!-- Versão 2.5.7 -->
+                                                                                                                                                                                                                        <!-- Versão 2.6.1 -->
+                        <div class="changelog-version-card" style="border-color: #2563eb;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>💎 Versão 2.6.1</span>
+                                    <span class="changelog-badge" style="background:#2563eb; color:#fff;">Versão Atual</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">09/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>🎯 Versão Oficial Consolidada (2.6.1):</strong> Atualização uniforme de versão em todo o sistema, registro de changelog e manifesto de atualizações.</li>
+                                <li><strong>🛡️ Estabilidade & Auditoria de Governança:</strong> Sistema com carga local imediata livre de bloqueios assíncronos e histórico de integridade operacional.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versão 2.6.0 -->
+                        <div class="changelog-version-card" style="border-color: #7c3aed;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>📤 Versão 2.6.0</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">09/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>👑 Publicação de Scripts Padrão para Toda a Equipe:</strong> Botão de 1 clique em <em>Minha Conta</em> para administradores salvarem sua base completa de scripts diretamente em <code>templates/default_scripts</code> e <code>global_settings/default_scripts</code> no Firestore.</li>
+                                <li><strong>♻️ Restauração Integral de 11 Abas:</strong> O botão de restaurar padrão agora carrega de forma garantida todas as 11 abas completas com dezenas de colunas e scripts.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versão 2.5.9 -->
+                        <div class="changelog-version-card" style="border-color: #10b981;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>🎨 Versão 2.5.9</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">09/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>🌘☀️ Correção e Estabilidade dos Temas Cinza e Claro:</strong> Variáveis CSS com especificidade prioritária para <code>theme-dark</code> e <code>theme-light</code>, corrigindo a alternância visual instantânea entre os 3 modos.</li>
+                                <li><strong>⚡ Inicialização Desacoplada:</strong> Renderização imediata dos cards locais sem congelamento da tela durante a conexão ao Firebase.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versão 2.5.8 -->
+                        <div class="changelog-version-card" style="border-color: #2563eb;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>👑 Versão 2.5.8</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">09/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>📦 Atualização do Modelo Padrão Oficial (11 Abas):</strong> O arquivo JSON enviado com todas as 11 abas completas foi integrado diretamente como a nova base nativa de restauração do sistema.</li>
+                                <li><strong>📤 Botão de Envio Padrão Corporativo para Administradores:</strong> Novo botão direto em <em>Minha Conta</em> (<code>📤 Definir meus Scripts como Padrão para Todos</code>) permitindo publicar a base oficial do administrador para toda a equipe no Firestore com 1 clique.</li>
+                                <li><strong>🌘☀️ Correção Total dos Temas Cinza e Claro:</strong> Reestruturação e especificação explícita das variáveis CSS com diretivas prioritárias para o Modo Cinza (<code>theme-dark</code>) e Modo Claro (<code>theme-light</code>), garantindo transição visual instantânea ao clicar nos ícones.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versão 2.5.7 -->
                         <div class="changelog-version-card" style="border-color: #2563eb;">
                             <div class="changelog-version-header">
                                 <div class="changelog-version-title">
                                     <span>🚀 Versão 2.5.7</span>
-                                    <span class="changelog-badge" style="background:#2563eb; color:#fff;">Versão Atual</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
                                 </div>
                                 <span style="font-size:11px; opacity:0.75;">09/10/2026</span>
                             </div>
@@ -9419,6 +10120,46 @@ Clique para abrir Minha Conta e Sincronização`;
             processSyncQueue();
         }
 
+        
+        /* Função para o Administrador publicar seus scripts atuais como padrão global para toda a equipe */
+        async function pushCurrentScriptsAsTeamDefault() {
+            if (!isCurrentUserAdmin()) {
+                alert('Apenas administradores podem definir o padrão corporativo da equipe.');
+                return;
+            }
+            if (!confirm('Deseja publicar TODOS os seus scripts atuais como o modelo padrão oficial da equipe no Firestore?\n\nTodos os novos atendentes que entrarem na Central receberão exatamente esta base de 11 abas.')) return;
+            
+            try {
+                const appData = getAppData();
+                const payload = {
+                    scripts: appData,
+                    tabOrder: getSavedTabOrder(appData),
+                    customDefaults: getCustomDefaults(),
+                    settings: {
+                        theme: localStorage.getItem(THEME_KEY) || 'dark',
+                        layout: localStorage.getItem(LAYOUT_KEY) || 'grid',
+                        scale: parseFloat(localStorage.getItem(SCALE_KEY)) || 1
+                    },
+                    updatedBy: currentUser.email,
+                    updatedAt: new Date().toISOString()
+                };
+
+                await Promise.all([
+                    firebaseDb.collection('templates').doc('default_scripts').set(payload, { merge: true }),
+                    firebaseDb.collection('global_settings').doc('default_scripts').set(payload, { merge: true })
+                ]);
+
+                if (typeof showToast === 'function') {
+                    showToast('🚀 Scripts publicados como padrão oficial da equipe com sucesso!', 'success');
+                } else {
+                    alert('🚀 Scripts publicados como padrão oficial da equipe com sucesso!');
+                }
+            } catch (err) {
+                alert('Erro ao publicar scripts como padrão da equipe: ' + (err.message || err));
+            }
+        }
+        window.pushCurrentScriptsAsTeamDefault = pushCurrentScriptsAsTeamDefault;
+
         async function syncToCloud() {
             if (!currentUser || !firebaseDb) return;
             const appData = getAppData();
@@ -9529,6 +10270,9 @@ Clique para abrir Minha Conta e Sincronização`;
                             </button>
 
                             ${isAdmin ? `
+                            <button type="button" class="io-btn" style="background:#2563eb; color:#fff; justify-content:center; padding:10px; font-weight:700; gap:8px;" onclick="pushCurrentScriptsAsTeamDefault();">
+                                📤 Definir meus Scripts como Padrão para Todos (Equipe)
+                            </button>
                             <button type="button" class="io-btn" style="background:#7c3aed; color:#fff; justify-content:center; padding:9px; font-weight:600;" onclick="this.closest('.var-modal-overlay').remove(); openAdminPanelModal();">
                                 🛡️ Abrir Painel de Administração
                             </button>
