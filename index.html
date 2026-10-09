@@ -2203,6 +2203,154 @@
         .admin-badge.status-active { background: #16a34a; color: #fff; }
         .admin-badge.status-blocked { background: #dc2626; color: #fff; }
 
+
+        /* ===== V2.5.0: Toasts Flutuantes Modernos (Sem alert intrusivo) ===== */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 100000000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+        }
+        .toast-item {
+            background: color-mix(in srgb, var(--card-bg) 95%, #000);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 10px 18px;
+            font-size: 13px;
+            font-weight: 500;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.06);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            animation: toastSlideIn 0.22s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+            pointer-events: auto;
+            cursor: pointer;
+            backdrop-filter: blur(20px);
+            max-width: 380px;
+            transition: transform 0.15s ease, opacity 0.15s ease;
+        }
+        .toast-item:hover { transform: translateY(-2px); }
+        .toast-item.success { border-color: #22c55e; }
+        .toast-item.info { border-color: #3b82f6; }
+        .toast-item.warning { border-color: #eab308; }
+        .toast-item.error { border-color: #ef4444; }
+        @keyframes toastSlideIn {
+            from { opacity: 0; transform: translateY(16px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ===== Cápsulas e Segmented Controls do Cabeçalho ===== */
+        .header-capsule {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: color-mix(in srgb, var(--tab-bg) 65%, transparent);
+            padding: 3px 6px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+        }
+        .header-user-section {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: auto;
+            padding-left: 10px;
+            border-left: 1px solid var(--border-color);
+        }
+        .theme-ctrl {
+            display: inline-flex;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        .theme-ctrl button {
+            background: var(--tab-bg);
+            border: none;
+            color: var(--text-color);
+            padding: 4px 8px;
+            font-size: 13px;
+            cursor: pointer;
+            line-height: 1;
+            transition: all 0.15s ease;
+        }
+        .theme-ctrl button:hover {
+            background: color-mix(in srgb, var(--accent-color) 25%, var(--tab-bg));
+        }
+        .theme-ctrl button.on {
+            background: var(--accent-color) !important;
+            color: #fff !important;
+        }
+
+        /* ===== Indicador de Status da Nuvem no Avatar ===== */
+        .auth-avatar-wrapper {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .auth-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            border: 1.5px solid #fff;
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            background: #22c55e;
+            box-shadow: 0 0 4px rgba(34, 197, 94, 0.8);
+        }
+        .auth-status-dot.syncing {
+            background: #3b82f6;
+            animation: pulseSync 0.9s infinite alternate;
+        }
+        .auth-status-dot.offline {
+            background: #9ca3af;
+            box-shadow: none;
+        }
+        @keyframes pulseSync {
+            from { opacity: 0.5; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Micro-animação refinada no Botão Copiar */
+        .copy-btn {
+            transition: all 0.15s cubic-bezier(0.2, 0.9, 0.3, 1.2) !important;
+        }
+        .copy-btn:active {
+            transform: scale(0.94) !important;
+        }
+        .copy-btn.copied {
+            background-color: #15803d !important;
+            box-shadow: 0 0 12px rgba(34, 197, 94, 0.5) !important;
+        }
+
+        /* Badges Temáticas de Categoria no Topo do Card */
+        .card-category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 1px 7px;
+            border-radius: 99px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 6px;
+            align-self: flex-start;
+        }
+        .card-category-badge.color-green { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); }
+        .card-category-badge.color-yellow { background: rgba(234,179,8,0.15); color: #eab308; border: 1px solid rgba(234,179,8,0.3); }
+        .card-category-badge.color-red { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+        .card-category-badge.color-blue { background: rgba(59,130,246,0.15); color: #3b82f6; border: 1px solid rgba(59,130,246,0.3); }
+        .card-category-badge.color-purple { background: rgba(168,85,247,0.15); color: #a855f7; border: 1px solid rgba(168,85,247,0.3); }
+
 </style>
 
     <!-- Firebase SDK (compat mode com defer para carregamento assíncrono sem bloqueio no Live Server) -->
@@ -2229,45 +2377,52 @@
             </svg>
             <span>Central de Scripts</span>
         </h1>
-        <div class="header-actions">
+                <div class="header-actions">
+            <!-- 1. Campo de Busca -->
             <input type="search" class="search-input" id="searchInput" placeholder="🔍 Buscar ou tag:whats (Ctrl+K)" oninput="filterScripts(this.value)">
-            
 
-            <button class="var-config-btn" onclick="openVarManagerModal()" title="Gerenciar valores padrão de variáveis">⚙️ Variáveis</button>
-            <div class="storage-indicator" id="storageIndicator" onclick="openStorageInfoModal()" title="Uso do armazenamento local e backups">💾 <span id="storageUsageText">0 KB</span></div>
-            <button class="io-btn" onclick="openChangelogModal()" title="Histórico de versões e melhorias">📜 Changelog</button>
-            <button class="io-btn" onclick="openUserscriptManager()" title="Gerenciar userscripts no formato Tampermonkey">🧩 Userscripts</button>
-            
             <input type="file" id="importFile" style="display: none" accept=".json" onchange="importScripts(event)">
             <input type="file" id="userscriptFile" style="display: none" accept=".js,.user.js,.txt" multiple="" onchange="importUserscripts(event)">
 
-            <div class="size-ctrl" id="layoutCtrl" title="Disposição dos cards">
-                <button data-mode="grid" onclick="setLayout('grid')" title="Quadro (colunas lado a lado)" class="on">▦</button>
-                <button data-mode="list" onclick="setLayout('list')" title="Lista (colunas empilhadas)">☰</button>
+            <!-- 2. Cápsula de Ferramentas -->
+            <div class="header-capsule">
+                <button class="var-config-btn" onclick="openVarManagerModal()" title="Gerenciar valores padrão de variáveis">⚙️ Variáveis</button>
+                <button class="io-btn" onclick="openChangelogModal()" title="Histórico de versões e melhorias">📜 Changelog</button>
+                <button class="companion-btn" id="companionBtn" onclick="toggleCompanion()" title="Abrir painel flutuante sempre no topo (Alt+Shift+P)">🪟 Dock de Scripts</button>
+                <button class="btn" id="editToggleBtn" onclick="toggleEditMode()" title="Ativar ou desativar o modo de edição dos scripts">Modo Edição: Desativado</button>
             </div>
-            <div class="size-ctrl" title="Tamanho dos cards">
-                <button onclick="adjustCardSize(-1)" title="Diminuir cards">−</button>
-                <span id="sizeLabel" onclick="adjustCardSize(0)" title="Clique para voltar a 100%">100%</span>
-                <button onclick="adjustCardSize(1)" title="Aumentar cards">+</button>
-            </div>
-            <select class="theme-select" id="themeSelect" onchange="changeTheme(this.value)">
-                <option value="dark">Modo Cinza</option>
-                <option value="oled">Modo Escuro OLED</option>
-                <option value="light">Modo Claro</option>
-            </select>
-            <button class="companion-btn" id="companionBtn" onclick="toggleCompanion()" title="Abrir janela flutuante sempre visível (Alt+Shift+P)">🪟 Janela Companheira</button>
-            <button class="save-html-btn" onclick="saveHtmlFile()">💾 Salvar HTML</button>
-            <button class="btn" id="editToggleBtn" onclick="toggleEditMode()">Modo Edição: Desativado</button>
 
-            <!-- Canto Superior Direito: Acesso de Usuário Google & Painel Admin -->
-            <div style="height:22px; width:1px; background:var(--border-color); margin:0 4px; flex-shrink:0;"></div>
-            <button class="io-btn admin-panel-btn" id="adminPanelHeaderBtn" onclick="openAdminPanelModal()" title="Painel Administrativo da Equipe" style="display:none; background:#7c3aed; color:#fff; font-weight:600; flex-shrink:0;">
-                🛡️ Admin
-            </button>
-            <button class="io-btn firebase-auth-btn" id="firebaseAuthBtn" onclick="handleAuthButtonClick()" title="Status da conta e sincronização em nuvem" style="background:#4285f4; color:#fff; display:inline-flex; align-items:center; gap:6px; flex-shrink:0;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/></svg>
-                <span id="firebaseAuthBtnText">Entrar</span>
-            </button>
+            <!-- 3. Cápsula de Visual: Layout, Zoom e Seletor com 1 Ícone p/ cada Tema -->
+            <div class="header-capsule">
+                <div class="size-ctrl" id="layoutCtrl" title="Disposição dos cards">
+                    <button data-mode="grid" onclick="setLayout('grid')" title="Quadro (colunas lado a lado)" class="on">▦</button>
+                    <button data-mode="list" onclick="setLayout('list')" title="Lista (colunas empilhadas)">☰</button>
+                </div>
+                <div class="size-ctrl" title="Tamanho dos cards">
+                    <button onclick="adjustCardSize(-1)" title="Diminuir cards">−</button>
+                    <span id="sizeLabel" onclick="adjustCardSize(0)" title="Clique para voltar a 100%">100%</span>
+                    <button onclick="adjustCardSize(1)" title="Aumentar cards">+</button>
+                </div>
+                <div class="theme-ctrl" id="themeCtrl" title="Alternar tema visual: Cinza, OLED ou Claro">
+                    <button type="button" id="themeBtnDark" onclick="changeTheme('dark')" title="Modo Cinza (Padrão)" class="on">🌘</button>
+                    <button type="button" id="themeBtnOled" onclick="changeTheme('oled')" title="Modo Escuro OLED">🌑</button>
+                    <button type="button" id="themeBtnLight" onclick="changeTheme('light')" title="Modo Claro">☀️</button>
+                </div>
+            </div>
+
+            <!-- 4. Canto Superior Direito: Userscripts, Admin e Perfil Google -->
+            <div class="header-user-section">
+                <button class="io-btn" id="userscriptHeaderBtn" onclick="openUserscriptManager()" title="Gerenciar userscripts no formato Tampermonkey" style="background:var(--tab-bg); border:1px solid var(--border-color); color:var(--text-color); font-weight:500;">
+                    🧩 Userscripts
+                </button>
+                <button class="io-btn admin-panel-btn" id="adminPanelHeaderBtn" onclick="openAdminPanelModal()" title="Painel Administrativo da Equipe" style="display:none; background:#7c3aed; color:#fff; font-weight:600;">
+                    🛡️ Admin
+                </button>
+                <button class="io-btn firebase-auth-btn" id="firebaseAuthBtn" onclick="handleAuthButtonClick()" title="Status da conta e sincronização em nuvem" style="background:#4285f4; color:#fff;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/></svg>
+                    <span id="firebaseAuthBtnText">Entrar</span>
+                </button>
+            </div>
         </div>
 
         <!-- Menu Dropdown: Filtro por Cores -->
@@ -2361,9 +2516,39 @@
     <div class="content-container" id="contentContainer"></div>
 
     <script>
-        const APP_VERSION = '2.5.0';
+        const APP_VERSION = '2.5.1';
         const UPDATE_MANIFEST_URL = 'https://firestrykerfx.github.io/version.json';
         const UPDATE_CHECK_INTERVAL = 6 * 60 * 60 * 1000;
+                /* ===== Notificações Toasts Flutuantes Modernas ===== */
+        function showToast(message, type = 'success', duration = 2400) {
+            let container = document.getElementById('toastContainer');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toastContainer';
+                container.className = 'toast-container';
+                container.setAttribute('data-transient', 'true');
+                document.body.appendChild(container);
+            }
+            const item = document.createElement('div');
+            item.className = 'toast-item ' + type;
+            const icons = {
+                success: '✓',
+                info: 'ℹ️',
+                warning: '⚠️',
+                error: '❌'
+            };
+            const icon = icons[type] || '✓';
+            const esc = typeof escapeHtml === 'function' ? escapeHtml : (s => String(s || ''));
+            item.innerHTML = '<span style="font-weight:700; font-size:14px;">' + icon + '</span><span>' + esc(message) + '</span>';
+            item.onclick = () => item.remove();
+            container.appendChild(item);
+            setTimeout(() => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(12px)';
+                setTimeout(() => item.remove(), 260);
+            }, duration);
+        }
+
         /* ===== 1.8.4: Companion interaction routing ===== */
         /*DATA_START*/ const defaultData = {
     "tab_leo": {
@@ -3346,12 +3531,33 @@
                     </div>
                     <div class="vm-body" style="padding: 16px 20px; overflow-y: auto;">
                         
-                                                                                                                                                                                                <!-- Versão 2.5.0 -->
+                                                                                                                                                                                                                        <!-- Versão 2.5.1 -->
+                        <div class="changelog-version-card" style="border-color: #22c55e;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>🪟 Versão 2.5.1</span>
+                                    <span class="changelog-badge" style="background:#22c55e; color:#fff;">Versão Atual</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">09/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>🪟 Dock de Scripts:</strong> Renomeação oficial da antiga Janela Companheira para <strong>Dock de Scripts</strong> (atalho <code>Alt + Shift + P</code>), com design mais moderno e discreto.</li>
+                                <li><strong>🎛️ Cabeçalho em Cápsulas (*Segmented Controls*):</strong> Reorganização dos botões superiores em grupos visuais limpos (Ferramentas, Controles de Visual e Área do Usuário).</li>
+                                <li><strong>🌘🌑☀️ Seletor com 1 Ícone por Tema:</strong> Substituição do menu suspenso por botões individuais dedicados com ícones para os 3 modos (Cinza, OLED e Claro).</li>
+                                <li><strong>👤 Foto de Perfil & Ponto de Status da Nuvem:</strong> O botão do Google agora mostra a foto oficial da conta do atendente, seu primeiro nome e indicador de conexão em tempo real (🟢 Conectado).</li>
+                                <li><strong>☁️ Sincronização com Prévia Detalhada:</strong> Novos botões de <em>Salvar na Nuvem</em> e <em>Baixar da Nuvem</em> com telas de prévia e comparação antes de qualquer alteração nos scripts.</li>
+                                <li><strong>🔒 Acesso Restrito a Chaves do Firebase:</strong> Usuários comuns da equipe não têm acesso às chaves nem ao painel de administração.</li>
+                                <li><strong>🍞 Toasts Flutuantes:</strong> Notificações elegantes e não intrusivas para cópia de scripts e avisos rápidos, eliminando caixas de alerta que travavam a tela.</li>
+                                <li><strong>💾 Armazenamento e Salvar HTML Unificados:</strong> O indicador de espaço do navegador e o download do arquivo HTML agora ficam organizados dentro de <em>Minha Conta</em>.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versão 2.5.0 -->
                         <div class="changelog-version-card" style="border-color: #7c3aed;">
                             <div class="changelog-version-header">
                                 <div class="changelog-version-title">
                                     <span>☁️ Versão 2.5.0</span>
-                                    <span class="changelog-badge" style="background:#7c3aed;">Versão Atual</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
                                 </div>
                                 <span style="font-size:11px; opacity:0.75;">08/10/2026</span>
                             </div>
@@ -6733,12 +6939,21 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         }
 
         function changeTheme(theme) {
+            const current = (theme === 'oled' || theme === 'light') ? theme : 'dark';
             document.body.classList.remove('theme-dark', 'theme-oled', 'theme-light');
-            document.body.classList.add('theme-' + (theme === 'oled' || theme === 'light' ? theme : 'dark'));
+            document.body.classList.add('theme-' + current);
             const tc = document.querySelector('meta[name="theme-color"]');
-            if (tc) tc.content = theme === 'oled' ? '#000000' : (theme === 'light' ? '#f4f5f8' : '#1e1e1e');
-            localStorage.setItem(THEME_KEY, theme);
+            if (tc) tc.content = current === 'oled' ? '#000000' : (current === 'light' ? '#f4f5f8' : '#1e1e1e');
+            localStorage.setItem(THEME_KEY, current);
             syncCompanionTheme();
+
+            // Atualiza botões segmentados de tema
+            const btnDark = document.getElementById('themeBtnDark');
+            const btnOled = document.getElementById('themeBtnOled');
+            const btnLight = document.getElementById('themeBtnLight');
+            if (btnDark) btnDark.classList.toggle('on', current === 'dark');
+            if (btnOled) btnOled.classList.toggle('on', current === 'oled');
+            if (btnLight) btnLight.classList.toggle('on', current === 'light');
         }
 
         function syncCompanionTheme() {
@@ -6813,7 +7028,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             }
             const compBtn = clone.querySelector('#companionBtn');
             if (compBtn) {
-                compBtn.textContent = '🪟 Janela Companheira';
+                compBtn.textContent = '🪟 Dock de Scripts';
                 compBtn.classList.remove('active');
             }
             const restoreBtn = clone.querySelector('#restoreBtn');
@@ -7051,10 +7266,10 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             const btn = document.getElementById('companionBtn');
             if (!btn) return;
             if (companion.surface) {
-                btn.textContent = '🪟 Fechar Companheira';
+                btn.textContent = '🪟 Fechar Dock';
                 btn.classList.add('active');
             } else {
-                btn.textContent = '🪟 Janela Companheira';
+                btn.textContent = '🪟 Dock de Scripts';
                 btn.classList.remove('active');
             }
         }
@@ -7105,7 +7320,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         async function openPipCompanion() {
             const pipWin = await documentPictureInPicture.requestWindow({ width: 400, height: 620 });
             copyStylesTo(pipWin.document);
-            pipWin.document.title = 'Central de Scripts — Companheira';
+            pipWin.document.title = 'Central de Scripts — Dock de Scripts';
             pipWin.document.body.className = document.body.className;
 
             const root = pipWin.document.createElement('div');
@@ -7128,7 +7343,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         function openPopupCompanion(win) {
             const doc = win.document;
             try {
-                doc.title = 'Central de Scripts — Companheira';
+                doc.title = 'Central de Scripts — Dock de Scripts';
                 if (doc.body) {
                     doc.body.innerHTML = '';
                     doc.body.className = document.body.className;
@@ -7238,7 +7453,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             root.setAttribute('data-mode', surface.mode);
             root.innerHTML = `
                 <div class="comp-header">
-                    <span class="comp-title">⚡ Central de Scripts</span>
+                    <span class="comp-title">⚡ Dock de Scripts</span>
                     <div class="comp-header-btns">
                         <button class="comp-icon-btn" data-act="compact" title="Alternar modo compacto">☰</button>
                         <button class="comp-icon-btn" data-act="refresh" title="Recarregar dados">⟳</button>
@@ -7941,9 +8156,11 @@ console.log('Userscript carregado');`;
                 btn.title = `Conectado como: ${currentUser.email} (${isAdmin ? 'Administrador' : 'Usuário'})
 Clique para abrir Minha Conta e Sincronização`;
 
+                const dotClass = isCloudSyncing ? 'syncing' : 'online';
+
                 const avatarHtml = photo
-                    ? `<img src="${esc(photo)}" class="firebase-auth-avatar" alt="Foto de perfil" referrerpolicy="no-referrer">`
-                    : `<span class="firebase-auth-initial">${esc(firstName[0].toUpperCase())}</span>`;
+                    ? `<div class="auth-avatar-wrapper"><img src="${esc(photo)}" class="firebase-auth-avatar" alt="Foto" referrerpolicy="no-referrer"><span class="auth-status-dot ${dotClass}" title="Nuvem do Google: Conectado"></span></div>`
+                    : `<div class="auth-avatar-wrapper"><span class="firebase-auth-initial">${esc(firstName[0].toUpperCase())}</span><span class="auth-status-dot ${dotClass}" title="Nuvem do Google: Conectado"></span></div>`;
 
                 btn.innerHTML = `
                     ${avatarHtml}
@@ -8174,6 +8391,7 @@ Clique para abrir Minha Conta e Sincronização`;
             const isAdmin = isCurrentUserAdmin();
             const photo = (currentUserProfile && currentUserProfile.photoURL) || currentUser.photoURL || '';
             const fullName = (currentUserProfile && currentUserProfile.displayName) || currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : 'Usuário');
+            const { kb, pct } = getStorageUsage();
 
             overlay.innerHTML = `
                 <div class="var-modal-box vm-box" style="width: min(520px, 94vw);">
@@ -8191,25 +8409,41 @@ Clique para abrir Minha Conta e Sincronização`;
                                 <div style="font-size:12px; opacity:0.8; word-break:break-all;">${escapeHtml(currentUser.email)}</div>
                                 <div style="margin-top:6px; display:flex; gap:6px; align-items:center;">
                                     <span class="admin-badge ${isAdmin ? 'role-admin' : 'role-user'}">${isAdmin ? '🛡️ Administrador' : '👤 Usuário'}</span>
-                                    <span class="admin-badge status-active">☁️ Conectado</span>
+                                    <span class="admin-badge status-active">🟢 Conectado à Nuvem</span>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Mensagem Institucional da Nuvem Google -->
+                        <!-- Mensagem Oficial da Nuvem do Google -->
                         <div style="font-size:12px; opacity:0.9; line-height:1.5; background:rgba(66,133,244,0.08); border:1px solid rgba(66,133,244,0.22); padding:10px 14px; border-radius:10px;">
                             Seus scripts e configurações estão sendo salvos localmente no navegador e sincronizados de forma segura na Nuvem do Google.
                         </div>
 
-                        <!-- Seção de Ações de Sincronização com Prévia -->
+                        <!-- Resumo Integrado de Armazenamento Local -->
+                        <div style="background:var(--tab-bg); border:1px solid var(--border-color); border-radius:10px; padding:10px 14px; display:flex; justify-content:space-between; align-items:center; gap:10px;">
+                            <div>
+                                <div style="font-size:11px; font-weight:700; opacity:0.75; text-transform:uppercase;">💾 Armazenamento do Navegador</div>
+                                <div style="font-size:13px; font-weight:700; color:var(--title-color); margin-top:2px;">
+                                    ${kb} KB utilizados de ~5 MB (${pct}%)
+                                </div>
+                            </div>
+                            <button type="button" class="io-btn" style="font-size:11.5px; padding:5px 10px;" onclick="this.closest('.var-modal-overlay').remove(); openStorageInfoModal();">
+                                📊 Gerenciar e JSON
+                            </button>
+                        </div>
+
+                        <!-- Seção de Ações de Nuvem e Backup -->
                         <div style="display:flex; flex-direction:column; gap:8px;">
-                            
                             <button type="button" class="io-btn" id="btnOpenUploadPreview" style="background:#16a34a; color:#fff; justify-content:center; padding:10px; font-weight:600; font-size:13px; gap:8px;">
                                 ☁️ Salvar meus Scripts na Nuvem (com Prévia)
                             </button>
                             
                             <button type="button" class="io-btn" id="btnOpenDownloadPreview" style="background:#2563eb; color:#fff; justify-content:center; padding:10px; font-weight:600; font-size:13px; gap:8px;">
                                 📥 Baixar Scripts da Nuvem (com Prévia)
+                            </button>
+
+                            <button type="button" class="io-btn" style="background:#0ea5e9; color:#fff; justify-content:center; padding:9px; font-weight:600; font-size:12.5px; gap:8px;" onclick="this.closest('.var-modal-overlay').remove(); saveHtmlFile();">
+                                💾 Baixar Cópia Autônoma do Sistema em HTML
                             </button>
 
                             ${isAdmin ? `
@@ -8975,6 +9209,7 @@ service cloud.firestore {
         window.openAdminPanelModal = openAdminPanelModal;
         window.openFirebaseConfigModal = openFirebaseConfigModal;
         window.openUserAccountModal = openUserAccountModal;
+        window.showToast = showToast;
         window.openCloudUploadPreviewModal = openCloudUploadPreviewModal;
         window.openCloudDownloadPreviewModal = openCloudDownloadPreviewModal;
         window.openFirestoreRulesModal = openFirestoreRulesModal;
