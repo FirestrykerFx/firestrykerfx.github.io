@@ -2666,7 +2666,7 @@
                 .replace(/'/g, '&#039;');
         }
 
-        const APP_VERSION = '2.6.1';
+        const APP_VERSION = '2.6.2';
         const UPDATE_MANIFEST_URL = 'https://firestrykerfx.github.io/version.json';
         const UPDATE_CHECK_INTERVAL = 6 * 60 * 60 * 1000;
                 /* ===== Notificações Toasts Flutuantes Modernas ===== */
@@ -4297,20 +4297,56 @@
             const overlay = document.createElement("div");
             overlay.className = "var-modal-overlay";
             overlay.setAttribute("data-transient", "true");
+
+            const isAdmin = typeof isCurrentUserAdmin === 'function' ? isCurrentUserAdmin() : false;
+
+            const adminBadge262 = isAdmin
+                ? `<span class="admin-badge role-admin" style="font-size:10px; margin-left:6px;">🛡️ Visão Administrativa Completa</span>`
+                : `<span class="admin-badge role-user" style="font-size:10px; margin-left:6px;">👤 Visão do Atendente</span>`;
+
+            const items262 = isAdmin ? `
+                                <li><strong>🧪 Teste de Atendimento & Diagnóstico:</strong> Faixa de ping pré-fixada calibrada entre 3 a 10 ms (3, 4, 5, 6, 8 e 10 ms com perda 0%); novo seletor de MRU com registros diretos <em>Já estava 1492</em> e <em>Estava 1480 corrigido para 1492</em>; ajuste de Wi-Fi unificado com nomenclatura <em>unificado rede wifi</em> (+ Unificado Wi-Fi) em ambos os modais.</li>
+                                <li><strong>☁️ Auditoria de Nuvem & Posição das Abas:</strong> Auditoria completa de ponta a ponta garantindo que a sequência das abas (<code>tabOrder</code>), cards, cores, tags e configurações visuais (tema, zoom, layout e alarme) permaneçam preservadas e sincronizadas no Google Firestore sem sofrer reorganização alfabética.</li>
+                                <li><strong>🛡️ Governança Administrativa & Padrão da Equipe:</strong> Validação do fluxo de publicação corporativa <code>templates/default_scripts</code> e restrição estrita de regras do Firestore para proteger contra auto-promoção de perfil.</li>
+                                <li><strong>💎 Versão 2.6.2 Oficial:</strong> Alinhamento uniforme da versão 2.6.2 em todo o sistema, backup e verificador de atualizações.</li>
+            ` : `
+                                <li><strong>🧪 Teste de Atendimento & Diagnóstico:</strong> Atalhos de ping rápidos agora disponíveis na faixa de 3 a 10 ms (3, 4, 5, 6, 8 e 10 ms com perda 0%).</li>
+                                <li><strong>⚡ Opções Rápidas de MRU:</strong> Agora é possível selecionar com 1 clique se <em>Já estava 1492</em> ou se <em>Estava 1480 corrigido para 1492</em>, economizando tempo de digitação.</li>
+                                <li><strong>📶 Ajuste de Wi-Fi:</strong> Adicionada a opção rápida de ajuste para <em>unificado rede wifi</em>.</li>
+                                <li><strong>💾 Salvamento Seguro:</strong> Seus scripts, rascunhos rápidos e organização de abas permanecem salvos e sincronizados com total estabilidade.</li>
+            `;
+
             overlay.innerHTML = `
                 <div class="changelog-box">
                     <div class="vm-head">
-                        <div class="vm-title" style="font-size:16px;">📜 Histórico de Atualizações & Changelog</div>
+                        <div class="vm-title" style="font-size:16px; display:flex; align-items:center; gap:8px;">
+                            <span>📜 Histórico de Atualizações</span>
+                            ${adminBadge262}
+                        </div>
                         <button class="vm-x" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
                     </div>
                     <div class="vm-body" style="padding: 16px 20px; overflow-y: auto;">
                         
-                                                                                                                                                                                                                        <!-- Versão 2.6.1 -->
+                        <!-- Versão 2.6.2 -->
                         <div class="changelog-version-card" style="border-color: #2563eb;">
                             <div class="changelog-version-header">
                                 <div class="changelog-version-title">
-                                    <span>💎 Versão 2.6.1</span>
+                                    <span>💎 Versão 2.6.2</span>
                                     <span class="changelog-badge" style="background:#2563eb; color:#fff;">Versão Atual</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">09/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                ${items262}
+                            </ul>
+                        </div>
+
+                        <!-- Versão 2.6.1 -->
+                        <div class="changelog-version-card" style="border-color: #7c3aed;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>🚀 Versão 2.6.1</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
                                 </div>
                                 <span style="font-size:11px; opacity:0.75;">09/10/2026</span>
                             </div>
@@ -4537,7 +4573,7 @@
                             </div>
                             <ul class="changelog-list">
                                 <li><strong>🪟 Painel Lado a Lado (Chamado + Teste):</strong> Novo botão <code>🧪 Abrir Teste ao Lado</code> no gerador de chamado expande a janela em visualização dupla (lado a lado), permitindo preencher a OS e o teste de atendimento na mesma tela sem alternar de janela.</li>
-                                <li><strong>🔧 Ajustes Cumulativos com Vírgula:</strong> No Teste de Atendimento, clicar nos chips de Ajustes agora concatena automaticamente os itens com vírgula (ex: <code>setado canal auto, otimizado canal 5GHz</code>) e permite desmarcar com um segundo clique.</li>
+                                <li><strong>🔧 Ajustes Cumulativos com Vírgula:</strong> No Teste de Atendimento, clicar nos chips de Ajustes agora concatena automaticamente os itens com vírgula (ex: <code>setado canal auto, unificado rede wifi</code>) e permite desmarcar com um segundo clique.</li>
                                 <li><strong>📶 Sinal Óptico com Menos Automático:</strong> Ao digitar no campo de Sinal, o sistema insere e mantém automaticamente o sinal de menos (ex: digitou <code>21</code> vira <code>-21 dBm</code>).</li>
                                 <li><strong>🎯 Ping Dividido (Média e Perda %):</strong> Campos dedicados independentes para digitação da média em ms e porcentagem de perda, formatando automaticamente para <code>média 6 perda 0%</code>.</li>
                                 <li><strong>🌐 DNS (Corrigido / Não Corrigido):</strong> Chips específicos para indicar estritamente se o DNS foi corrigido ou não.</li>
@@ -4854,7 +4890,7 @@
             extrato: 'ok',
             ajustes: 'setado canal auto',
             reiniciado: 'Sim',
-            mtu: '1492 MRU',
+            mtu: 'Já estava 1492',
             wan: '1000Mbps porta fixa ok',
             dns: 'OK',
             resumo: ''
@@ -4968,9 +5004,12 @@
                                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:2px;">
                                     <div>
                                         <div class="ticket-chip-row" style="margin-bottom:4px;">
+                                            <span class="ticket-chip" onclick="document.getElementById('tstPingMedia').value = '3'">3ms</span>
+                                            <span class="ticket-chip" onclick="document.getElementById('tstPingMedia').value = '4'">4ms</span>
+                                            <span class="ticket-chip" onclick="document.getElementById('tstPingMedia').value = '5'">5ms</span>
                                             <span class="ticket-chip" onclick="document.getElementById('tstPingMedia').value = '6'">6ms</span>
-                                            <span class="ticket-chip" onclick="document.getElementById('tstPingMedia').value = '15'">15ms</span>
-                                            <span class="ticket-chip" onclick="document.getElementById('tstPingMedia').value = '50'">50ms</span>
+                                            <span class="ticket-chip" onclick="document.getElementById('tstPingMedia').value = '8'">8ms</span>
+                                            <span class="ticket-chip" onclick="document.getElementById('tstPingMedia').value = '10'">10ms</span>
                                         </div>
                                         <input type="text" id="tstPingMedia" class="var-modal-input" placeholder="Média (ms)" value="${escapeHtml(testModalState.pingMedia || '6')}">
                                     </div>
@@ -5002,7 +5041,7 @@
                                 <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
                                     <span class="ticket-chip" onclick="toggleAppendChip('tstAjustes', 'setado canal auto', this)">+ Canal Auto</span>
                                     <span class="ticket-chip" onclick="toggleAppendChip('tstAjustes', 'ajustado 2.4 GHz para 20 MHz', this)">+ 2.4 GHz / 20 MHz</span>
-                                    <span class="ticket-chip" onclick="toggleAppendChip('tstAjustes', 'otimizado canal 5GHz', this)">+ 5GHz Otimizado</span>
+                                    <span class="ticket-chip" onclick="toggleAppendChip('tstAjustes', 'unificado rede wifi', this)">+ Unificado Wi-Fi</span>
                                     <span class="ticket-chip" onclick="toggleAppendChip('tstAjustes', 'ajustado DNS', this)">+ DNS</span>
                                 </div>
                                 <input type="text" id="tstAjustes" class="var-modal-input" value="${escapeHtml(testModalState.ajustes || 'setado canal auto')}">
@@ -5023,10 +5062,12 @@
                             <div>
                                 <label style="font-size:11px; font-weight:600; opacity:0.85;">MTU/MRU:</label>
                                 <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
+                                    <span class="ticket-chip" onclick="document.getElementById('tstMtu').value = 'Já estava 1492'">Já estava 1492</span>
+                                    <span class="ticket-chip" onclick="document.getElementById('tstMtu').value = 'Estava 1480 corrigido para 1492'">Estava 1480 corrigido p/ 1492</span>
                                     <span class="ticket-chip" onclick="document.getElementById('tstMtu').value = '1492 MRU'">1492 MRU</span>
                                     <span class="ticket-chip" onclick="document.getElementById('tstMtu').value = '1500'">1500</span>
                                 </div>
-                                <input type="text" id="tstMtu" class="var-modal-input" value="${escapeHtml(testModalState.mtu || '1492 MRU')}">
+                                <input type="text" id="tstMtu" class="var-modal-input" value="${escapeHtml(testModalState.mtu || 'Já estava 1492')}">
                             </div>
                         </div>
 
@@ -5278,6 +5319,14 @@
                                 </div>
                                 <div>
                                     <label style="font-size:11px; font-weight:600; opacity:0.85;">Ping (Média / Perda %):</label>
+                                    <div class="ticket-chip-row" style="margin-bottom:4px;">
+                                        <span class="ticket-chip" onclick="document.getElementById('sideTstPingMedia').value = '3'">3ms</span>
+                                        <span class="ticket-chip" onclick="document.getElementById('sideTstPingMedia').value = '4'">4ms</span>
+                                        <span class="ticket-chip" onclick="document.getElementById('sideTstPingMedia').value = '5'">5ms</span>
+                                        <span class="ticket-chip" onclick="document.getElementById('sideTstPingMedia').value = '6'">6ms</span>
+                                        <span class="ticket-chip" onclick="document.getElementById('sideTstPingMedia').value = '8'">8ms</span>
+                                        <span class="ticket-chip" onclick="document.getElementById('sideTstPingMedia').value = '10'">10ms</span>
+                                    </div>
                                     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:4px;">
                                         <input type="text" id="sideTstPingMedia" class="var-modal-input" placeholder="Média" value="6">
                                         <input type="text" id="sideTstPingPerda" class="var-modal-input" placeholder="Perda %" value="0">
@@ -5300,7 +5349,7 @@
                                     <div class="ticket-chip-row" style="margin-bottom:4px;">
                                         <span class="ticket-chip" onclick="toggleAppendChip('sideTstAjustes', 'setado canal auto', this)">+ Canal Auto</span>
                                         <span class="ticket-chip" onclick="toggleAppendChip('sideTstAjustes', 'ajustado 2.4 GHz para 20 MHz', this)">+ 2.4 GHz / 20 MHz</span>
-                                        <span class="ticket-chip" onclick="toggleAppendChip('sideTstAjustes', 'otimizado 5GHz', this)">+ 5GHz</span>
+                                        <span class="ticket-chip" onclick="toggleAppendChip('sideTstAjustes', 'unificado rede wifi', this)">+ Unificado Wi-Fi</span>
                                         <span class="ticket-chip" onclick="toggleAppendChip('sideTstAjustes', 'ajustado DNS', this)">+ DNS</span>
                                     </div>
                                     <input type="text" id="sideTstAjustes" class="var-modal-input" value="setado canal auto">
@@ -5315,7 +5364,11 @@
                                 </div>
                                 <div>
                                     <label style="font-size:11px; font-weight:600; opacity:0.85;">MTU/MRU:</label>
-                                    <input type="text" id="sideTstMtu" class="var-modal-input" value="1492 MRU">
+                                    <div class="ticket-chip-row" style="margin-bottom:4px;">
+                                        <span class="ticket-chip" onclick="document.getElementById('sideTstMtu').value = 'Já estava 1492'">Já estava 1492</span>
+                                        <span class="ticket-chip" onclick="document.getElementById('sideTstMtu').value = 'Estava 1480 corrigido para 1492'">Estava 1480 corrigido</span>
+                                    </div>
+                                    <input type="text" id="sideTstMtu" class="var-modal-input" value="Já estava 1492">
                                 </div>
                             </div>
 
