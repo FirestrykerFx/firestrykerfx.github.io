@@ -7893,13 +7893,35 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 
         function restoreDefaults() {
             pushUndoSnapshot('Restauração de Padrão');
-            if (!confirm('Restaurar os scripts padrão deste arquivo? Suas alterações atuais serão perdidas (exporte um backup antes).')) return;
+            if (!confirm('Restaurar TODOS os scripts e abas padrão deste arquivo (11 abas completas)? Suas alterações atuais serão substituídas.')) return;
+            
+            // Limpa chave de storage e de ordem para forçar a carga integral do defaultData
             localStorage.removeItem(STORAGE_KEY);
-            currentActiveTabId = null;
+            localStorage.removeItem(TAB_ORDER_KEY);
+            localStorage.removeItem(ACTIVE_TAB_KEY);
+            
+            const freshData = JSON.parse(JSON.stringify(defaultData));
+            normalizeData(freshData);
+            setAppData(freshData);
+            
+            const defaultOrder = Object.keys(freshData);
+            saveTabOrder(defaultOrder);
+            
+            currentActiveTabId = defaultOrder[0] || 'tab_leo';
+            try { localStorage.setItem(ACTIVE_TAB_KEY, currentActiveTabId); } catch (e) {}
+            markLocalChange();
+            
             loadAppData();
             updateStorageIndicator();
             updateUndoButton();
             initAlarmConfigUI();
+            syncToCloudDebounced();
+            
+            if (typeof showToast === 'function') {
+                showToast(`✅ Todos os scripts e abas padrão (${defaultOrder.length} abas) foram restaurados com sucesso!`, 'success');
+            } else {
+                alert(`✅ Todos os scripts e abas padrão (${defaultOrder.length} abas) foram restaurados com sucesso!`);
+            }
         }
 
         function normalizeText(t) {
@@ -8076,8 +8098,8 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                                 Você pode restaurar todos os scripts padrão inclusos ou apagar todos os cards para começar com a central totalmente zerada:
                             </p>
                             <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                                <button class="var-modal-btn" style="background-color: var(--tab-bg); border: 1px solid var(--border-color); color: var(--text-color); font-weight: 600;" onclick="restoreDefaults(); this.closest('.var-modal-overlay').remove();" title="Recarrega todos os scripts padrão inclusos">
-                                    ♻️ Restaurar Scripts Padrão
+                                <button class="var-modal-btn" style="background-color: #2563eb; color: #fff; font-weight: 700;" onclick="restoreDefaults(); this.closest('.var-modal-overlay').remove();" title="Recarrega todas as 11 abas e centenas de scripts padrão inclusos">
+                                    ♻️ Restaurar Todas as 11 Abas Padrão
                                 </button>
                                 <button class="var-modal-btn" style="background-color: #d9363e; color: #fff; font-weight: 600;" onclick="clearAllScripts(); this.closest('.var-modal-overlay').remove();" title="Apaga todos os cards e deixa a central totalmente vazia">
                                     🗑️ Zerar Tudo (Limpar Cards)
