@@ -931,6 +931,18 @@
             gap: 8px;
         }
 
+        
+        .comp-group-header {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: var(--accent-color);
+            padding: 4px 2px 2px 2px;
+            border-bottom: 1px dashed var(--border-color);
+            margin-top: 4px;
+            opacity: 0.85;
+        }
+
         .comp-card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -2590,7 +2602,7 @@
     <div class="content-container" id="contentContainer"></div>
 
     <script>
-        const APP_VERSION = '2.5.3';
+        const APP_VERSION = '2.5.7';
         const UPDATE_MANIFEST_URL = 'https://firestrykerfx.github.io/version.json';
         const UPDATE_CHECK_INTERVAL = 6 * 60 * 60 * 1000;
                 /* ===== Notificações Toasts Flutuantes Modernas ===== */
@@ -3641,12 +3653,75 @@
                     </div>
                     <div class="vm-body" style="padding: 16px 20px; overflow-y: auto;">
                         
-                                                                                                                                                                                                                        <!-- Versão 2.5.3 -->
+                                                                                                                                                                                                                        <!-- Versão 2.5.7 -->
+                        <div class="changelog-version-card" style="border-color: #2563eb;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>🚀 Versão 2.5.7</span>
+                                    <span class="changelog-badge" style="background:#2563eb; color:#fff;">Versão Atual</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">09/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>🎯 Alinhamento Oficial de Versão (2.5.7):</strong> Sincronização uniforme de todo o versionamento do sistema, changelogs e verificador de atualizações.</li>
+                                <li><strong>📝 Blindagem Definitiva do Bloco de Rascunho:</strong> Remoção de flags transitórias do DOM e inicialização imediata no startup, assegurando que anotações provisórias de clientes nunca sejam apagadas ao salvar cópias HTML ou recarregar a tela.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versão 2.5.6 -->
+                        <div class="changelog-version-card" style="border-color: #007aff;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>🪟 Versão 2.5.6</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">09/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>🪟 Paridade Total da Dock de Scripts com o Site:</strong> O menu suspenso de abas e a lista de scripts da Dock seguem rigorosamente a mesma ordenação do site principal (inclusive com agrupamento visual por coluna).</li>
+                                <li><strong>⚡ Ordenação Crescente de Planos (200 MB a 1.5 GB):</strong> Chips e seletores do gerador de chamados organizados em ordem estrita de velocidade.</li>
+                                <li><strong>🔤 Correção Tipográfica no Cabeçalho do Chamado:</strong> Eliminação de letras maiúsculas forçadas no seletor de modelos de chamado, mantendo formatação padrão e agradável.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versão 2.5.5 -->
+                        <div class="changelog-version-card" style="border-color: #10b981;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>🌐 Versão 2.5.5</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">09/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>🌐 Fila de Sincronização Offline com Retry:</strong> Alterações feitas sem internet entram em fila automática e sincronizam com backoff exponencial quando a conexão é restabelecida.</li>
+                                <li><strong>🚦 Indicadores Visuais de Status da Nuvem:</strong> Estados nítidos no perfil e na janela Minha Conta (Sincronizado, Sincronizando, Pendente, Falha e Offline).</li>
+                                <li><strong>📋 Botão Copiar com Acessibilidade:</strong> Anúncio em tempo real para leitores de tela (<code>aria-live="polite"</code>) e proteção contra cliques rápidos repetidos.</li>
+                                <li><strong>🔒 Validador de Segurança na Importação:</strong> Limites rígidos de tamanho e integridade para barrar arquivos corrompidos ou maliciosos.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versão 2.5.4 -->
+                        <div class="changelog-version-card" style="border-color: #6366f1;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>📦 Versão 2.5.4</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">09/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>📦 Backup Completo e Versionado do Sistema:</strong> Exportação integral em JSON contendo scripts, abas, clientes, variáveis, userscripts, rascunhos e preferências visuais.</li>
+                                <li><strong>♿ Acessibilidade Plena (WAI-ARIA):</strong> Abas navegáveis por teclado (Setas, Home, End), fechamento com Escape em modais e botões acessíveis para reordenar abas sem arrastar.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versão 2.5.3 -->
                         <div class="changelog-version-card" style="border-color: #7c3aed;">
                             <div class="changelog-version-header">
                                 <div class="changelog-version-title">
                                     <span>🛡️ Versão 2.5.3</span>
-                                    <span class="changelog-badge" style="background:#7c3aed; color:#fff;">Versão Atual</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
                                 </div>
                                 <span style="font-size:11px; opacity:0.75;">09/10/2026</span>
                             </div>
@@ -4436,8 +4511,8 @@
                         <div id="tkLeftColumn" style="flex:1; min-width:320px; max-width:650px; display:flex; flex-direction:column;">
                             <!-- Seletor de Templates -->
                             <div style="padding: 12px 18px 6px 18px; border-bottom: 1px solid var(--border-color);">
-                                <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.7; margin-bottom: 6px;">
-                                    Selecione o Modelo de Chamado (OS Técnica):
+                                <div style="font-size: 11.5px; font-weight: 700; letter-spacing: 0.02em; opacity: 0.85; margin-bottom: 6px;">
+                                    Selecione o modelo de chamado (OS Técnica):
                                 </div>
                                 <div class="ticket-template-tabs" id="tkTemplateTabs" style="display:flex; gap:6px; overflow-x:auto; padding-bottom:4px;">
                                     <button type="button" class="ticket-template-tab active" data-tpl="sem_acesso">🚨 Sem Acesso</button>
@@ -4606,7 +4681,8 @@
 
             // Gerador de chips de planos mais vendidos: 500 MB, 700 MB, 800 MB, 1000 MB, 1.5 GB
             function renderPlanField(currentVal) {
-                const popularPlans = ['500 MB', '700 MB', '800 MB', '1000 MB', '1.5 GB'];
+                // Ordenação crescente rigorosa de velocidade: 200 MB até 1.5 GB
+                const popularPlans = ['200 MB', '400 MB', '500 MB', '600 MB', '700 MB', '800 MB', '1000 MB', '1.5 GB'];
                 return `
                     <div>
                         <label style="font-size:11px; font-weight:600; opacity:0.85;">Plano do Cliente (em MB):</label>
@@ -4614,9 +4690,14 @@
                             ${popularPlans.map(p => `<span class="ticket-chip ${currentVal === p ? 'active' : ''}" onclick="setFieldVal('tkPlan', '${p}')">${p}</span>`).join('')}
                         </div>
                         ${renderTicketSelect('tkPlan', currentVal || '700 MB', [
-                            {value:'500 MB',label:'500 MB'}, {value:'700 MB',label:'700 MB'}, {value:'800 MB',label:'800 MB'},
-                            {value:'1000 MB',label:'1000 MB'}, {value:'1.5 GB',label:'1.5 GB'},
-                            {value:'200 MB',label:'200 MB'}, {value:'400 MB',label:'400 MB'}, {value:'600 MB',label:'600 MB'}
+                            {value:'200 MB',label:'200 MB'},
+                            {value:'400 MB',label:'400 MB'},
+                            {value:'500 MB',label:'500 MB'},
+                            {value:'600 MB',label:'600 MB'},
+                            {value:'700 MB',label:'700 MB'},
+                            {value:'800 MB',label:'800 MB'},
+                            {value:'1000 MB',label:'1000 MB'},
+                            {value:'1.5 GB',label:'1.5 GB'}
                         ], 'Digitar outro plano')}
                     </div>
                 `;
@@ -8261,7 +8342,8 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             if (!surface || !surface.refs) return;
 
             const data = getAppData();
-            const ids = Object.keys(data);
+            // Utiliza estritamente a mesma ordem das abas do site principal
+            const ids = getSavedTabOrder(data);
             if (ids.length === 0) return;
 
             if (!companion.tabId || companion.tabId === 'tab_clients_alarm' || !data[companion.tabId]) {
@@ -8303,20 +8385,39 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             list.innerHTML = '';
             if (!tab) return;
 
+            // Extrai todos os cards respeitando rigorosamente a ordem de colunas e cards do site
+            const allItems = [];
+            if (Array.isArray(tab.groups)) {
+                tab.groups.forEach(g => {
+                    if (Array.isArray(g.items)) {
+                        g.items.forEach(item => {
+                            allItems.push({
+                                ...item,
+                                groupTitle: g.title || ''
+                            });
+                        });
+                    }
+                });
+            } else if (Array.isArray(tab.items)) {
+                tab.items.forEach(item => allItems.push(item));
+            }
+
             const query = companion.query.trim().toLowerCase();
-            const items = tab.items.filter(item => {
+            const filteredItems = allItems.filter(item => {
                 const text = item.text || '';
                 const tags = item.tags || [];
                 const matchText = !query || text.toLowerCase().includes(query);
                 const matchTag = tags.some(t => t.toLowerCase().includes(query));
                 return matchText || matchTag;
             });
-            items.sort((a, b) => (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0));
 
-            surface.refs.count.textContent = `${items.length} de ${tab.items.length} script(s)`;
+            // Se não houver busca ativa, favoritos vão para o topo preservando a ordem original entre si
+            filteredItems.sort((a, b) => (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0));
+
+            surface.refs.count.textContent = `${filteredItems.length} de ${allItems.length} script(s)`;
             surface.refs.modeLabel.textContent = companion.compact ? 'Compacto' : 'Completo';
 
-            if (items.length === 0) {
+            if (filteredItems.length === 0) {
                 const empty = doc.createElement('div');
                 empty.className = 'comp-empty';
                 empty.textContent = 'Nenhum script encontrado.';
@@ -8324,7 +8425,16 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                 return;
             }
 
-            items.forEach((item, idx) => {
+            let lastGroup = '';
+            filteredItems.forEach((item, idx) => {
+                // Separador visual de coluna/grupo na Dock quando não compacto
+                if (!companion.compact && item.groupTitle && item.groupTitle !== lastGroup && !query) {
+                    lastGroup = item.groupTitle;
+                    const grpHeader = doc.createElement('div');
+                    grpHeader.className = 'comp-group-header';
+                    grpHeader.textContent = lastGroup;
+                    list.appendChild(grpHeader);
+                }
                 list.appendChild(buildCompanionCard(surface, item, idx));
             });
         }
