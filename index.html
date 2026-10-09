@@ -2579,7 +2579,7 @@
         <div class="dropdown-popover" id="colorFilterDropdown" data-transient="true" onclick="event.stopPropagation()">
             <div class="dropdown-popover-title">
                 <span>🎨 Filtrar por Cor</span>
-                <button class="vm-x" style="width:24px; height:24px; font-size:14px;" onclick="closeAllHeaderDropdowns()">✕</button>
+                <button class="vm-x" aria-label="Fechar menu" style="width:24px; height:24px; font-size:14px;" onclick="closeAllHeaderDropdowns()">✕</button>
             </div>
             <div class="dropdown-list">
                 <div class="dropdown-list-item" onclick="setColorFilter(''); closeAllHeaderDropdowns();">
@@ -2607,7 +2607,7 @@
         <div class="dropdown-popover" id="tabsMenuDropdown" data-transient="true" onclick="event.stopPropagation()">
             <div class="dropdown-popover-title">
                 <span>📑 Todas as Abas</span>
-                <button class="vm-x" style="width:24px; height:24px; font-size:14px;" onclick="closeAllHeaderDropdowns()">✕</button>
+                <button class="vm-x" aria-label="Fechar menu" style="width:24px; height:24px; font-size:14px;" onclick="closeAllHeaderDropdowns()">✕</button>
             </div>
             <input type="text" id="tabFilterInput" class="var-modal-input" placeholder="🔍 Filtrar aba..." oninput="renderTabsDropdownList(this.value)" style="padding:6px 10px; font-size:12px;">
             <div class="dropdown-list" id="tabsDropdownList"></div>
@@ -2617,7 +2617,7 @@
         <div class="dropdown-popover" id="recentsMenuDropdown" data-transient="true" onclick="event.stopPropagation()">
             <div class="dropdown-popover-title">
                 <span>🕒 Scripts Recentes</span>
-                <button class="vm-x" style="width:24px; height:24px; font-size:14px;" onclick="closeAllHeaderDropdowns()">✕</button>
+                <button class="vm-x" aria-label="Fechar menu" style="width:24px; height:24px; font-size:14px;" onclick="closeAllHeaderDropdowns()">✕</button>
             </div>
             <p style="margin:0; font-size:11px; opacity:0.75;">Últimos scripts copiados nesta sessão:</p>
             <div class="dropdown-list" id="recentsDropdownList"></div>
@@ -2678,7 +2678,15 @@
                 .replace(/'/g, '&#039;');
         }
 
-        const APP_VERSION = '2.6.3';
+        /* Helper seguro com fallback para navegadores antigos sem CSS.escape */
+        function safeCssEscape(str) {
+            if (typeof CSS !== 'undefined' && typeof CSS.escape === 'function') {
+                return CSS.escape(str);
+            }
+            return String(str).replace(/([ #;&,.+*~':"!^$\[\]()=>|\/@])/g, '\\$1');
+        }
+
+        const APP_VERSION = '2.6.5';
         const UPDATE_MANIFEST_URL = 'https://firestrykerfx.github.io/version.json';
         const UPDATE_CHECK_INTERVAL = 6 * 60 * 60 * 1000;
                 /* ===== Notificações Toasts Flutuantes Modernas ===== */
@@ -3776,9 +3784,53 @@
         const TAB_ORDER_KEY = 'scripts_tab_order_v1';
         const ACTIVE_TAB_KEY = 'scripts_active_tab_id_v1';
         const LAST_LOCAL_UPDATE_KEY = 'scripts_last_local_update_v1';
+        const LAST_SYNC_TIME_KEY = 'scripts_last_sync_time_v1';
+        const DEVICE_ID_KEY = 'scripts_device_id_v1';
+        let localRevision = 0;
+        let lastSyncedRevision = 0;
+
+        function getOrCreateDeviceId() {
+            try {
+                let id = localStorage.getItem(DEVICE_ID_KEY);
+                if (!id) {
+                    id = (typeof crypto !== 'undefined' && crypto.randomUUID)
+                        ? crypto.randomUUID()
+                        : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 9)}`;
+                    localStorage.setItem(DEVICE_ID_KEY, id);
+                }
+                return id;
+            } catch(e) {
+                return 'dev_unknown';
+            }
+        }
+
+        /* Centralizador único para montar o payload da nuvem */
+        function buildSyncPayload() {
+            const scripts = getAppData();
+            return {
+                schemaVersion: 1,
+                revision: localRevision,
+                deviceId: getOrCreateDeviceId(),
+                updatedBy: (currentUser && currentUser.uid) || (currentUser && currentUser.email) || 'user',
+                updatedAt: new Date().toISOString(),
+                scripts: scripts,
+                tabOrder: getSavedTabOrder(scripts),
+                customDefaults: getCustomDefaults(),
+                clients: getClientsData(),
+                scratchpad: localStorage.getItem(SCRATCHPAD_KEY) || '',
+                settings: {
+                    theme: localStorage.getItem(THEME_KEY) || 'dark',
+                    layout: localStorage.getItem(LAYOUT_KEY) || 'grid',
+                    scale: parseFloat(localStorage.getItem(SCALE_KEY)) || 1,
+                    activeTabId: currentActiveTabId || localStorage.getItem(ACTIVE_TAB_KEY) || '',
+                    alarmConfig: getAlarmConfig()
+                }
+            };
+        }
 
         let currentActiveTabId = null;
         function markLocalChange() {
+            localRevision++;
             try { localStorage.setItem(LAST_LOCAL_UPDATE_KEY, String(Date.now())); } catch (e) {}
         }
 
@@ -4316,6 +4368,35 @@
                 ? `<span class="admin-badge role-admin" style="font-size:10px; margin-left:6px;">🛡️ Visão Administrativa Completa</span>`
                 : `<span class="admin-badge role-user" style="font-size:10px; margin-left:6px;">👤 Visão do Atendente</span>`;
 
+                                    const items265 = isAdmin ? `
+                                <li><strong>🔄 Fila Concorrente de Sincronização & Função Única de Payload:</strong> Implementação estrita de <code>buildSyncPayload()</code> e verificação atômica de revisão (<code>localRevision === revisionAtStart</code>), garantindo que alterações feitas durante um envio ativo disparem nova transmissão imediata sem perda de dados.</li>
+                                <li><strong>⚠️ Detecção de Conflito Multi-Dispositivo:</strong> Comparação automática entre timestamp e <code>deviceId</code> remoto. Caso outro computador tenha atualizado a base, um modal interativo oferece a escolha entre aceitar os dados da nuvem ou manter as alterações locais.</li>
+                                <li><strong>📦 Sanitizador Isolado de Backup Completo:</strong> Função <code>sanitizeFullBackup()</code> criada separadamente da validação, garantindo imunidade a mutações e limites estritos para scripts, clientes, userscripts e preferências visuais.</li>
+                                <li><strong>🛡️ Barreira de Confiança para Userscripts:</strong> Scripts importados exigem confirmação explícita de confiança (<code>trusted: true</code>) antes da primeira execução, com bloqueio rígido de scripts acima de 300 KB ou sem cabeçalhos válidos.</li>
+                                <li><strong>🆔 Identificadores Permanentes nos Cards:</strong> Atribuição de UUID / ID estável a todos os cards (<code>card.dataset.cardId</code>), permitindo auditoria pontual e rastreamento.</li>
+                                <li><strong>📜 Auditoria Administrativa no Firestore:</strong> Registro automático de eventos corporativos na coleção <code>audit_logs</code> (promoção de admin, bloqueio/desbloqueio e publicação de scripts oficiais).</li>
+                                <li><strong>💎 Versão 2.6.5 Consolidada:</strong> Alinhamento uniforme de versão no cabeçalho e nos backups.</li>
+            ` : `
+                                <li><strong>🔄 Sincronização Blindada:</strong> Suas alterações são salvas com proteção automática contra perdas, mesmo digitando muito rápido ou trocando de abas.</li>
+                                <li><strong>⚠️ Proteção entre Computadores:</strong> Se você abrir a central em outro computador, o sistema avisa e permite escolher qual versão deseja manter.</li>
+                                <li><strong>🛡️ Segurança em Scripts:</strong> Userscripts importados só funcionam após sua autorização explícita de confiança.</li>
+                                <li><strong>♿ Acessibilidade e Estabilidade:</strong> Melhorias de navegação e exibição transparente de status da nuvem.</li>
+            `;
+
+            const items264 = isAdmin ? `
+                                <li><strong>🔄 Blindagem Concorrente da Fila de Sincronização:</strong> Eliminação de race condition em <code>processSyncQueue()</code> com controle estrito por <code>syncRevision</code> e payload tracking — edições realizadas durante um envio em andamento não são descartadas da fila.</li>
+                                <li><strong>🆔 Rastreamento Multi-Dispositivo & Resolução de Erros:</strong> Inclusão de <code>deviceId</code> único e metadados no payload do Firestore; centralização imediata de tratamento de status de erro com <code>updateSyncStatusUI('error')</code> caso ocorra falha na leitura da nuvem.</li>
+                                <li><strong>📦 Validação Imutável & Rígida de Backup:</strong> Função <code>validateImportPayload()</code> agora opera com cópia sanitizada profunda (sem mutação direta de entrada), validando limites de clientes (500), userscripts (60, max 100 KB), tipos rigorosos de texto, nomes e tags.</li>
+                                <li><strong>🛡️ Segurança em Userscripts:</strong> Scripts importados iniciam desativados (<code>enabled: false</code>) e não confiáveis (<code>trusted: false</code>) por padrão, exigindo ativação deliberada.</li>
+                                <li><strong>♿ Acessibilidade WCAG Completa:</strong> Implementação de <em>Focus Trap</em> e navegação por teclado (<code>Tab</code>, <code>Shift+Tab</code>, <code>Escape</code>) com pilha de modais empilhados e rótulos <code>aria-label</code> em todos os botões de fechar.</li>
+                                <li><strong>💎 Versão Oficial Consolidada:</strong> Alinhamento uniforme de <code>APP_VERSION = '2.6.4'</code> em todo o sistema.</li>
+            ` : `
+                                <li><strong>🔄 Sincronização Ultra-Segura:</strong> Proteção avançada contra perda de dados quando múltiplos cards são editados rapidamente em sequência.</li>
+                                <li><strong>♿ Navegação Acessível e Confortável:</strong> Fechamento rápido de qualquer janela com a tecla <em>Escape</em> e foco automático facilitando o uso sem mouse.</li>
+                                <li><strong>🕒 Informação de Última Sincronização:</strong> O painel Minha Conta agora exibe exatamente o horário em que seus dados foram salvos na nuvem.</li>
+                                <li><strong>🛡️ Proteção de Scripts Importados:</strong> Scripts externos importados entram desativados para sua total segurança operacional.</li>
+            `;
+
             const items263 = isAdmin ? `
                                 <li><strong>🎨 Correção Definitiva de Alternância de Temas:</strong> Inclusão de script de inicialização imediata no <code>&lt;head&gt;</code> e dupla aplicação simultânea de classes em <code>&lt;html&gt;</code> e <code>&lt;body&gt;</code> (<code>html.theme-*</code> e <code>body.theme-*</code>), eliminando a necessidade de atualizar a página (F5) para aplicar os modos Cinza, OLED ou Claro.</li>
                                 <li><strong>☁️ Auditoria e Robustez das Opções de Nuvem:</strong> Validação de concorrência com o Firestore — quando o tema ou layout é trocado localmente, o timestamp <code>LAST_LOCAL_UPDATE_KEY</code> é registrado e a nuvem é atualizada via debounce, sem sobrescrever preferências do atendente.</li>
@@ -4334,21 +4415,51 @@
                             <span>📜 Histórico de Atualizações</span>
                             ${adminBadge}
                         </div>
-                        <button class="vm-x" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
+                        <button class="vm-x" aria-label="Fechar janela" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
                     </div>
                     <div class="vm-body" style="padding: 16px 20px; overflow-y: auto;">
                         
-                        <!-- Versão 2.6.3 -->
+                        <!-- Versão 2.6.5 -->
                         <div class="changelog-version-card" style="border-color: #2563eb;">
                             <div class="changelog-version-header">
                                 <div class="changelog-version-title">
-                                    <span>💎 Versão 2.6.3</span>
+                                    <span>🚀 Versão 2.6.5</span>
                                     <span class="changelog-badge" style="background:#2563eb; color:#fff;">Versão Atual</span>
                                 </div>
                                 <span style="font-size:11px; opacity:0.75;">09/10/2026</span>
                             </div>
                             <ul class="changelog-list">
-                                ${items263}
+                                ${items265}
+                            </ul>
+                        </div>
+
+                        <!-- Versão 2.6.4 -->
+                        <div class="changelog-version-card" style="border-color: #7c3aed;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>🛡️ Versão 2.6.4</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">09/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>🔄 Blindagem Concorrente da Fila:</strong> Controle rigoroso por número de revisão em <code>processSyncQueue()</code>.</li>
+                                <li><strong>♿ Acessibilidade WCAG:</strong> Focus trap nos modais e navegação aprimorada com teclado.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versão 2.6.3 -->
+                        <div class="changelog-version-card" style="border-color: #7c3aed;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>🚀 Versão 2.6.3</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">09/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>🎨 Troca Instantânea de Tema:</strong> Inicialização ultra-rápida no <code>&lt;head&gt;</code> e dupla aplicação de classes em <code>&lt;html&gt;</code> e <code>&lt;body&gt;</code>, eliminando recarga de página.</li>
+                                <li><strong>💾 Backup & Armazenamento Acessível:</strong> Botão fixo no cabeçalho liberado para operação autônoma mesmo quando deslogado.</li>
                             </ul>
                         </div>
 
@@ -4985,7 +5096,7 @@
                             <span>🧪</span>
                             <span>Registro de Teste de Atendimento (Diagnóstico Técnico)</span>
                         </div>
-                        <button class="vm-x" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
+                        <button class="vm-x" aria-label="Fechar janela" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
                     </div>
 
                     <div class="vm-body" style="padding: 14px 18px; gap: 12px;">
@@ -5281,7 +5392,7 @@
                             <button type="button" class="var-modal-btn" id="btnToggleSideTest" style="background:rgba(0,122,255,0.15); color:#007aff; border:1px solid #007aff; padding:4px 10px; font-size:11.5px; font-weight:600;">
                                 🧪 Abrir Teste ao Lado
                             </button>
-                            <button class="vm-x" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
+                            <button class="vm-x" aria-label="Fechar janela" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
                         </div>
                     </div>
 
@@ -5318,7 +5429,7 @@
                                 <div style="font-size:13px; font-weight:700; color:var(--title-color); display:flex; align-items:center; gap:6px;">
                                     <span>🧪</span> <span>Teste de Atendimento (Ao Lado)</span>
                                 </div>
-                                <button type="button" class="vm-x" id="btnCloseSideTest" style="font-size:14px;">✕</button>
+                                <button type="button" class="vm-x" id="btnCloseSideTest" aria-label="Fechar teste lateral" style="font-size:14px;">✕</button>
                             </div>
 
                             <!-- Contato -->
@@ -6273,6 +6384,23 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         let activeColorFilter = '';
         const SCRATCHPAD_KEY = 'scripts_scratchpad_data_v1';
 
+        function createStableId() {
+            return (typeof crypto !== 'undefined' && crypto.randomUUID)
+                ? crypto.randomUUID()
+                : `card-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+        }
+
+        function ensureItemId(item) {
+            if (!item) return { id: createStableId(), text: '' };
+            if (typeof item === 'string') {
+                return { id: createStableId(), text: item };
+            }
+            if (!item.id) {
+                item.id = createStableId();
+            }
+            return item;
+        }
+
         function cleanExcessiveNewlines(str) {
             if (!str) return '';
             return str
@@ -7013,6 +7141,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                     tabContent.querySelectorAll('.column').forEach(col => {
                         const items = [];
                         col.querySelectorAll('.item-card').forEach(card => {
+                            const id = card.dataset.cardId || createStableId();
                             const text = card.querySelector('.item-textarea').value;
                             const tags = [...card.querySelectorAll('.card-tag')].map(tagEl => tagEl.dataset.tagName);
                             const alarmInput = card.querySelector('.card-alarm-input');
@@ -7023,7 +7152,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                             const favorite = card.classList.contains('is-favorite');
                             const color = card.dataset.cardColor || '';
                             const copies = parseInt(card.dataset.copyCount) || 0;
-                            items.push({ text, tags, alarm, favorite, color, copies });
+                            items.push({ id, text, tags, alarm, favorite, color, copies });
                         });
                         groups.push({
                             title: col.querySelector('.col-title').value,
@@ -7057,7 +7186,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                 t.setAttribute('aria-selected', 'false');
                 t.setAttribute('tabindex', '-1');
             });
-            const activeTabEl = document.querySelector(`.tab[data-tabid="${CSS.escape(tabId)}"]`);
+            const activeTabEl = document.querySelector(`.tab[data-tabid="${safeCssEscape(tabId)}"]`);
             if(activeTabEl) {
                 activeTabEl.classList.add('active');
                 activeTabEl.setAttribute('aria-selected', 'true');
@@ -7147,16 +7276,19 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             if (tip) tip.classList.remove('visible');
         }
 
-        function appendCard(container, itemData) {
-            const text = typeof itemData === 'string' ? itemData : (itemData.text || '');
-            const tags = (typeof itemData === 'object' && itemData.tags) ? itemData.tags : [];
-            const alarm = (typeof itemData === 'object' && itemData.alarm) ? itemData.alarm : '';
-            const isFavorite = typeof itemData === 'object' && !!itemData.favorite;
-            const cardColor = (typeof itemData === 'object' && itemData.color) ? itemData.color : '';
-            const copyCount = (typeof itemData === 'object' && itemData.copies) ? parseInt(itemData.copies) || 0 : 0;
+        function appendCard(container, rawItemData) {
+            const itemData = ensureItemId(rawItemData);
+            const text = itemData.text || '';
+            const tags = Array.isArray(itemData.tags) ? itemData.tags : [];
+            const alarm = itemData.alarm || '';
+            const isFavorite = !!itemData.favorite;
+            const cardColor = itemData.color || '';
+            const copyCount = parseInt(itemData.copies) || 0;
+            const cardId = itemData.id;
 
             const newCard = document.createElement('div');
             newCard.className = 'item-card' + (isFavorite ? ' is-favorite' : '') + (cardColor ? ' color-' + cardColor : '');
+            newCard.dataset.cardId = cardId;
             newCard.dataset.cardColor = cardColor;
             newCard.dataset.copyCount = copyCount;
 
@@ -7596,7 +7728,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         }
 
         function renameTab(tabId) {
-            const tabEl = document.querySelector(`.tab[data-tabid="${CSS.escape(tabId)}"]`);
+            const tabEl = document.querySelector(`.tab[data-tabid="${safeCssEscape(tabId)}"]`);
             if (!tabEl) return;
             const titleEl = tabEl.querySelector('.tab-title');
             const currentName = titleEl.textContent;
@@ -8165,8 +8297,11 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
            ============================================================ */
         let activeModalTriggerEl = null;
 
+        const modalFocusStack = [];
+
         function createAccessibleModal({ id, title, contentHtml, footerHtml, width = 'min(560px, 94vw)', onConfirm, confirmText = 'Confirmar', triggerElement = null }) {
-            activeModalTriggerEl = triggerElement || document.activeElement;
+            const trigger = triggerElement || document.activeElement;
+            modalFocusStack.push(trigger);
             document.body.classList.add('modal-open');
 
             const overlay = document.createElement('div');
@@ -8198,12 +8333,14 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             `;
 
             function closeModal() {
+                document.removeEventListener('keydown', handleKeyDown);
                 overlay.remove();
+                const previousTrigger = modalFocusStack.pop();
                 if (document.querySelectorAll('.var-modal-overlay, .update-overlay, .usm-overlay').length === 0) {
                     document.body.classList.remove('modal-open');
                 }
-                if (activeModalTriggerEl && typeof activeModalTriggerEl.focus === 'function') {
-                    try { activeModalTriggerEl.focus(); } catch (e) {}
+                if (previousTrigger && typeof previousTrigger.focus === 'function') {
+                    try { previousTrigger.focus(); } catch (e) {}
                 }
             }
 
@@ -8221,13 +8358,48 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                 if (confBtn) confBtn.onclick = () => onConfirm(closeModal, overlay);
             }
 
+            // Focus Trap rigoroso e tecla Escape para acessibilidade WCAG/WAI-ARIA
+            function handleKeyDown(e) {
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    closeModal();
+                    return;
+                }
+                if (e.key === 'Tab') {
+                    const focusables = Array.from(overlay.querySelectorAll(
+                        'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+                    )).filter(el => el.offsetWidth > 0 || el.offsetHeight > 0);
+
+                    if (focusables.length === 0) {
+                        e.preventDefault();
+                        return;
+                    }
+                    const firstEl = focusables[0];
+                    const lastEl = focusables[focusables.length - 1];
+
+                    if (e.shiftKey) {
+                        if (document.activeElement === firstEl || !overlay.contains(document.activeElement)) {
+                            e.preventDefault();
+                            lastEl.focus();
+                        }
+                    } else {
+                        if (document.activeElement === lastEl || !overlay.contains(document.activeElement)) {
+                            e.preventDefault();
+                            firstEl.focus();
+                        }
+                    }
+                }
+            }
+
+            document.addEventListener('keydown', handleKeyDown);
             document.body.appendChild(overlay);
 
-            // Foco inicial no primeiro campo de entrada ou botão
+            // Foco inicial automático
             setTimeout(() => {
                 const firstFocusable = overlay.querySelector('input:not([disabled]), textarea:not([disabled]), select:not([disabled]), button:not(.vm-x)');
                 if (firstFocusable) firstFocusable.focus();
-            }, 50);
+            }, 40);
 
             return { overlay, closeModal };
         }
@@ -8241,7 +8413,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                 <div class="var-modal-box vm-box" style="width: min(560px, 94vw); max-height: 90vh;">
                     <div class="vm-head">
                         <div class="vm-title">🔍 Localizar e Substituir em Massa</div>
-                        <button class="vm-x" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
+                        <button class="vm-x" aria-label="Fechar janela" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
                     </div>
                     <div class="vm-body" style="padding: 18px 20px; gap: 14px; overflow-y: auto;">
                         <div style="font-size: 12.5px; line-height: 1.5; opacity: 0.9; background: rgba(37,99,235,0.08); border: 1px solid rgba(37,99,235,0.25); padding: 10px 14px; border-radius: 10px;">
@@ -8471,16 +8643,73 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         }
 
         /* Importa backup detectando automaticamente se é Completo (v2.5.3) ou Legado (somente scripts) */
-                /* Validador Rigoroso de Arquivos Importados (JSON) */
-        function validateImportPayload(parsed) {
+                /* Validador Rigoroso e Imutável de Arquivos Importados (JSON v2.6.4) */
+                function clamp(value, min, max) {
+            return Math.max(min, Math.min(max, value));
+        }
+
+        function sanitizeFullBackup(parsed) {
+            const allowedThemes = ['dark', 'oled', 'light'];
+            const allowedLayouts = ['grid', 'list'];
+            const scripts = (parsed && typeof parsed.scripts === 'object') ? parsed.scripts : {};
+            const settings = (parsed && typeof parsed.settings === 'object') ? parsed.settings : {};
+
+            return {
+                type: 'CENTRAL_DE_SCRIPTS_FULL_BACKUP',
+                version: String((parsed && parsed.version) || APP_VERSION),
+                exportedAt: (parsed && parsed.exportedAt) || new Date().toISOString(),
+                scripts: scripts,
+                tabOrder: Array.isArray(parsed && parsed.tabOrder)
+                    ? parsed.tabOrder.filter(id => typeof id === 'string' && scripts[id]).slice(0, 60)
+                    : Object.keys(scripts),
+                customDefaults: (parsed && typeof parsed.customDefaults === 'object' && !Array.isArray(parsed.customDefaults))
+                    ? parsed.customDefaults
+                    : {},
+                clients: Array.isArray(parsed && parsed.clients)
+                    ? parsed.clients.filter(c => c && typeof c === 'object').slice(0, 500)
+                    : [],
+                scratchpad: typeof (parsed && parsed.scratchpad) === 'string'
+                    ? parsed.scratchpad.slice(0, 20000)
+                    : '',
+                userscripts: Array.isArray(parsed && parsed.userscripts)
+                    ? parsed.userscripts.filter(u => u && typeof u === 'object').slice(0, 50)
+                    : [],
+                settings: {
+                    theme: allowedThemes.includes(settings.theme) ? settings.theme : 'dark',
+                    layout: allowedLayouts.includes(settings.layout) ? settings.layout : 'grid',
+                    scale: clamp(Number(settings.scale) || 1, 0.7, 1.5),
+                    activeTabId: typeof settings.activeTabId === 'string' ? settings.activeTabId.slice(0, 100) : '',
+                    alarmConfig: (typeof settings.alarmConfig === 'object' && settings.alarmConfig) ? settings.alarmConfig : getAlarmConfig()
+                }
+            };
+        }
+
+        function validateImportPayload(rawInput) {
             const MAX_TABS = 60;
+            const MAX_GROUPS_PER_TAB = 50;
             const MAX_CARDS_PER_TAB = 250;
             const MAX_TEXT_LEN = 12000;
+            const MAX_TAGS_PER_CARD = 15;
             const MAX_TAG_LEN = 40;
+            const MAX_TAB_NAME_LEN = 60;
+            const MAX_GROUP_TITLE_LEN = 80;
+            const MAX_CLIENTS = 500;
+            const MAX_USERSCRIPTS = 60;
+            const MAX_USERSCRIPT_SIZE = 100000; // 100 KB
             const ALLOWED_COLORS = ['', 'green', 'yellow', 'red', 'blue', 'purple'];
+            const ALLOWED_THEMES = ['dark', 'oled', 'light'];
+            const ALLOWED_LAYOUTS = ['grid', 'list'];
 
-            if (!parsed || typeof parsed !== 'object') {
+            if (!rawInput || typeof rawInput !== 'object') {
                 return { valid: false, reason: 'Arquivo inválido: o conteúdo precisa ser um objeto JSON formatado.' };
+            }
+
+            // Sanitização imutável: clona profundamente para não mutar o objeto de entrada diretamente
+            let parsed;
+            try {
+                parsed = JSON.parse(JSON.stringify(rawInput));
+            } catch(e) {
+                return { valid: false, reason: 'Falha ao processar estrutura do arquivo JSON.' };
             }
 
             const isFullBackup = parsed.type === 'CENTRAL_DE_SCRIPTS_FULL_BACKUP';
@@ -8500,9 +8729,18 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             }
 
             for (const tabId of tabKeys) {
+                if (typeof tabId !== 'string' || tabId.trim() === '') {
+                    return { valid: false, reason: 'ID de aba inválido ou vazio encontrado.' };
+                }
                 const tab = scripts[tabId];
                 if (!tab || typeof tab !== 'object' || typeof tab.name !== 'string' || !Array.isArray(tab.groups)) {
                     return { valid: false, reason: `Aba "${tabId}" possui formato inválido ou corrompido.` };
+                }
+                if (tab.name.trim() === '' || tab.name.length > MAX_TAB_NAME_LEN) {
+                    return { valid: false, reason: `Nome da aba "${tabId}" é vazio ou excede ${MAX_TAB_NAME_LEN} caracteres.` };
+                }
+                if (tab.groups.length > MAX_GROUPS_PER_TAB) {
+                    return { valid: false, reason: `Aba "${tab.name}" excede o limite de ${MAX_GROUPS_PER_TAB} grupos.` };
                 }
 
                 let totalCards = 0;
@@ -8510,31 +8748,95 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                     if (!group || typeof group !== 'object' || !Array.isArray(group.items)) {
                         return { valid: false, reason: `Grupo na aba "${tab.name}" possui formato inválido.` };
                     }
+                    const gTitle = typeof group.title === 'string' ? group.title : '';
+                    if (gTitle.length > MAX_GROUP_TITLE_LEN) {
+                        return { valid: false, reason: `Título de grupo na aba "${tab.name}" excede ${MAX_GROUP_TITLE_LEN} caracteres.` };
+                    }
+
                     totalCards += group.items.length;
                     if (totalCards > MAX_CARDS_PER_TAB) {
                         return { valid: false, reason: `A aba "${tab.name}" excede o limite máximo de ${MAX_CARDS_PER_TAB} cards.` };
                     }
 
                     for (const item of group.items) {
-                        const txt = typeof item === 'string' ? item : (item.text || '');
-                        if (String(txt).length > MAX_TEXT_LEN) {
-                            return { valid: false, reason: `Card na aba "${tab.name}" excede o limite de ${MAX_TEXT_LEN} caracteres.` };
-                        }
-                        if (typeof item === 'object') {
+                        if (typeof item === 'string') {
+                            if (item.length > MAX_TEXT_LEN) {
+                                return { valid: false, reason: `Card na aba "${tab.name}" excede o limite de ${MAX_TEXT_LEN} caracteres.` };
+                            }
+                        } else if (item && typeof item === 'object') {
+                            if (item.text !== undefined && typeof item.text !== 'string') {
+                                return { valid: false, reason: `Card na aba "${tab.name}" possui campo de texto não textual.` };
+                            }
+                            const txt = item.text || '';
+                            if (txt.length > MAX_TEXT_LEN) {
+                                return { valid: false, reason: `Card na aba "${tab.name}" excede o limite de ${MAX_TEXT_LEN} caracteres.` };
+                            }
                             if (item.color && !ALLOWED_COLORS.includes(item.color)) item.color = '';
+                            if (item.alarm && typeof item.alarm !== 'string') item.alarm = '';
+                            if (item.copies !== undefined && (typeof item.copies !== 'number' || isNaN(item.copies) || item.copies < 0)) item.copies = 0;
+
                             if (Array.isArray(item.tags)) {
+                                if (item.tags.length > MAX_TAGS_PER_CARD) {
+                                    return { valid: false, reason: `Card na aba "${tab.name}" excede o limite de ${MAX_TAGS_PER_CARD} tags.` };
+                                }
                                 for (const tag of item.tags) {
-                                    if (String(tag).length > MAX_TAG_LEN) {
-                                        return { valid: false, reason: `Tag "${tag}" excede o limite de ${MAX_TAG_LEN} caracteres.` };
+                                    if (typeof tag !== 'string' || tag.length > MAX_TAG_LEN) {
+                                        return { valid: false, reason: `Tag inválida ou que excede o limite de ${MAX_TAG_LEN} caracteres.` };
                                     }
                                 }
                             }
+                        } else {
+                            return { valid: false, reason: `Card na aba "${tab.name}" possui formato inválido.` };
                         }
                     }
                 }
             }
 
-            return { valid: true, isFullBackup, scriptsCount: tabKeys.length };
+            // Validações adicionais para Backup Completo
+            if (isFullBackup) {
+                if (parsed.clients) {
+                    if (!Array.isArray(parsed.clients) || parsed.clients.length > MAX_CLIENTS) {
+                        return { valid: false, reason: `Lista de clientes inválida ou que excede o limite de ${MAX_CLIENTS} registros.` };
+                    }
+                    for (const c of parsed.clients) {
+                        if (!c || typeof c !== 'object') return { valid: false, reason: 'Registro de cliente com formato corrompido.' };
+                        if (c.name && String(c.name).length > 120) return { valid: false, reason: 'Nome de cliente excede 120 caracteres.' };
+                        if (c.contact && String(c.contact).length > 80) return { valid: false, reason: 'Contato de cliente excede 80 caracteres.' };
+                        if (c.obs && String(c.obs).length > 600) return { valid: false, reason: 'Observação de cliente excede 600 caracteres.' };
+                    }
+                }
+
+                if (parsed.userscripts) {
+                    if (!Array.isArray(parsed.userscripts) || parsed.userscripts.length > MAX_USERSCRIPTS) {
+                        return { valid: false, reason: `Lista de userscripts excede o limite de ${MAX_USERSCRIPTS} scripts.` };
+                    }
+                    for (const us of parsed.userscripts) {
+                        if (!us || typeof us !== 'object' || typeof us.source !== 'string') {
+                            return { valid: false, reason: 'Userscript com formato corrompido.' };
+                        }
+                        if (us.source.length > MAX_USERSCRIPT_SIZE) {
+                            return { valid: false, reason: `Userscript "${us.name || 'sem nome'}" excede o limite de 100 KB.` };
+                        }
+                    }
+                }
+
+                if (parsed.tabOrder && Array.isArray(parsed.tabOrder)) {
+                    // Garante que só referencie abas existentes nos scripts
+                    parsed.tabOrder = parsed.tabOrder.filter(id => typeof id === 'string' && tabKeys.includes(id));
+                }
+
+                if (parsed.settings && typeof parsed.settings === 'object') {
+                    const s = clean.settings;
+                    if (s.theme && !ALLOWED_THEMES.includes(s.theme)) s.theme = 'dark';
+                    if (s.layout && !ALLOWED_LAYOUTS.includes(s.layout)) s.layout = 'grid';
+                    if (s.scale !== undefined) {
+                        const sc = parseFloat(s.scale);
+                        s.scale = (!isNaN(sc) && sc >= 0.6 && sc <= 1.8) ? sc : 1;
+                    }
+                }
+            }
+
+            return { valid: true, isFullBackup, scriptsCount: tabKeys.length, sanitizedData: parsed };
         }
 
         function importScripts(event) {
@@ -8563,18 +8865,19 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                     if (parsed && parsed.type === 'CENTRAL_DE_SCRIPTS_FULL_BACKUP' && parsed.scripts) {
                         if (!confirm(`Importar Backup Completo (v${parsed.version || '2.x'}) gravado em ${new Date(parsed.exportedAt || Date.now()).toLocaleString()}?\n\nIsso restaurará scripts, abas, clientes, variáveis e preferências.`)) return;
 
-                        setAppData(parsed.scripts);
-                        if (Array.isArray(parsed.tabOrder)) saveTabOrder(parsed.tabOrder);
-                        if (parsed.customDefaults) setCustomDefaults(parsed.customDefaults);
-                        if (Array.isArray(parsed.clients)) setClientsData(parsed.clients);
+                        const clean = sanitizeFullBackup(validation.sanitizedData || parsed);
+                        setAppData(clean.scripts);
+                        if (Array.isArray(parsed.tabOrder)) saveTabOrder(clean.tabOrder);
+                        if (parsed.customDefaults) setCustomDefaults(clean.customDefaults);
+                        if (Array.isArray(parsed.clients)) setClientsData(clean.clients);
                         if (typeof parsed.scratchpad === 'string') {
-                            localStorage.setItem(SCRATCHPAD_KEY, parsed.scratchpad);
+                            localStorage.setItem(SCRATCHPAD_KEY, clean.scratchpad);
                             const scratchTa = document.getElementById('scratchpadText');
                             if (scratchTa) scratchTa.value = parsed.scratchpad;
                         }
-                        if (Array.isArray(parsed.userscripts)) setUserscripts(parsed.userscripts);
+                        if (Array.isArray(parsed.userscripts)) setUserscripts(clean.userscripts);
 
-                        if (parsed.settings) {
+                        if (clean.settings) {
                             const s = parsed.settings;
                             if (s.theme) { localStorage.setItem(THEME_KEY, s.theme); changeTheme(s.theme); }
                             if (s.layout) { localStorage.setItem(LAYOUT_KEY, s.layout); setLayout(s.layout); }
@@ -8846,7 +9149,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                 <div class="var-modal-box vm-box" style="width: min(580px, 94vw); max-height: 90vh; overflow-y: auto;">
                     <div class="vm-head">
                         <div class="vm-title">💾 Segurança e Uso do Armazenamento</div>
-                        <button class="vm-x" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
+                        <button class="vm-x" aria-label="Fechar janela" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
                     </div>
                     <div class="vm-body" style="gap: 16px; padding: 18px 20px;">
                         <div style="background: var(--tab-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 14px; font-size: 13px;">
@@ -9428,11 +9731,15 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         }
 
         function runUserscript(source, targetWindow = window) {
+            const foundScript = getUserscripts().find(item => item.source === source);
+            if (foundScript && foundScript.trusted !== true) {
+                return { ok: false, reason: 'Este userscript ainda não foi marcado como confiável pelo atendente.' };
+            }
             const meta = parseUserscriptMeta(source);
             if (!userscriptMatches(source, targetWindow.location.href)) return { ok:false, reason:'@match/@include não corresponde à URL atual.' };
 
             const script = {
-                name: Array.isArray(meta.name) ? meta.name[0] : (meta.name || 'Userscript')
+                name: Array.isArray(meta.name) ? meta.name[0] : (meta.name || (foundScript && foundScript.name) || 'Userscript')
             };
             const api = userscriptApi(script);
 
@@ -9456,8 +9763,12 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         }
 
         function runAllUserscripts(targetWindow = window) {
-            const scripts = getUserscripts().filter(s => s.enabled !== false);
-            return scripts.map(s => ({ script:s, result:runUserscript(s.source, targetWindow) }));
+            // Executa apenas scripts explicitamente habilitados e confiáveis
+            const scripts = getUserscripts().filter(s => s.enabled === true && s.trusted !== false);
+            return scripts.map(s => {
+                s.lastExecutedAt = new Date().toISOString();
+                return { script: s, result: runUserscript(s.source, targetWindow) };
+            });
         }
 
         function openUserscriptManager() {
@@ -9600,15 +9911,45 @@ console.log('Userscript carregado');`;
             };
 
             enabled.querySelector('input').onchange = () => {
-                if (selected >= 0) {
-                    scripts[selected].enabled = enabled.querySelector('input').checked;
-                    setUserscripts(scripts);
-                    renderList();
+                if (selected < 0) return;
+                const wantsEnable = enabled.querySelector('input').checked;
+                if (wantsEnable && scripts[selected].trusted !== true) {
+                    const approved = confirm(
+                        '⚠️ Aviso de Segurança:\n\nEste script poderá executar código JavaScript na Central de Scripts.\nVocê confia na integridade e origem deste código?'
+                    );
+                    if (!approved) {
+                        enabled.querySelector('input').checked = false;
+                        return;
+                    }
+                    scripts[selected].trusted = true;
                 }
+                scripts[selected].enabled = wantsEnable;
+                setUserscripts(scripts);
+                renderList();
             };
 
             renderList();
             if (scripts.length) selectScript(0);
+        }
+
+        const MAX_USERSCRIPT_SIZE = 300 * 1024; // 300 KB
+        const MAX_USERSCRIPTS = 50;
+
+        function validateUserscriptSource(source) {
+            if (typeof source !== 'string' || !source.trim()) {
+                return 'Userscript vazio.';
+            }
+            if (source.length > MAX_USERSCRIPT_SIZE) {
+                return 'Userscript excede o limite máximo permitido de 300 KB.';
+            }
+            const meta = parseUserscriptMeta(source);
+            if (!meta.name) {
+                return 'Userscript sem metadado @name no cabeçalho.';
+            }
+            if (!meta.match && !meta.include) {
+                return 'Userscript sem metadados @match ou @include.';
+            }
+            return null;
         }
 
         function importUserscripts(event) {
@@ -9617,23 +9958,49 @@ console.log('Userscript carregado');`;
 
             const scripts = getUserscripts();
             let pending = files.length;
+            let importedCount = 0;
 
             files.forEach(file => {
                 const reader = new FileReader();
                 reader.onload = e => {
                     const source = String(e.target.result || '');
-                    const meta = parseUserscriptMeta(source);
-                    scripts.push({
-                        name: meta.name || file.name,
-                        enabled: true,
-                        source
-                    });
-                    if (--pending === 0) setUserscripts(scripts);
+                    const error = validateUserscriptSource(source);
+                    if (error) {
+                        alert(`⚠️ ${file.name}: ${error}`);
+                    } else if (scripts.length >= MAX_USERSCRIPTS) {
+                        alert(`⚠️ Limite máximo de ${MAX_USERSCRIPTS} userscripts atingido.`);
+                    } else {
+                        const meta = parseUserscriptMeta(source);
+                        const id = (typeof crypto !== 'undefined' && crypto.randomUUID)
+                            ? crypto.randomUUID()
+                            : `us-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+
+                        scripts.push({
+                            id,
+                            name: meta.name || file.name,
+                            enabled: false,
+                            trusted: false,
+                            origin: file.name,
+                            importedAt: new Date().toISOString(),
+                            source
+                        });
+                        importedCount++;
+                    }
+
+                    if (--pending === 0) {
+                        setUserscripts(scripts);
+                        if (importedCount > 0) {
+                            if (typeof showToast === 'function') {
+                                showToast(`${importedCount} userscript(s) importado(s) com segurança (desativados).`, 'info');
+                            } else {
+                                alert(`${importedCount} userscript(s) importado(s) em modo seguro (desativados por padrão).`);
+                            }
+                        }
+                    }
                 };
                 reader.readAsText(file);
             });
             event.target.value = '';
-            setTimeout(() => alert(`${files.length} userscript(s) importado(s).`), 100);
         }
 
         function runStoredUserscripts(targetWindow = window) {
@@ -9799,6 +10166,25 @@ console.log('Userscript carregado');`;
                 console.error('Erro ao inicializar Firebase:', err);
                 updateAuthUI();
                 return false;
+            }
+        }
+
+                async function registerAdminAudit(action, target = {}) {
+            if (!currentUser || !firebaseDb) return;
+            try {
+                const entry = {
+                    action,
+                    targetId: target.id || null,
+                    targetEmail: target.email || target.targetEmail || null,
+                    details: target.details || target.title || null,
+                    performedBy: currentUser.uid,
+                    performedByEmail: currentUser.email,
+                    createdAt: new Date().toISOString()
+                };
+                await firebaseDb.collection('audit_logs').add(entry);
+                console.log('[Audit Log]', action, entry);
+            } catch(e) {
+                console.warn('Falha ao registrar log de auditoria administrativa:', e);
             }
         }
 
@@ -10007,6 +10393,131 @@ Clique para abrir Minha Conta e Sincronização`;
         }
 
         /* Sincronização em Nuvem (Firestore) com Preservação de Ordem e Configurações */
+                async function checkRemoteConflict(remoteData) {
+            if (!remoteData) return false;
+            const remoteTime = Date.parse(remoteData.updatedAt || '') || 0;
+            const localTime = Number(localStorage.getItem(LAST_LOCAL_UPDATE_KEY) || 0);
+            const myDeviceId = getOrCreateDeviceId();
+            // Conflito existe se a nuvem foi atualizada por outro dispositivo e tem timestamp mais recente
+            return remoteTime > (localTime + 2000) && remoteData.deviceId && remoteData.deviceId !== myDeviceId;
+        }
+
+        function showConflictModal({ localData, remoteData }) {
+            const remoteDate = remoteData.updatedAt ? new Date(remoteData.updatedAt).toLocaleString() : 'Data não informada';
+            const remoteDevice = remoteData.deviceId ? `Dispositivo: ${remoteData.deviceId}` : 'Dispositivo remoto';
+            const remoteTabs = Object.keys(remoteData.scripts || {}).length;
+            const localTabs = Object.keys(localData.scripts || {}).length;
+
+            const contentHtml = `
+                <div style="font-size:12.5px; line-height:1.5;">
+                    Detectamos que a sua conta foi atualizada em outro computador ou navegador com alterações mais recentes:
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+                    <div style="background:rgba(37,99,235,0.08); border:1.5px solid #2563eb; border-radius:10px; padding:10px 12px;">
+                        <div style="font-size:11px; font-weight:700; color:#2563eb; text-transform:uppercase;">☁️ Versão da Nuvem (Mais recente)</div>
+                        <div style="font-size:12px; margin-top:4px;">
+                            • ${remoteTabs} aba(s) de scripts<br>
+                            • Atualizado em: <strong>${remoteDate}</strong><br>
+                            <small style="opacity:0.8;">${remoteDevice}</small>
+                        </div>
+                    </div>
+                    <div style="background:var(--tab-bg); border:1px solid var(--border-color); border-radius:10px; padding:10px 12px;">
+                        <div style="font-size:11px; font-weight:700; opacity:0.8; text-transform:uppercase;">💻 Versão deste Computador</div>
+                        <div style="font-size:12px; margin-top:4px;">
+                            • ${localTabs} aba(s) de scripts<br>
+                            • Alterações locais não sincronizadas
+                        </div>
+                    </div>
+                </div>
+                <p style="font-size:11.5px; opacity:0.85; margin:10px 0 0; line-height:1.4;">
+                    Escolha se deseja aceitar a versão da nuvem ou manter as alterações deste computador e sobrescrever a nuvem:
+                </p>
+            `;
+
+            const footerHtml = `
+                <div style="display:flex; justify-content:space-between; width:100%; gap:8px; flex-wrap:wrap;">
+                    <button type="button" class="var-modal-btn" style="background:#2563eb; color:#fff; font-weight:700;" id="btnConflictAcceptCloud">
+                        ☁️ Aceitar Versão da Nuvem
+                    </button>
+                    <button type="button" class="var-modal-btn" style="background:#4b5563; color:#fff;" id="btnConflictKeepLocal">
+                        💻 Manter Versão Deste Computador
+                    </button>
+                </div>
+            `;
+
+            const modal = createAccessibleModal({
+                id: 'conflictModal',
+                title: '⚠️ Conflito de Sincronização entre Dispositivos',
+                contentHtml,
+                footerHtml,
+                width: 'min(580px, 95vw)'
+            });
+
+            const acceptBtn = modal.overlay.querySelector('#btnConflictAcceptCloud');
+            if (acceptBtn) {
+                acceptBtn.onclick = () => {
+                    modal.closeModal();
+                    applyCloudDataToLocal(remoteData);
+                    if (typeof showToast === 'function') showToast('Versão da nuvem aplicada com sucesso!', 'success');
+                };
+            }
+
+            const keepBtn = modal.overlay.querySelector('#btnConflictKeepLocal');
+            if (keepBtn) {
+                keepBtn.onclick = async () => {
+                    modal.closeModal();
+                    markLocalChange();
+                    await syncToCloud();
+                    if (typeof showToast === 'function') showToast('Versão local gravada na nuvem com sucesso!', 'success');
+                };
+            }
+        }
+
+        function applyCloudDataToLocal(cloudData) {
+            if (!cloudData || !cloudData.scripts || !isValidData(cloudData.scripts)) return;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(cloudData.scripts));
+            if (Array.isArray(cloudData.tabOrder)) {
+                localStorage.setItem(TAB_ORDER_KEY, JSON.stringify(cloudData.tabOrder));
+            }
+            if (cloudData.customDefaults) {
+                localStorage.setItem(VARS_KEY, JSON.stringify(cloudData.customDefaults));
+            }
+            if (cloudData.clients) {
+                localStorage.setItem(CLIENTS_KEY, JSON.stringify(cloudData.clients));
+            }
+            if (typeof cloudData.scratchpad === 'string') {
+                localStorage.setItem(SCRATCHPAD_KEY, cloudData.scratchpad);
+                const scratchTa = document.getElementById('scratchpadText');
+                if (scratchTa) scratchTa.value = cloudData.scratchpad;
+            }
+            if (cloudData.settings) {
+                const s = cloudData.settings;
+                if (s.theme) {
+                    localStorage.setItem(THEME_KEY, s.theme);
+                    changeTheme(s.theme);
+                }
+                if (s.layout) {
+                    localStorage.setItem(LAYOUT_KEY, s.layout);
+                    setLayout(s.layout);
+                }
+                if (s.scale) {
+                    localStorage.setItem(SCALE_KEY, s.scale);
+                    applyCardScale(parseFloat(s.scale) || 1);
+                }
+                if (s.activeTabId) {
+                    currentActiveTabId = s.activeTabId;
+                    localStorage.setItem(ACTIVE_TAB_KEY, s.activeTabId);
+                }
+                if (s.alarmConfig) {
+                    localStorage.setItem(ALARM_CONFIG_KEY, JSON.stringify(s.alarmConfig));
+                }
+            }
+            loadAppData();
+            updateStorageIndicator();
+            updateUndoButton();
+            initAlarmConfigUI();
+        }
+
         async function syncFromCloud() {
             if (!currentUser || !firebaseDb) return;
             try {
@@ -10025,50 +10536,14 @@ Clique para abrir Minha Conta e Sincronização`;
                             return;
                         }
 
-                        localStorage.setItem(STORAGE_KEY, JSON.stringify(cloudData.scripts));
-                        if (Array.isArray(cloudData.tabOrder)) {
-                            localStorage.setItem(TAB_ORDER_KEY, JSON.stringify(cloudData.tabOrder));
-                        }
-                        if (cloudData.customDefaults) {
-                            localStorage.setItem(VARS_KEY, JSON.stringify(cloudData.customDefaults));
-                        }
-                        if (cloudData.clients) {
-                            localStorage.setItem(CLIENTS_KEY, JSON.stringify(cloudData.clients));
-                        }
-                        if (typeof cloudData.scratchpad === 'string') {
-                            localStorage.setItem(SCRATCHPAD_KEY, cloudData.scratchpad);
-                            const scratchTa = document.getElementById('scratchpadText');
-                            if (scratchTa) scratchTa.value = cloudData.scratchpad;
+                        // Detecção inteligente de conflito entre computadores distintos
+                        if (await checkRemoteConflict(cloudData)) {
+                            console.warn('Conflito remoto detectado entre dispositivos.');
+                            showConflictModal({ localData: buildSyncPayload(), remoteData: cloudData });
+                            return;
                         }
 
-                        // Restaura configurações de interface salvas na nuvem
-                        if (cloudData.settings) {
-                            const s = cloudData.settings;
-                            if (s.theme) {
-                                localStorage.setItem(THEME_KEY, s.theme);
-                                changeTheme(s.theme);
-                            }
-                            if (s.layout) {
-                                localStorage.setItem(LAYOUT_KEY, s.layout);
-                                setLayout(s.layout);
-                            }
-                            if (s.scale) {
-                                localStorage.setItem(SCALE_KEY, s.scale);
-                                applyCardScale(parseFloat(s.scale) || 1);
-                            }
-                            if (s.activeTabId) {
-                                currentActiveTabId = s.activeTabId;
-                                localStorage.setItem(ACTIVE_TAB_KEY, s.activeTabId);
-                            }
-                            if (s.alarmConfig) {
-                                localStorage.setItem(ALARM_CONFIG_KEY, JSON.stringify(s.alarmConfig));
-                            }
-                        }
-
-                        loadAppData();
-                        updateStorageIndicator();
-                        updateUndoButton();
-                        initAlarmConfigUI();
+                        applyCloudDataToLocal(cloudData);
                         console.log('Dados, ordem das abas e configurações sincronizados da nuvem com sucesso!');
                     }
                 } else {
@@ -10076,6 +10551,7 @@ Clique para abrir Minha Conta e Sincronização`;
                     await syncToCloud();
                 }
             } catch (e) {
+                updateSyncStatusUI(navigator.onLine ? 'error' : 'offline');
                 console.warn('Sincronização da nuvem indisponível (usando cache local):', e);
             }
         }
@@ -10092,7 +10568,6 @@ Clique para abrir Minha Conta e Sincronização`;
         function updateSyncStatusUI(status, message = '') {
             syncStatus = status;
             const dot = document.querySelector('.auth-status-dot');
-            const authBtn = document.getElementById('firebaseAuthBtn');
             const statusNotice = document.getElementById('cloudSyncStatusNotice');
 
             if (dot) {
@@ -10116,22 +10591,16 @@ Clique para abrir Minha Conta e Sincronização`;
             }
 
             if (statusNotice) {
-                if (status === 'syncing') {
-                    statusNotice.innerHTML = '🔄 <span>Sincronizando com a Nuvem do Google...</span>';
-                    statusNotice.className = 'cloud-status-pill syncing';
-                } else if (!navigator.onLine) {
-                    statusNotice.innerHTML = '⚡ <span>Modo Offline: Dados salvos localmente no navegador.</span>';
-                    statusNotice.className = 'cloud-status-pill offline';
-                } else if (status === 'error') {
-                    statusNotice.innerHTML = '⚠️ <span>Falha na sincronização em nuvem.</span> <button onclick="manualRetrySync()" class="comp-btn comp-btn-secondary" style="font-size:10px; padding:2px 8px; margin-left:6px;">Tentar Novamente</button>';
-                    statusNotice.className = 'cloud-status-pill error';
-                } else if (status === 'pending') {
-                    statusNotice.innerHTML = '💾 <span>Salvo localmente no navegador (pendente na nuvem).</span>';
-                    statusNotice.className = 'cloud-status-pill pending';
-                } else {
-                    statusNotice.innerHTML = '🟢 <span>Seus scripts e configurações estão sincronizados na Nuvem do Google.</span>';
-                    statusNotice.className = 'cloud-status-pill online';
-                }
+                const labels = {
+                    syncing: '🔄 Sincronizando com a Nuvem do Google...',
+                    offline: '⚡ Modo Offline: Dados salvos localmente no navegador.',
+                    pending: '💾 Salvo localmente (pendente de envio para a nuvem).',
+                    error: '⚠️ Falha na sincronização com a Nuvem.',
+                    synced: '🟢 Seus scripts e configurações estão sincronizados na Nuvem do Google.'
+                };
+                statusNotice.textContent = message || labels[status] || '';
+                statusNotice.className = 'cloud-status-pill ' + status;
+                statusNotice.dataset.status = status;
             }
         }
 
@@ -10146,6 +10615,15 @@ Clique para abrir Minha Conta e Sincronização`;
             updateSyncStatusUI('offline');
         });
 
+        function scheduleSyncRetry(payload) {
+            syncRetryCount++;
+            const delay = Math.min(30000, 3000 * Math.pow(1.8, syncRetryCount - 1));
+            clearTimeout(syncRetryTimer);
+            syncRetryTimer = setTimeout(() => {
+                if (navigator.onLine && pendingSyncPayload) processSyncQueue();
+            }, delay);
+        }
+
         async function processSyncQueue() {
             if (!currentUser || !firebaseDb || isCloudSyncing) return;
             if (!navigator.onLine) {
@@ -10153,46 +10631,43 @@ Clique para abrir Minha Conta e Sincronização`;
                 return;
             }
 
-            const payloadToSync = pendingSyncPayload || {
-                scripts: getAppData(),
-                tabOrder: getSavedTabOrder(getAppData()),
-                customDefaults: getCustomDefaults(),
-                clients: getClientsData(),
-                scratchpad: localStorage.getItem(SCRATCHPAD_KEY) || '',
-                settings: {
-                    theme: localStorage.getItem(THEME_KEY) || 'dark',
-                    layout: localStorage.getItem(LAYOUT_KEY) || 'grid',
-                    scale: parseFloat(localStorage.getItem(SCALE_KEY)) || 1,
-                    activeTabId: currentActiveTabId || localStorage.getItem(ACTIVE_TAB_KEY) || '',
-                    alarmConfig: getAlarmConfig()
-                },
-                updatedAt: new Date().toISOString()
-            };
+            const revisionAtStart = localRevision;
+            const payloadToSync = pendingSyncPayload || buildSyncPayload();
 
             isCloudSyncing = true;
             updateSyncStatusUI('syncing');
 
             try {
-                const dataDocRef = firebaseDb.collection('users').doc(currentUser.uid).collection('settings').doc('app_data');
+                const dataDocRef = firebaseDb
+                    .collection('users')
+                    .doc(currentUser.uid)
+                    .collection('settings')
+                    .doc('app_data');
+
                 await dataDocRef.set(payloadToSync, { merge: true });
+                lastSyncedRevision = revisionAtStart;
+                const nowIso = new Date().toISOString();
                 localStorage.setItem(LAST_LOCAL_UPDATE_KEY, String(Date.now()));
-                pendingSyncPayload = null;
-                syncRetryCount = 0;
-                clearTimeout(syncRetryTimer);
-                updateSyncStatusUI('synced');
-                console.log('Alterações e fila sincronizadas na Nuvem com sucesso!');
+                localStorage.setItem(LAST_SYNC_TIME_KEY, nowIso);
+
+                // Condição estrita: fila só é limpa se nenhuma nova alteração ocorreu durante o envio
+                if (localRevision === revisionAtStart) {
+                    pendingSyncPayload = null;
+                    syncRetryCount = 0;
+                    clearTimeout(syncRetryTimer);
+                    updateSyncStatusUI('synced');
+                    console.log('Alterações sincronizadas na Nuvem com sucesso (rev ' + revisionAtStart + ')!');
+                } else {
+                    // Uma nova alteração ocorreu durante o envio
+                    pendingSyncPayload = buildSyncPayload();
+                    updateSyncStatusUI('pending');
+                    setTimeout(() => processSyncQueue(), 0);
+                }
             } catch (err) {
                 console.warn('Erro ao processar sincronização na nuvem:', err);
                 pendingSyncPayload = payloadToSync;
-                updateSyncStatusUI('error');
-
-                // Retry exponencial (backoff): 3s, 6s, 12s, max 30s
-                syncRetryCount++;
-                const delay = Math.min(30000, 3000 * Math.pow(1.8, syncRetryCount - 1));
-                clearTimeout(syncRetryTimer);
-                syncRetryTimer = setTimeout(() => {
-                    if (navigator.onLine && pendingSyncPayload) processSyncQueue();
-                }, delay);
+                updateSyncStatusUI(navigator.onLine ? 'error' : 'offline');
+                scheduleSyncRetry(payloadToSync);
             } finally {
                 isCloudSyncing = false;
             }
@@ -10203,7 +10678,6 @@ Clique para abrir Minha Conta e Sincronização`;
             processSyncQueue();
         }
 
-        
         /* Função para o Administrador publicar seus scripts atuais como padrão global para toda a equipe */
         async function pushCurrentScriptsAsTeamDefault() {
             if (!isCurrentUserAdmin()) {
@@ -10213,24 +10687,18 @@ Clique para abrir Minha Conta e Sincronização`;
             if (!confirm('Deseja publicar TODOS os seus scripts atuais como o modelo padrão oficial da equipe no Firestore?\n\nTodos os novos atendentes que entrarem na Central receberão exatamente esta base de 11 abas.')) return;
             
             try {
-                const appData = getAppData();
-                const payload = {
-                    scripts: appData,
-                    tabOrder: getSavedTabOrder(appData),
-                    customDefaults: getCustomDefaults(),
-                    settings: {
-                        theme: localStorage.getItem(THEME_KEY) || 'dark',
-                        layout: localStorage.getItem(LAYOUT_KEY) || 'grid',
-                        scale: parseFloat(localStorage.getItem(SCALE_KEY)) || 1
-                    },
-                    updatedBy: currentUser.email,
-                    updatedAt: new Date().toISOString()
-                };
-
+                const payload = buildSyncPayload();
                 await Promise.all([
                     firebaseDb.collection('templates').doc('default_scripts').set(payload, { merge: true }),
                     firebaseDb.collection('global_settings').doc('default_scripts').set(payload, { merge: true })
                 ]);
+
+                if (typeof registerAdminAudit === 'function') {
+                    await registerAdminAudit('PUBLISH_TEAM_DEFAULTS', {
+                        title: 'Publicação de Scripts Padrão da Equipe',
+                        tabsCount: Object.keys(payload.scripts || {}).length
+                    });
+                }
 
                 if (typeof showToast === 'function') {
                     showToast('🚀 Scripts publicados como padrão oficial da equipe com sucesso!', 'success');
@@ -10245,22 +10713,7 @@ Clique para abrir Minha Conta e Sincronização`;
 
         async function syncToCloud() {
             if (!currentUser || !firebaseDb) return;
-            const appData = getAppData();
-            pendingSyncPayload = {
-                scripts: appData,
-                tabOrder: getSavedTabOrder(appData),
-                customDefaults: getCustomDefaults(),
-                clients: getClientsData(),
-                scratchpad: localStorage.getItem(SCRATCHPAD_KEY) || '',
-                settings: {
-                    theme: localStorage.getItem(THEME_KEY) || 'dark',
-                    layout: localStorage.getItem(LAYOUT_KEY) || 'grid',
-                    scale: parseFloat(localStorage.getItem(SCALE_KEY)) || 1,
-                    activeTabId: currentActiveTabId || localStorage.getItem(ACTIVE_TAB_KEY) || '',
-                    alarmConfig: getAlarmConfig()
-                },
-                updatedAt: new Date().toISOString()
-            };
+            pendingSyncPayload = buildSyncPayload();
             updateSyncStatusUI('pending');
             await processSyncQueue();
         }
@@ -10330,12 +10783,19 @@ Clique para abrir Minha Conta e Sincronização`;
                 </div>
             `;
 
+            let lastSyncFormatted = 'Ainda não sincronizado nesta sessão';
+            try {
+                const rawLastSync = localStorage.getItem(LAST_SYNC_TIME_KEY);
+                if (rawLastSync) lastSyncFormatted = new Date(rawLastSync).toLocaleString();
+            } catch(e) {}
+
             const cloudNoticeHtml = isLoggedIn ? `
-                <div id="cloudSyncStatusNotice" class="cloud-status-pill online">
+                <div id="cloudSyncStatusNotice" class="cloud-status-pill online" role="status" aria-live="polite">
                     🟢 <span>Seus scripts e configurações estão sincronizados na Nuvem do Google.</span>
+                    <div style="font-size:10.5px; opacity:0.8; margin-top:3px;">Última sincronização: ${lastSyncFormatted}</div>
                 </div>
             ` : `
-                <div id="cloudSyncStatusNotice" class="cloud-status-pill offline">
+                <div id="cloudSyncStatusNotice" class="cloud-status-pill offline" role="status" aria-live="polite">
                     ⚡ <span>Modo Offline: Todas as alterações estão salvas com segurança no navegador.</span>
                 </div>
             `;
@@ -10344,7 +10804,7 @@ Clique para abrir Minha Conta e Sincronização`;
                 <div class="var-modal-box vm-box" style="width: min(520px, 94vw);">
                     <div class="vm-head">
                         <div class="vm-title">👤 ${isLoggedIn ? 'Minha Conta' : 'Perfil & Armazenamento Local'}</div>
-                        <button class="vm-x" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
+                        <button class="vm-x" aria-label="Fechar janela" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
                     </div>
                     <div class="vm-body" style="padding: 20px; gap: 14px;">
                         
@@ -10466,7 +10926,7 @@ Clique para abrir Minha Conta e Sincronização`;
                 <div class="var-modal-box vm-box" style="width: min(540px, 94vw);">
                     <div class="vm-head">
                         <div class="vm-title">☁️ Prévia: Salvar Scripts na Nuvem do Google</div>
-                        <button class="vm-x" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
+                        <button class="vm-x" aria-label="Fechar janela" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
                     </div>
                     <div class="vm-body" style="padding: 18px 20px; gap: 14px;">
                         <div style="font-size: 12.5px; line-height: 1.5; opacity: 0.9;">
@@ -10622,7 +11082,7 @@ Clique para abrir Minha Conta e Sincronização`;
                     <div class="var-modal-box vm-box" style="width: min(550px, 94vw);">
                         <div class="vm-head">
                             <div class="vm-title">📥 Prévia: Baixar Scripts da Nuvem do Google</div>
-                            <button class="vm-x" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
+                            <button class="vm-x" aria-label="Fechar janela" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
                         </div>
                         <div class="vm-body" style="padding: 18px 20px; gap: 14px;">
                             <div style="font-size: 12.5px; line-height: 1.5; opacity: 0.9;">
@@ -10731,7 +11191,7 @@ Clique para abrir Minha Conta e Sincronização`;
                 <div class="var-modal-box vm-box" style="width: min(600px, 95vw); max-height: 90vh; overflow-y:auto;">
                     <div class="vm-head">
                         <div class="vm-title">⚙️ Conexão com Google Firebase</div>
-                        <button class="vm-x" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
+                        <button class="vm-x" aria-label="Fechar janela" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
                     </div>
                     <div class="vm-body" style="padding:18px 20px; gap:12px;">
                         <div style="font-size:12px; line-height:1.5; opacity:0.9; background:rgba(66,133,244,0.08); border:1px solid rgba(66,133,244,0.25); padding:10px 14px; border-radius:10px;">
@@ -10890,6 +11350,13 @@ service cloud.firestore {
       allow read: if request.auth != null;
       allow write: if isAdmin();
     }
+
+    // Trilha de auditoria administrativa (somente gravação e leitura por administradores)
+    match /audit_logs/{logId} {
+      allow create: if isAdmin();
+      allow read: if isAdmin();
+      allow update, delete: if false;
+    }
   }
 }`;
 
@@ -10897,7 +11364,7 @@ service cloud.firestore {
                 <div class="var-modal-box vm-box" style="width: min(640px, 95vw); max-height: 90vh;">
                     <div class="vm-head">
                         <div class="vm-title">📋 Regras de Segurança do Firestore (Rules)</div>
-                        <button class="vm-x" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
+                        <button class="vm-x" aria-label="Fechar janela" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
                     </div>
                     <div class="vm-body" style="padding: 18px 20px; gap: 12px; overflow-y:auto;">
                         <div style="font-size:12px; line-height:1.5; opacity:0.9;">
@@ -10942,7 +11409,7 @@ service cloud.firestore {
                             <span>🛡️</span>
                             <span>Painel de Administração — Gestão de Usuários & Utilização</span>
                         </div>
-                        <button class="vm-x" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
+                        <button class="vm-x" aria-label="Fechar janela" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
                     </div>
 
                     <div class="vm-body" style="padding:18px 20px; gap:16px; overflow-y:auto;">
@@ -10969,7 +11436,7 @@ service cloud.firestore {
 
                         <!-- Barra de Ferramentas / Filtros -->
                         <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
-                            <input type="search" id="admSearchUserInput" class="var-modal-input" placeholder="🔍 Filtrar usuário por nome ou email..." style="max-width:320px; padding:6px 12px; font-size:12px;">
+                            <input type="search" id="admSearchUserInput" class="var-modal-input" aria-label="Filtrar usuários por nome ou email" placeholder="🔍 Filtrar usuário por nome ou email..." style="max-width:320px; padding:6px 12px; font-size:12px;">
                             
                             <div style="display:flex; gap:8px; flex-wrap:wrap;">
                                 <button type="button" class="io-btn" id="admBtnFirestoreRules" title="Visualizar e copiar as regras de segurança do Firestore" style="background:#4b5563; font-size:12px;">
@@ -11008,7 +11475,7 @@ service cloud.firestore {
 
                     </div>
                     <div class="vm-foot" style="padding:12px 20px; justify-content:space-between;">
-                        <span style="font-size:11px; opacity:0.7;">Administradores principais configurados: <strong>leogabfx@gmail.com</strong> e <strong>leonardo3dtelecom@gmail.com</strong></span>
+                        <span style="font-size:11px; opacity:0.7;">🔒 Sessão Administrativa Autorizada via Firebase Auth & Regras de Segurança</span>
                         <button class="var-modal-btn var-modal-btn-confirm" onclick="this.closest('.var-modal-overlay').remove()">Fechar Painel</button>
                     </div>
                 </div>
@@ -11147,7 +11614,13 @@ service cloud.firestore {
                 try {
                     await firebaseDb.collection('users').doc(userId).update({ role: newRole });
                     target.role = newRole;
+                    await registerAdminAudit(newRole === 'admin' ? 'PROMOTE_ADMIN' : 'DEMOTE_USER', {
+                        id: userId,
+                        email: target.email,
+                        details: `Cargo alterado de ${currentRole} para ${newRole}`
+                    });
                     renderAdminUsersTable();
+                    if (typeof showToast === 'function') showToast(`Cargo de ${target.displayName || target.email} atualizado para ${newRole}.`, 'success');
                 } catch(e) {
                     alert('Erro ao atualizar cargo: ' + (e.message || e));
                 }
@@ -11161,7 +11634,13 @@ service cloud.firestore {
                 try {
                     await firebaseDb.collection('users').doc(userId).update({ status: newStatus });
                     target.status = newStatus;
+                    await registerAdminAudit(newStatus === 'blocked' ? 'BLOCK_USER' : 'UNBLOCK_USER', {
+                        id: userId,
+                        email: target.email,
+                        details: `Status alterado para ${newStatus}`
+                    });
                     renderAdminUsersTable();
+                    if (typeof showToast === 'function') showToast(`Conta de ${target.displayName || target.email} foi ${newStatus === 'blocked' ? 'bloqueada' : 'ativada'}.`, 'warning');
                 } catch(e) {
                     alert('Erro ao atualizar status: ' + (e.message || e));
                 }
