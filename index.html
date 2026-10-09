@@ -2548,8 +2548,11 @@
                 </div>
             </div>
 
-            <!-- 4. Canto Superior Direito: Userscripts, Admin e Perfil Google -->
+            <!-- 4. Canto Superior Direito: Backup/Armazenamento, Userscripts, Admin e Perfil Google -->
             <div class="header-user-section">
+                <button class="io-btn" id="storageHeaderBtn" onclick="openStorageInfoModal()" title="Armazenamento local, Exportar/Importar Backup e Salvar HTML" style="background:var(--tab-bg); border:1px solid var(--border-color); color:var(--text-color); font-weight:500;">
+                    💾 Backup & Armazenamento
+                </button>
                 <button class="io-btn" id="userscriptHeaderBtn" onclick="openUserscriptManager()" title="Gerenciar userscripts no formato Tampermonkey" style="background:var(--tab-bg); border:1px solid var(--border-color); color:var(--text-color); font-weight:500;">
                     🧩 Userscripts
                 </button>
@@ -4307,12 +4310,14 @@
             const items262 = isAdmin ? `
                                 <li><strong>🧪 Teste de Atendimento & Diagnóstico:</strong> Faixa de ping pré-fixada calibrada entre 3 a 10 ms (3, 4, 5, 6, 8 e 10 ms com perda 0%); novo seletor de MRU com registros diretos <em>Já estava 1492</em> e <em>Estava 1480 corrigido para 1492</em>; ajuste de Wi-Fi unificado com nomenclatura <em>unificado rede wifi</em> (+ Unificado Wi-Fi) em ambos os modais.</li>
                                 <li><strong>☁️ Auditoria de Nuvem & Posição das Abas:</strong> Auditoria completa de ponta a ponta garantindo que a sequência das abas (<code>tabOrder</code>), cards, cores, tags e configurações visuais (tema, zoom, layout e alarme) permaneçam preservadas e sincronizadas no Google Firestore sem sofrer reorganização alfabética.</li>
+                                <li><strong>💾 Acesso Universal aos Recursos de Armazenamento:</strong> Inclusão do botão direto <code>💾 Backup & Armazenamento</code> no cabeçalho superior e desacoplamento da janela de perfil para funcionamento total em modo offline (salvar HTML autônomo, exportar/importar JSON e diagnóstico de armazenamento).</li>
                                 <li><strong>🛡️ Governança Administrativa & Padrão da Equipe:</strong> Validação do fluxo de publicação corporativa <code>templates/default_scripts</code> e restrição estrita de regras do Firestore para proteger contra auto-promoção de perfil.</li>
                                 <li><strong>💎 Versão 2.6.2 Oficial:</strong> Alinhamento uniforme da versão 2.6.2 em todo o sistema, backup e verificador de atualizações.</li>
             ` : `
                                 <li><strong>🧪 Teste de Atendimento & Diagnóstico:</strong> Atalhos de ping rápidos agora disponíveis na faixa de 3 a 10 ms (3, 4, 5, 6, 8 e 10 ms com perda 0%).</li>
                                 <li><strong>⚡ Opções Rápidas de MRU:</strong> Agora é possível selecionar com 1 clique se <em>Já estava 1492</em> ou se <em>Estava 1480 corrigido para 1492</em>, economizando tempo de digitação.</li>
                                 <li><strong>📶 Ajuste de Wi-Fi:</strong> Adicionada a opção rápida de ajuste para <em>unificado rede wifi</em>.</li>
+                                <li><strong>💾 Backup e Salvamento Offline:</strong> Novo botão <em>💾 Backup & Armazenamento</em> no cabeçalho superior para salvar cópia em HTML, exportar backup e gerenciar seus dados mesmo quando deslogado.</li>
                                 <li><strong>💾 Salvamento Seguro:</strong> Seus scripts, rascunhos rápidos e organização de abas permanecem salvos e sincronizados com total estabilidade.</li>
             `;
 
@@ -10257,43 +10262,72 @@ Clique para abrir Minha Conta e Sincronização`;
            V2.5.0: MODAL MINHA CONTA & SINCRONIZAÇÃO COM PRÉVIA
            ============================================================ */
 
-        /* Modal de Conta do Usuário */
+        /* Modal de Conta do Usuário e Gerenciamento Local / Offline */
         function openUserAccountModal() {
-            if (!currentUser) return;
             const overlay = document.createElement('div');
             overlay.className = 'var-modal-overlay';
             overlay.setAttribute('data-transient', 'true');
 
-            const isAdmin = isCurrentUserAdmin();
-            const photo = (currentUserProfile && currentUserProfile.photoURL) || currentUser.photoURL || '';
-            const fullName = (currentUserProfile && currentUserProfile.displayName) || currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : 'Usuário');
+            const isLoggedIn = !!currentUser;
+            const isAdmin = isLoggedIn && isCurrentUserAdmin();
+            const photo = (currentUserProfile && currentUserProfile.photoURL) || (currentUser && currentUser.photoURL) || '';
+            const fullName = isLoggedIn 
+                ? ((currentUserProfile && currentUserProfile.displayName) || currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : 'Usuário'))
+                : 'Modo Offline (Local)';
+            const emailStr = isLoggedIn ? currentUser.email : 'Nenhum usuário conectado à Nuvem';
             const { kb, pct } = getStorageUsage();
+
+            const profileCardHtml = isLoggedIn ? `
+                <div style="display:flex; align-items:center; gap:14px; background:var(--tab-bg); padding:14px; border-radius:12px; border:1px solid var(--border-color);">
+                    ${photo ? `<img src="${escapeHtml(photo)}" style="width:52px; height:52px; border-radius:50%; object-fit:cover; border:2px solid var(--accent-color);" referrerpolicy="no-referrer">` : `<div style="width:52px; height:52px; border-radius:50%; background:var(--accent-color); color:#fff; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:700;">${(fullName[0] || 'U').toUpperCase()}</div>`}
+                    <div style="flex:1; min-width:0;">
+                        <div style="font-weight:700; font-size:15px; color:var(--title-color);">${escapeHtml(fullName)}</div>
+                        <div style="font-size:12px; opacity:0.8; word-break:break-all;">${escapeHtml(emailStr)}</div>
+                        <div style="margin-top:6px; display:flex; gap:6px; align-items:center;">
+                            <span class="admin-badge ${isAdmin ? 'role-admin' : 'role-user'}">${isAdmin ? '🛡️ Administrador' : '👤 Usuário'}</span>
+                            <span class="admin-badge status-active">🟢 Conectado à Nuvem</span>
+                        </div>
+                    </div>
+                </div>
+            ` : `
+                <div style="display:flex; align-items:center; gap:14px; background:var(--tab-bg); padding:14px; border-radius:12px; border:1px solid var(--border-color);">
+                    <div style="width:52px; height:52px; border-radius:50%; background:#6b7280; color:#fff; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:700;">⚡</div>
+                    <div style="flex:1; min-width:0;">
+                        <div style="font-weight:700; font-size:15px; color:var(--title-color);">Modo Offline / Local</div>
+                        <div style="font-size:12px; opacity:0.8;">Operando com cache e armazenamento no navegador.</div>
+                        <div style="margin-top:6px; display:flex; gap:6px; align-items:center;">
+                            <span class="admin-badge role-user" style="background:#6b7280; color:#fff;">⚡ Local-First</span>
+                            <button type="button" class="io-btn" style="background:#4285f4; color:#fff; font-size:11px; padding:3px 10px; border-radius:6px; font-weight:600;" onclick="this.closest('.var-modal-overlay').remove(); loginWithGoogle();">
+                                🔑 Entrar com Google
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const cloudNoticeHtml = isLoggedIn ? `
+                <div id="cloudSyncStatusNotice" class="cloud-status-pill online">
+                    🟢 <span>Seus scripts e configurações estão sincronizados na Nuvem do Google.</span>
+                </div>
+            ` : `
+                <div id="cloudSyncStatusNotice" class="cloud-status-pill offline">
+                    ⚡ <span>Modo Offline: Todas as alterações estão salvas com segurança no navegador.</span>
+                </div>
+            `;
 
             overlay.innerHTML = `
                 <div class="var-modal-box vm-box" style="width: min(520px, 94vw);">
                     <div class="vm-head">
-                        <div class="vm-title">👤 Minha Conta</div>
+                        <div class="vm-title">👤 ${isLoggedIn ? 'Minha Conta' : 'Perfil & Armazenamento Local'}</div>
                         <button class="vm-x" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
                     </div>
                     <div class="vm-body" style="padding: 20px; gap: 14px;">
                         
                         <!-- Card de Perfil do Usuário -->
-                        <div style="display:flex; align-items:center; gap:14px; background:var(--tab-bg); padding:14px; border-radius:12px; border:1px solid var(--border-color);">
-                            ${photo ? `<img src="${escapeHtml(photo)}" style="width:52px; height:52px; border-radius:50%; object-fit:cover; border:2px solid var(--accent-color);" referrerpolicy="no-referrer">` : `<div style="width:52px; height:52px; border-radius:50%; background:var(--accent-color); color:#fff; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:700;">${(fullName[0] || 'U').toUpperCase()}</div>`}
-                            <div style="flex:1; min-width:0;">
-                                <div style="font-weight:700; font-size:15px; color:var(--title-color);">${escapeHtml(fullName)}</div>
-                                <div style="font-size:12px; opacity:0.8; word-break:break-all;">${escapeHtml(currentUser.email)}</div>
-                                <div style="margin-top:6px; display:flex; gap:6px; align-items:center;">
-                                    <span class="admin-badge ${isAdmin ? 'role-admin' : 'role-user'}">${isAdmin ? '🛡️ Administrador' : '👤 Usuário'}</span>
-                                    <span class="admin-badge status-active">🟢 Conectado à Nuvem</span>
-                                </div>
-                            </div>
-                        </div>
+                        ${profileCardHtml}
 
                         <!-- Indicador Dinâmico de Sincronização e Conexão -->
-                        <div id="cloudSyncStatusNotice" class="cloud-status-pill online">
-                            🟢 <span>Seus scripts e configurações estão sincronizados na Nuvem do Google.</span>
-                        </div>
+                        ${cloudNoticeHtml}
 
                         <!-- Resumo Integrado de Armazenamento Local -->
                         <div style="background:var(--tab-bg); border:1px solid var(--border-color); border-radius:10px; padding:10px 14px; display:flex; justify-content:space-between; align-items:center; gap:10px;">
@@ -10308,18 +10342,25 @@ Clique para abrir Minha Conta e Sincronização`;
                             </button>
                         </div>
 
-                        <!-- Seção de Ações de Nuvem e Backup -->
+                        <!-- Seção de Ações de Nuvem, Backup e Salvamento -->
                         <div style="display:flex; flex-direction:column; gap:8px;">
+                            <!-- Botão Salvar HTML sempre acessível para todos -->
+                            <button type="button" class="io-btn" style="background:#0ea5e9; color:#fff; justify-content:center; padding:10px; font-weight:600; font-size:13px; gap:8px;" onclick="this.closest('.var-modal-overlay').remove(); saveHtmlFile();">
+                                💾 Baixar Cópia Autônoma do Sistema em HTML
+                            </button>
+
+                            <!-- Backup Completo em JSON acessível diretamente aqui também -->
+                            <button type="button" class="io-btn" style="background:#6366f1; color:#fff; justify-content:center; padding:9px; font-weight:600; font-size:12.5px; gap:8px;" onclick="this.closest('.var-modal-overlay').remove(); exportFullBackup();">
+                                📦 Exportar Backup Completo (JSON)
+                            </button>
+
+                            ${isLoggedIn ? `
                             <button type="button" class="io-btn" id="btnOpenUploadPreview" style="background:#16a34a; color:#fff; justify-content:center; padding:10px; font-weight:600; font-size:13px; gap:8px;">
                                 ☁️ Salvar meus Scripts na Nuvem (com Prévia)
                             </button>
                             
                             <button type="button" class="io-btn" id="btnOpenDownloadPreview" style="background:#2563eb; color:#fff; justify-content:center; padding:10px; font-weight:600; font-size:13px; gap:8px;">
                                 📥 Baixar Scripts da Nuvem (com Prévia)
-                            </button>
-
-                            <button type="button" class="io-btn" style="background:#0ea5e9; color:#fff; justify-content:center; padding:9px; font-weight:600; font-size:12.5px; gap:8px;" onclick="this.closest('.var-modal-overlay').remove(); saveHtmlFile();">
-                                💾 Baixar Cópia Autônoma do Sistema em HTML
                             </button>
 
                             ${isAdmin ? `
@@ -10337,6 +10378,14 @@ Clique para abrir Minha Conta e Sincronização`;
                             <button type="button" class="var-modal-btn" style="background:#d9363e; color:#fff; padding:10px; font-weight:600; margin-top:4px;" onclick="this.closest('.var-modal-overlay').remove(); logoutUser();">
                                 🚪 Sair da Conta (Modo Offline)
                             </button>
+                            ` : `
+                            <button type="button" class="io-btn" style="background:#4285f4; color:#fff; justify-content:center; padding:10px; font-weight:600; font-size:13px; gap:8px;" onclick="this.closest('.var-modal-overlay').remove(); loginWithGoogle();">
+                                🔑 Entrar com Conta Google (Sincronizar Nuvem)
+                            </button>
+                            <button type="button" class="io-btn" style="background:#4b5563; color:#fff; justify-content:center; padding:9px; font-size:12px;" onclick="this.closest('.var-modal-overlay').remove(); openFirebaseConfigModal();">
+                                ⚙️ Configurar Chaves do Firebase
+                            </button>
+                            `}
                         </div>
                     </div>
                     <div class="vm-foot" style="padding:12px 20px; justify-content:flex-end;">
@@ -10345,15 +10394,21 @@ Clique para abrir Minha Conta e Sincronização`;
                 </div>
             `;
 
-            overlay.querySelector('#btnOpenUploadPreview').onclick = () => {
-                overlay.remove();
-                openCloudUploadPreviewModal();
-            };
+            const btnUpload = overlay.querySelector('#btnOpenUploadPreview');
+            if (btnUpload) {
+                btnUpload.onclick = () => {
+                    overlay.remove();
+                    openCloudUploadPreviewModal();
+                };
+            }
 
-            overlay.querySelector('#btnOpenDownloadPreview').onclick = () => {
-                overlay.remove();
-                openCloudDownloadPreviewModal();
-            };
+            const btnDownload = overlay.querySelector('#btnOpenDownloadPreview');
+            if (btnDownload) {
+                btnDownload.onclick = () => {
+                    overlay.remove();
+                    openCloudDownloadPreviewModal();
+                };
+            }
 
             updateSyncStatusUI(syncStatus);
             document.body.appendChild(overlay);
