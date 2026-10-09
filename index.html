@@ -1,5 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR"><head>
+    <script>
+        (function() {
+            try {
+                var t = localStorage.getItem('scripts_theme');
+                if (!t || (t !== 'oled' && t !== 'light' && t !== 'dark')) t = 'dark';
+                document.documentElement.className = 'theme-' + t;
+            } catch(e) {}
+        })();
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Central de Scripts</title>
@@ -28,7 +37,7 @@
             --btn-save-hover: #238636;
         }
 
-        body.theme-oled {
+        html.theme-oled, body.theme-oled {
             --bg-color: #000000;
             --sidebar-bg: #0a0a0a;
             --tab-bg: #121212;
@@ -39,7 +48,7 @@
             --textarea-bg: #000000;
         }
 
-        body.theme-light {
+        html.theme-light, body.theme-light {
             --title-color: #0f766e;
             --bg-color: #f3f4f6;
             --sidebar-bg: #e5e7eb;
@@ -314,7 +323,7 @@
         /* ============================================================
            SISTEMA DE TEMAS VISUAIS: CINZA (PADRÃO), OLED (ESCURO) E CLARO
            ============================================================ */
-        body.theme-dark {
+        html.theme-dark, body.theme-dark {
             --bg-color: #1e1e1e !important;
             --sidebar-bg: #252526 !important;
             --tab-bg: #2d2d2d !important;
@@ -330,7 +339,7 @@
             color: var(--text-color) !important;
         }
 
-        body.theme-oled {
+        html.theme-oled, body.theme-oled {
             --bg-color: #000000 !important;
             --sidebar-bg: #0a0a0a !important;
             --tab-bg: #121212 !important;
@@ -346,7 +355,7 @@
             color: var(--text-color) !important;
         }
 
-        body.theme-light {
+        html.theme-light, body.theme-light {
             --bg-color: #f4f5f8 !important;
             --sidebar-bg: #ffffff !important;
             --tab-bg: #e5e7eb !important;
@@ -1816,7 +1825,7 @@
             --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", -system-ui, sans-serif;
         }
 
-        body.theme-oled {
+        html.theme-oled, body.theme-oled {
             --bg-color: #000000;
             --sidebar-bg: #0d0d0e;
             --tab-bg: #18191c;
@@ -1827,7 +1836,7 @@
             --textarea-bg: #000000;
         }
 
-        body.theme-light {
+        html.theme-light, body.theme-light {
             --bg-color: #f5f5f7;
             --sidebar-bg: #ffffff;
             --tab-bg: #e5e5ea;
@@ -2496,7 +2505,7 @@
     <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 </head>
-<body class="theme-oled">
+<body class="theme-dark">
 
     <header style="position: relative; z-index: 100000;">
         <h1 class="app-header-title" style="display:flex; align-items:center; gap:10px;">
@@ -2669,7 +2678,7 @@
                 .replace(/'/g, '&#039;');
         }
 
-        const APP_VERSION = '2.6.2';
+        const APP_VERSION = '2.6.3';
         const UPDATE_MANIFEST_URL = 'https://firestrykerfx.github.io/version.json';
         const UPDATE_CHECK_INTERVAL = 6 * 60 * 60 * 1000;
                 /* ===== Notificações Toasts Flutuantes Modernas ===== */
@@ -4303,22 +4312,19 @@
 
             const isAdmin = typeof isCurrentUserAdmin === 'function' ? isCurrentUserAdmin() : false;
 
-            const adminBadge262 = isAdmin
+            const adminBadge = isAdmin
                 ? `<span class="admin-badge role-admin" style="font-size:10px; margin-left:6px;">🛡️ Visão Administrativa Completa</span>`
                 : `<span class="admin-badge role-user" style="font-size:10px; margin-left:6px;">👤 Visão do Atendente</span>`;
 
-            const items262 = isAdmin ? `
-                                <li><strong>🧪 Teste de Atendimento & Diagnóstico:</strong> Faixa de ping pré-fixada calibrada entre 3 a 10 ms (3, 4, 5, 6, 8 e 10 ms com perda 0%); novo seletor de MRU com registros diretos <em>Já estava 1492</em> e <em>Estava 1480 corrigido para 1492</em>; ajuste de Wi-Fi unificado com nomenclatura <em>unificado rede wifi</em> (+ Unificado Wi-Fi) em ambos os modais.</li>
-                                <li><strong>☁️ Auditoria de Nuvem & Posição das Abas:</strong> Auditoria completa de ponta a ponta garantindo que a sequência das abas (<code>tabOrder</code>), cards, cores, tags e configurações visuais (tema, zoom, layout e alarme) permaneçam preservadas e sincronizadas no Google Firestore sem sofrer reorganização alfabética.</li>
-                                <li><strong>💾 Acesso Universal aos Recursos de Armazenamento:</strong> Inclusão do botão direto <code>💾 Backup & Armazenamento</code> no cabeçalho superior e desacoplamento da janela de perfil para funcionamento total em modo offline (salvar HTML autônomo, exportar/importar JSON e diagnóstico de armazenamento).</li>
-                                <li><strong>🛡️ Governança Administrativa & Padrão da Equipe:</strong> Validação do fluxo de publicação corporativa <code>templates/default_scripts</code> e restrição estrita de regras do Firestore para proteger contra auto-promoção de perfil.</li>
-                                <li><strong>💎 Versão 2.6.2 Oficial:</strong> Alinhamento uniforme da versão 2.6.2 em todo o sistema, backup e verificador de atualizações.</li>
+            const items263 = isAdmin ? `
+                                <li><strong>🎨 Correção Definitiva de Alternância de Temas:</strong> Inclusão de script de inicialização imediata no <code>&lt;head&gt;</code> e dupla aplicação simultânea de classes em <code>&lt;html&gt;</code> e <code>&lt;body&gt;</code> (<code>html.theme-*</code> e <code>body.theme-*</code>), eliminando a necessidade de atualizar a página (F5) para aplicar os modos Cinza, OLED ou Claro.</li>
+                                <li><strong>☁️ Auditoria e Robustez das Opções de Nuvem:</strong> Validação de concorrência com o Firestore — quando o tema ou layout é trocado localmente, o timestamp <code>LAST_LOCAL_UPDATE_KEY</code> é registrado e a nuvem é atualizada via debounce, sem sobrescrever preferências do atendente.</li>
+                                <li><strong>💾 Desacoplamento Offline Completo:</strong> Botão fixo <code>💾 Backup & Armazenamento</code> no cabeçalho e liberação da janela de perfil para usuários deslogados realizarem backups, restaurações e download de HTML autônomo.</li>
+                                <li><strong>💎 Versão 2.6.3 Consolidada:</strong> Atualização uniforme em todos os cabeçalhos, metadados e histórico.</li>
             ` : `
-                                <li><strong>🧪 Teste de Atendimento & Diagnóstico:</strong> Atalhos de ping rápidos agora disponíveis na faixa de 3 a 10 ms (3, 4, 5, 6, 8 e 10 ms com perda 0%).</li>
-                                <li><strong>⚡ Opções Rápidas de MRU:</strong> Agora é possível selecionar com 1 clique se <em>Já estava 1492</em> ou se <em>Estava 1480 corrigido para 1492</em>, economizando tempo de digitação.</li>
-                                <li><strong>📶 Ajuste de Wi-Fi:</strong> Adicionada a opção rápida de ajuste para <em>unificado rede wifi</em>.</li>
-                                <li><strong>💾 Backup e Salvamento Offline:</strong> Novo botão <em>💾 Backup & Armazenamento</em> no cabeçalho superior para salvar cópia em HTML, exportar backup e gerenciar seus dados mesmo quando deslogado.</li>
-                                <li><strong>💾 Salvamento Seguro:</strong> Seus scripts, rascunhos rápidos e organização de abas permanecem salvos e sincronizados com total estabilidade.</li>
+                                <li><strong>🎨 Troca Instantânea de Tema Visual:</strong> A alternância entre os temas (Cinza 🌘, Escuro OLED 🌑 e Claro ☀️) agora ocorre instantaneamente no mesmo segundo em que você clica, sem precisar recarregar ou atualizar a página.</li>
+                                <li><strong>☁️ Sincronização Estável:</strong> Seu tema escolhido fica gravado e é preservado automaticamente mesmo ao fechar e reabrir o navegador ou conectar em outro computador.</li>
+                                <li><strong>💾 Backup & Armazenamento Acessível:</strong> Acesso rápido e direto às opções de salvar cópia em HTML e exportar seus scripts através do botão no cabeçalho, mesmo no modo offline.</li>
             `;
 
             overlay.innerHTML = `
@@ -4326,23 +4332,39 @@
                     <div class="vm-head">
                         <div class="vm-title" style="font-size:16px; display:flex; align-items:center; gap:8px;">
                             <span>📜 Histórico de Atualizações</span>
-                            ${adminBadge262}
+                            ${adminBadge}
                         </div>
                         <button class="vm-x" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
                     </div>
                     <div class="vm-body" style="padding: 16px 20px; overflow-y: auto;">
                         
-                        <!-- Versão 2.6.2 -->
+                        <!-- Versão 2.6.3 -->
                         <div class="changelog-version-card" style="border-color: #2563eb;">
                             <div class="changelog-version-header">
                                 <div class="changelog-version-title">
-                                    <span>💎 Versão 2.6.2</span>
+                                    <span>💎 Versão 2.6.3</span>
                                     <span class="changelog-badge" style="background:#2563eb; color:#fff;">Versão Atual</span>
                                 </div>
                                 <span style="font-size:11px; opacity:0.75;">09/10/2026</span>
                             </div>
                             <ul class="changelog-list">
-                                ${items262}
+                                ${items263}
+                            </ul>
+                        </div>
+
+                        <!-- Versão 2.6.2 -->
+                        <div class="changelog-version-card" style="border-color: #7c3aed;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>🚀 Versão 2.6.2</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">09/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>🧪 Teste de Atendimento & Diagnóstico:</strong> Ping pré-fixado de 3 a 10 ms (com perda 0%); opções rápidas de MRU (<em>Já estava 1492</em> ou <em>Estava 1480 corrigido</em>); ajuste de Wi-Fi atualizado para <em>unificado rede wifi</em>.</li>
+                                <li><strong>💾 Acesso Completo no Modo Offline:</strong> Botão <em>💾 Backup & Armazenamento</em> no cabeçalho superior e acesso universal à janela de perfil mesmo deslogado.</li>
+                                <li><strong>☁️ Persistência de Abas (tabOrder):</strong> Auditoria completa garantindo fidelidade de ordem visual das abas no Google Firestore.</li>
                             </ul>
                         </div>
 
@@ -8106,8 +8128,11 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 
         function changeTheme(theme) {
             const current = (theme === 'oled' || theme === 'light') ? theme : 'dark';
+            document.documentElement.classList.remove('theme-dark', 'theme-oled', 'theme-light');
+            document.documentElement.classList.add('theme-' + current);
             document.body.classList.remove('theme-dark', 'theme-oled', 'theme-light');
             document.body.classList.add('theme-' + current);
+
             const tc = document.querySelector('meta[name="theme-color"]');
             if (tc) tc.content = current === 'oled' ? '#000000' : (current === 'light' ? '#f4f5f8' : '#1e1e1e');
             localStorage.setItem(THEME_KEY, current);
