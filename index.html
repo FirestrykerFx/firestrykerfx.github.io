@@ -2602,6 +2602,18 @@
     <div class="content-container" id="contentContainer"></div>
 
     <script>
+        
+        /* Função global segura de escape HTML */
+        function escapeHtml(str) {
+            if (str == null) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
         const APP_VERSION = '2.5.7';
         const UPDATE_MANIFEST_URL = 'https://firestrykerfx.github.io/version.json';
         const UPDATE_CHECK_INTERVAL = 6 * 60 * 60 * 1000;
@@ -5595,12 +5607,28 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             tabsBar.innerHTML = '';
             contentContainer.innerHTML = '';
 
-            // 1. Inserir Aba Permanente de Clientes e Alarmes primeiro com ARIA
             const clientsTabId = 'tab_clients_alarm';
+            const tabIds = getSavedTabOrder(data);
+
+            // Determina a aba ativa ANTES de criar os elementos no DOM
+            if (!currentActiveTabId) {
+                try {
+                    const savedActive = localStorage.getItem(ACTIVE_TAB_KEY);
+                    if (savedActive && (data[savedActive] || savedActive === clientsTabId)) {
+                        currentActiveTabId = savedActive;
+                    }
+                } catch (e) {}
+            }
+            if (!currentActiveTabId || (!data[currentActiveTabId] && currentActiveTabId !== clientsTabId)) {
+                currentActiveTabId = tabIds[0] || 'tab_leo';
+            }
+
+            // 1. Inserir Aba Permanente de Clientes e Alarmes primeiro com ARIA
             const isClientsActive = clientsTabId === currentActiveTabId;
             const clientsTabEl = document.createElement('div');
             clientsTabEl.className = `tab ${isClientsActive ? 'active' : ''}`;
             clientsTabEl.setAttribute('data-tabid', clientsTabId);
+            clientsTabEl.id = 'tab-btn-' + clientsTabId;
             clientsTabEl.setAttribute('role', 'tab');
             clientsTabEl.setAttribute('aria-selected', isClientsActive ? 'true' : 'false');
             clientsTabEl.setAttribute('aria-controls', clientsTabId);
@@ -5620,18 +5648,6 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             initClientsTabLogic(clientsContentEl);
 
             // 2. Inserir demais abas de scripts respeitando a ordem personalizada salva
-            const tabIds = getSavedTabOrder(data);
-            if (!currentActiveTabId) {
-                try {
-                    const savedActive = localStorage.getItem(ACTIVE_TAB_KEY);
-                    if (savedActive && (data[savedActive] || savedActive === clientsTabId)) {
-                        currentActiveTabId = savedActive;
-                    }
-                } catch (e) {}
-            }
-            if (!currentActiveTabId || (!data[currentActiveTabId] && currentActiveTabId !== clientsTabId)) {
-                currentActiveTabId = tabIds[0] || 'tab_leo';
-            }
 
             tabIds.forEach((tabId, idx) => {
                 const tabInfo = data[tabId];
@@ -5748,7 +5764,8 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             newTabBtn.innerText = '+ Nova Aba';
             newTabBtn.onclick = addNewTab;
             tabsBar.appendChild(newTabBtn);
-            filterScripts(document.getElementById('searchInput').value);
+            filterScripts(document.getElementById('searchInput') ? document.getElementById('searchInput').value : '');
+            switchTab(currentActiveTabId);
             if (isEditing) document.querySelectorAll('.tab-content.active .item-textarea').forEach(autoGrow);
             refreshCompanion();
         }
