@@ -2086,7 +2086,130 @@
             flex-direction: column;
             background-color: color-mix(in srgb, var(--sidebar-bg) 60%, var(--card-bg));
         }
+
+        /* ===== V2.5.0: Firebase Auth, Modo Offline e Painel Admin ===== */
+        .firebase-auth-btn {
+            border-radius: 999px !important;
+            padding: 4px 12px 4px 6px !important;
+            font-weight: 600 !important;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
+            transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1) !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 7px !important;
+            cursor: pointer !important;
+            border: 1px solid rgba(255, 255, 255, 0.18) !important;
+            user-select: none !important;
+        }
+        .firebase-auth-btn:hover {
+            filter: brightness(1.12);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35) !important;
+        }
+        .firebase-auth-btn:active {
+            transform: scale(0.97);
+        }
+        .firebase-auth-avatar {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1.5px solid rgba(255, 255, 255, 0.9);
+            flex-shrink: 0;
+            display: block;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        .firebase-auth-initial {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.25);
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .admin-panel-btn {
+            border-radius: 999px !important;
+            padding: 6px 14px !important;
+            box-shadow: 0 2px 8px rgba(124, 58, 237, 0.35) !important;
+        }
+        .admin-modal-box {
+            width: min(980px, 96vw);
+            max-height: 92vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: var(--sidebar-bg);
+            border: 1.5px solid #7c3aed;
+            border-radius: 16px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.75);
+        }
+        .admin-stat-card {
+            background: var(--tab-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+            min-width: 140px;
+        }
+        .admin-stat-number {
+            font-size: 22px;
+            font-weight: 800;
+            color: #7c3aed;
+        }
+        .admin-stat-label {
+            font-size: 11px;
+            opacity: 0.75;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .admin-user-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12.5px;
+            text-align: left;
+        }
+        .admin-user-table th, .admin-user-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .admin-user-table th {
+            background: var(--card-bg);
+            color: var(--title-color);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .admin-user-table tr:hover {
+            background-color: color-mix(in srgb, #7c3aed 8%, transparent);
+        }
+        .admin-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 99px;
+            font-size: 10.5px;
+            font-weight: 700;
+        }
+        .admin-badge.role-admin { background: #7c3aed; color: #fff; }
+        .admin-badge.role-user { background: var(--tab-bg); border: 1px solid var(--border-color); color: var(--text-color); }
+        .admin-badge.status-active { background: #16a34a; color: #fff; }
+        .admin-badge.status-blocked { background: #dc2626; color: #fff; }
+
 </style>
+
+    <!-- Firebase SDK (compat mode com defer para carregamento assíncrono sem bloqueio no Live Server) -->
+    <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
 </head>
 <body class="theme-oled">
 
@@ -2109,6 +2232,13 @@
         <div class="header-actions">
             <input type="search" class="search-input" id="searchInput" placeholder="🔍 Buscar ou tag:whats (Ctrl+K)" oninput="filterScripts(this.value)">
             
+                        <button class="io-btn firebase-auth-btn" id="firebaseAuthBtn" onclick="handleAuthButtonClick()" title="Status da conta e sincronização em nuvem" style="background:#4285f4; color:#fff; display:inline-flex; align-items:center; gap:6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/></svg>
+                <span id="firebaseAuthBtnText">Entrar</span>
+            </button>
+            <button class="io-btn admin-panel-btn" id="adminPanelHeaderBtn" onclick="openAdminPanelModal()" title="Painel Administrativo da Equipe" style="display:none; background:#7c3aed; color:#fff; font-weight:600;">
+                🛡️ Admin
+            </button>
             <button class="var-config-btn" onclick="openVarManagerModal()" title="Gerenciar valores padrão de variáveis">⚙️ Variáveis</button>
             <div class="storage-indicator" id="storageIndicator" onclick="openStorageInfoModal()" title="Uso do armazenamento local e backups">💾 <span id="storageUsageText">0 KB</span></div>
             <button class="io-btn" onclick="openChangelogModal()" title="Histórico de versões e melhorias">📜 Changelog</button>
@@ -2227,7 +2357,7 @@
     <div class="content-container" id="contentContainer"></div>
 
     <script>
-        const APP_VERSION = '2.4.3';
+        const APP_VERSION = '2.5.0';
         const UPDATE_MANIFEST_URL = 'https://firestrykerfx.github.io/version.json';
         const UPDATE_CHECK_INTERVAL = 6 * 60 * 60 * 1000;
         /* ===== 1.8.4: Companion interaction routing ===== */
@@ -2836,7 +2966,7 @@
         }
 
         function toggleVisualMenu(btn, e) {
-            if (e) e.stopPropagation();
+            if (e && typeof e.stopPropagation === "function") e.stopPropagation();
             const popover = document.getElementById('visualMenuDropdown');
             const isOpen = popover.classList.contains('show');
             closeAllHeaderDropdowns();
@@ -2850,7 +2980,7 @@
         }
 
         function toggleTabsMenu(btn, e) {
-            if (e) e.stopPropagation();
+            if (e && typeof e.stopPropagation === "function") e.stopPropagation();
             const popover = document.getElementById('tabsMenuDropdown');
             const isOpen = popover.classList.contains('show');
             closeAllHeaderDropdowns();
@@ -2905,7 +3035,7 @@
         }
 
         function toggleRecentsMenu(btn, e) {
-            if (e) e.stopPropagation();
+            if (e && typeof e.stopPropagation === "function") e.stopPropagation();
             const popover = document.getElementById('recentsMenuDropdown');
             const isOpen = popover.classList.contains('show');
             closeAllHeaderDropdowns();
@@ -3212,12 +3342,35 @@
                     </div>
                     <div class="vm-body" style="padding: 16px 20px; overflow-y: auto;">
                         
-                                                                                                                                                                        <!-- Versão 2.4.3 -->
+                                                                                                                                                                                                <!-- Versão 2.5.0 -->
+                        <div class="changelog-version-card" style="border-color: #7c3aed;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>☁️ Versão 2.5.0</span>
+                                    <span class="changelog-badge" style="background:#7c3aed;">Versão Atual</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">08/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>☁️ Integração com Google Firebase (Nuvem & Local):</strong> Suporte a autenticação Google via Firebase Auth e sincronização automática de scripts e configurações no Firestore.</li>
+                                <li><strong>📶 Modo Offline Preservado (Local-First):</strong> Quem não quiser logar ou estiver sem internet continua usando 100% offline via cache e localStorage sem interrupções.</li>
+                                <li><strong>🛡️ Painel de Administração Integrado:</strong> Acesso exclusivo para os administradores configurados (<code>leogabfx@gmail.com</code> e <code>leonardo3dtelecom@gmail.com</code>) para gerenciamento completo de usuários:
+                                    <br>• Listagem de membros da equipe com foto, e-mail Google, cadastro e último acesso.
+                                    <br>• Métricas de utilização em tempo real (total de cópias de scripts por usuário).
+                                    <br>• Controle de acesso (bloquear / desbloquear usuários da equipe).
+                                    <br>• Gerenciamento de funções (promover atendente a administrador).
+                                    <br>• Publicação de scripts padrão corporativos para toda a equipe.
+                                </li>
+                                <li><strong>💻 Compatibilidade com VS Code Test Server & GitHub Pages:</strong> SDK oficial do Firebase em modo compatível direto no navegador, funcionando tanto em <code>localhost:5500</code> quanto na web.</li>
+                            </ul>
+                        </div>
+
+<!-- Versão 2.4.3 -->
                         <div class="changelog-version-card" style="border-color: #007aff;">
                             <div class="changelog-version-header">
                                 <div class="changelog-version-title">
                                     <span>🛠️ Versão 2.4.3</span>
-                                    <span class="changelog-badge" style="background:#007aff;">Versão Atual</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
                                 </div>
                                 <span style="font-size:11px; opacity:0.75;">08/10/2026</span>
                             </div>
@@ -3235,7 +3388,7 @@
                             <div class="changelog-version-header">
                                 <div class="changelog-version-title">
                                     <span>⚡ Versão 2.4.2</span>
-                                    <span class="changelog-badge" style="background:#007aff;">Versão Atual</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
                                 </div>
                                 <span style="font-size:11px; opacity:0.75;">08/10/2026</span>
                             </div>
@@ -4206,7 +4359,7 @@
                 const el = overlay.querySelector('#' + id);
                 if (!el) return;
                 if (el.tagName === 'SELECT') {
-                    const hasOption = Array.from(el.options).some(o => o.value === val);
+                    const hasOption = (el.options ? Array.from(el.options) : []).some(o => o.value === val);
                     if (hasOption) {
                         el.value = val;
                     } else {
@@ -4921,7 +5074,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         }
 
         function toggleColorFilterMenu(btn, e) {
-            if (e) e.stopPropagation();
+            if (e && typeof e.stopPropagation === "function") e.stopPropagation();
             const popover = document.getElementById('colorFilterDropdown');
             const isOpen = popover.classList.contains('show');
             closeAllHeaderDropdowns();
@@ -5592,6 +5745,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             updateStorageIndicator();
             updateUndoButton();
             initAlarmConfigUI();
+            syncToCloudDebounced();
             scheduleCompanionRefresh();
         }
 
@@ -6525,6 +6679,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             if (resolved !== null) resolved = cleanExcessiveNewlines(resolved);
             if (resolved === null) return;
 
+            recordScriptUsage();
             addRecentCopy(resolved);
             copyTextToClipboard(resolved).then(ok => {
                 msg.textContent = ok ? 'Copiado!' : 'Falha ao copiar';
@@ -6692,7 +6847,8 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         }
 
         function normalizeText(t) {
-            return t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            if (t == null) return '';
+            return String(t).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
         }
 
         function filterScripts(query) {
@@ -6967,12 +7123,15 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 
         function openPopupCompanion(win) {
             const doc = win.document;
-            doc.open();
-            doc.write('<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><title>Central de Scripts — Companheira</title></head><body></body></html>');
-            doc.close();
+            try {
+                doc.title = 'Central de Scripts — Companheira';
+                if (doc.body) {
+                    doc.body.innerHTML = '';
+                    doc.body.className = document.body.className;
+                }
+            } catch (e) {}
 
             copyStylesTo(doc);
-            doc.body.className = document.body.className;
 
             const root = doc.createElement('div');
             doc.body.appendChild(root);
@@ -7666,46 +7825,873 @@ console.log('Userscript carregado');`;
             }
         }
 
-        window.onload = function() {
-            const savedTheme = localStorage.getItem(THEME_KEY) || 'dark';
-            updateStorageIndicator();
-            updateUndoButton();
-            initAlarmConfigUI();
-            document.getElementById('themeSelect').value = savedTheme;
-            changeTheme(savedTheme);
-            migrateV2();
-            ensureVarSeed();
-            renderCommandBar();
-            loadAppData();
-            applyCardScale(parseFloat(localStorage.getItem(SCALE_KEY)) || 1);
-            setLayout(localStorage.getItem(LAYOUT_KEY) || 'grid');
-            updateCompanionButton();
-            requestNotificationPermission();
+        
+        /* ============================================================
+           V2.5.0: FIREBASE AUTH (LOGIN GOOGLE), SYNC & PAINEL ADMIN
+           ============================================================ */
+        const DEFAULT_ADMIN_EMAILS = [
+            'leogabfx@gmail.com',
+            'leonardo3dtelecom@gmail.com'
+        ];
 
-            // Executa userscripts salvos somente após a interface estar pronta.
-            setTimeout(() => runStoredUserscripts(window), 0);
-            scheduleUpdateCheck();
-
-            const searchInput = document.getElementById('searchInput');
-            searchInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') { searchInput.value = ''; filterScripts(''); searchInput.blur(); }
-            });
-            document.addEventListener('keydown', (e) => {
-                if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-                    e.preventDefault();
-                    searchInput.focus();
-                    searchInput.select();
-                }
-                if (e.altKey && e.shiftKey && (e.key === 'P' || e.key === 'p')) {
-                    e.preventDefault();
-                    toggleCompanion();
-                }
-            });
-            window.addEventListener('storage', (e) => {
-                if (e.key === STORAGE_KEY) scheduleCompanionRefresh();
-            });
-            window.addEventListener('beforeunload', saveAppData);
+        const FIREBASE_CONFIG_KEY = 'scripts_firebase_config_v1';
+        const defaultFirebaseConfig = {
+            apiKey: "AIzaSyA10MhZuv5LIHJxrbDM9T50YgEg6KJCavs",
+            authDomain: "central-de-scripts.firebaseapp.com",
+            projectId: "central-de-scripts",
+            storageBucket: "central-de-scripts.firebasestorage.app",
+            messagingSenderId: "898658794303",
+            appId: "1:898658794303:web:0d942e5bd37c2c089bf18a",
+            measurementId: "G-TE931EH2WD"
         };
+
+        function getFirebaseConfig() {
+            try {
+                const saved = localStorage.getItem(FIREBASE_CONFIG_KEY);
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (parsed && parsed.apiKey) return parsed;
+                }
+            } catch (e) {}
+            return defaultFirebaseConfig;
+        }
+
+        function saveFirebaseConfig(cfg) {
+            try {
+                localStorage.setItem(FIREBASE_CONFIG_KEY, JSON.stringify(cfg));
+            } catch (e) {}
+        }
+
+        function isFirebaseConfigured() {
+            const cfg = getFirebaseConfig();
+            return !!(cfg && cfg.apiKey && cfg.projectId && !cfg.apiKey.includes('SUA_') && !cfg.apiKey.includes('YOUR_'));
+        }
+
+        let firebaseApp = null;
+        let firebaseAuth = null;
+        let firebaseDb = null;
+        let currentUser = null;
+        let currentUserProfile = null;
+        let isCloudSyncing = false;
+        let cloudSyncDebounceTimer = null;
+
+        function initFirebaseApp() {
+            if (typeof firebase === 'undefined') {
+                console.warn('Firebase SDK offline ou não carregado.');
+                updateAuthUI();
+                return false;
+            }
+            const cfg = getFirebaseConfig();
+            if (!cfg || !cfg.apiKey || !cfg.projectId || cfg.apiKey.includes('SUA_') || cfg.apiKey.includes('YOUR_')) {
+                console.log('Firebase aguardando credenciais válidas.');
+                updateAuthUI();
+                return false;
+            }
+            try {
+                if (!firebase.apps || !firebase.apps.length) {
+                    firebaseApp = firebase.initializeApp(cfg);
+                } else {
+                    firebaseApp = firebase.app();
+                }
+                firebaseAuth = firebase.auth();
+                firebaseDb = firebase.firestore();
+
+                try {
+                    firebaseAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+                } catch(e) {}
+
+                firebaseAuth.onAuthStateChanged(handleAuthStateChanged);
+                console.log('Firebase inicializado com sucesso.');
+                return true;
+            } catch (err) {
+                console.error('Erro ao inicializar Firebase:', err);
+                updateAuthUI();
+                return false;
+            }
+        }
+
+        function isCurrentUserAdmin() {
+            if (!currentUser || !currentUser.email) return false;
+            const emailLower = currentUser.email.toLowerCase().trim();
+            if (DEFAULT_ADMIN_EMAILS.some(a => a.toLowerCase().trim() === emailLower)) return true;
+            return !!(currentUserProfile && currentUserProfile.role === 'admin');
+        }
+
+        function updateAuthUI() {
+            const btn = document.getElementById('firebaseAuthBtn');
+            const adminBtn = document.getElementById('adminPanelHeaderBtn');
+
+            if (!btn) return;
+
+            const esc = typeof escapeHtml === 'function' ? escapeHtml : (s => (s || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"));
+
+            if (currentUser) {
+                const isAdmin = isCurrentUserAdmin();
+                const photo = (currentUserProfile && currentUserProfile.photoURL) || currentUser.photoURL || '';
+                const fullName = (currentUserProfile && currentUserProfile.displayName) || currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : 'Usuário');
+                const firstName = fullName.split(' ')[0] || 'Usuário';
+
+                btn.style.background = isAdmin ? '#7c3aed' : '#2563eb';
+                btn.style.color = '#fff';
+                btn.style.padding = '3px 12px 3px 5px';
+                btn.title = `Conectado como: ${currentUser.email} (${isAdmin ? 'Administrador' : 'Usuário'})
+Clique para abrir Minha Conta e Sincronização`;
+
+                const avatarHtml = photo
+                    ? `<img src="${esc(photo)}" class="firebase-auth-avatar" alt="Foto de perfil" referrerpolicy="no-referrer">`
+                    : `<span class="firebase-auth-initial">${esc(firstName[0].toUpperCase())}</span>`;
+
+                btn.innerHTML = `
+                    ${avatarHtml}
+                    <span id="firebaseAuthBtnText" style="font-size:12.5px; font-weight:600; max-width:130px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; letter-spacing:0.2px;">${esc(firstName)}</span>
+                    <span style="font-size:9px; opacity:0.8; margin-left:-2px;">▾</span>
+                `;
+
+                if (adminBtn) {
+                    adminBtn.style.display = isAdmin ? 'inline-flex' : 'none';
+                }
+            } else {
+                btn.style.background = '#4285f4';
+                btn.style.color = '#fff';
+                btn.style.padding = '6px 14px';
+
+                const isCfg = isFirebaseConfigured();
+                btn.title = isCfg ? 'Entrar com Conta Google' : 'Configurar Firebase / Login Google';
+
+                btn.innerHTML = `
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/></svg>
+                    <span id="firebaseAuthBtnText">${isCfg ? 'Entrar' : 'Firebase'}</span>
+                `;
+
+                if (adminBtn) adminBtn.style.display = 'none';
+            }
+        }
+
+        async function handleAuthStateChanged(user) {
+            currentUser = user;
+            updateAuthUI();
+            if (user) {
+                console.log('Usuário autenticado:', user.email);
+                const emailLower = (user.email || '').toLowerCase().trim();
+                const isAdminEmail = DEFAULT_ADMIN_EMAILS.some(a => a.toLowerCase().trim() === emailLower);
+
+                try {
+                    const userRef = firebaseDb.collection('users').doc(user.uid);
+                    const userDoc = await userRef.get();
+                    const now = new Date().toISOString();
+
+                    if (!userDoc.exists) {
+                        currentUserProfile = {
+                            uid: user.uid,
+                            email: user.email,
+                            displayName: user.displayName || user.email.split('@')[0],
+                            photoURL: user.photoURL || '',
+                            createdAt: now,
+                            lastLogin: now,
+                            role: isAdminEmail ? 'admin' : 'user',
+                            status: 'active',
+                            scriptCopies: 0
+                        };
+                        await userRef.set(currentUserProfile);
+                    } else {
+                        currentUserProfile = userDoc.data();
+                        if (currentUserProfile.status === 'blocked') {
+                            alert('⚠️ Esta conta foi suspensa pelo administrador.');
+                            await firebaseAuth.signOut();
+                            currentUser = null;
+                            currentUserProfile = null;
+                            updateAuthUI();
+                            return;
+                        }
+                        if (isAdminEmail && currentUserProfile.role !== 'admin') {
+                            currentUserProfile.role = 'admin';
+                        }
+                        currentUserProfile.lastLogin = now;
+                        currentUserProfile.displayName = user.displayName || currentUserProfile.displayName;
+                        currentUserProfile.photoURL = user.photoURL || currentUserProfile.photoURL;
+                        await userRef.update({
+                            lastLogin: now,
+                            role: currentUserProfile.role,
+                            displayName: currentUserProfile.displayName,
+                            photoURL: currentUserProfile.photoURL
+                        });
+                    }
+
+                    // Sincroniza da nuvem para o navegador
+                    await syncFromCloud();
+                } catch (e) {
+                    console.error('Erro ao salvar perfil no Firestore:', e);
+                    if (isAdminEmail) {
+                        currentUserProfile = {
+                            uid: user.uid,
+                            email: user.email,
+                            displayName: user.displayName || 'Admin',
+                            role: 'admin',
+                            status: 'active'
+                        };
+                    }
+                }
+            } else {
+                currentUserProfile = null;
+            }
+            updateAuthUI();
+        }
+
+        async function loginWithGoogle() {
+            if (!isFirebaseConfigured()) {
+                openFirebaseConfigModal();
+                return;
+            }
+            if (!firebaseAuth) {
+                initFirebaseApp();
+            }
+            if (!firebaseAuth) {
+                alert('Firebase não inicializado. Verifique a configuração de credenciais.');
+                openFirebaseConfigModal();
+                return;
+            }
+            try {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                provider.setCustomParameters({ prompt: 'select_account' });
+                await firebaseAuth.signInWithPopup(provider);
+            } catch (err) {
+                console.warn('signInWithPopup falhou, tentando redirect:', err);
+                if (err.code === 'auth/popup-blocked' || err.code === 'auth/cancelled-popup-request') {
+                    try {
+                        const provider = new firebase.auth.GoogleAuthProvider();
+                        await firebaseAuth.signInWithRedirect(provider);
+                    } catch (rErr) {
+                        alert('Erro ao autenticar com o Google: ' + (rErr.message || rErr));
+                    }
+                } else {
+                    alert('Erro ao autenticar: ' + (err.message || err));
+                }
+            }
+        }
+
+        async function logoutUser() {
+            if (firebaseAuth) {
+                await firebaseAuth.signOut();
+            }
+            currentUser = null;
+            currentUserProfile = null;
+            updateAuthUI();
+            alert('Você saiu da sua conta Google. O sistema continua operando normalmente no Modo Offline (Local).');
+        }
+
+        function handleAuthButtonClick() {
+            if (!isFirebaseConfigured()) {
+                openFirebaseConfigModal();
+                return;
+            }
+            if (!currentUser) {
+                loginWithGoogle();
+            } else {
+                openUserAccountModal();
+            }
+        }
+
+        /* Sincronização em Nuvem (Firestore) */
+        async function syncFromCloud() {
+            if (!currentUser || !firebaseDb) return;
+            try {
+                const dataDocRef = firebaseDb.collection('users').doc(currentUser.uid).collection('settings').doc('app_data');
+                const snap = await dataDocRef.get();
+                if (snap.exists) {
+                    const cloudData = snap.data();
+                    if (cloudData && cloudData.scripts && isValidData(cloudData.scripts)) {
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(cloudData.scripts));
+                        if (cloudData.customDefaults) {
+                            localStorage.setItem(VARS_KEY, JSON.stringify(cloudData.customDefaults));
+                        }
+                        if (cloudData.clients) {
+                            localStorage.setItem(CLIENTS_KEY, JSON.stringify(cloudData.clients));
+                        }
+                        loadAppData();
+                        updateStorageIndicator();
+                        updateUndoButton();
+                        initAlarmConfigUI();
+                        console.log('Dados sincronizados da nuvem com sucesso!');
+                    }
+                } else {
+                    // Primeiro login: salva os dados locais atuais na nuvem
+                    await syncToCloud();
+                }
+            } catch (e) {
+                console.warn('Sincronização da nuvem indisponível (usando cache local):', e);
+            }
+        }
+
+        async function syncToCloud() {
+            if (!currentUser || !firebaseDb || isCloudSyncing) return;
+            try {
+                isCloudSyncing = true;
+                const dataDocRef = firebaseDb.collection('users').doc(currentUser.uid).collection('settings').doc('app_data');
+                const payload = {
+                    scripts: getAppData(),
+                    customDefaults: getCustomDefaults(),
+                    clients: getClientsData(),
+                    updatedAt: new Date().toISOString()
+                };
+                await dataDocRef.set(payload, { merge: true });
+                console.log('Alterações sincronizadas na nuvem!');
+            } catch (e) {
+                console.warn('Falha na sincronização na nuvem (mantido offline):', e);
+            } finally {
+                isCloudSyncing = false;
+            }
+        }
+
+        function syncToCloudDebounced() {
+            if (!currentUser || !firebaseDb) return;
+            clearTimeout(cloudSyncDebounceTimer);
+            cloudSyncDebounceTimer = setTimeout(() => {
+                syncToCloud();
+            }, 800);
+        }
+
+        function recordScriptUsage() {
+            if (!currentUser || !firebaseDb) return;
+            try {
+                firebaseDb.collection('users').doc(currentUser.uid).update({
+                    scriptCopies: firebase.firestore.FieldValue.increment(1),
+                    lastCopyAt: new Date().toISOString()
+                }).catch(() => {});
+            } catch (e) {}
+        }
+
+        /* Modal de Conta do Usuário */
+        function openUserAccountModal() {
+            if (!currentUser) return;
+            const overlay = document.createElement('div');
+            overlay.className = 'var-modal-overlay';
+            overlay.setAttribute('data-transient', 'true');
+
+            const isAdmin = isCurrentUserAdmin();
+            const photo = currentUser.photoURL || '';
+
+            overlay.innerHTML = `
+                <div class="var-modal-box vm-box" style="width: min(480px, 94vw);">
+                    <div class="vm-head">
+                        <div class="vm-title">👤 Minha Conta</div>
+                        <button class="vm-x" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
+                    </div>
+                    <div class="vm-body" style="padding: 20px; gap: 14px;">
+                        <div style="display:flex; align-items:center; gap:14px; background:var(--tab-bg); padding:14px; border-radius:12px; border:1px solid var(--border-color);">
+                            ${photo ? `<img src="${photo}" style="width:50px; height:50px; border-radius:50%; object-fit:cover; border:2px solid var(--accent-color);">` : `<div style="width:50px; height:50px; border-radius:50%; background:var(--accent-color); color:#fff; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:700;">${(currentUser.displayName || currentUser.email)[0].toUpperCase()}</div>`}
+                            <div style="flex:1; min-width:0;">
+                                <div style="font-weight:700; font-size:15px; color:var(--title-color);">${escapeHtml(currentUser.displayName || 'Usuário')}</div>
+                                <div style="font-size:12px; opacity:0.8; word-break:break-all;">${escapeHtml(currentUser.email)}</div>
+                                <div style="margin-top:6px;">
+                                    <span class="admin-badge ${isAdmin ? 'role-admin' : 'role-user'}">${isAdmin ? '🛡️ Administrador' : '👤 Usuário'}</span>
+                                    <span class="admin-badge status-active">☁️ Conectado</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="font-size:12px; opacity:0.85; line-height:1.5;">
+                            Seus scripts e configurações estão sendo salvos localmente no navegador e sincronizados automaticamente na nuvem Firebase.
+                        </div>
+
+                        <div style="display:flex; flex-direction:column; gap:8px;">
+                            <button type="button" class="io-btn" id="btnForceSync" style="justify-content:center; padding:9px;">
+                                🔄 Forçar Sincronização Agora
+                            </button>
+                            ${isAdmin ? `<button type="button" class="io-btn" style="background:#7c3aed; justify-content:center; padding:9px;" onclick="this.closest('.var-modal-overlay').remove(); openAdminPanelModal();">🛡️ Abrir Painel de Admin</button>` : ''}
+                            <button type="button" class="io-btn" style="background:#555; justify-content:center; padding:9px;" onclick="this.closest('.var-modal-overlay').remove(); openFirebaseConfigModal();">
+                                ⚙️ Ver / Alterar Chaves do Firebase
+                            </button>
+                            <button type="button" class="var-modal-btn" style="background:#d9363e; color:#fff; padding:9px; font-weight:600;" onclick="this.closest('.var-modal-overlay').remove(); logoutUser();">
+                                🚪 Sair da Conta (Modo Offline)
+                            </button>
+                        </div>
+                    </div>
+                    <div class="vm-foot" style="padding:12px 20px;">
+                        <button class="var-modal-btn var-modal-btn-confirm" onclick="this.closest('.var-modal-overlay').remove()">Fechar</button>
+                    </div>
+                </div>
+            `;
+
+            overlay.querySelector('#btnForceSync').onclick = async () => {
+                const btn = overlay.querySelector('#btnForceSync');
+                btn.textContent = '⏳ Sincronizando...';
+                await syncToCloud();
+                await syncFromCloud();
+                btn.textContent = '✅ Sincronizado com Sucesso!';
+                setTimeout(() => { if (btn) btn.textContent = '🔄 Forçar Sincronização Agora'; }, 1500);
+            };
+
+            document.body.appendChild(overlay);
+        }
+
+        /* Modal de Configuração do Firebase */
+        function openFirebaseConfigModal() {
+            const overlay = document.createElement('div');
+            overlay.className = 'var-modal-overlay';
+            overlay.setAttribute('data-transient', 'true');
+
+            const current = getFirebaseConfig();
+
+            overlay.innerHTML = `
+                <div class="var-modal-box vm-box" style="width: min(600px, 95vw); max-height: 90vh; overflow-y:auto;">
+                    <div class="vm-head">
+                        <div class="vm-title">⚙️ Conexão com Google Firebase</div>
+                        <button class="vm-x" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
+                    </div>
+                    <div class="vm-body" style="padding:18px 20px; gap:12px;">
+                        <div style="font-size:12px; line-height:1.5; opacity:0.9; background:rgba(66,133,244,0.08); border:1px solid rgba(66,133,244,0.25); padding:10px 14px; border-radius:10px;">
+                            <strong>🔥 Configuração do Firebase:</strong> Insira abaixo as chaves do seu projeto Firebase (obtidas no Console do Firebase em <em>Configurações do Projeto > Seus aplicativos > SDK setup and configuration</em>).
+                            <br><small style="opacity:0.8;">Para testar no VS Code Live Server ou localhost, certifique-se de que <code>localhost</code> está adicionado em <em>Authentication > Settings > Authorized domains</em> no Firebase.</small>
+                        </div>
+
+                        <div>
+                            <label style="font-size:11px; font-weight:600; opacity:0.85;">Cole o JSON completo do Firebase (opcional para preenchimento rápido):</label>
+                            <textarea id="fbJsonPaste" class="var-modal-input" style="height:55px; font-family:monospace; font-size:11px;" placeholder="const firebaseConfig = { apiKey: '...', ... };"></textarea>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                            <div>
+                                <label style="font-size:11px; font-weight:600; opacity:0.85;">apiKey:</label>
+                                <input type="text" id="fbApiKey" class="var-modal-input" placeholder="AIzaSy..." value="${escapeHtml(current.apiKey)}">
+                            </div>
+                            <div>
+                                <label style="font-size:11px; font-weight:600; opacity:0.85;">authDomain:</label>
+                                <input type="text" id="fbAuthDomain" class="var-modal-input" placeholder="meu-app.firebaseapp.com" value="${escapeHtml(current.authDomain)}">
+                            </div>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                            <div>
+                                <label style="font-size:11px; font-weight:600; opacity:0.85;">projectId:</label>
+                                <input type="text" id="fbProjectId" class="var-modal-input" placeholder="meu-app-123" value="${escapeHtml(current.projectId)}">
+                            </div>
+                            <div>
+                                <label style="font-size:11px; font-weight:600; opacity:0.85;">storageBucket:</label>
+                                <input type="text" id="fbStorageBucket" class="var-modal-input" placeholder="meu-app.appspot.com" value="${escapeHtml(current.storageBucket)}">
+                            </div>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                            <div>
+                                <label style="font-size:11px; font-weight:600; opacity:0.85;">messagingSenderId:</label>
+                                <input type="text" id="fbSenderId" class="var-modal-input" placeholder="123456789" value="${escapeHtml(current.messagingSenderId)}">
+                            </div>
+                            <div>
+                                <label style="font-size:11px; font-weight:600; opacity:0.85;">appId:</label>
+                                <input type="text" id="fbAppId" class="var-modal-input" placeholder="1:123456789:web:abc..." value="${escapeHtml(current.appId)}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vm-foot" style="padding:12px 20px; justify-content:space-between;">
+                        <button class="var-modal-btn var-modal-btn-cancel" onclick="this.closest('.var-modal-overlay').remove()">Cancelar</button>
+                        <button class="var-modal-btn var-modal-btn-confirm" id="btnSaveFirebaseConfig" style="background:#007aff;">
+                            💾 Salvar e Conectar Firebase
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Auto parse JSON paste
+            overlay.querySelector('#fbJsonPaste').oninput = function() {
+                const val = this.value;
+                const extract = (k) => {
+                    const m = val.match(new RegExp(`${k}\\s*:\\s*["']([^"']+)["']`));
+                    return m ? m[1] : '';
+                };
+                if (extract('apiKey')) overlay.querySelector('#fbApiKey').value = extract('apiKey');
+                if (extract('authDomain')) overlay.querySelector('#fbAuthDomain').value = extract('authDomain');
+                if (extract('projectId')) overlay.querySelector('#fbProjectId').value = extract('projectId');
+                if (extract('storageBucket')) overlay.querySelector('#fbStorageBucket').value = extract('storageBucket');
+                if (extract('messagingSenderId')) overlay.querySelector('#fbSenderId').value = extract('messagingSenderId');
+                if (extract('appId')) overlay.querySelector('#fbAppId').value = extract('appId');
+            };
+
+            overlay.querySelector('#btnSaveFirebaseConfig').onclick = () => {
+                const cfg = {
+                    apiKey: overlay.querySelector('#fbApiKey').value.trim(),
+                    authDomain: overlay.querySelector('#fbAuthDomain').value.trim(),
+                    projectId: overlay.querySelector('#fbProjectId').value.trim(),
+                    storageBucket: overlay.querySelector('#fbStorageBucket').value.trim(),
+                    messagingSenderId: overlay.querySelector('#fbSenderId').value.trim(),
+                    appId: overlay.querySelector('#fbAppId').value.trim()
+                };
+
+                if (!cfg.apiKey || !cfg.projectId) {
+                    alert('Informe ao menos a apiKey e o projectId do Firebase.');
+                    return;
+                }
+
+                saveFirebaseConfig(cfg);
+                overlay.remove();
+                const ok = initFirebaseApp();
+                if (ok) {
+                    alert('Firebase configurado com sucesso! Agora você pode fazer login com o Google.');
+                    loginWithGoogle();
+                } else {
+                    alert('Configurações salvas. Caso ocorra erro de conexão, verifique se o domínio do VS Code Live Server (localhost) está autorizado no Firebase.');
+                }
+            };
+
+            document.body.appendChild(overlay);
+        }
+
+        /* ============================================================
+           PAINEL ADMINISTRATIVO (GERENCIAMENTO DE USUÁRIOS GOOGLE)
+           ============================================================ */
+        async function openAdminPanelModal() {
+            if (!isCurrentUserAdmin()) {
+                alert('Acesso restrito: somente administradores podem acessar este painel.');
+                return;
+            }
+
+            const overlay = document.createElement('div');
+            overlay.className = 'var-modal-overlay';
+            overlay.setAttribute('data-transient', 'true');
+
+            overlay.innerHTML = `
+                <div class="admin-modal-box">
+                    <div class="vm-head" style="background:var(--sidebar-bg); border-bottom:1px solid var(--border-color); padding:14px 20px;">
+                        <div class="vm-title" style="display:flex; align-items:center; gap:10px; font-size:16px;">
+                            <span>🛡️</span>
+                            <span>Painel de Administração — Gestão de Usuários & Utilização</span>
+                        </div>
+                        <button class="vm-x" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
+                    </div>
+
+                    <div class="vm-body" style="padding:18px 20px; gap:16px; overflow-y:auto;">
+                        
+                        <!-- Cards de Estatísticas Globais -->
+                        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                            <div class="admin-stat-card">
+                                <span class="admin-stat-number" id="admTotalUsers">0</span>
+                                <span class="admin-stat-label">Total de Usuários</span>
+                            </div>
+                            <div class="admin-stat-card">
+                                <span class="admin-stat-number" id="admActiveUsers" style="color:#16a34a;">0</span>
+                                <span class="admin-stat-label">Usuários Ativos</span>
+                            </div>
+                            <div class="admin-stat-card">
+                                <span class="admin-stat-number" id="admBlockedUsers" style="color:#dc2626;">0</span>
+                                <span class="admin-stat-label">Bloqueados</span>
+                            </div>
+                            <div class="admin-stat-card">
+                                <span class="admin-stat-number" id="admTotalCopies" style="color:#2563eb;">0</span>
+                                <span class="admin-stat-label">Total de Cópias de Scripts</span>
+                            </div>
+                        </div>
+
+                        <!-- Barra de Ferramentas / Filtros -->
+                        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+                            <input type="search" id="admSearchUserInput" class="var-modal-input" placeholder="🔍 Filtrar usuário por nome ou email..." style="max-width:320px; padding:6px 12px; font-size:12px;">
+                            
+                            <div style="display:flex; gap:8px;">
+                                <button type="button" class="io-btn" id="admBtnPushDefaults" title="Salvar os scripts atuais como padrão oficial para toda a equipe" style="background:#2563eb; font-size:12px;">
+                                    📤 Definir Scripts Padrão p/ Equipe
+                                </button>
+                                <button type="button" class="io-btn" id="admBtnRefresh" title="Recarregar usuários" style="font-size:12px;">
+                                    ⟳ Atualizar
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Tabela de Usuários -->
+                        <div style="background:var(--tab-bg); border:1px solid var(--border-color); border-radius:12px; overflow-x:auto;">
+                            <table class="admin-user-table">
+                                <thead>
+                                    <tr>
+                                        <th>Usuário</th>
+                                        <th>Email Google</th>
+                                        <th>Último Acesso</th>
+                                        <th>Utilização (Cópias)</th>
+                                        <th>Função</th>
+                                        <th>Status</th>
+                                        <th style="text-align:right;">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admUserTableBody">
+                                    <tr>
+                                        <td colspan="7" style="text-align:center; padding:24px; opacity:0.7;">Carregando usuários do Firebase...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div class="vm-foot" style="padding:12px 20px; justify-content:space-between;">
+                        <span style="font-size:11px; opacity:0.7;">Administradores principais configurados: <strong>leogabfx@gmail.com</strong> e <strong>leonardo3dtelecom@gmail.com</strong></span>
+                        <button class="var-modal-btn var-modal-btn-confirm" onclick="this.closest('.var-modal-overlay').remove()">Fechar Painel</button>
+                    </div>
+                </div>
+            `;
+
+            let allUsersList = [];
+
+            async function loadAdminUsers() {
+                const tbody = overlay.querySelector('#admUserTableBody');
+                if (!firebaseDb) {
+                    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#dc2626; padding:20px;">Banco de dados Firestore não conectado.</td></tr>`;
+                    return;
+                }
+                try {
+                    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:20px;">Carregando usuários do Firestore...</td></tr>`;
+                    const snap = await firebaseDb.collection('users').get();
+                    allUsersList = [];
+                    snap.forEach(doc => allUsersList.push({ id: doc.id, ...doc.data() }));
+
+                    renderAdminUsersTable();
+                } catch (e) {
+                    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#dc2626; padding:20px;">Erro ao carregar usuários: ${escapeHtml(e.message || e)}</td></tr>`;
+                }
+            }
+
+            function renderAdminUsersTable() {
+                const tbody = overlay.querySelector('#admUserTableBody');
+                const filter = (overlay.querySelector('#admSearchUserInput').value || '').toLowerCase().trim();
+
+                let total = allUsersList.length;
+                let active = 0;
+                let blocked = 0;
+                let totalCopies = 0;
+
+                allUsersList.forEach(u => {
+                    if (u.status === 'blocked') blocked++;
+                    else active++;
+                    totalCopies += (parseInt(u.scriptCopies) || 0);
+                });
+
+                overlay.querySelector('#admTotalUsers').textContent = total;
+                overlay.querySelector('#admActiveUsers').textContent = active;
+                overlay.querySelector('#admBlockedUsers').textContent = blocked;
+                overlay.querySelector('#admTotalCopies').textContent = totalCopies;
+
+                const filtered = allUsersList.filter(u => {
+                    if (!filter) return true;
+                    return (u.displayName || '').toLowerCase().includes(filter) ||
+                           (u.email || '').toLowerCase().includes(filter);
+                });
+
+                if (filtered.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:20px; opacity:0.6;">Nenhum usuário encontrado.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = '';
+                filtered.forEach(u => {
+                    const tr = document.createElement('tr');
+                    const isSuperAdmin = DEFAULT_ADMIN_EMAILS.some(a => a.toLowerCase() === (u.email || '').toLowerCase());
+                    const isAdmin = u.role === 'admin' || isSuperAdmin;
+                    const isBlocked = u.status === 'blocked';
+                    const lastLoginStr = u.lastLogin ? new Date(u.lastLogin).toLocaleString() : 'Nunca';
+
+                    tr.innerHTML = `
+                        <td>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                ${u.photoURL ? `<img src="${u.photoURL}" style="width:24px; height:24px; border-radius:50%; object-fit:cover;">` : `<span style="width:24px; height:24px; border-radius:50%; background:#7c3aed; color:#fff; display:inline-flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;">${(u.displayName || u.email || 'U')[0].toUpperCase()}</span>`}
+                                <strong>${escapeHtml(u.displayName || 'Sem nome')}</strong>
+                            </div>
+                        </td>
+                        <td>${escapeHtml(u.email || '')}</td>
+                        <td><small style="opacity:0.8;">${lastLoginStr}</small></td>
+                        <td><strong>${u.scriptCopies || 0}</strong> cópias</td>
+                        <td>
+                            <span class="admin-badge ${isAdmin ? 'role-admin' : 'role-user'}">${isAdmin ? '🛡️ Admin' : '👤 Usuário'}</span>
+                        </td>
+                        <td>
+                            <span class="admin-badge ${isBlocked ? 'status-blocked' : 'status-active'}">${isBlocked ? '🚫 Bloqueado' : '✅ Ativo'}</span>
+                        </td>
+                        <td style="text-align:right;">
+                            ${isSuperAdmin ? `<span style="font-size:11px; opacity:0.6; font-style:italic;">Admin Primário</span>` : `
+                                <div style="display:inline-flex; gap:6px;">
+                                    <button class="comp-btn comp-btn-secondary" style="font-size:10.5px; padding:3px 7px;" onclick="window.toggleUserRole('${u.id}', '${u.role || 'user'}')">
+                                        ${isAdmin ? 'Tornar Usuário' : 'Promover Admin'}
+                                    </button>
+                                    <button class="comp-btn comp-btn-secondary" style="font-size:10.5px; padding:3px 7px; color:${isBlocked ? '#16a34a' : '#dc2626'};" onclick="window.toggleUserStatus('${u.id}', '${u.status || 'active'}')">
+                                        ${isBlocked ? 'Desbloquear' : 'Bloquear'}
+                                    </button>
+                                </div>
+                            `}
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            window.toggleUserRole = async function(userId, currentRole) {
+                const target = allUsersList.find(u => u.id === userId);
+                if (!target) return;
+                const newRole = currentRole === 'admin' ? 'user' : 'admin';
+                if (!confirm(`Alterar cargo de "${target.displayName || target.email}" para ${newRole.toUpperCase()}?`)) return;
+                try {
+                    await firebaseDb.collection('users').doc(userId).update({ role: newRole });
+                    target.role = newRole;
+                    renderAdminUsersTable();
+                } catch(e) {
+                    alert('Erro ao atualizar cargo: ' + (e.message || e));
+                }
+            };
+
+            window.toggleUserStatus = async function(userId, currentStatus) {
+                const target = allUsersList.find(u => u.id === userId);
+                if (!target) return;
+                const newStatus = currentStatus === 'blocked' ? 'active' : 'blocked';
+                if (!confirm(`${newStatus === 'blocked' ? 'Bloquear acesso de' : 'Reativar conta de'} "${target.displayName || target.email}"?`)) return;
+                try {
+                    await firebaseDb.collection('users').doc(userId).update({ status: newStatus });
+                    target.status = newStatus;
+                    renderAdminUsersTable();
+                } catch(e) {
+                    alert('Erro ao atualizar status: ' + (e.message || e));
+                }
+            };
+
+            overlay.querySelector('#admSearchUserInput').oninput = renderAdminUsersTable;
+            overlay.querySelector('#admBtnRefresh').onclick = loadAdminUsers;
+
+            overlay.querySelector('#admBtnPushDefaults').onclick = async () => {
+                if (!confirm('Deseja salvar a lista atual de scripts como o modelo padrão global da empresa no Firestore? Novos atendentes que conectarem receberão esta base.')) return;
+                try {
+                    const payload = {
+                        scripts: getAppData(),
+                        customDefaults: getCustomDefaults(),
+                        updatedBy: currentUser.email,
+                        updatedAt: new Date().toISOString()
+                    };
+                    await firebaseDb.collection('global_settings').doc('default_scripts').set(payload);
+                    alert('Scripts padrão corporativos atualizados na nuvem com sucesso!');
+                } catch(e) {
+                    alert('Erro ao salvar scripts corporativos: ' + (e.message || e));
+                }
+            };
+
+            loadAdminUsers();
+            document.body.appendChild(overlay);
+        }
+
+
+        
+        // ===== EXPOSIÇÃO GLOBAL DOS HANDLERS (GARANTIA DE FUNCIONAMENTO DE TODOS OS BOTÕES) =====
+        window.openTicketFormModal = openTicketFormModal;
+        window.openTestFormModal = openTestFormModal;
+        window.toggleEditMode = toggleEditMode;
+        window.openVarManagerModal = openVarManagerModal;
+        window.openChangelogModal = openChangelogModal;
+        window.openUserscriptManager = openUserscriptManager;
+        window.openStorageInfoModal = openStorageInfoModal;
+        window.toggleCompanion = toggleCompanion;
+        window.saveHtmlFile = saveHtmlFile;
+        window.setLayout = setLayout;
+        window.adjustCardSize = adjustCardSize;
+        window.changeTheme = changeTheme;
+        window.toggleTabsMenu = toggleTabsMenu;
+        window.toggleRecentsMenu = toggleRecentsMenu;
+        window.toggleFavoriteFilter = toggleFavoriteFilter;
+        window.toggleColorFilterMenu = toggleColorFilterMenu;
+        window.undoLastAction = undoLastAction;
+        window.toggleScratchpad = toggleScratchpad;
+        window.clearScratchpad = clearScratchpad;
+        window.copyScratchpad = copyScratchpad;
+        window.handleAuthButtonClick = handleAuthButtonClick;
+        window.openAdminPanelModal = openAdminPanelModal;
+        window.openFirebaseConfigModal = openFirebaseConfigModal;
+        window.openUserAccountModal = openUserAccountModal;
+        window.logoutUser = logoutUser;
+        window.loginWithGoogle = loginWithGoogle;
+        window.closeAllHeaderDropdowns = closeAllHeaderDropdowns;
+        window.filterScripts = filterScripts;
+        window.addNewTab = addNewTab;
+        window.switchTab = switchTab;
+        window.toggleCardFavorite = toggleCardFavorite;
+        window.copyCardText = copyCardText;
+        window.deleteCard = deleteCard;
+        window.toggleCardActionMenu = toggleCardActionMenu;
+        window.duplicateCurrentCard = duplicateCurrentCard;
+        window.copyCardRawText = copyCardRawText;
+        window.openMoveCardDialog = openMoveCardDialog;
+        window.deleteCurrentCard = deleteCurrentCard;
+        window.setCardColor = setCardColor;
+        window.setColorFilter = setColorFilter;
+        window.exportScripts = exportScripts;
+        window.importScripts = importScripts;
+        window.restoreDefaults = restoreDefaults;
+        window.clearAllScripts = clearAllScripts;
+        window.clearFinishedAlarms = clearFinishedAlarms;
+        window.addNewClientAlarm = addNewClientAlarm;
+        window.deleteClientAlarm = deleteClientAlarm;
+        window.filterClientsTable = filterClientsTable;
+        window.testAlarmSound = testAlarmSound;
+        window.exportClientsCsv = exportClientsCsv;
+        window.snoozeAlarm = snoozeAlarm;
+        window.dismissAlarm = dismissAlarm;
+        window.toggleAppendChip = toggleAppendChip;
+        window.toggleHorarioChip = toggleHorarioChip;
+        if (typeof setFieldVal !== 'undefined') window.setFieldVal = setFieldVal;
+        if (typeof handleTicketSelectChange !== 'undefined') window.handleTicketSelectChange = handleTicketSelectChange;
+        if (typeof toggleSideTestView !== 'undefined') window.toggleSideTestView = toggleSideTestView;
+        window.saveAlarmConfig = saveAlarmConfig;
+        window.saveScratchpad = saveScratchpad;
+        window.showAlarmPopup = showAlarmPopup;
+        window.initAudioUnlock = initAudioUnlock;
+
+        function initMainApp() {
+            if (window.__appInitialized) return;
+            window.__appInitialized = true;
+            try {
+                const savedTheme = localStorage.getItem(THEME_KEY) || 'dark';
+                try { initFirebaseApp(); } catch (fbErr) { console.warn('Firebase init offline:', fbErr); }
+                updateStorageIndicator();
+                updateUndoButton();
+                const themeSel = document.getElementById('themeSelect');
+                if (themeSel) themeSel.value = savedTheme;
+                changeTheme(savedTheme);
+                migrateV2();
+                ensureVarSeed();
+                renderCommandBar();
+                loadAppData();
+                applyCardScale(parseFloat(localStorage.getItem(SCALE_KEY)) || 1);
+                setLayout(localStorage.getItem(LAYOUT_KEY) || 'grid');
+                updateCompanionButton();
+                initAlarmConfigUI();
+                requestNotificationPermission();
+
+                // Executa userscripts salvos somente após a interface estar pronta.
+                setTimeout(() => {
+                    try { runStoredUserscripts(window); } catch(e) {}
+                }, 0);
+                scheduleUpdateCheck();
+
+                const searchInput = document.getElementById('searchInput');
+                if (searchInput) {
+                    searchInput.addEventListener('keydown', (e) => {
+                        if (e.key === 'Escape') { searchInput.value = ''; filterScripts(''); searchInput.blur(); }
+                    });
+                }
+                document.addEventListener('keydown', (e) => {
+                    if ((e.ctrlKey || e.metaKey) && (e.key === 'K' || e.key === 'k')) {
+                        e.preventDefault();
+                        if (searchInput) { searchInput.focus(); searchInput.select(); }
+                    }
+                    if (e.altKey && e.shiftKey && (e.key === 'P' || e.key === 'p')) {
+                        e.preventDefault();
+                        toggleCompanion();
+                    }
+                });
+                window.addEventListener('storage', (e) => {
+                    if (e.key === STORAGE_KEY) scheduleCompanionRefresh();
+                });
+                window.addEventListener('beforeunload', saveAppData);
+            } catch (err) {
+                console.error('Erro na inicialização da Central de Scripts:', err);
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initMainApp);
+        } else {
+            initMainApp();
+        }
+        window.addEventListener('load', initMainApp);
+        window.onload = initMainApp;
+
     </script>
 
 
