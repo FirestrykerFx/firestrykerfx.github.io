@@ -2387,6 +2387,7 @@
             <!-- 2. Cápsula de Ferramentas -->
             <div class="header-capsule">
                 <button class="var-config-btn" onclick="openVarManagerModal()" title="Gerenciar valores padrão de variáveis">⚙️ Variáveis</button>
+                <button class="io-btn" onclick="openGlobalFindReplaceModal()" title="Localizar e substituir textos em massa em todos os scripts">🔍 Substituir</button>
                 <button class="io-btn" onclick="openChangelogModal()" title="Histórico de versões e melhorias">📜 Changelog</button>
                 <button class="companion-btn" id="companionBtn" onclick="toggleCompanion()" title="Abrir painel flutuante sempre no topo (Alt+Shift+P)">🪟 Dock de Scripts</button>
                 <button class="btn" id="editToggleBtn" onclick="toggleEditMode()" title="Ativar ou desativar o modo de edição dos scripts">Modo Edição: Desativado</button>
@@ -2516,7 +2517,7 @@
     <div class="content-container" id="contentContainer"></div>
 
     <script>
-        const APP_VERSION = '2.5.1';
+        const APP_VERSION = '2.5.2';
         const UPDATE_MANIFEST_URL = 'https://firestrykerfx.github.io/version.json';
         const UPDATE_CHECK_INTERVAL = 6 * 60 * 60 * 1000;
                 /* ===== Notificações Toasts Flutuantes Modernas ===== */
@@ -3567,12 +3568,29 @@
                     </div>
                     <div class="vm-body" style="padding: 16px 20px; overflow-y: auto;">
                         
-                                                                                                                                                                                                                        <!-- Versão 2.5.1 -->
+                                                                                                                                                                                                                        <!-- Versão 2.5.2 -->
+                        <div class="changelog-version-card" style="border-color: #2563eb;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>⚡ Versão 2.5.2</span>
+                                    <span class="changelog-badge" style="background:#2563eb; color:#fff;">Versão Atual</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">09/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>🔍 Localizar e Substituir em Massa (Global):</strong> Novo botão <em>🔍 Substituir</em> no cabeçalho para atualizar telefones de plantão, links antigos, taxas ou chaves PIX em todos os cards de uma vez (com opção de diferenciar maiúsculas/minúsculas e escopo por aba).</li>
+                                <li><strong>☁️ Sincronização do Rascunho (*Scratchpad*) na Nuvem:</strong> As anotações rápidas e dados de diagnóstico do cliente agora são salvos e sincronizados com a Nuvem do Google Firestore.</li>
+                                <li><strong>⭐ Filtro de Favoritos Ativo no Cabeçalho:</strong> Acesso em 1 clique na barra de atalhos para focar imediatamente apenas nos scripts marcados com estrela.</li>
+                                <li><strong>🧹 Higienização de Quebras de Linha ao Copiar:</strong> Remoção inteligente de quebras duplas/triplas e espaços soltos para deixar as mensagens prontas para WhatsApp e WebChat.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versão 2.5.1 -->
                         <div class="changelog-version-card" style="border-color: #22c55e;">
                             <div class="changelog-version-header">
                                 <div class="changelog-version-title">
                                     <span>🪟 Versão 2.5.1</span>
-                                    <span class="changelog-badge" style="background:#22c55e; color:#fff;">Versão Atual</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
                                 </div>
                                 <span style="font-size:11px; opacity:0.75;">09/10/2026</span>
                             </div>
@@ -5366,9 +5384,17 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             }
         }
 
+        let scratchpadDebounceTimer = null;
         function saveScratchpad() {
             const ta = document.getElementById('scratchpadText');
-            if (ta) localStorage.setItem(SCRATCHPAD_KEY, ta.value);
+            if (ta) {
+                localStorage.setItem(SCRATCHPAD_KEY, ta.value);
+                markLocalChange();
+                clearTimeout(scratchpadDebounceTimer);
+                scratchpadDebounceTimer = setTimeout(() => {
+                    if (typeof syncToCloudDebounced === 'function') syncToCloudDebounced();
+                }, 1000);
+            }
         }
 
         function clearScratchpad() {
@@ -7038,6 +7064,189 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             }
         }
 
+                /* ============================================================
+           V2.5.2: LOCALIZAR E SUBSTITUIR EM MASSA (FIND & REPLACE)
+           ============================================================ */
+        function openGlobalFindReplaceModal() {
+            const overlay = document.createElement('div');
+            overlay.className = 'var-modal-overlay';
+            overlay.setAttribute('data-transient', 'true');
+
+            overlay.innerHTML = `
+                <div class="var-modal-box vm-box" style="width: min(560px, 94vw); max-height: 90vh;">
+                    <div class="vm-head">
+                        <div class="vm-title">🔍 Localizar e Substituir em Massa</div>
+                        <button class="vm-x" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
+                    </div>
+                    <div class="vm-body" style="padding: 18px 20px; gap: 14px; overflow-y: auto;">
+                        <div style="font-size: 12.5px; line-height: 1.5; opacity: 0.9; background: rgba(37,99,235,0.08); border: 1px solid rgba(37,99,235,0.25); padding: 10px 14px; border-radius: 10px;">
+                            Altere termos, telefones de plantão, links ou valores em todos os cards e colunas de uma só vez. Um ponto de restauração (<code>Ctrl+Z</code>) será criado antes de aplicar.
+                        </div>
+
+                        <div>
+                            <label style="font-size: 12px; font-weight: 700; color: var(--title-color); display: block; margin-bottom: 5px;">Texto a Localizar:</label>
+                            <input type="text" id="findInputText" class="var-modal-input" placeholder="Ex: 0800 123 4567 ou linkantigo.com.br" style="width: 100%;">
+                        </div>
+
+                        <div>
+                            <label style="font-size: 12px; font-weight: 700; color: var(--title-color); display: block; margin-bottom: 5px;">Substituir Por:</label>
+                            <input type="text" id="replaceInputText" class="var-modal-input" placeholder="Ex: 0800 987 6543 ou novolink.com.br" style="width: 100%;">
+                        </div>
+
+                        <div style="display: flex; gap: 14px; align-items: center; font-size: 12px; opacity: 0.9;">
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                                <input type="checkbox" id="chkMatchCase"> Diferenciar Maiúsculas/Minúsculas
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                                <input type="checkbox" id="chkCurrentTabOnly"> Apenas na Aba Ativa
+                            </label>
+                        </div>
+
+                        <!-- Prévia de Ocorrências Encontradas -->
+                        <div id="findReplacePreviewBox" style="background: var(--tab-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 14px; font-size: 12px; min-height: 48px; display: flex; align-items: center; justify-content: center; opacity: 0.85;">
+                            Digite um termo acima para visualizar as ocorrências encontradas.
+                        </div>
+                    </div>
+                    <div class="vm-foot" style="padding: 12px 20px; justify-content: space-between;">
+                        <button class="var-modal-btn var-modal-btn-cancel" onclick="this.closest('.var-modal-overlay').remove()">Cancelar</button>
+                        <button class="var-modal-btn var-modal-btn-confirm" id="btnConfirmFindReplace" style="background: #2563eb;" disabled>
+                            ⚡ Substituir Ocorrências
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            const findIn = overlay.querySelector('#findInputText');
+            const replaceIn = overlay.querySelector('#replaceInputText');
+            const chkCase = overlay.querySelector('#chkMatchCase');
+            const chkTabOnly = overlay.querySelector('#chkCurrentTabOnly');
+            const prevBox = overlay.querySelector('#findReplacePreviewBox');
+            const confirmBtn = overlay.querySelector('#btnConfirmFindReplace');
+
+            function updatePreview() {
+                const term = findIn.value;
+                if (!term) {
+                    prevBox.innerHTML = 'Digite um termo acima para visualizar as ocorrências encontradas.';
+                    confirmBtn.disabled = true;
+                    return;
+                }
+
+                const data = getAppData();
+                const matchCase = chkCase.checked;
+                const tabOnly = chkTabOnly.checked;
+                let count = 0;
+                let cardsAffected = 0;
+
+                const targetTabIds = (tabOnly && currentActiveTabId && data[currentActiveTabId]) 
+                    ? [currentActiveTabId] 
+                    : Object.keys(data);
+
+                targetTabIds.forEach(tId => {
+                    const tab = data[tId];
+                    if (!tab || !Array.isArray(tab.groups)) return;
+                    tab.groups.forEach(g => {
+                        if (!Array.isArray(g.items)) return;
+                        g.items.forEach(item => {
+                            const txt = typeof item === 'string' ? item : (item.text || '');
+                            let found = 0;
+                            if (matchCase) {
+                                found = txt.split(term).length - 1;
+                            } else {
+                                const regex = new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+                                const m = txt.match(regex);
+                                found = m ? m.length : 0;
+                            }
+                            if (found > 0) {
+                                count += found;
+                                cardsAffected++;
+                            }
+                        });
+                    });
+                });
+
+                if (count === 0) {
+                    prevBox.innerHTML = `<span style="color:#ef4444; font-weight:600;">⚠️ Nenhuma ocorrência de "${escapeHtml(term)}" encontrada.</span>`;
+                    confirmBtn.disabled = true;
+                } else {
+                    prevBox.innerHTML = `
+                        <div style="width:100%;">
+                            <span style="color:#22c55e; font-weight:700;">✓ ${count} ocorrência(s)</span> encontradas em <strong>${cardsAffected} card(s)</strong>.
+                            <div style="font-size:11px; opacity:0.8; margin-top:3px;">
+                                ${tabOnly ? 'Escopo: Apenas na aba ativa atual.' : 'Escopo: Em todas as abas e categorias.'}
+                            </div>
+                        </div>
+                    `;
+                    confirmBtn.disabled = false;
+                }
+            }
+
+            findIn.addEventListener('input', updatePreview);
+            chkCase.addEventListener('change', updatePreview);
+            chkTabOnly.addEventListener('change', updatePreview);
+
+            confirmBtn.onclick = () => {
+                const term = findIn.value;
+                const replacement = replaceIn.value;
+                if (!term) return;
+
+                pushUndoSnapshot('Localizar e Substituir');
+                const data = getAppData();
+                const matchCase = chkCase.checked;
+                const tabOnly = chkTabOnly.checked;
+                let count = 0;
+
+                const targetTabIds = (tabOnly && currentActiveTabId && data[currentActiveTabId]) 
+                    ? [currentActiveTabId] 
+                    : Object.keys(data);
+
+                targetTabIds.forEach(tId => {
+                    const tab = data[tId];
+                    if (!tab || !Array.isArray(tab.groups)) return;
+                    tab.groups.forEach(g => {
+                        if (!Array.isArray(g.items)) return;
+                        g.items.forEach(item => {
+                            let txt = typeof item === 'string' ? item : (item.text || '');
+                            if (matchCase) {
+                                if (txt.includes(term)) {
+                                    const parts = txt.split(term);
+                                    count += parts.length - 1;
+                                    txt = parts.join(replacement);
+                                }
+                            } else {
+                                const regex = new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+                                const m = txt.match(regex);
+                                if (m) {
+                                    count += m.length;
+                                    txt = txt.replace(regex, replacement);
+                                }
+                            }
+                            if (typeof item === 'string') {
+                                item = txt;
+                            } else {
+                                item.text = txt;
+                            }
+                        });
+                    });
+                });
+
+                setAppData(data);
+                markLocalChange();
+                loadAppData();
+                syncToCloudDebounced();
+                overlay.remove();
+
+                if (typeof showToast === 'function') {
+                    showToast(`⚡ Substituídas ${count} ocorrência(s) com sucesso!`, 'success');
+                } else {
+                    alert(`⚡ Substituídas ${count} ocorrência(s) com sucesso!`);
+                }
+            };
+
+            document.body.appendChild(overlay);
+            setTimeout(() => findIn.focus(), 50);
+        }
+
+
         function exportScripts() {
             saveAppData();
             const data = getAppData();
@@ -8412,6 +8621,11 @@ Clique para abrir Minha Conta e Sincronização`;
                         if (cloudData.clients) {
                             localStorage.setItem(CLIENTS_KEY, JSON.stringify(cloudData.clients));
                         }
+                        if (typeof cloudData.scratchpad === 'string') {
+                            localStorage.setItem(SCRATCHPAD_KEY, cloudData.scratchpad);
+                            const scratchTa = document.getElementById('scratchpadText');
+                            if (scratchTa) scratchTa.value = cloudData.scratchpad;
+                        }
 
                         // Restaura configurações de interface salvas na nuvem
                         if (cloudData.settings) {
@@ -8464,6 +8678,7 @@ Clique para abrir Minha Conta e Sincronização`;
                     tabOrder: getSavedTabOrder(appData),
                     customDefaults: getCustomDefaults(),
                     clients: getClientsData(),
+                    scratchpad: localStorage.getItem(SCRATCHPAD_KEY) || '',
                     settings: {
                         theme: localStorage.getItem(THEME_KEY) || 'dark',
                         layout: localStorage.getItem(LAYOUT_KEY) || 'grid',
@@ -8843,6 +9058,11 @@ Clique para abrir Minha Conta e Sincronização`;
                     }
                     if (cloudData.clients) {
                         localStorage.setItem(CLIENTS_KEY, JSON.stringify(cloudData.clients));
+                    }
+                    if (typeof cloudData.scratchpad === 'string') {
+                        localStorage.setItem(SCRATCHPAD_KEY, cloudData.scratchpad);
+                        const scratchTa = document.getElementById('scratchpadText');
+                        if (scratchTa) scratchTa.value = cloudData.scratchpad;
                     }
                     if (cloudData.settings) {
                         const s = cloudData.settings;
@@ -9371,6 +9591,7 @@ service cloud.firestore {
         window.openAdminPanelModal = openAdminPanelModal;
         window.openFirebaseConfigModal = openFirebaseConfigModal;
         window.openUserAccountModal = openUserAccountModal;
+        window.openGlobalFindReplaceModal = openGlobalFindReplaceModal;
         window.showToast = showToast;
         window.openCloudUploadPreviewModal = openCloudUploadPreviewModal;
         window.openCloudDownloadPreviewModal = openCloudDownloadPreviewModal;
