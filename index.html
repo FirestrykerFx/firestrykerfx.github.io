@@ -3079,7 +3079,7 @@
             return String(str).replace(/([ #;&,.+*~':"!^$\[\]()=>|\/@])/g, '\\$1');
         }
 
-        const APP_VERSION = '2.6.6';
+        const APP_VERSION = '2.6.7';
         const UPDATE_MANIFEST_URL = 'https://firestrykerfx.github.io/version.json';
         const UPDATE_CHECK_INTERVAL = 6 * 60 * 60 * 1000;
                 /* ===== Notificações Toasts Flutuantes Modernas ===== */
@@ -4879,19 +4879,36 @@
                     </div>
                     <div class="vm-body" style="padding: 16px 20px; overflow-y: auto;">
                         
-                        <!-- Versão 2.6.6 Oficial -->
+                        <!-- Versão 2.6.7 Oficial -->
                         <div class="changelog-version-card" style="border-color: #007aff;">
                             <div class="changelog-version-header">
                                 <div class="changelog-version-title">
-                                    <span>🔌 Versão 2.6.6</span>
+                                    <span>🔌 Versão 2.6.7</span>
                                     <span class="changelog-badge" style="background:#007aff; color:#fff;">Versão Atual</span>
                                 </div>
                                 <span style="font-size:11px; opacity:0.75;">17/10/2026</span>
                             </div>
                             <ul class="changelog-list">
-                                <li><strong>🔌 Seletor Interativo de Equipamentos & Valores (Planilha Oficial):</strong> Novo modal com caixas de seleção (checkboxes) e controle de quantidade/metragem baseado integralmente na planilha de valores de equipamentos da 3D Telecom. Permite escolher exatamente os 2 ou 3 itens desejados (ex: Cabo de Rede + Conectores RJ45), calcular à vista e a prazo, e copiar a mensagem pronta para enviar ao cliente ou colar no atendimento.</li>
-                                <li><strong>📦 Desmembramento dos Cards de Valores:</strong> Os scripts da aba <em>💰Valores & Equipamentos</em> foram separados em cards menores por categoria (Cabos & Conectores, Acessórios & HDMI, Ponto a Ponto & Fibra), permitindo copiar opções isoladas com 1 clique sem levar toda a lista misturada.</li>
-                                <li><strong>⚡ Acesso Rápido via Atalho e Central de Comandos:</strong> Adicionado o botão fixo <code>🔌 Equipamentos & Valores</code> na barra de atalhos e atalho direto na Central de Comandos (<code>Ctrl + K</code>).</li>
+                                <li><strong>💰 Cabeçalho Limpo no Orçamento:</strong> Remoção da identificação institucional no título gerado, mantendo estritamente <code>💰 VALORES & EQUIPAMENTOS</code>.</li>
+                                <li><strong>📏 Quantidades Padrão Unitárias (1x / 1 metro):</strong> Todos os itens do catálogo inicializam agora com quantidade <code>1</code>, permitindo passar a cotação padrão unitária imediatamente ao cliente.</li>
+                                <li><strong>📊 Opção de Total como Estimativa Técnica:</strong> Nova caixa de seleção <em>📊 Total como Estimativa Técnica</em> para enviar o valor total ao cliente como estimativa que será avaliada e confirmada no local pelo técnico.</li>
+                                <li><strong>➖ Marcadores Universais:</strong> Linhas dos itens formatadas com traço (<code>- </code>) para compatibilidade nativa em WhatsApp e chats de atendimento.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versão 2.6.6 -->
+                        <div class="changelog-version-card" style="border-color: #7c3aed;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>🔌 Versão 2.6.6</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">17/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>🔌 Seletor Interativo de Equipamentos & Valores (Planilha Oficial):</strong> Modal com caixas de seleção (checkboxes) e controle de quantidade/metragem baseado na planilha de valores da 3D Telecom.</li>
+                                <li><strong>📦 Desmembramento dos Cards de Valores:</strong> Scripts da aba <em>💰Valores & Equipamentos</em> separados em cards menores por categoria.</li>
+                                <li><strong>⚡ Atalho Central de Comandos (Ctrl+K):</strong> Acesso instantâneo digitando <code>equipamentos</code> ou <code>valores</code>.</li>
                             </ul>
                         </div>
 
@@ -12733,11 +12750,11 @@ service cloud.firestore {
            ============================================================ */
         const EQUIP_CATALOG = [
             // Cabos, Conectores e Acessórios
-            { id: 'eq_cabo_rede', cat: 'Cabos & Conectores', name: 'Cabo de Rede (Drop / Padrão)', unit: 'metro', vista: 2.00, prazo: 2.00, obs: 'R$ 1,50 a R$ 2,00 o metro', isMeter: true, defaultQty: 10 },
-            { id: 'eq_cabo_lan', cat: 'Cabos & Conectores', name: 'Cabo de Rede (LAN)', unit: 'metro', vista: 4.50, prazo: 5.00, obs: '', isMeter: true, defaultQty: 10 },
-            { id: 'eq_cabo_blindado', cat: 'Cabos & Conectores', name: 'Cabo de Rede Blindado', unit: 'metro', vista: 6.00, prazo: 7.00, obs: 'conforme aplicação', isMeter: true, defaultQty: 10 },
-            { id: 'eq_cabo_drop', cat: 'Cabos & Conectores', name: 'Cabo Drop de Fibra', unit: 'metro', vista: 3.00, prazo: 3.00, obs: '', isMeter: true, defaultQty: 10 },
-            { id: 'eq_rj45', cat: 'Cabos & Conectores', name: 'Conector RJ45 (Simples / Blindado)', unit: 'unidade', vista: 2.50, prazo: 2.50, obs: '', defaultQty: 2 },
+            { id: 'eq_cabo_rede', cat: 'Cabos & Conectores', name: 'Cabo de Rede (Drop / Padrão)', unit: 'metro', vista: 2.00, prazo: 2.00, obs: 'R$ 1,50 a R$ 2,00 o metro', isMeter: true, defaultQty: 1 },
+            { id: 'eq_cabo_lan', cat: 'Cabos & Conectores', name: 'Cabo de Rede (LAN)', unit: 'metro', vista: 4.50, prazo: 5.00, obs: '', isMeter: true, defaultQty: 1 },
+            { id: 'eq_cabo_blindado', cat: 'Cabos & Conectores', name: 'Cabo de Rede Blindado', unit: 'metro', vista: 6.00, prazo: 7.00, obs: 'conforme aplicação', isMeter: true, defaultQty: 1 },
+            { id: 'eq_cabo_drop', cat: 'Cabos & Conectores', name: 'Cabo Drop de Fibra', unit: 'metro', vista: 3.00, prazo: 3.00, obs: '', isMeter: true, defaultQty: 1 },
+            { id: 'eq_rj45', cat: 'Cabos & Conectores', name: 'Conector RJ45 (Simples / Blindado)', unit: 'unidade', vista: 2.50, prazo: 2.50, obs: '', defaultQty: 1 },
             { id: 'eq_conector_optico', cat: 'Cabos & Conectores', name: 'Conector Óptico (Verde / Azul)', unit: 'unidade', vista: 6.00, prazo: 6.00, obs: '', defaultQty: 1 },
             { id: 'eq_acoplador', cat: 'Cabos & Conectores', name: 'Acoplador Emenda (Verde / Azul)', unit: 'unidade', vista: 2.50, prazo: 2.50, obs: '', defaultQty: 1 },
             { id: 'eq_caixa_emenda', cat: 'Cabos & Conectores', name: 'Caixa de Emenda Drop', unit: 'unidade', vista: 15.00, prazo: 15.00, obs: '', defaultQty: 1 },
@@ -12779,7 +12796,7 @@ service cloud.firestore {
             { id: 'eq_ptp_sfp', cat: 'Switches, Fibra & Mikrotik', name: 'Equipamento Ponto a Ponto (Par + 2 Módulos SFP)', unit: 'par', vista: 700.00, prazo: 700.00, obs: 'Conversor de mídia. Não inclui metragem de cabo', defaultQty: 1 },
             { id: 'eq_mk_rbftc11', cat: 'Switches, Fibra & Mikrotik', name: 'Mikrotik RBFTC11 (Fiber to Copper Converter)', unit: 'unidade', vista: 390.00, prazo: 430.00, obs: 'Unitário', defaultQty: 1 },
             { id: 'eq_mk_copper_par', cat: 'Switches, Fibra & Mikrotik', name: 'Fiber to Copper (Mikrotik RBFTC11 - Par + 2 Módulos)', unit: 'par', vista: 960.00, prazo: 1040.00, obs: 'Recomendado para instalação externa/exposto a sujeira', defaultQty: 1 },
-            { id: 'eq_modulos_sfp', cat: 'Switches, Fibra & Mikrotik', name: 'Módulos SFP 3KM', unit: 'unidade', vista: 90.00, prazo: 90.00, obs: 'Usados em copper ou conversor de mídia', defaultQty: 2 },
+            { id: 'eq_modulos_sfp', cat: 'Switches, Fibra & Mikrotik', name: 'Módulos SFP 3KM', unit: 'unidade', vista: 90.00, prazo: 90.00, obs: 'Usados em copper ou conversor de mídia', defaultQty: 1 },
             { id: 'eq_mk_cap_ac', cat: 'Switches, Fibra & Mikrotik', name: 'Mikrotik RouterBoard cAP ac AP (Parede/Teto)', unit: 'unidade', vista: 920.00, prazo: 990.00, obs: 'verificar disponibilidade', defaultQty: 1 },
             { id: 'eq_mk_hap_ax2', cat: 'Switches, Fibra & Mikrotik', name: 'Mikrotik hAP ax² WiFi6 (C52iG-5HAxD2HAxD-TC-BR)', unit: 'unidade', vista: 1090.00, prazo: 1180.00, obs: 'Wi-Fi 6', defaultQty: 1 },
             { id: 'eq_mk_hap_ac2', cat: 'Switches, Fibra & Mikrotik', name: 'Mikrotik hAP ac² WiFi5 (RBD52G-5HACD2HND-TC-BR)', unit: 'unidade', vista: 860.00, prazo: 930.00, obs: 'Wi-Fi 5', defaultQty: 1 },
@@ -12815,7 +12832,7 @@ service cloud.firestore {
                     <div class="vm-body" style="padding: 14px 18px; gap: 12px; display:flex; flex-direction:column; min-height:0; overflow:hidden;">
                         <!-- Barra de Pesquisa e Filtros Rápidos -->
                         <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                            <input type="search" id="equipSearchInput" class="var-modal-input" placeholder="🔍 Filtrar equipamento, conector, cabo..." style="flex:1; min-width:220px;" autocomplete="off">
+                            <input type="search" id="equipSearchInput" class="var-modal-input" placeholder="🔍 Filtrar equipamento, conector, cabo..." style="flex:1; min-width:200px;" autocomplete="off">
                             <div style="display:flex; gap:6px; align-items:center; font-size:12px;">
                                 <span>Pagamento:</span>
                                 <select id="equipGlobalPayment" class="theme-select" style="padding:4px 8px; font-size:12px;">
@@ -12824,6 +12841,10 @@ service cloud.firestore {
                                     <option value="ambos" selected>Ambos (Vista e Prazo)</option>
                                 </select>
                             </div>
+                            <label style="display:inline-flex; align-items:center; gap:6px; font-size:12px; cursor:pointer; user-select:none; background:var(--tab-bg); padding:4px 10px; border-radius:6px; border:1px solid var(--border-color);" title="Passar valor total ao cliente como estimativa avaliada no local pelo técnico">
+                                <input type="checkbox" id="equipEstimativaCheck" style="cursor:pointer; accent-color:var(--accent-color);">
+                                <span>📊 Total como Estimativa Técnica</span>
+                            </label>
                         </div>
 
                         <!-- Categorias em Chips -->
@@ -12952,7 +12973,8 @@ service cloud.firestore {
                     return { text: 'Nenhum item selecionado. Marque as opções acima para montar o orçamento.', count: 0 };
                 }
 
-                let lines = ['💰 VALORES & EQUIPAMENTOS — 3D TELECOM\n'];
+                const isEstimativa = !!(overlay.querySelector('#equipEstimativaCheck') && overlay.querySelector('#equipEstimativaCheck').checked);
+                let lines = ['💰 VALORES & EQUIPAMENTOS\n'];
 
                 selectedItems.forEach(({ item, qty, subVista, subPrazo }) => {
                     const unitSuffix = item.isMeter ? ` (${qty} metro${qty > 1 ? 's' : ''})` : (qty > 1 ? ` (${qty}x)` : '');
@@ -12966,17 +12988,21 @@ service cloud.firestore {
                             ? `${formatCurrency(subVista)}`
                             : `${formatCurrency(subVista)} à vista | ${formatCurrency(subPrazo)} a prazo`;
                     }
-                    lines.push(`• ${item.name}${unitSuffix}: ${priceText}${item.obs ? ` (${item.obs})` : ''}`);
+                    lines.push(`- ${item.name}${unitSuffix}: ${priceText}${item.obs ? ` (${item.obs})` : ''}`);
                 });
 
-                if (selectedItems.length > 1) {
+                if (selectedItems.length > 1 || isEstimativa) {
                     lines.push('\n-----------------------------------');
+                    const totalPrefix = isEstimativa ? 'Total Estimado' : 'Total Geral';
                     if (paymentPref === 'vista') {
-                        lines.push(`Total Geral: ${formatCurrency(totalVista)} à vista`);
+                        lines.push(`${totalPrefix}: ${formatCurrency(totalVista)} à vista`);
                     } else if (paymentPref === 'prazo') {
-                        lines.push(`Total Geral: ${formatCurrency(totalPrazo)} a prazo`);
+                        lines.push(`${totalPrefix}: ${formatCurrency(totalPrazo)} a prazo`);
                     } else {
-                        lines.push(`Total Geral: ${formatCurrency(totalVista)} à vista / ${formatCurrency(totalPrazo)} a prazo`);
+                        lines.push(`${totalPrefix}: ${formatCurrency(totalVista)} à vista / ${formatCurrency(totalPrazo)} a prazo`);
+                    }
+                    if (isEstimativa) {
+                        lines.push('*(Valores e metragem estimados, a serem avaliados e confirmados na hora pelo técnico no local)*');
                     }
                 }
 
@@ -12998,6 +13024,13 @@ service cloud.firestore {
             overlay.querySelector('#equipGlobalPayment').onchange = () => {
                 updatePreview();
             };
+
+            const estimativaCheckEl = overlay.querySelector('#equipEstimativaCheck');
+            if (estimativaCheckEl) {
+                estimativaCheckEl.onchange = () => {
+                    updatePreview();
+                };
+            }
 
             overlay.querySelector('#equipCategoryChips').onclick = (e) => {
                 const chip = e.target.closest('.equip-filter-chip');
