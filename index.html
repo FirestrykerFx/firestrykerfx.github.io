@@ -512,7 +512,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(8px);
+            backdrop-filter: none;
             animation: fadeIn 0.2s ease;
         }
         .alarm-popup-box {
@@ -1073,7 +1073,7 @@
         /* ===== Userscripts (Tampermonkey-compatible metadata) ===== */
         .usm-overlay {
             position: fixed; inset: 0; z-index: 10000000;
-            background: rgba(0,0,0,.78); backdrop-filter: blur(7px);
+            background: rgba(0,0,0,.78); backdrop-filter: none;
             display:flex; align-items:center; justify-content:center;
         }
         .usm-box {
@@ -1257,7 +1257,28 @@
         .copy-btn { font-weight: 600; letter-spacing: .01em; box-shadow: 0 1px 2px rgba(0,0,0,.25); }
         .copy-btn:hover { filter: brightness(1.1); }
         .size-ctrl { border-radius: 10px; }
-        .var-modal-overlay { backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
+        /* Liquid Glass / Frosted Backdrop para Modais */
+        .var-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.45) !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            z-index: 999999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .var-modal-overlay.liquid-glass-backdrop,
+        .var-modal-overlay:has(#tkModalBox),
+        .var-modal-overlay:has(#testModalBox) {
+            background: rgba(0, 0, 0, 0.45) !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
         .var-modal-box { border-radius: 16px; box-shadow: 0 24px 70px rgba(0,0,0,.55); border: 1px solid var(--border-color); }
         .var-modal-input { border-radius: 8px; }
         .var-modal-btn { border-radius: 8px; }
@@ -2606,9 +2627,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.65);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.45); backdrop-filter: none; -webkit-backdrop-filter: none;
             z-index: 10000000;
             display: flex;
             align-items: flex-start;
@@ -2829,7 +2848,526 @@
             }
         }
 
+
+        /* ===== V2.6.8: Header & Primeira Linha Descomprimida e Polida (Apple HIG) ===== */
+        header {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            flex-wrap: nowrap !important;
+            gap: 14px !important;
+            padding: 8px 18px !important;
+            min-height: 52px !important;
+            background-color: color-mix(in srgb, var(--sidebar-bg) 85%, transparent) !important;
+            backdrop-filter: blur(24px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+            border-bottom: 1px solid var(--border-color) !important;
+            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+            box-sizing: border-box !important;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+            user-select: none;
+        }
+
+        .app-header-title {
+            margin: 0 !important;
+            font-size: 16px !important;
+            font-weight: 700 !important;
+            letter-spacing: -0.015em !important;
+            color: var(--text-color) !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 9px !important;
+            white-space: nowrap !important;
+        }
+
+        .header-search-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+            flex: 0 1 380px;
+            min-width: 200px;
+            max-width: 440px;
+            margin: 0 10px;
+        }
+
+        .search-icon-svg {
+            position: absolute;
+            left: 12px;
+            color: var(--text-color);
+            opacity: 0.5;
+            pointer-events: none;
+            transition: color 0.15s, opacity 0.15s;
+        }
+
+        .header-search-wrap:focus-within .search-icon-svg {
+            opacity: 1;
+            color: var(--accent-color);
+        }
+
+        .search-input {
+            width: 100% !important;
+            height: 34px !important;
+            background-color: var(--tab-bg) !important;
+            color: var(--text-color) !important;
+            border: 1px solid var(--border-color) !important;
+            padding: 0 68px 0 34px !important;
+            border-radius: 999px !important;
+            font-family: inherit;
+            font-size: 13px !important;
+            outline: none;
+            transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1) !important;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
+            box-sizing: border-box !important;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-color) !important;
+            background-color: var(--textarea-bg) !important;
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 30%, transparent) !important;
+            width: 100% !important;
+        }
+
+        .search-kbd {
+            position: absolute;
+            right: 8px;
+            background: color-mix(in srgb, var(--sidebar-bg) 85%, transparent);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 2px 6px;
+            font-size: 10.5px;
+            font-family: inherit;
+            font-weight: 600;
+            color: var(--text-color);
+            opacity: 0.7;
+            cursor: pointer;
+            user-select: none;
+            line-height: 1.2;
+            transition: all 0.15s;
+        }
+
+        .search-kbd:hover {
+            opacity: 1;
+            border-color: var(--accent-color);
+            color: var(--title-color);
+        }
+
+        .header-actions {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-end !important;
+            gap: 8px !important;
+            flex-wrap: nowrap !important;
+            flex: 1 1 auto;
+        }
+
+        .header-capsule {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 2px !important;
+            height: 34px !important;
+            background: color-mix(in srgb, var(--tab-bg) 65%, transparent) !important;
+            padding: 2px 4px !important;
+            border-radius: 10px !important;
+            border: 1px solid var(--border-color) !important;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.06) !important;
+            box-sizing: border-box !important;
+            white-space: nowrap !important;
+        }
+
+        .header-capsule-divider {
+            width: 1px;
+            height: 16px;
+            background-color: var(--border-color);
+            margin: 0 3px;
+            opacity: 0.7;
+            flex-shrink: 0;
+        }
+
+        .header-pill-btn {
+            height: 28px !important;
+            background: transparent !important;
+            color: var(--text-color) !important;
+            border: 1px solid transparent !important;
+            border-radius: 7px !important;
+            padding: 0 9px !important;
+            font-size: 12.5px !important;
+            font-weight: 500 !important;
+            font-family: inherit;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 5px !important;
+            cursor: pointer !important;
+            transition: all 0.15s ease !important;
+            user-select: none !important;
+            box-sizing: border-box !important;
+            line-height: 1 !important;
+        }
+
+        .header-pill-btn:hover {
+            background: color-mix(in srgb, var(--border-color) 60%, transparent) !important;
+            color: var(--title-color) !important;
+        }
+
+        .btn-mode-atendimento {
+            height: 28px !important;
+            padding: 0 9px !important;
+            font-weight: 600 !important;
+            border-radius: 7px !important;
+            border: 1px solid transparent !important;
+            background: transparent !important;
+            color: var(--text-color) !important;
+        }
+
+        .btn-mode-atendimento.active {
+            background-color: #10b981 !important;
+            color: #ffffff !important;
+            border-color: #059669 !important;
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.35) !important;
+        }
+
+        #editToggleBtn.active, body.editing #editToggleBtn {
+            background-color: #c678dd !important;
+            color: #ffffff !important;
+            border-color: #a359b8 !important;
+            box-shadow: 0 2px 6px rgba(198, 120, 221, 0.35) !important;
+        }
+
+        .size-ctrl {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 1px !important;
+            background: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+            height: 28px !important;
+        }
+
+        .size-ctrl button {
+            background: transparent !important;
+            border: none !important;
+            color: var(--text-color) !important;
+            cursor: pointer !important;
+            font-size: 13px !important;
+            height: 26px !important;
+            width: 24px !important;
+            padding: 0 !important;
+            border-radius: 6px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            line-height: 1 !important;
+            transition: all 0.15s ease !important;
+        }
+
+        .size-ctrl button:hover {
+            background-color: color-mix(in srgb, var(--border-color) 60%, transparent) !important;
+        }
+
+        .size-ctrl button.on {
+            background-color: var(--accent-color) !important;
+            color: #ffffff !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18) !important;
+        }
+
+        .size-ctrl span {
+            font-size: 11px !important;
+            font-weight: 600 !important;
+            min-width: 34px !important;
+            text-align: center !important;
+            cursor: pointer !important;
+            user-select: none !important;
+            opacity: 0.85 !important;
+            padding: 0 2px !important;
+        }
+
+        .size-ctrl span:hover {
+            opacity: 1 !important;
+            color: var(--accent-color) !important;
+        }
+
+        .theme-ctrl {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 1px !important;
+            background: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+            height: 28px !important;
+        }
+
+        .theme-ctrl button {
+            background: transparent !important;
+            border: none !important;
+            color: var(--text-color) !important;
+            padding: 0 !important;
+            height: 26px !important;
+            width: 24px !important;
+            font-size: 12.5px !important;
+            cursor: pointer !important;
+            line-height: 1 !important;
+            border-radius: 6px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            transition: all 0.15s ease !important;
+        }
+
+        .theme-ctrl button:hover {
+            background-color: color-mix(in srgb, var(--border-color) 60%, transparent) !important;
+        }
+
+        .theme-ctrl button.on {
+            background-color: var(--accent-color) !important;
+            color: #ffffff !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18) !important;
+        }
+
+        .header-user-section {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            margin-left: 0 !important;
+            padding-left: 0 !important;
+            border-left: none !important;
+        }
+
+        .header-btn-more {
+            height: 34px !important;
+            border-radius: 10px !important;
+            padding: 0 11px !important;
+            font-size: 12.5px !important;
+            font-weight: 600 !important;
+            border: 1px solid var(--border-color) !important;
+            background: color-mix(in srgb, var(--tab-bg) 65%, transparent) !important;
+            color: var(--text-color) !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 4px !important;
+            cursor: pointer !important;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.06) !important;
+            box-sizing: border-box !important;
+            transition: all 0.15s ease !important;
+        }
+
+        .header-btn-more:hover {
+            background-color: color-mix(in srgb, var(--border-color) 60%, transparent) !important;
+            color: var(--title-color) !important;
+        }
+
+        .admin-panel-btn {
+            height: 34px !important;
+            border-radius: 999px !important;
+            padding: 0 12px !important;
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            background: #7c3aed !important;
+            color: #fff !important;
+            border: 1px solid rgba(255, 255, 255, 0.18) !important;
+            box-shadow: 0 2px 6px rgba(124, 58, 237, 0.3) !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 5px !important;
+            box-sizing: border-box !important;
+        }
+
+        .firebase-auth-btn {
+            height: 34px !important;
+            border-radius: 999px !important;
+            padding: 3px 12px 3px 5px !important;
+            font-weight: 600 !important;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+            transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1) !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 7px !important;
+            cursor: pointer !important;
+            border: 1px solid rgba(255, 255, 255, 0.18) !important;
+            user-select: none !important;
+            box-sizing: border-box !important;
+        }
+    
+        /* ===== V2.6.9: Organização Hierárquica em 3 Níveis (Header, Toolbar de Ações & Abas) ===== */
+        
+        /* 1. Header Global Compacto */
+        header {
+            min-height: 48px !important;
+            padding: 6px 18px !important;
+            gap: 12px !important;
+        }
+
+        .header-brand .app-header-title {
+            font-size: 15px !important;
+            gap: 8px !important;
+        }
+
+        .header-brand-badge {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 7px;
+            border-radius: 999px;
+            background: color-mix(in srgb, var(--accent-color) 20%, transparent);
+            color: var(--accent-color);
+            border: 1px solid color-mix(in srgb, var(--accent-color) 35%, transparent);
+            letter-spacing: 0.02em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+        .header-brand-badge:hover {
+            background: var(--accent-color);
+            color: #ffffff;
+            box-shadow: 0 2px 6px rgba(0, 122, 255, 0.35);
+            transform: translateY(-1px);
+        }
+
+        /* 2. Barra de Ferramentas e Ações Rápidas (Linha 2 - Action Toolbar) */
+        .shortcuts-subbar {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            padding: 4px 18px !important;
+            min-height: 34px !important;
+            max-height: 38px !important;
+            background-color: color-mix(in srgb, var(--sidebar-bg) 92%, transparent) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            border-bottom: 1px solid var(--border-color) !important;
+            overflow-x: auto !important;
+            box-sizing: border-box !important;
+            width: 100% !important;
+            scrollbar-width: none !important;
+        }
+        .shortcuts-subbar::-webkit-scrollbar {
+            display: none !important;
+        }
+
+        .subbar-cluster {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 5px !important;
+            flex-shrink: 0 !important;
+        }
+
+        .subbar-sep {
+            width: 1px !important;
+            height: 14px !important;
+            background-color: var(--border-color) !important;
+            opacity: 0.7 !important;
+            margin: 0 4px !important;
+            flex-shrink: 0 !important;
+        }
+
+        .shortcut-pill {
+            height: 26px !important;
+            line-height: 24px !important;
+            padding: 0 10px !important;
+            font-size: 12px !important;
+            font-weight: 500 !important;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif !important;
+            border-radius: 6px !important;
+            border: 1px solid var(--border-color) !important;
+            background: color-mix(in srgb, var(--tab-bg) 65%, transparent) !important;
+            color: var(--text-color) !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 5px !important;
+            cursor: pointer !important;
+            white-space: nowrap !important;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+            transition: all 0.15s cubic-bezier(0.2, 0.9, 0.3, 1) !important;
+            user-select: none !important;
+            box-sizing: border-box !important;
+        }
+
+        .shortcut-pill:hover {
+            border-color: var(--accent-color) !important;
+            background: color-mix(in srgb, var(--accent-color) 12%, var(--tab-bg)) !important;
+            color: var(--title-color) !important;
+            transform: translateY(-1px) !important;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08) !important;
+        }
+
+        .shortcut-pill:active {
+            transform: scale(0.97) !important;
+        }
+
+        .shortcut-pill.active {
+            background: #007aff !important;
+            color: #ffffff !important;
+            border-color: #007aff !important;
+            box-shadow: 0 2px 6px rgba(0, 122, 255, 0.35) !important;
+        }
+
+        .shortcut-pill.fav-filter-active {
+            background: #eab308 !important;
+            color: #000000 !important;
+            border-color: #ca8a04 !important;
+            font-weight: 600 !important;
+            box-shadow: 0 2px 6px rgba(234, 179, 8, 0.35) !important;
+        }
+
+        .shortcut-pill-action:hover {
+            border-color: #007aff !important;
+        }
+
+        /* 3. Barra de Abas de Categorias (Linha 3 - Categorias de Scripts) */
+        .tabs {
+            min-height: 40px !important;
+            padding: 4px 14px !important;
+            gap: 6px !important;
+            display: flex !important;
+            align-items: center !important;
+            background-color: var(--sidebar-bg) !important;
+            border-bottom: 1px solid var(--border-color) !important;
+            overflow-x: auto !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+            scrollbar-width: thin !important;
+        }
+
+        .tab {
+            height: 30px !important;
+            line-height: 28px !important;
+            padding: 0 13px !important;
+            border-radius: 8px !important;
+            font-size: 12.5px !important;
+            font-weight: 500 !important;
+            background-color: color-mix(in srgb, var(--tab-bg) 80%, transparent) !important;
+            border: 1px solid var(--border-color) !important;
+            color: var(--text-color) !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 7px !important;
+            white-space: nowrap !important;
+            cursor: pointer !important;
+            user-select: none !important;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+            transition: all 0.18s cubic-bezier(0.2, 0.9, 0.3, 1) !important;
+        }
+
+        .tab:hover {
+            border-color: var(--accent-color) !important;
+            background-color: color-mix(in srgb, var(--accent-color) 10%, var(--tab-bg)) !important;
+            color: var(--title-color) !important;
+            transform: translateY(-1px) !important;
+        }
+
+        .tab.active {
+            background-color: #007aff !important;
+            border-color: #007aff !important;
+            color: #ffffff !important;
+            font-weight: 600 !important;
+            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.38) !important;
+        }
+
     </style>
+
 
     <!-- Firebase SDK (compat mode com defer para carregamento assíncrono sem bloqueio no Live Server) -->
     <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -2840,52 +3378,61 @@
 <body class="theme-dark">
 
     <header style="position: relative; z-index: 100000;">
-        <h1 class="app-header-title" style="display:flex; align-items:center; gap:10px;">
-            <svg class="header-logo-icon" width="24" height="24" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:6px; flex-shrink:0; box-shadow:0 2px 8px rgba(0,122,255,0.4); display:inline-block; vertical-align:middle;">
-                <defs>
-                    <linearGradient id="appleLogoGrad" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stop-color="#007aff"/>
-                        <stop offset="100%" stop-color="#5ac8fa"/>
-                    </linearGradient>
-                </defs>
-                <rect width="64" height="64" rx="16" fill="url(#appleLogoGrad)"/>
-                <path d="M18 20h28a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4H30l-9 8v-8h-3a4 4 0 0 1-4-4V24a4 4 0 0 1 4-4z" fill="white"/>
-                <rect x="22" y="27" width="20" height="3" rx="1.5" fill="#007aff"/>
-                <rect x="22" y="33" width="13" height="3" rx="1.5" fill="#007aff"/>
+        <div class="header-brand">
+            <h1 class="app-header-title">
+                <svg class="header-logo-icon" width="26" height="26" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:7px; flex-shrink:0; box-shadow:0 2px 8px rgba(0,122,255,0.35); display:inline-block; vertical-align:middle;">
+                    <defs>
+                        <linearGradient id="appleLogoGrad" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#007aff"/>
+                            <stop offset="100%" stop-color="#5ac8fa"/>
+                        </linearGradient>
+                    </defs>
+                    <rect width="64" height="64" rx="16" fill="url(#appleLogoGrad)"/>
+                    <path d="M18 20h28a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4H30l-9 8v-8h-3a4 4 0 0 1-4-4V24a4 4 0 0 1 4-4z" fill="white"/>
+                    <rect x="22" y="27" width="20" height="3" rx="1.5" fill="#007aff"/>
+                    <rect x="22" y="33" width="13" height="3" rx="1.5" fill="#007aff"/>
+                </svg>
+                <span>Central de Scripts</span> <span class="header-brand-badge" id="appVersionBadge" onclick="openChangelogModal()" style="cursor:pointer;" title="Clique para ver o Histórico de Versões e Novidades (v2.7.0)">v2.7.0</span>
+            </h1>
+        </div>
+
+        <!-- 1. Campo de Busca Centralizado -->
+        <div class="header-search-wrap">
+            <svg class="search-icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
-            <span>Central de Scripts</span>
-        </h1>
-                <div class="header-actions">
-            <!-- 1. Campo de Busca -->
-            <input type="search" class="search-input" id="searchInput" placeholder="🔍 Buscar ou tag:whats (Ctrl+K)" aria-label="Pesquisar scripts ou filtrar por tags" oninput="filterScripts(this.value); updateSearchFilterStatusBar();">
+            <input type="search" class="search-input" id="searchInput" placeholder="Buscar script ou tag:whats..." aria-label="Pesquisar scripts ou filtrar por tags" oninput="filterScripts(this.value); updateSearchFilterStatusBar();">
+            <kbd class="search-kbd" onclick="openGlobalFindReplaceModal()" title="Localizar e Substituir em Massa (Ctrl+K)">Ctrl K</kbd>
+        </div>
 
-            <input type="file" id="importFile" style="display: none" accept=".json" onchange="importScripts(event)">
-            <input type="file" id="userscriptFile" style="display: none" accept=".js,.user.js,.txt" multiple="" onchange="importUserscripts(event)">
+        <input type="file" id="importFile" style="display: none" accept=".json" onchange="importScripts(event)">
+        <input type="file" id="userscriptFile" style="display: none" accept=".js,.user.js,.txt" multiple="" onchange="importUserscripts(event)">
 
-            <!-- 2. Modo Atendimento & Menu "⋯ Mais" Descomprimido -->
-            <div class="header-capsule">
-                <button class="btn-mode-atendimento" id="atendimentoModeToggleBtn" onclick="toggleModoAtendimento()" title="Alternar Modo Atendimento (Foco limpo durante o suporte)">
-                    🎧 Modo Atendimento: <span id="atendimentoModeStatusText">Desativado</span>
+        <div class="header-actions">
+            <!-- 2. Modos de Operação: Atendimento & Edição -->
+            <div class="header-capsule header-mode-capsule">
+                <button class="header-pill-btn btn-mode-atendimento" id="atendimentoModeToggleBtn" onclick="toggleModoAtendimento()" title="Alternar Modo Atendimento (Foco limpo durante o suporte)">
+                    🎧 Atendimento: <span id="atendimentoModeStatusText">Desativado</span>
                 </button>
-                <button class="io-btn hide-on-atendimento" id="editToggleBtn" onclick="toggleEditMode()" title="Ativar ou desativar o modo de edição dos scripts">
-                    Modo Edição: Desativado
-                </button>
-                <button class="shortcut-pill" id="moreHeaderMenuBtn" onclick="toggleMoreMenu(this, event)" title="Acessar ferramentas secundárias e configurações">
-                    ⋯ Mais ▾
+                <button class="header-pill-btn hide-on-atendimento" id="editToggleBtn" onclick="toggleEditMode()" title="Ativar ou desativar o modo de edição dos scripts">
+                    ✏️ Modo Edição
                 </button>
             </div>
 
-            <!-- 3. Cápsula de Visual: Layout, Zoom e Seletor com 1 Ícone p/ cada Tema -->
-            <div class="header-capsule">
+            <!-- 3. Exibição: Layout (Grade/Lista), Zoom e Temas -->
+            <div class="header-capsule header-display-capsule">
                 <div class="size-ctrl" id="layoutCtrl" title="Disposição dos cards">
                     <button data-mode="grid" onclick="setLayout('grid')" title="Quadro (colunas lado a lado)" class="on">▦</button>
                     <button data-mode="list" onclick="setLayout('list')" title="Lista (colunas empilhadas)">☰</button>
                 </div>
+                <div class="header-capsule-divider"></div>
                 <div class="size-ctrl" title="Tamanho dos cards">
                     <button onclick="adjustCardSize(-1)" title="Diminuir cards">−</button>
                     <span id="sizeLabel" onclick="adjustCardSize(0)" title="Clique para voltar a 100%">100%</span>
                     <button onclick="adjustCardSize(1)" title="Aumentar cards">+</button>
                 </div>
+                <div class="header-capsule-divider"></div>
                 <div class="theme-ctrl" id="themeCtrl" title="Alternar tema visual: Cinza, OLED ou Claro">
                     <button type="button" id="themeBtnDark" onclick="changeTheme('dark')" title="Modo Cinza (Padrão)" class="on">🌘</button>
                     <button type="button" id="themeBtnOled" onclick="changeTheme('oled')" title="Modo Escuro OLED">🌑</button>
@@ -2893,20 +3440,18 @@
                 </div>
             </div>
 
-            <!-- 4. Canto Superior Direito: Backup/Armazenamento, Userscripts, Admin e Perfil Google -->
+            <!-- 4. Ferramentas Secundárias, Admin e Usuário -->
             <div class="header-user-section">
-                <button class="io-btn" id="storageHeaderBtn" class="io-btn hide-on-atendimento" onclick="openStorageInfoModal()" title="Armazenamento local, Exportar/Importar Backup e Salvar HTML" style="background:var(--tab-bg); border:1px solid var(--border-color); color:var(--text-color); font-weight:500;">
-                    💾 Backup & Armazenamento
+                <button class="header-btn-more hide-on-atendimento" id="companionHeaderBtn" onclick="toggleCompanion()" title="Abrir Dock de Scripts flutuante (Alt+Shift+P)">
+                    🪟 Dock
                 </button>
-                <button class="io-btn" id="userscriptHeaderBtn" class="io-btn hide-on-atendimento" onclick="openUserscriptManager()" title="Gerenciar userscripts no formato Tampermonkey" style="background:var(--tab-bg); border:1px solid var(--border-color); color:var(--text-color); font-weight:500;">
-                    🧩 Userscripts
+                <button class="header-btn-more" id="moreHeaderMenuBtn" onclick="toggleMoreMenu(this, event)" title="Acessar ferramentas secundárias e configurações">
+                    ⋯ Mais ▾
                 </button>
-                <button class="io-btn admin-panel-btn" id="adminPanelHeaderBtn" class="io-btn admin-panel-btn hide-on-atendimento" onclick="openAdminPanelModal()" title="Painel Administrativo da Equipe" style="display:none; background:#7c3aed; color:#fff; font-weight:600;">
-                    🛡️ Admin
-                </button>
-                <button class="io-btn firebase-auth-btn" id="firebaseAuthBtn" onclick="handleAuthButtonClick()" title="Status da conta e sincronização em nuvem" style="background:#4285f4; color:#fff;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/></svg>
-                    <span id="firebaseAuthBtnText">Entrar</span>
+                <button class="io-btn firebase-auth-btn" id="firebaseAuthBtn" onclick="handleAuthButtonClick()" title="Minha Conta, Modo Offline & Configurações" style="background:var(--tab-bg, #2a2a2a); color:var(--text-color, #e5e7eb); border:1px solid var(--border-color, #4b5563); padding:5px 12px;">
+                    <span style="font-size:14px; margin-right:4px;">👤</span>
+                    <span id="firebaseAuthBtnText" style="font-size:12px; font-weight:600;">Conta / Offline</span>
+                    <span style="font-size:9px; opacity:0.7; margin-left:3px;">⚙️</span>
                 </button>
             </div>
         </div>
@@ -2960,35 +3505,17 @@
         </div>
 
         <!-- Menu Dropdown: "⋯ Mais" (Ferramentas e Visual) -->
-        <div class="dropdown-popover" id="moreMenuDropdown" data-transient="true" onclick="event.stopPropagation()" style="min-width: 250px;">
+        <div class="dropdown-popover" id="moreMenuDropdown" data-transient="true" onclick="event.stopPropagation()" style="min-width: 270px;">
             <div class="dropdown-popover-title">
                 <span>⋯ Mais Opções & Ferramentas</span>
                 <button class="vm-x" aria-label="Fechar menu" style="width:24px; height:24px; font-size:14px;" onclick="closeAllHeaderDropdowns()">✕</button>
             </div>
             <div class="dropdown-list">
-                <div class="dropdown-list-item" onclick="openEquipBudgetModal(); closeAllHeaderDropdowns();">
-                    <span>🔌 Orçamento de Equipamentos & Cabos</span>
-                </div>
-                <div class="dropdown-list-item" onclick="openCommandPalette(); closeAllHeaderDropdowns();">
-                    <span>⌨️ Central de Comandos <small style="opacity:0.6; float:right;">Ctrl+K</small></span>
-                </div>
-                <div class="dropdown-list-item" onclick="toggleCompanion(); closeAllHeaderDropdowns();">
-                    <span>🪟 Dock de Scripts <small style="opacity:0.6; float:right;">Alt+Shift+P</small></span>
-                </div>
-                <div class="dropdown-list-item hide-on-atendimento" onclick="openVarManagerModal(); closeAllHeaderDropdowns();">
-                    <span>⚙️ Valores de Variáveis</span>
-                </div>
-                <div class="dropdown-list-item hide-on-atendimento" onclick="openGlobalFindReplaceModal(); closeAllHeaderDropdowns();">
-                    <span>🔍 Localizar e Substituir em Massa</span>
+                <div class="dropdown-list-item hide-on-atendimento" id="userscriptHeaderBtn" onclick="openUserscriptManager(); closeAllHeaderDropdowns();">
+                    <span>🧩 Gerenciador de Userscripts</span>
                 </div>
                 <div class="dropdown-list-item" onclick="openChangelogModal(); closeAllHeaderDropdowns();">
-                    <span>📜 Histórico e Novidades</span>
-                </div>
-                <div class="dropdown-list-item hide-on-atendimento" onclick="openStorageInfoModal(); closeAllHeaderDropdowns();">
-                    <span>💾 Backup & Armazenamento</span>
-                </div>
-                <div class="dropdown-list-item hide-on-atendimento" onclick="openUserscriptManager(); closeAllHeaderDropdowns();">
-                    <span>🧩 Gerenciador de Userscripts</span>
+                    <span>📜 Histórico e Novidades (v2.7.0)</span>
                 </div>
             </div>
         </div>
@@ -3004,31 +3531,49 @@
     </div>
 
     <!-- Linha de baixo: Barra de Atalhos (Desfazer, Cores, Favoritos, Recentes, Chamado, Abas) -->
-    <div class="shortcuts-subbar">
-        <button class="shortcut-pill" id="tabsMenuBtn" onclick="toggleTabsMenu(this, event)" title="Localizar e trocar de aba rapidamente">
-            📑 Abas
-        </button>
-        <button class="shortcut-pill" id="equipBudgetBtn" onclick="openEquipBudgetModal()" title="Orçamento e seleção rápida de equipamentos, cabos e acessórios">
-            🔌 Equipamentos & Valores
-        </button>
-        <button class="shortcut-pill" id="ticketModalBtn" onclick="openTicketFormModal()" title="Gerador rápido de chamado/ordem de serviço (OS Técnica)">
-            📝 Chamado
-        </button>
-        <button class="shortcut-pill" id="testModalBtn" onclick="openTestFormModal()" title="Gerador rápido de teste de atendimento (Diagnóstico)">
-            🧪 Teste
-        </button>
-        <button class="shortcut-pill" id="recentsBtn" onclick="toggleRecentsMenu(this, event)" title="Ver últimos scripts copiados">
-            🕒 Recentes
-        </button>
-        <button class="shortcut-pill" id="filterFavsBtn" onclick="toggleFavoriteFilter(this)" title="Filtrar somente cards favoritos (⭐)">
-            ⭐ Favoritos
-        </button>
-        <button class="shortcut-pill" id="filterColorBtn" onclick="toggleColorFilterMenu(this, event)" title="Filtrar cards por cor de borda">
-            🎨 Cores
-        </button>
-        <button class="shortcut-pill" id="undoHeaderBtn" onclick="undoLastAction()" title="Desfazer última alteração">
-            ↩️ Desfazer
-        </button>
+        <!-- Linha 2: Barra de Ações Rápidas & Ferramentas (Action Toolbar Slim) -->
+    <div class="shortcuts-subbar" role="toolbar" aria-label="Ferramentas e Ações Rápidas">
+        <div class="subbar-cluster">
+            <button class="shortcut-pill shortcut-pill-action" id="ticketModalBtn" onclick="openTicketFormModal()" title="Gerador rápido de chamado/ordem de serviço (OS Técnica)">
+                📝 Chamado
+            </button>
+            <button class="shortcut-pill shortcut-pill-action" id="testModalBtn" onclick="openTestFormModal()" title="Gerador rápido de teste de atendimento (Diagnóstico)">
+                🧪 Teste
+            </button>
+            <button class="shortcut-pill shortcut-pill-action" id="equipBudgetBtn" onclick="openEquipBudgetModal()" title="Orçamento e seleção rápida de equipamentos, cabos e acessórios">
+                🔌 Equipamentos & Valores
+            </button>
+        </div>
+
+        <div class="subbar-sep" aria-hidden="true"></div>
+
+        <div class="subbar-cluster">
+            <button class="shortcut-pill shortcut-pill-filter" id="filterFavsBtn" onclick="toggleFavoriteFilter(this)" title="Filtrar somente cards favoritos (⭐)">
+                ⭐ Favoritos
+            </button>
+            <button class="shortcut-pill shortcut-pill-filter" id="filterColorBtn" onclick="toggleColorFilterMenu(this, event)" title="Filtrar cards por cor de borda">
+                🎨 Cores ▾
+            </button>
+            <button class="shortcut-pill shortcut-pill-filter" id="recentsBtn" onclick="toggleRecentsMenu(this, event)" title="Ver últimos scripts copiados">
+                🕒 Recentes ▾
+            </button>
+        </div>
+
+        <div class="subbar-sep" aria-hidden="true"></div>
+
+        <div class="subbar-cluster">
+            <button class="shortcut-pill shortcut-pill-tool" id="undoHeaderBtn" onclick="undoLastAction()" title="Desfazer última alteração">
+                ↩️ Desfazer
+            </button>
+        </div>
+
+        <div class="subbar-sep" aria-hidden="true"></div>
+
+        <div class="subbar-cluster">
+            <button class="shortcut-pill shortcut-pill-nav" id="tabsMenuBtn" onclick="toggleTabsMenu(this, event)" title="Localizar e trocar de aba rapidamente">
+                📑 Localizar Aba ▾
+            </button>
+        </div>
     </div>
 
     <!-- Barra de comandos rápidos (só aparece no modo edição) -->
@@ -3079,7 +3624,7 @@
             return String(str).replace(/([ #;&,.+*~':"!^$\[\]()=>|\/@])/g, '\\$1');
         }
 
-        const APP_VERSION = '2.6.7';
+        const APP_VERSION = '2.7.0';
         const UPDATE_MANIFEST_URL = 'https://firestrykerfx.github.io/version.json';
         const UPDATE_CHECK_INTERVAL = 6 * 60 * 60 * 1000;
                 /* ===== Notificações Toasts Flutuantes Modernas ===== */
@@ -4361,15 +4906,18 @@
         }
 
         function normalizeData(d) {
-            Object.values(d).forEach(t => {
+            Object.entries(d).forEach(([tabKey, t]) => {
+                if (!t || typeof t !== 'object') return;
                 if (!Array.isArray(t.groups)) t.groups = [{ title: 'Geral', items: Array.isArray(t.items) ? t.items : [] }];
-                t.groups.forEach(g => {
+                t.groups.forEach((g, gIdx) => {
                     g.title = typeof g.title === 'string' ? g.title : '';
-                    g.items = (g.items || []).map(i => {
+                    g.items = (g.items || []).map((i, itemIdx) => {
+                        const fallbackId = 'card_' + tabKey + '_' + gIdx + '_' + itemIdx;
                         if (typeof i === 'string') {
-                            return { text: i === OLD_PLACEHOLDER ? '' : i, tags: [], alarm: '', favorite: false };
+                            return { id: fallbackId, text: i === OLD_PLACEHOLDER ? '' : i, tags: [], alarm: '', favorite: false, color: '', copies: 0 };
                         }
                         return {
+                            id: (typeof i.id === 'string' && i.id.trim()) ? i.id.trim() : fallbackId,
                             text: (i.text === OLD_PLACEHOLDER ? '' : (i.text || '')),
                             tags: Array.isArray(i.tags) ? i.tags : [],
                             alarm: i.alarm || '',
@@ -4391,7 +4939,7 @@
         }
 
         function getAppData() {
-            let data = defaultData;
+            let data = null;
             try {
                 const saved = localStorage.getItem(STORAGE_KEY);
                 if (saved) {
@@ -4399,6 +4947,9 @@
                     if (isValidData(parsed)) data = parsed;
                 }
             } catch (e) { /* usa o padrão */ }
+            if (!data) {
+                try { data = JSON.parse(JSON.stringify(defaultData)); } catch (e) { data = defaultData; }
+            }
             normalizeData(data);
             return data;
         }
@@ -4460,6 +5011,7 @@
         function toggleTabsMenu(btn, e) {
             if (e && typeof e.stopPropagation === "function") e.stopPropagation();
             const popover = document.getElementById('tabsMenuDropdown');
+            if (!popover) return;
             const isOpen = popover.classList.contains('show');
             closeAllHeaderDropdowns();
             if (!isOpen) {
@@ -4472,7 +5024,10 @@
                 renderTabsDropdownList('');
                 popover.classList.add('show');
                 const inp = document.getElementById('tabFilterInput');
-                if (inp) { inp.value = ''; inp.focus(); }
+                if (inp) {
+                    inp.value = '';
+                    setTimeout(() => inp.focus(), 50);
+                }
             }
         }
 
@@ -4565,6 +5120,7 @@
             document.body.classList.toggle('filtering-favorites', isFilteringFavoritesOnly);
             btn.classList.toggle('fav-filter-active', isFilteringFavoritesOnly);
             btn.title = isFilteringFavoritesOnly ? 'Mostrando apenas favoritos (clique para ver todos)' : 'Filtrar somente cards favoritos (⭐)';
+            if (typeof updateSearchFilterStatusBar === 'function') updateSearchFilterStatusBar();
         }
 
         let activeTargetCard = null;
@@ -4606,12 +5162,14 @@
 
         function duplicateCurrentCard() {
             if (!activeTargetCard) return;
+            pushUndoSnapshot('Duplicar Card');
             const textarea = activeTargetCard.querySelector('.item-textarea');
             const tags = [...activeTargetCard.querySelectorAll('.card-tag')].map(t => t.dataset.tagName);
             const isFav = activeTargetCard.classList.contains('is-favorite');
+            const cardColor = activeTargetCard.dataset.cardColor || '';
             const parent = activeTargetCard.parentElement;
 
-            appendCard(parent, { text: textarea.value, tags: [...tags], alarm: '', favorite: isFav });
+            appendCard(parent, { id: createStableId(), text: textarea.value, tags: [...tags], alarm: '', favorite: isFav, color: cardColor, copies: 0 });
             const newCard = parent.lastElementChild;
             parent.insertBefore(newCard, activeTargetCard.nextSibling);
             saveAppData();
@@ -4632,6 +5190,7 @@
             const textarea = activeTargetCard.querySelector('.item-textarea');
             const hasText = textarea.value.trim() !== '';
             if (hasText && !confirm('Excluir este card permanentemente?')) return;
+            pushUndoSnapshot('Excluir Card');
             activeTargetCard.remove();
             saveAppData();
             closeAllHeaderDropdowns();
@@ -4639,11 +5198,18 @@
 
         function openMoveCardDialog() {
             if (!activeTargetCard) return;
+            if (isEditing) saveAppData();
             const data = getAppData();
             const tabIds = Object.keys(data);
+            const cardId = activeTargetCard.dataset.cardId || createStableId();
             const cardText = activeTargetCard.querySelector('.item-textarea').value;
             const tags = [...activeTargetCard.querySelectorAll('.card-tag')].map(t => t.dataset.tagName);
             const isFav = activeTargetCard.classList.contains('is-favorite');
+            const cardColor = activeTargetCard.dataset.cardColor || '';
+            const cardCopies = parseInt(activeTargetCard.dataset.copyCount) || 0;
+            const alarmInput = activeTargetCard.querySelector('.card-alarm-input');
+            const alarmBadge = activeTargetCard.querySelector('.alarm-badge');
+            const cardAlarm = (alarmInput && alarmInput.value) ? alarmInput.value : ((alarmBadge && alarmBadge.dataset.alarmTime) || '');
 
             const overlay = document.createElement('div');
             overlay.className = 'var-modal-overlay';
@@ -4651,7 +5217,7 @@
 
             let optionsHtml = '';
             tabIds.forEach(id => {
-                optionsHtml += '<option value="' + id + '">' + escapeHtml(data[id].name) + '</option>';
+                optionsHtml += '<option value="' + escapeHtml(id) + '"' + (id === currentActiveTabId ? ' selected' : '') + '>' + escapeHtml(data[id].name) + '</option>';
             });
 
             overlay.innerHTML = '<div class="var-modal-box" style="width: 380px;">' +
@@ -4669,15 +5235,32 @@
             overlay.querySelector('#confirmMoveBtn').onclick = () => {
                 const targetTabId = overlay.querySelector('#moveTargetTabSelect').value;
                 if (!targetTabId || !data[targetTabId]) return;
-
-                if (!data[targetTabId].groups || data[targetTabId].groups.length === 0) {
-                    data[targetTabId].groups = [{ title: 'Geral', items: [] }];
+                if (targetTabId === currentActiveTabId) {
+                    overlay.remove();
+                    return;
                 }
-                data[targetTabId].groups[0].items.unshift({ text: cardText, tags: [...tags], alarm: '', favorite: isFav });
-                setAppData(data);
 
+                pushUndoSnapshot('Mover Card');
                 activeTargetCard.remove();
                 saveAppData();
+
+                const freshData = getAppData();
+                if (!freshData[targetTabId].groups || freshData[targetTabId].groups.length === 0) {
+                    freshData[targetTabId].groups = [{ title: 'Geral', items: [] }];
+                }
+                freshData[targetTabId].groups[0].items.unshift({
+                    id: cardId,
+                    text: cardText,
+                    tags: [...tags],
+                    alarm: cardAlarm,
+                    favorite: isFav,
+                    color: cardColor,
+                    copies: cardCopies
+                });
+                setAppData(freshData);
+                markLocalChange();
+                loadAppData();
+                syncToCloudDebounced();
                 overlay.remove();
                 closeAllHeaderDropdowns();
                 switchTab(targetTabId);
@@ -4749,7 +5332,7 @@
             matches.slice(0, 8).forEach((varName, idx) => {
                 const item = document.createElement('div');
                 item.className = 'var-autocomplete-item' + (idx === 0 ? ' selected' : '');
-                item.innerHTML = '<strong>(' + varName + ')</strong> <span style="opacity:0.6; font-size:10px;">↵ inserir</span>';
+                item.innerHTML = '<strong>(' + escapeHtml(varName) + ')</strong> <span style="opacity:0.6; font-size:10px;">↵ inserir</span>';
                 item.onmousedown = (ev) => {
                     ev.preventDefault();
                     insertAutocompleteVar(ta, lastParen, pos, varName);
@@ -4801,7 +5384,8 @@
             const card = ta.closest('.item-card');
             if (card) {
                 const pre = card.querySelector('.item-text');
-                if (pre) pre.innerText = ta.value;
+                const sq = document.getElementById('searchInput') ? document.getElementById('searchInput').value : '';
+                if (pre) pre.innerHTML = renderFormattedItemText(ta.value, sq);
             }
             const menu = document.getElementById('varAutocompleteMenu');
             if (menu) menu.classList.remove('show');
@@ -4879,12 +5463,67 @@
                     </div>
                     <div class="vm-body" style="padding: 16px 20px; overflow-y: auto;">
                         
-                        <!-- Versão 2.6.7 Oficial -->
+                                                <!-- Versão 2.7.0 Oficial -->
+                        <div class="changelog-version-card" style="border-color: #007aff;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>✨ Versão 2.7.0</span>
+                                    <span class="changelog-badge" style="background:#007aff; color:#fff;">Versão Atual</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">27/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>🛡️ Auditoria de Segurança & Debug Completo:</strong> Blindagem contra DOM XSS (autocomplete, modais, filtros e painel administrativo), proteção contra Prototype Pollution em backups JSON, sanitização contra CSV Formula Injection, validação estrita de Userscripts/URLs e correção definitiva na preservação de IDs dos cards, movimentação entre abas, sincronização na nuvem e destaque de busca sem quebrar tags HTML.</li>
+                                <li><strong>🎯 Menu "⋯ Mais" Descomprimido & Focado:</strong> Remoção de todas as opções redundantes ou duplicadas (Backup & Armazenamento, Orçamento de Equipamentos, Central de Comandos, Dock de Scripts, Valores de Variáveis e Localizar/Substituir), mantendo o menu enxuto e livre de poluição visual.</li>
+                                <li><strong>🪟 Dock de Scripts com Acesso Direto no Cabeçalho:</strong> O Dock flutuante agora possui seu próprio botão e ícone dedicado no topo da tela (<code>🪟 Dock</code>), posicionado ao lado do menu ⋯ Mais, com atalho rápido <code>Alt+Shift+P</code>.</li>
+                                <li><strong>🔍 Localizar e Substituir em Massa Integrado ao Ctrl+K:</strong> A tecla de atalho <code>Ctrl+K</code> e o badge do campo de busca agora abrem diretamente a ferramenta de Localizar e Substituir em Massa, permitindo atualizar telefones de plantão, links e termos em todos os scripts com agilidade.</li>
+                                <li><strong>⚙️ Configuração de Variáveis Movida para "Conta":</strong> A gestão de <em>Valores de Variáveis Padrão</em> foi incorporada à janela de Conta / Armazenamento Local, facilitando o acesso centralizado tanto para usuários logados quanto em modo offline.</li>
+                                <li><strong>📜 Histórico e Novidades via Clique na Versão:</strong> O badge <code>v2.7.0</code> no cabeçalho superior tornou-se interativo — basta clicar sobre ele para abrir instantaneamente esta janela de novidades.</li>
+                                <li><strong>📑 Localização Rápida de Abas Restaurada:</strong> O botão <em>📑 Localizar Aba ▾</em> na barra de ações abre instantaneamente o popover com busca e lista completa de abas para troca ágil de categoria.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versão 2.6.9 -->
+                        <div class="changelog-version-card" style="border-color: var(--border-color);">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>✨ Versão 2.6.9</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">27/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>🎯 Topo Descomprimido & Organização em 3 Níveis Claros:</strong> Fim definitivo da confusão visual do print. A interface organiza-se em 3 níveis harmoniosos: Cabeçalho Global (Nível 1), Barra de Ações Rápidas em chips esbeltos de 34px (Nível 2) e Abas de Categorias (Nível 3).</li>
+                                <li><strong>🔍 Unificação Completa de Localizar Aba & Scripts (Ctrl+K):</strong> O botão <em>📑 Localizar Aba</em> agora abre diretamente a Central de Comandos integrada. Com o campo vazio, exibe todas as abas disponíveis no topo com contagem de scripts para troca imediata; ao digitar, pesquisa instantaneamente tanto nomes de abas quanto o texto dos scripts dentro de cada aba, além de comandos do sistema.</li>
+                                <li><strong>🎨 Fundo Transparente sem Blur:</strong> Fundo dos modais (Chamado, Testes, Orçamento e Paleta de Comandos) ajustado para transparência nítida (<code>rgba(0,0,0,0.45)</code>) sem qualquer desfoque (blur), permitindo ler com total clareza os scripts e a interface por trás do modal enquanto preenche os formulários.</li>
+                                <li><strong>👤 Centralização de Armazenamento e Painel Admin em "Minha Conta":</strong> O acesso ao <em>Gerenciamento de Armazenamento & JSON</em> e o botão do <em>Painel Administrativo da Equipe</em> foram transferidos para dentro da janela de Conta, limpando botões administrativos soltos da barra superior.</li>
+                                <li><strong>🔒 Blindagem de Chaves do Firebase:</strong> A opção de configurar chaves do Firebase foi completamente removida da visão de usuários offline e não-administradores, ficando estritamente restrita a administradores autenticados com permissão <code>role-admin</code>.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versão 2.6.8 Oficial -->
+                        <div class="changelog-version-card" style="border-color: #007aff;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>✨ Versão 2.6.8</span>
+                                    <span class="changelog-badge" style="background:#007aff; color:#fff;">Versão Atual</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">17/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>✨ Primeira Linha Limpa & Reorganizada:</strong> Reformulação completa do cabeçalho superior para eliminar poluição visual, estabelecendo 3 zonas equilibradas (Marca à esquerda, Busca centralizada com atalho <code>Ctrl K</code> e Controles agrupados à direita).</li>
+                                <li><strong>🔍 Busca Centralizada com Badge:</strong> Campo de busca modernizado no padrão Safari/macOS com ícone SVG integrado e atalho em badge clicável para a Central de Comandos.</li>
+                                <li><strong>🎛️ Cápsulas Segmentadas Uniformes:</strong> Controles de operação (<em>Atendimento</em> e <em>Edição</em>) e visual (<em>Layout</em>, <em>Zoom</em> e <em>Temas</em>) unificados em altura padrão (34px) com bordas suaves e sem encaixes duplicados.</li>
+                                <li><strong>📦 Descompressão da Barra Superior:</strong> Botões de manutenção secundária (<em>Backup & Armazenamento</em> e <em>Userscripts</em>) organizados de forma limpa dentro do menu <strong>⋯ Mais ▾</strong>, liberando mais de 300px de espaço útil na tela.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versão 2.6.7 -->
                         <div class="changelog-version-card" style="border-color: #007aff;">
                             <div class="changelog-version-header">
                                 <div class="changelog-version-title">
                                     <span>🔌 Versão 2.6.7</span>
-                                    <span class="changelog-badge" style="background:#007aff; color:#fff;">Versão Atual</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
                                 </div>
                                 <span style="font-size:11px; opacity:0.75;">17/10/2026</span>
                             </div>
@@ -5464,9 +6103,8 @@
                 setAppData(restoredData);
                 loadAppData();
                 updateStorageIndicator();
-            updateUndoButton();
-            initAlarmConfigUI();
                 updateUndoButton();
+                initAlarmConfigUI();
                 alert(`Estado restaurado com sucesso para: ${snapshot.time} (${snapshot.label})`);
             } catch (e) {
                 alert('Erro ao desfazer alteração.');
@@ -5491,12 +6129,17 @@
                 alert('Nenhum cliente cadastrado para exportar.');
                 return;
             }
+            const sanitizeCsvCell = (val) => {
+                let s = String(val || '').replace(/"/g, '""');
+                if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;
+                return s;
+            };
             let csv = 'Cliente/Assunto;Contato/Detalhes;Horario Alarme;Recorrencia;Status\n';
             clients.forEach(c => {
                 const alarmStr = c.alarm ? new Date(c.alarm).toLocaleString() : 'Sem alarme';
                 const rec = { none: 'Unico', daily: 'Diario', weekly: 'Semanal', monthly: 'Mensal' }[c.recurrence || 'none'];
                 const status = c.status === 'done' ? 'Concluido' : 'Pendente';
-                csv += `"${(c.name||'').replace(/"/g, '""')}";"${(c.contact||'').replace(/"/g, '""')}";"${alarmStr}";"${rec}";"${status}"\n`;
+                csv += `"${sanitizeCsvCell(c.name)}";"${sanitizeCsvCell(c.contact)}";"${sanitizeCsvCell(alarmStr)}";"${sanitizeCsvCell(rec)}";"${sanitizeCsvCell(status)}"\n`;
             });
             const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
             const url = URL.createObjectURL(blob);
@@ -5579,7 +6222,7 @@
         /* ===== Gerador de Teste de Atendimento (Diagnóstico Técnico) ===== */
         function openTestFormModal() {
             const overlay = document.createElement('div');
-            overlay.className = 'var-modal-overlay';
+            overlay.className = 'var-modal-overlay liquid-glass-backdrop';
             overlay.setAttribute('data-transient', 'true');
 
             overlay.innerHTML = `
@@ -5826,7 +6469,7 @@
         /* ===== Gerador de Chamado Técnico com suporte a Painel Lateral de Teste ===== */
         function openTicketFormModal() {
             const overlay = document.createElement('div');
-            overlay.className = 'var-modal-overlay';
+            overlay.className = 'var-modal-overlay liquid-glass-backdrop';
             overlay.setAttribute('data-transient', 'true');
 
             // Estado persistente do Chamado
@@ -6911,12 +7554,15 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             // 2. Destaque de valores monetários
             escaped = escaped.replace(/(R\$\s*\d+(?:,\d{2})?)/g, '<span class="var-highlight" style="background:color-mix(in srgb,#22c55e 20%,transparent); color:#22c55e;">$1</span>');
 
-            // 3. Destaque de busca se houver query
+            // 3. Destaque de busca seguro (preserva tags HTML e entidades sem corromper atributos)
             if (searchQuery && searchQuery.trim() && !searchQuery.startsWith('tag:') && !searchQuery.startsWith('#')) {
                 const words = searchQuery.trim().split(/\s+/).map(w => w.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')).filter(Boolean);
                 if (words.length > 0) {
-                    const pattern = new RegExp('(' + words.join('|') + ')', 'gi');
-                    escaped = escaped.replace(pattern, '<mark class="search-highlight">$1</mark>');
+                    const safePattern = new RegExp('(<[^>]+>|&[a-zA-Z0-9#]+;)|(' + words.join('|') + ')', 'gi');
+                    escaped = escaped.replace(safePattern, (match, tagOrEntity, wordMatch) => {
+                        if (tagOrEntity) return tagOrEntity;
+                        return '<mark class="search-highlight">' + wordMatch + '</mark>';
+                    });
                 }
             }
 
@@ -6940,11 +7586,13 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         }
 
         function setColorFilter(color) {
-            activeColorFilter = color;
+            const allowed = ['', 'green', 'yellow', 'red', 'blue', 'purple'];
+            const safeColor = allowed.includes(color) ? color : '';
+            activeColorFilter = safeColor;
             const btn = document.getElementById('filterColorBtn');
             if (btn) {
-                btn.classList.toggle('fav-filter-active', !!color);
-                btn.innerHTML = color ? `🎨 Cor (${color})` : '🎨 Cores';
+                btn.classList.toggle('fav-filter-active', !!safeColor);
+                btn.textContent = safeColor ? `🎨 Cor (${safeColor}) ▾` : '🎨 Cores ▾';
             }
             document.querySelectorAll('.item-card').forEach(card => {
                 const cColor = card.dataset.cardColor || '';
@@ -6954,6 +7602,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             document.querySelectorAll('.column').forEach(col => {
                 col.classList.toggle('nomatch', !!activeColorFilter && !col.querySelector('.item-card:not(.nomatch-color)'));
             });
+            if (typeof updateSearchFilterStatusBar === 'function') updateSearchFilterStatusBar();
         }
 
         function toggleScratchpad() {
@@ -8095,11 +8744,15 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         }
 
         const LAYOUT_KEY = 'scripts_layout';
-        function setLayout(mode) {
-            document.documentElement.classList.toggle('layout-list', mode === 'list');
-            document.querySelectorAll('#layoutCtrl button').forEach(b => b.classList.toggle('on', b.dataset.mode === mode));
-            try { localStorage.setItem(LAYOUT_KEY, mode); markLocalChange(); } catch (e) {}
-            if (typeof syncToCloudDebounced === 'function') syncToCloudDebounced();
+        function setLayout(mode, skipSync = false) {
+            const safeMode = mode === 'list' ? 'list' : 'grid';
+            document.documentElement.classList.toggle('layout-list', safeMode === 'list');
+            document.querySelectorAll('#layoutCtrl button').forEach(b => b.classList.toggle('on', b.dataset.mode === safeMode));
+            try {
+                localStorage.setItem(LAYOUT_KEY, safeMode);
+                if (!skipSync) markLocalChange();
+            } catch (e) {}
+            if (!skipSync && typeof syncToCloudDebounced === 'function') syncToCloudDebounced();
         }
 
         const SCALE_KEY = 'scripts_card_scale';
@@ -8638,7 +9291,8 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                 const card = targetTa.closest('.item-card');
                 if (card) {
                     const pre = card.querySelector('.item-text');
-                    if (pre) pre.innerText = targetTa.value;
+                    const sq = document.getElementById('searchInput') ? document.getElementById('searchInput').value : '';
+                    if (pre) pre.innerHTML = renderFormattedItemText(targetTa.value, sq);
                 }
                 saveAppData();
             }
@@ -8759,13 +9413,15 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             const rBtn = document.getElementById('restoreBtn'); if (rBtn) rBtn.style.display = isEditing ? '' : 'none';
             const btn = document.getElementById('editToggleBtn');
 
-            if (isEditing) {
-                btn.innerText = "Modo Edição: Ativado";
-                btn.style.backgroundColor = "#c678dd";
-            } else {
-                saveAppData();
-                btn.innerText = "Modo Edição: Desativado";
-                btn.style.backgroundColor = "#d19a66";
+            if (btn) {
+                if (isEditing) {
+                    btn.innerText = "✏️ Edição: Ativado";
+                    btn.classList.add('active');
+                } else {
+                    saveAppData();
+                    btn.innerText = "✏️ Modo Edição";
+                    btn.classList.remove('active');
+                }
             }
 
             loadAppData();
@@ -8774,7 +9430,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             initAlarmConfigUI();
         }
 
-        function changeTheme(theme) {
+        function changeTheme(theme, skipSync = false) {
             const current = (theme === 'oled' || theme === 'light') ? theme : 'dark';
             document.documentElement.classList.remove('theme-dark', 'theme-oled', 'theme-light');
             document.documentElement.classList.add('theme-' + current);
@@ -8784,8 +9440,10 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             const tc = document.querySelector('meta[name="theme-color"]');
             if (tc) tc.content = current === 'oled' ? '#000000' : (current === 'light' ? '#f4f5f8' : '#1e1e1e');
             localStorage.setItem(THEME_KEY, current);
-            markLocalChange();
-            if (typeof syncToCloudDebounced === 'function') syncToCloudDebounced();
+            if (!skipSync) {
+                markLocalChange();
+                if (typeof syncToCloudDebounced === 'function') syncToCloudDebounced();
+            }
             syncCompanionTheme();
 
             // Atualiza botões segmentados de tema
@@ -8831,9 +9489,9 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             overlay.setAttribute('aria-labelledby', titleId);
 
             overlay.innerHTML = `
-                <div class="var-modal-box vm-box" style="width: ${width}; max-height: 90vh;">
+                <div class="var-modal-box vm-box" style="width: ${escapeHtml(String(width))}; max-height: 90vh;">
                     <div class="vm-head">
-                        <div class="vm-title" id="${titleId}">${title}</div>
+                        <div class="vm-title" id="${escapeHtml(titleId)}">${escapeHtml(String(title || ''))}</div>
                         <button class="vm-x" aria-label="Fechar janela modal">✕</button>
                     </div>
                     <div class="vm-body" style="padding: 18px 20px; gap: 14px; overflow-y: auto;">
@@ -8921,7 +9579,11 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         }
 
         function openGlobalFindReplaceModal() {
+            if (isEditing) saveAppData();
+            const existing = document.getElementById('globalFindReplaceModalOverlay');
+            if (existing) { existing.remove(); }
             const overlay = document.createElement('div');
+            overlay.id = 'globalFindReplaceModalOverlay';
             overlay.className = 'var-modal-overlay';
             overlay.setAttribute('data-transient', 'true');
 
@@ -9057,7 +9719,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                     if (!tab || !Array.isArray(tab.groups)) return;
                     tab.groups.forEach(g => {
                         if (!Array.isArray(g.items)) return;
-                        g.items.forEach(item => {
+                        g.items.forEach((item, idx) => {
                             let txt = typeof item === 'string' ? item : (item.text || '');
                             if (matchCase) {
                                 if (txt.includes(term)) {
@@ -9070,11 +9732,11 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                                 const m = txt.match(regex);
                                 if (m) {
                                     count += m.length;
-                                    txt = txt.replace(regex, replacement);
+                                    txt = txt.replace(regex, () => replacement);
                                 }
                             }
                             if (typeof item === 'string') {
-                                item = txt;
+                                g.items[idx] = txt;
                             } else {
                                 item.text = txt;
                             }
@@ -9167,7 +9829,17 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         function sanitizeFullBackup(parsed) {
             const allowedThemes = ['dark', 'oled', 'light'];
             const allowedLayouts = ['grid', 'list'];
-            const scripts = (parsed && typeof parsed.scripts === 'object') ? parsed.scripts : {};
+            const rawScripts = (parsed && typeof parsed.scripts === 'object' && !Array.isArray(parsed.scripts)) ? parsed.scripts : {};
+            const scripts = {};
+            const dangerousKeys = new Set(['__proto__', 'constructor', 'prototype']);
+            Object.keys(rawScripts).forEach(k => {
+                if (!dangerousKeys.has(k)) scripts[k] = rawScripts[k];
+            });
+            const rawDefaults = (parsed && typeof parsed.customDefaults === 'object' && !Array.isArray(parsed.customDefaults)) ? parsed.customDefaults : {};
+            const cleanDefaults = {};
+            Object.keys(rawDefaults).forEach(k => {
+                if (!dangerousKeys.has(k) && typeof rawDefaults[k] === 'string') cleanDefaults[k] = rawDefaults[k].slice(0, 500);
+            });
             const settings = (parsed && typeof parsed.settings === 'object') ? parsed.settings : {};
 
             return {
@@ -9176,11 +9848,9 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                 exportedAt: (parsed && parsed.exportedAt) || new Date().toISOString(),
                 scripts: scripts,
                 tabOrder: Array.isArray(parsed && parsed.tabOrder)
-                    ? parsed.tabOrder.filter(id => typeof id === 'string' && scripts[id]).slice(0, 60)
+                    ? parsed.tabOrder.filter(id => typeof id === 'string' && !dangerousKeys.has(id) && Object.prototype.hasOwnProperty.call(scripts, id)).slice(0, 60)
                     : Object.keys(scripts),
-                customDefaults: (parsed && typeof parsed.customDefaults === 'object' && !Array.isArray(parsed.customDefaults))
-                    ? parsed.customDefaults
-                    : {},
+                customDefaults: cleanDefaults,
                 clients: Array.isArray(parsed && parsed.clients)
                     ? parsed.clients.filter(c => c && typeof c === 'object').slice(0, 500)
                     : [],
@@ -9256,9 +9926,10 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                 return { valid: false, reason: `Arquivo excede o limite máximo permitido de ${MAX_TABS} abas.` };
             }
 
+            const dangerousKeys = new Set(['__proto__', 'constructor', 'prototype']);
             for (const tabId of tabKeys) {
-                if (typeof tabId !== 'string' || tabId.trim() === '') {
-                    return { valid: false, reason: 'ID de aba inválido ou vazio encontrado.' };
+                if (typeof tabId !== 'string' || tabId.trim() === '' || dangerousKeys.has(tabId)) {
+                    return { valid: false, reason: 'ID de aba inválido ou reservado encontrado.' };
                 }
                 const tab = scripts[tabId];
                 if (!tab || typeof tab !== 'object' || typeof tab.name !== 'string' || !Array.isArray(tab.groups)) {
@@ -9407,8 +10078,8 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 
                         if (clean.settings) {
                             const s = clean.settings;
-                            if (s.theme) { localStorage.setItem(THEME_KEY, s.theme); changeTheme(s.theme); }
-                            if (s.layout) { localStorage.setItem(LAYOUT_KEY, s.layout); setLayout(s.layout); }
+                            if (s.theme) { localStorage.setItem(THEME_KEY, s.theme); changeTheme(s.theme, true); }
+                            if (s.layout) { localStorage.setItem(LAYOUT_KEY, s.layout); setLayout(s.layout, true); }
                             if (s.scale) { localStorage.setItem(SCALE_KEY, s.scale); applyCardScale(parseFloat(s.scale) || 1); }
                             if (s.activeTabId) { currentActiveTabId = s.activeTabId; localStorage.setItem(ACTIVE_TAB_KEY, s.activeTabId); }
                             if (s.alarmConfig) localStorage.setItem(ALARM_CONFIG_KEY, JSON.stringify(s.alarmConfig));
@@ -9475,12 +10146,12 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 
             const editBtn = clone.querySelector('#editToggleBtn');
             if (editBtn) {
-                editBtn.textContent = 'Modo Edição: Desativado';
+                editBtn.textContent = '✏️ Modo Edição'; editBtn.classList.remove('active');
                 editBtn.removeAttribute('style');
             }
-            const compBtn = clone.querySelector('#companionBtn');
+            const compBtn = clone.querySelector('#companionHeaderBtn') || clone.querySelector('#companionBtn');
             if (compBtn) {
-                compBtn.textContent = '🪟 Dock de Scripts';
+                compBtn.textContent = '🪟 Dock';
                 compBtn.classList.remove('active');
             }
             const restoreBtn = clone.querySelector('#restoreBtn');
@@ -9583,6 +10254,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                 tc.querySelectorAll('.column').forEach(col => col.classList.toggle('nomatch', q !== '' && !col.querySelector('.item-card:not(.nomatch)')));
                 tc.classList.toggle('nomatch', q !== '' && hits === 0);
             });
+            if (typeof updateSearchFilterStatusBar === 'function') updateSearchFilterStatusBar();
         }
 
         function getStorageUsage() {
@@ -9738,13 +10410,13 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
            JANELA COMPANHEIRA — LÓGICA
            ============================================================ */
         function updateCompanionButton() {
-            const btn = document.getElementById('companionBtn');
+            const btn = document.getElementById('companionHeaderBtn') || document.getElementById('companionBtn');
             if (!btn) return;
             if (companion.surface) {
                 btn.textContent = '🪟 Fechar Dock';
                 btn.classList.add('active');
             } else {
-                btn.textContent = '🪟 Dock de Scripts';
+                btn.textContent = '🪟 Dock';
                 btn.classList.remove('active');
             }
         }
@@ -10114,9 +10786,32 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             favBtn.title = isFav ? 'Remover dos favoritos' : 'Favoritar';
             favBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                item.favorite = !item.favorite;
-                saveAppData();
-                loadAppData();
+                const targetCard = item.id
+                    ? document.querySelector(`.item-card[data-card-id="${safeCssEscape(item.id)}"]`)
+                    : null;
+                if (targetCard) {
+                    const mainFavBtn = targetCard.querySelector('.fav-btn');
+                    if (mainFavBtn) {
+                        toggleCardFavorite(mainFavBtn);
+                        renderCompanionList();
+                        return;
+                    }
+                }
+                const data = getAppData();
+                const tab = data[companion.tabId];
+                if (tab && Array.isArray(tab.groups)) {
+                    for (const g of tab.groups) {
+                        const found = (g.items || []).find(it => (item.id && it.id === item.id) || it.text === item.text);
+                        if (found) {
+                            found.favorite = !found.favorite;
+                            break;
+                        }
+                    }
+                    setAppData(data);
+                    markLocalChange();
+                    loadAppData();
+                    syncToCloudDebounced();
+                }
             });
 
             const copyBtn = doc.createElement('button');
@@ -10125,7 +10820,12 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             copyBtn.addEventListener('click', async () => {
                 let resolved = await resolveVariables(text, doc);
                 if (resolved === null) return;
+                resolved = cleanExcessiveNewlines(resolved);
                 copyTextToClipboard(resolved, doc).then(ok => {
+                    if (ok) {
+                        recordScriptUsage();
+                        addRecentCopy(resolved);
+                    }
                     copyBtn.textContent = ok ? '✅ Copiado!' : '❌ Falhou';
                     copyBtn.classList.toggle('ok', ok);
                     setTimeout(() => {
@@ -10249,7 +10949,18 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                     document.head.appendChild(style);
                     return style;
                 },
-                GM_openInTab(url) { return window.open(url, '_blank'); },
+                GM_openInTab(url) {
+                    try {
+                        const parsedUrl = new URL(String(url || ''), window.location.href);
+                        if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') {
+                            console.warn('[Userscript] Protocolo bloqueado em GM_openInTab:', parsedUrl.protocol);
+                            return null;
+                        }
+                        return window.open(parsedUrl.href, '_blank', 'noopener,noreferrer');
+                    } catch (e) {
+                        return null;
+                    }
+                },
                 GM_notification(text, title) {
                     if ('Notification' in window && Notification.permission === 'granted') {
                         try { return new Notification(title || 'Userscript', { body: text }); } catch (e) {}
@@ -10292,7 +11003,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 
         function runAllUserscripts(targetWindow = window) {
             // Executa apenas scripts explicitamente habilitados e confiáveis
-            const scripts = getUserscripts().filter(s => s.enabled === true && s.trusted !== false);
+            const scripts = getUserscripts().filter(s => s && s.enabled === true && s.trusted === true);
             return scripts.map(s => {
                 s.lastExecutedAt = new Date().toISOString();
                 return { script: s, result: runUserscript(s.source, targetWindow) };
@@ -10412,7 +11123,14 @@ console.log('Userscript carregado');`;
             }
 
             newBtn.onclick = () => {
-                scripts.push({ name:'Novo Userscript', enabled:true, source:editor.placeholder });
+                scripts.push({
+                    id: createStableId(),
+                    name: 'Novo Userscript',
+                    enabled: false,
+                    trusted: false,
+                    origin: 'manual',
+                    source: editor.placeholder
+                });
                 selectScript(scripts.length - 1);
             };
 
@@ -10421,15 +11139,33 @@ console.log('Userscript carregado');`;
                     status.textContent = 'Crie ou importe um userscript primeiro.';
                     return;
                 }
+                const prev = scripts[selected] || {};
+                const wantsEnable = enabled.querySelector('input').checked;
+                let isTrusted = prev.trusted === true;
+                if (wantsEnable && !isTrusted) {
+                    const approved = confirm(
+                        '⚠️ Aviso de Segurança:\n\nEste script poderá executar código JavaScript na Central de Scripts.\nVocê confia na integridade e origem deste código?'
+                    );
+                    if (!approved) {
+                        enabled.querySelector('input').checked = false;
+                        status.textContent = 'Ativação cancelada pelo usuário.';
+                        return;
+                    }
+                    isTrusted = true;
+                }
                 const meta = parseUserscriptMeta(editor.value);
                 scripts[selected] = {
-                    name: meta.name || 'Userscript',
-                    enabled: enabled.querySelector('input').checked,
-                    source: editor.value
+                    ...prev,
+                    id: prev.id || createStableId(),
+                    name: (Array.isArray(meta.name) ? meta.name[0] : meta.name) || prev.name || 'Userscript',
+                    enabled: wantsEnable && isTrusted,
+                    trusted: isTrusted,
+                    source: editor.value,
+                    updatedAt: new Date().toISOString()
                 };
                 setUserscripts(scripts);
                 renderList();
-                status.textContent = 'Userscript salvo.';
+                status.textContent = 'Userscript salvo com segurança.';
             };
 
             runBtn.onclick = () => {
@@ -10572,7 +11308,7 @@ console.log('Userscript carregado');`;
             overlay.innerHTML = `
                 <div class="update-box">
                     <div class="update-title">🔄 Nova versão disponível</div>
-                    <div class="update-version">Atual: ${APP_VERSION} &nbsp;→&nbsp; Nova: ${String(manifest.version || '')}</div>
+                    <div class="update-version">Atual: ${escapeHtml(APP_VERSION)} &nbsp;→&nbsp; Nova: ${escapeHtml(String(manifest.version || ''))}</div>
                     <div class="update-notes">${escapeHtml(notes)}</div>
                     <div class="update-actions">
                         <button class="update-secondary" data-update-later>Depois</button>
@@ -10584,7 +11320,17 @@ console.log('Userscript carregado');`;
             overlay.querySelector('[data-update-now]').onclick = () => {
                 const target = manifest.url || manifest.downloadURL;
                 if (!target) return;
-                window.location.href = target;
+                try {
+                    const parsedUrl = new URL(String(target), window.location.href);
+                    const isLocal = parsedUrl.hostname === 'localhost' || parsedUrl.hostname === '127.0.0.1';
+                    if (parsedUrl.protocol === 'https:' || (isLocal && parsedUrl.protocol === 'http:')) {
+                        window.location.href = parsedUrl.href;
+                    } else {
+                        alert('⚠️ URL de atualização bloqueada por segurança (requer HTTPS).');
+                    }
+                } catch (e) {
+                    alert('⚠️ URL de atualização inválida.');
+                }
             };
         }
 
@@ -10763,16 +11509,16 @@ Clique para abrir Minha Conta e Sincronização`;
                     adminBtn.style.display = isAdmin ? 'inline-flex' : 'none';
                 }
             } else {
-                btn.style.background = '#4285f4';
-                btn.style.color = '#fff';
-                btn.style.padding = '6px 14px';
-
-                const isCfg = isFirebaseConfigured();
-                btn.title = isCfg ? 'Entrar com Conta Google' : 'Configurar Firebase / Login Google';
+                btn.style.background = 'var(--tab-bg, #2a2a2a)';
+                btn.style.color = 'var(--text-color, #e5e7eb)';
+                btn.style.border = '1px solid var(--border-color, #4b5563)';
+                btn.style.padding = '5px 12px';
+                btn.title = 'Minha Conta, Modo Offline & Configurações (Clique para abrir)';
 
                 btn.innerHTML = `
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/></svg>
-                    <span id="firebaseAuthBtnText">${isCfg ? 'Entrar' : 'Firebase'}</span>
+                    <span style="font-size:14px; margin-right:4px;">👤</span>
+                    <span id="firebaseAuthBtnText" style="font-size:12px; font-weight:600;">Conta / Offline</span>
+                    <span style="font-size:9px; opacity:0.7; margin-left:3px;">⚙️</span>
                 `;
 
                 if (adminBtn) adminBtn.style.display = 'none';
@@ -10871,15 +11617,17 @@ Clique para abrir Minha Conta e Sincronização`;
 
         async function loginWithGoogle() {
             if (!isFirebaseConfigured()) {
-                openFirebaseConfigModal();
+                alert('A sincronização em nuvem não está configurada neste ambiente. Solicite ao administrador da equipe a ativação das credenciais do Firebase.');
                 return;
             }
             if (!firebaseAuth) {
                 initFirebaseApp();
             }
             if (!firebaseAuth) {
-                alert('Firebase não inicializado. Verifique a configuração de credenciais.');
-                openFirebaseConfigModal();
+                alert('Não foi possível inicializar a autenticação na Nuvem. Verifique com o administrador da equipe.');
+                if (typeof isCurrentUserAdmin === 'function' && isCurrentUserAdmin()) {
+                    openFirebaseConfigModal();
+                }
                 return;
             }
             try {
@@ -10912,15 +11660,9 @@ Clique para abrir Minha Conta e Sincronização`;
         }
 
         function handleAuthButtonClick() {
-            if (!isFirebaseConfigured()) {
-                openFirebaseConfigModal();
-                return;
-            }
-            if (!currentUser) {
-                loginWithGoogle();
-            } else {
-                openUserAccountModal();
-            }
+            // Permite sempre que qualquer usuário (offline, visitante ou conectado)
+            // acesse as configurações locais, backup e opções de conta livremente.
+            openUserAccountModal();
         }
 
         /* Sincronização em Nuvem (Firestore) com Preservação de Ordem e Configurações */
@@ -11040,11 +11782,11 @@ Clique para abrir Minha Conta e Sincronização`;
                 const s = cloudData.settings;
                 if (s.theme) {
                     localStorage.setItem(THEME_KEY, s.theme);
-                    changeTheme(s.theme);
+                    changeTheme(s.theme, true);
                 }
                 if (s.layout) {
                     localStorage.setItem(LAYOUT_KEY, s.layout);
-                    setLayout(s.layout);
+                    setLayout(s.layout, true);
                 }
                 if (s.scale) {
                     localStorage.setItem(SCALE_KEY, s.scale);
@@ -11361,20 +12103,25 @@ Clique para abrir Minha Conta e Sincronização`;
                         ${cloudNoticeHtml}
 
                         <!-- Resumo Integrado de Armazenamento Local -->
-                        <div style="background:var(--tab-bg); border:1px solid var(--border-color); border-radius:10px; padding:10px 14px; display:flex; justify-content:space-between; align-items:center; gap:10px;">
+                        <div style="background:var(--tab-bg); border:1px solid var(--border-color); border-radius:10px; padding:12px 14px; display:flex; justify-content:space-between; align-items:center; gap:10px;">
                             <div>
                                 <div style="font-size:11px; font-weight:700; opacity:0.75; text-transform:uppercase;">💾 Armazenamento do Navegador</div>
                                 <div style="font-size:13px; font-weight:700; color:var(--title-color); margin-top:2px;">
                                     ${kb} KB utilizados de ~5 MB (${pct}%)
                                 </div>
                             </div>
-                            <button type="button" class="io-btn" style="font-size:11.5px; padding:5px 10px;" onclick="this.closest('.var-modal-overlay').remove(); openStorageInfoModal();">
-                                📊 Gerenciar e JSON
+                            <button type="button" class="io-btn" style="font-size:12px; padding:6px 12px; font-weight:600; background:var(--sidebar-bg); border:1px solid var(--border-color);" onclick="this.closest('.var-modal-overlay').remove(); openStorageInfoModal();">
+                                📊 Gerenciar Armazenamento & JSON
                             </button>
                         </div>
 
                         <!-- Seção de Ações de Nuvem, Backup e Salvamento -->
                         <div style="display:flex; flex-direction:column; gap:8px;">
+                            <!-- Valores de Variáveis Padrão -->
+                            <button type="button" class="io-btn" style="background:#059669; color:#fff; justify-content:center; padding:10px; font-weight:600; font-size:13px; gap:8px;" onclick="this.closest('.var-modal-overlay').remove(); openVarManagerModal();">
+                                ⚙️ Configurar Valores de Variáveis
+                            </button>
+
                             <!-- Botão Salvar HTML sempre acessível para todos -->
                             <button type="button" class="io-btn" style="background:#0ea5e9; color:#fff; justify-content:center; padding:10px; font-weight:600; font-size:13px; gap:8px;" onclick="this.closest('.var-modal-overlay').remove(); saveHtmlFile();">
                                 💾 Baixar Cópia Autônoma do Sistema em HTML
@@ -11395,15 +12142,19 @@ Clique para abrir Minha Conta e Sincronização`;
                             </button>
 
                             ${isAdmin ? `
-                            <button type="button" class="io-btn" style="background:#2563eb; color:#fff; justify-content:center; padding:10px; font-weight:700; gap:8px;" onclick="pushCurrentScriptsAsTeamDefault();">
-                                📤 Definir meus Scripts como Padrão para Todos (Equipe)
-                            </button>
-                            <button type="button" class="io-btn" style="background:#7c3aed; color:#fff; justify-content:center; padding:9px; font-weight:600;" onclick="this.closest('.var-modal-overlay').remove(); openAdminPanelModal();">
-                                🛡️ Abrir Painel de Administração
-                            </button>
-                            <button type="button" class="io-btn" style="background:#4b5563; color:#fff; justify-content:center; padding:9px;" onclick="this.closest('.var-modal-overlay').remove(); openFirebaseConfigModal();">
-                                ⚙️ Ver / Alterar Chaves do Firebase
-                            </button>
+                            <!-- Seção Administrativa da Equipe (Exclusivo Administrador) -->
+                            <div style="background:rgba(124, 58, 237, 0.08); border:1px solid rgba(124, 58, 237, 0.35); border-radius:10px; padding:12px; display:flex; flex-direction:column; gap:8px; margin-top:4px;">
+                                <div style="font-size:11px; font-weight:700; color:#a78bfa; text-transform:uppercase; letter-spacing:0.5px;">🛡️ Painel Administrativo da Equipe</div>
+                                <button type="button" class="io-btn" style="background:#7c3aed; color:#fff; justify-content:center; padding:10px; font-weight:600; font-size:13px; gap:8px;" onclick="this.closest('.var-modal-overlay').remove(); openAdminPanelModal();">
+                                    🛡️ Abrir Painel de Administração da Equipe
+                                </button>
+                                <button type="button" class="io-btn" style="background:#2563eb; color:#fff; justify-content:center; padding:9px; font-weight:600; font-size:12.5px; gap:8px;" onclick="pushCurrentScriptsAsTeamDefault();">
+                                    📤 Definir Meus Scripts como Padrão da Equipe
+                                </button>
+                                <button type="button" class="io-btn" style="background:#4b5563; color:#fff; justify-content:center; padding:9px; font-weight:600; font-size:12px; gap:8px;" onclick="this.closest('.var-modal-overlay').remove(); openFirebaseConfigModal();">
+                                    ⚙️ Ver / Alterar Chaves do Firebase
+                                </button>
+                            </div>
                             ` : ''}
 
                             <button type="button" class="var-modal-btn" style="background:#d9363e; color:#fff; padding:10px; font-weight:600; margin-top:4px;" onclick="this.closest('.var-modal-overlay').remove(); logoutUser();">
@@ -11412,9 +12163,6 @@ Clique para abrir Minha Conta e Sincronização`;
                             ` : `
                             <button type="button" class="io-btn" style="background:#4285f4; color:#fff; justify-content:center; padding:10px; font-weight:600; font-size:13px; gap:8px;" onclick="this.closest('.var-modal-overlay').remove(); loginWithGoogle();">
                                 🔑 Entrar com Conta Google (Sincronizar Nuvem)
-                            </button>
-                            <button type="button" class="io-btn" style="background:#4b5563; color:#fff; justify-content:center; padding:9px; font-size:12px;" onclick="this.closest('.var-modal-overlay').remove(); openFirebaseConfigModal();">
-                                ⚙️ Configurar Chaves do Firebase
                             </button>
                             `}
                         </div>
@@ -11723,8 +12471,8 @@ Clique para abrir Minha Conta e Sincronização`;
 
         /* Modal de Configuração do Firebase (Acesso Restrito a Administradores) */
         function openFirebaseConfigModal() {
-            if (currentUser && !isCurrentUserAdmin()) {
-                alert('Acesso restrito: somente administradores podem visualizar ou alterar as chaves do Firebase.');
+            if (!currentUser || !isCurrentUserAdmin()) {
+                alert('Acesso restrito: somente administradores autenticados podem visualizar ou gerenciar as credenciais do Firebase.');
                 return;
             }
             const overlay = document.createElement('div');
@@ -12120,9 +12868,13 @@ service cloud.firestore {
                     const lastLoginStr = u.lastLogin ? new Date(u.lastLogin).toLocaleString() : 'Nunca';
 
                     const safePhoto = safeImageUrl(u.photoURL);
+                    const initialChar = escapeHtml(((u.displayName || u.email || 'U')[0] || 'U').toUpperCase());
                     const avatarHtml = safePhoto
                         ? `<img src="${safePhoto}" alt="" style="width:24px; height:24px; border-radius:50%; object-fit:cover;" referrerpolicy="no-referrer">`
-                        : `<span style="width:24px; height:24px; border-radius:50%; background:#7c3aed; color:#fff; display:inline-flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;">${(u.displayName || u.email || 'U')[0].toUpperCase()}</span>`;
+                        : `<span style="width:24px; height:24px; border-radius:50%; background:#7c3aed; color:#fff; display:inline-flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;">${initialChar}</span>`;
+                    const safeUidAttr = escapeHtml(String(u.id || '').replace(/['"\\]/g, ''));
+                    const safeRoleAttr = u.role === 'admin' ? 'admin' : 'user';
+                    const safeStatusAttr = u.status === 'blocked' ? 'blocked' : 'active';
 
                     tr.innerHTML = `
                         <td>
@@ -12132,8 +12884,8 @@ service cloud.firestore {
                             </div>
                         </td>
                         <td>${escapeHtml(u.email || '')}</td>
-                        <td><small style="opacity:0.8;">${lastLoginStr}</small></td>
-                        <td><strong>${u.scriptCopies || 0}</strong> cópias</td>
+                        <td><small style="opacity:0.8;">${escapeHtml(lastLoginStr)}</small></td>
+                        <td><strong>${parseInt(u.scriptCopies) || 0}</strong> cópias</td>
                         <td>
                             <span class="admin-badge ${isAdmin ? 'role-admin' : 'role-user'}">${isAdmin ? '🛡️ Admin' : '👤 Usuário'}</span>
                         </td>
@@ -12143,10 +12895,10 @@ service cloud.firestore {
                         <td style="text-align:right;">
                             ${isSuperAdmin ? `<span style="font-size:11px; opacity:0.6; font-style:italic;">Admin Primário</span>` : `
                                 <div style="display:inline-flex; gap:6px;">
-                                    <button class="comp-btn comp-btn-secondary" style="font-size:10.5px; padding:3px 7px;" onclick="window.toggleUserRole('${u.id}', '${u.role || 'user'}')">
+                                    <button class="comp-btn comp-btn-secondary" style="font-size:10.5px; padding:3px 7px;" onclick="window.toggleUserRole('${safeUidAttr}', '${safeRoleAttr}')">
                                         ${isAdmin ? 'Tornar Usuário' : 'Promover Admin'}
                                     </button>
-                                    <button class="comp-btn comp-btn-secondary" style="font-size:10.5px; padding:3px 7px; color:${isBlocked ? '#16a34a' : '#dc2626'};" onclick="window.toggleUserStatus('${u.id}', '${u.status || 'active'}')">
+                                    <button class="comp-btn comp-btn-secondary" style="font-size:10.5px; padding:3px 7px; color:${isBlocked ? '#16a34a' : '#dc2626'};" onclick="window.toggleUserStatus('${safeUidAttr}', '${safeStatusAttr}')">
                                         ${isBlocked ? 'Desbloquear' : 'Bloquear'}
                                     </button>
                                 </div>
@@ -12387,163 +13139,7 @@ service cloud.firestore {
         let cmdPaletteEl = null;
 
         function openCommandPalette() {
-            closeAllHeaderDropdowns();
-            const existing = document.getElementById('commandPaletteOverlay');
-            if (existing) { existing.remove(); return; }
-
-            const overlay = document.createElement('div');
-            overlay.className = 'cmd-palette-overlay';
-            overlay.id = 'commandPaletteOverlay';
-            overlay.setAttribute('data-transient', 'true');
-
-            overlay.innerHTML = `
-                <div class="cmd-palette-box" onclick="event.stopPropagation()">
-                    <div class="cmd-palette-input-wrap">
-                        <span style="font-size:18px; opacity:0.7;">⚡</span>
-                        <input type="text" class="cmd-palette-input" id="cmdPaletteSearchInput" placeholder="O que deseja fazer? Digite um comando ou pesquise um script..." autocomplete="off">
-                        <span style="font-size:11px; opacity:0.5; padding:2px 6px; border:1px solid var(--border-color); border-radius:4px;">ESC para fechar</span>
-                    </div>
-                    <div class="cmd-palette-results" id="cmdPaletteResultsList"></div>
-                    <div class="cmd-palette-footer">
-                        <span>Navegue com <strong>↑</strong> <strong>↓</strong> e pressione <strong>Enter</strong></span>
-                        <span>Central de Comandos 3D</span>
-                    </div>
-                </div>
-            `;
-
-            overlay.onclick = () => overlay.remove();
-            document.body.appendChild(overlay);
-
-            const input = overlay.querySelector('#cmdPaletteSearchInput');
-            input.focus();
-
-            let selectedIndex = 0;
-            let currentActions = [];
-
-            function getAvailableCommands() {
-                const base = [
-                    { icon: '🔌', title: 'Orçamento de Equipamentos & Cabos (Tabela de Valores)', hint: 'Planilha', action: () => openEquipBudgetModal() },
-                    { icon: '📝', title: 'Abrir Chamado Técnico (OS)', hint: 'Atalho', action: () => openTicketFormModal() },
-                    { icon: '🧪', title: 'Abrir Teste de Atendimento (Diagnóstico)', hint: 'Atalho', action: () => openTestFormModal() },
-                    { icon: '🎧', title: isModoAtendimento ? 'Desativar Modo Atendimento' : 'Ativar Modo Atendimento (Foco Limpo)', hint: 'Interface', action: () => toggleModoAtendimento() },
-                    { icon: '⭐', title: 'Filtrar Cards Favoritos', hint: 'Filtro', action: () => { const btn = document.getElementById('filterFavsBtn'); if(btn) toggleFavoriteFilter(btn); } },
-                    { icon: '🔔', title: 'Abrir Clientes & Alarmes', hint: 'Aba', action: () => switchTab('tab_clients_alarm') },
-                    { icon: '🕒', title: 'Abrir Scripts Recentes', hint: 'Histórico', action: () => { const btn = document.getElementById('recentsBtn'); if(btn) toggleRecentsMenu(btn); } },
-                    { icon: '📝', title: 'Abrir Bloco de Rascunho', hint: 'Scratchpad', action: () => toggleScratchpad() },
-                    { icon: '🔍', title: 'Localizar e Substituir em Massa', hint: 'Ferramenta', action: () => openGlobalFindReplaceModal() },
-                    { icon: '⚙️', title: 'Gerenciar Valores de Variáveis', hint: 'Configuração', action: () => openVarManagerModal() },
-                    { icon: '🪟', title: 'Abrir Dock de Scripts (Flutuante)', hint: 'Alt+Shift+P', action: () => toggleCompanion() },
-                    { icon: '🎨', title: 'Alternar Tema: Modo Cinza', hint: 'Tema', action: () => changeTheme('dark') },
-                    { icon: '🌑', title: 'Alternar Tema: Modo Escuro OLED', hint: 'Tema', action: () => changeTheme('oled') },
-                    { icon: '☀️', title: 'Alternar Tema: Modo Claro', hint: 'Tema', action: () => changeTheme('light') },
-                    { icon: '↩️', title: 'Desfazer Última Alteração (Undo)', hint: 'Ctrl+Z', action: () => undoLastAction() },
-                    { icon: '💾', title: 'Exportar Backup Completo (JSON)', hint: 'Backup', action: () => exportFullBackup() },
-                    { icon: '💾', title: 'Salvar Cópia Autônoma em HTML', hint: 'Download', action: () => saveHtmlFile() },
-                    { icon: '📜', title: 'Ver Histórico de Novidades (Changelog)', hint: 'Ajuda', action: () => openChangelogModal() }
-                ];
-
-                // Adiciona scripts correspondentes à busca
-                const q = input.value.trim().toLowerCase();
-                if (q.length >= 2) {
-                    const data = getAppData();
-                    const scriptMatches = [];
-                    Object.keys(data).forEach(tId => {
-                        const tab = data[tId];
-                        if (tab && Array.isArray(tab.groups)) {
-                            tab.groups.forEach(g => {
-                                if (Array.isArray(g.items)) {
-                                    g.items.forEach(it => {
-                                        const txt = typeof it === 'string' ? it : (it.text || '');
-                                        const cleanTxt = txt.replace(/\n+/g, ' ').trim();
-                                        if (cleanTxt.toLowerCase().includes(q)) {
-                                            scriptMatches.push({
-                                                icon: '📋',
-                                                title: `Copiar: "${cleanTxt.slice(0, 65)}..."`,
-                                                hint: tab.name,
-                                                action: async () => {
-                                                    let resolved = await resolveVariables(txt);
-                                                    if (resolved) copyTextToClipboard(resolved);
-                                                    if (typeof showToast === 'function') showToast('📋 Script copiado via Central de Comandos!', 'success');
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    });
-                    return [...scriptMatches.slice(0, 8), ...base.filter(b => b.title.toLowerCase().includes(q))];
-                }
-
-                if (q) {
-                    return base.filter(b => b.title.toLowerCase().includes(q) || b.hint.toLowerCase().includes(q));
-                }
-                return base;
-            }
-
-            function renderResults() {
-                currentActions = getAvailableCommands();
-                const listEl = overlay.querySelector('#cmdPaletteResultsList');
-                listEl.innerHTML = '';
-
-                if (currentActions.length === 0) {
-                    listEl.innerHTML = '<div style="padding:24px; text-align:center; opacity:0.6; font-size:13px;">Nenhum comando ou script correspondente.</div>';
-                    return;
-                }
-
-                if (selectedIndex >= currentActions.length) selectedIndex = 0;
-
-                currentActions.forEach((item, idx) => {
-                    const row = document.createElement('div');
-                    row.className = 'cmd-palette-item' + (idx === selectedIndex ? ' selected' : '');
-                    row.innerHTML = `
-                        <div style="display:flex; align-items:center; min-width:0; flex:1;">
-                            <span class="cmd-palette-item-icon">${item.icon}</span>
-                            <span class="cmd-palette-item-text">${escapeHtml(item.title)}</span>
-                        </div>
-                        <span class="cmd-palette-item-hint">${escapeHtml(item.hint)}</span>
-                    `;
-                    row.onclick = () => {
-                        overlay.remove();
-                        item.action();
-                    };
-                    listEl.appendChild(row);
-                });
-
-                const selEl = listEl.children[selectedIndex];
-                if (selEl) selEl.scrollIntoView({ block: 'nearest' });
-            }
-
-            input.oninput = () => {
-                selectedIndex = 0;
-                renderResults();
-            };
-
-            input.onkeydown = (e) => {
-                if (e.key === 'ArrowDown') {
-                    e.preventDefault();
-                    if (currentActions.length > 0) {
-                        selectedIndex = (selectedIndex + 1) % currentActions.length;
-                        renderResults();
-                    }
-                } else if (e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    if (currentActions.length > 0) {
-                        selectedIndex = (selectedIndex - 1 + currentActions.length) % currentActions.length;
-                        renderResults();
-                    }
-                } else if (e.key === 'Enter') {
-                    e.preventDefault();
-                    if (currentActions[selectedIndex]) {
-                        overlay.remove();
-                        currentActions[selectedIndex].action();
-                    }
-                } else if (e.key === 'Escape') {
-                    overlay.remove();
-                }
-            };
-
-            renderResults();
+            openGlobalFindReplaceModal();
         }
 
         /* ============================================================
@@ -12631,15 +13227,16 @@ service cloud.firestore {
                 return;
             }
 
+            const safeCardIdAttr = escapeHtml(String(cardId || '').replace(/['"\\]/g, ''));
             let historyRowsHtml = '';
             history.forEach((h, idx) => {
-                const dateStr = new Date(h.updatedAt).toLocaleString();
+                const dateStr = escapeHtml(new Date(h.updatedAt).toLocaleString());
                 const snippet = escapeHtml(h.text.slice(0, 140)) + (h.text.length > 140 ? '...' : '');
                 historyRowsHtml += `
                     <div style="background:var(--tab-bg); border:1px solid var(--border-color); border-radius:10px; padding:10px 14px; display:flex; flex-direction:column; gap:6px;">
                         <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; opacity:0.8;">
                             <span>🕒 <strong>Versão #${history.length - idx}</strong> — ${dateStr}</span>
-                            <button type="button" class="var-modal-btn var-modal-btn-confirm" style="font-size:11px; padding:3px 10px;" onclick="restoreCardHistoryVersion('${cardId}', ${idx})">
+                            <button type="button" class="var-modal-btn var-modal-btn-confirm" style="font-size:11px; padding:3px 10px;" onclick="restoreCardHistoryVersion('${safeCardIdAttr}', ${Number(idx) || 0})">
                                 Restaurar Esta
                             </button>
                         </div>
@@ -12721,7 +13318,7 @@ service cloud.firestore {
                 chipsHtml += `<span class="search-active-chip">⭐ Apenas Favoritos</span>`;
             }
             if (color) {
-                chipsHtml += `<span class="search-active-chip">🎨 Cor: ${color}</span>`;
+                chipsHtml += `<span class="search-active-chip">🎨 Cor: ${escapeHtml(color)}</span>`;
             }
 
             container.innerHTML = chipsHtml;
@@ -13074,6 +13671,8 @@ service cloud.firestore {
         }
         window.openEquipBudgetModal = openEquipBudgetModal;
 
+        
+        
         function initMainApp() {
             if (window.__appInitialized) return;
             window.__appInitialized = true;
@@ -13084,15 +13683,15 @@ service cloud.firestore {
                 updateUndoButton();
                 const themeSel = document.getElementById('themeSelect');
                 if (themeSel) themeSel.value = savedTheme;
-                changeTheme(savedTheme);
+                changeTheme(savedTheme, true);
                 migrateV2();
                 initModoAtendimentoUI();
-                handleUrlDirectParams();
                 ensureVarSeed();
                 renderCommandBar();
                 loadAppData();
+                handleUrlDirectParams();
                 applyCardScale(parseFloat(localStorage.getItem(SCALE_KEY)) || 1);
-                setLayout(localStorage.getItem(LAYOUT_KEY) || 'grid');
+                setLayout(localStorage.getItem(LAYOUT_KEY) || 'grid', true);
                 updateCompanionButton();
                 initAlarmConfigUI();
                 requestNotificationPermission();
@@ -13116,7 +13715,14 @@ service cloud.firestore {
                 document.addEventListener('keydown', (e) => {
                     if ((e.ctrlKey || e.metaKey) && (e.key === 'K' || e.key === 'k')) {
                         e.preventDefault();
-                        openCommandPalette();
+                        openGlobalFindReplaceModal();
+                    }
+                    if ((e.ctrlKey || e.metaKey) && !e.shiftKey && (e.key === 'Z' || e.key === 'z')) {
+                        const tag = document.activeElement ? document.activeElement.tagName : '';
+                        if (tag !== 'INPUT' && tag !== 'TEXTAREA' && !document.activeElement?.isContentEditable) {
+                            e.preventDefault();
+                            undoLastChange();
+                        }
                     }
                     if (e.altKey && e.shiftKey && (e.key === 'P' || e.key === 'p')) {
                         e.preventDefault();
@@ -13126,7 +13732,9 @@ service cloud.firestore {
                 window.addEventListener('storage', (e) => {
                     if (e.key === STORAGE_KEY) scheduleCompanionRefresh();
                 });
-                window.addEventListener('beforeunload', saveAppData);
+                window.addEventListener('beforeunload', () => {
+                    if (isEditing) saveAppData();
+                });
             } catch (err) {
                 console.error('Erro na inicialização da Central de Scripts:', err);
             }
