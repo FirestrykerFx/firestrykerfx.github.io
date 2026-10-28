@@ -63,11 +63,11 @@
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Consolas', 'Courier New', monospace;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", system-ui, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             height: 100vh;
             height: 100dvh;
             overflow: hidden;
@@ -1537,8 +1537,9 @@
             display: none;
             flex-direction: column;
             gap: 12px;
-            min-width: 280px;
-            max-width: 400px;
+            min-width: 260px;
+            max-width: min(400px, calc(100vw - 24px));
+            box-sizing: border-box !important;
             opacity: 1 !important;
             animation: fadeUp 0.15s ease;
         }
@@ -3366,6 +3367,452 @@
             box-shadow: 0 2px 8px rgba(0, 122, 255, 0.38) !important;
         }
 
+    
+        /* ============================================================
+        /* ============================================================
+           APPLE HIG EXPANDED SIDEBAR (MACOS / IPADOS HIG)
+           ============================================================ */
+        .apple-sidebar {
+            width: 210px;
+            height: 100vh;
+            height: 100dvh;
+            background: color-mix(in srgb, var(--sidebar-bg) 92%, transparent);
+            backdrop-filter: blur(28px) saturate(190%);
+            -webkit-backdrop-filter: blur(28px) saturate(190%);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 10px 8px 12px 8px;
+            box-sizing: border-box;
+            flex-shrink: 0;
+            z-index: 10000;
+            position: relative;
+            user-select: none;
+            box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
+            overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-width: thin;
+        }
+
+        html.theme-oled .apple-sidebar {
+            background: #000000;
+            border-right-color: #1c1c1e;
+            box-shadow: 1px 0 0 #1c1c1e;
+        }
+
+        html.theme-light .apple-sidebar {
+            background: rgba(246, 247, 249, 0.94);
+            border-right-color: rgba(0, 0, 0, 0.1);
+            box-shadow: 2px 0 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .sidebar-group {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 3px;
+            width: 100%;
+        }
+
+        .sidebar-brand-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 8px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.15s ease, transform 0.15s ease;
+            margin-bottom: 4px;
+            border: 1px solid transparent;
+        }
+        .sidebar-brand-card:hover {
+            background: color-mix(in srgb, var(--accent-color) 12%, rgba(255, 255, 255, 0.05));
+            border-color: color-mix(in srgb, var(--accent-color) 25%, transparent);
+        }
+        .sidebar-brand-card:active {
+            transform: scale(0.98);
+        }
+
+        .sidebar-brand-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            min-width: 0;
+            flex: 1;
+            text-align: left;
+        }
+
+        .sidebar-brand-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--title-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+        }
+
+        .sidebar-brand-badge {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--accent-color);
+            letter-spacing: 0.02em;
+            line-height: 1.2;
+        }
+
+        .sidebar-section-header {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted, #8e8e93);
+            padding: 8px 10px 4px 10px;
+            width: 100%;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        .sidebar-divider {
+            width: calc(100% - 16px);
+            height: 1px;
+            background: var(--border-color);
+            margin: 6px 8px;
+            opacity: 0.55;
+        }
+
+        /* Botão / Linha de Item na Barra Lateral */
+        .sidebar-item-btn,
+        .sidebar-icon-btn {
+            width: 100%;
+            height: 35px;
+            border-radius: 8px;
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 10px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.15s cubic-bezier(0.25, 1, 0.5, 1);
+            box-sizing: border-box;
+            text-align: left;
+            font-family: inherit;
+            line-height: 1;
+        }
+
+        .sidebar-item-btn:hover,
+        .sidebar-icon-btn:hover {
+            background: color-mix(in srgb, var(--accent-color) 14%, rgba(255, 255, 255, 0.06));
+            border-color: color-mix(in srgb, var(--accent-color) 22%, transparent);
+        }
+
+        html.theme-light .sidebar-item-btn:hover,
+        html.theme-light .sidebar-icon-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 0, 0, 0.08);
+        }
+
+        .sidebar-item-btn:active,
+        .sidebar-icon-btn:active {
+            transform: scale(0.98);
+        }
+
+        .sidebar-item-btn.active,
+        .sidebar-icon-btn.active {
+            background: #007aff !important;
+            border-color: #007aff !important;
+            color: #ffffff !important;
+            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.35) !important;
+        }
+
+        .sidebar-item-btn.active .sidebar-item-label,
+        .sidebar-icon-btn.active .sidebar-item-label {
+            color: #ffffff !important;
+            font-weight: 600;
+        }
+
+        .sidebar-item-icon {
+            font-size: 15px;
+            width: 20px;
+            height: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+
+        .sidebar-item-label {
+            flex: 1;
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--text-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            letter-spacing: -0.01em;
+            text-align: left;
+        }
+
+        /* Card do Usuário / Conta no Rodapé */
+        .sidebar-user-card,
+        .sidebar-user-avatar-wrap {
+            width: 100%;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 4px 8px;
+            border-radius: 9px;
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: background 0.15s ease, border-color 0.15s ease;
+            border: 1px solid transparent;
+            text-align: left;
+        }
+
+        .sidebar-user-card:hover,
+        .sidebar-user-avatar-wrap:hover {
+            background: color-mix(in srgb, var(--accent-color) 12%, rgba(255, 255, 255, 0.06));
+            border-color: color-mix(in srgb, var(--accent-color) 22%, transparent);
+        }
+
+        html.theme-light .sidebar-user-card:hover,
+        html.theme-light .sidebar-user-avatar-wrap:hover {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 0, 0, 0.08);
+        }
+
+        .sidebar-user-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            min-width: 0;
+            flex: 1;
+            text-align: left;
+        }
+
+        .sidebar-user-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--title-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.2;
+        }
+
+        .sidebar-user-sub {
+            font-size: 10.5px;
+            color: var(--text-muted, #8e8e93);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.2;
+        }
+
+        .sidebar-avatar-img {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1.5px solid var(--accent-color);
+            display: block;
+            flex-shrink: 0;
+        }
+
+        .sidebar-avatar-initial {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #007aff;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            .apple-sidebar {
+                width: 60px;
+                padding: 8px 4px;
+            }
+            .sidebar-brand-info,
+            .sidebar-item-label,
+            .sidebar-user-info,
+            .sidebar-section-header {
+                display: none !important;
+            }
+            .sidebar-item-btn,
+            .sidebar-icon-btn,
+            .sidebar-user-card,
+            .sidebar-user-avatar-wrap {
+                justify-content: center;
+                padding: 0;
+            }
+            .sidebar-brand-card {
+                justify-content: center;
+                padding: 4px 0;
+            }
+        }
+
+        /* Área principal da aplicação à direita do menu lateral */
+        .app-main-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            position: relative;
+        }
+
+    
+        /* ===== Ajuste de Alinhamento da Busca no Cabeçalho sem Marca Duplicada ===== */
+        .header-search-wrap {
+            margin-left: 0 !important;
+            margin-right: auto !important;
+        }
+
+        /* ===== Áreas de Trabalho Estilo Trello na Barra Lateral ===== */
+        .sidebar-ws-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-right: 4px;
+        }
+        .sidebar-add-ws-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-muted, #8e8e93);
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            padding: 0;
+            font-size: 14px;
+            line-height: 1;
+        }
+        .sidebar-add-ws-btn:hover {
+            background: color-mix(in srgb, var(--accent-color) 20%, rgba(255, 255, 255, 0.1));
+            color: var(--accent-color, #007aff);
+            border-color: color-mix(in srgb, var(--accent-color) 30%, transparent);
+            transform: scale(1.08);
+        }
+        .sidebar-workspaces-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            max-height: 200px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            margin-bottom: 4px;
+            padding: 0 2px;
+        }
+        .sidebar-ws-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            height: 32px;
+            padding: 0 8px;
+            border-radius: 7px;
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-color);
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: all 0.15s cubic-bezier(0.25, 1, 0.5, 1);
+            font-family: inherit;
+            font-size: 12.5px;
+            text-align: left;
+            user-select: none;
+            position: relative;
+        }
+        .sidebar-ws-item:hover {
+            background: color-mix(in srgb, var(--accent-color) 12%, rgba(255, 255, 255, 0.05));
+            border-color: color-mix(in srgb, var(--accent-color) 20%, transparent);
+        }
+        .sidebar-ws-item.active {
+            background: rgba(0, 122, 255, 0.22) !important;
+            border-color: #007aff !important;
+            color: #ffffff !important;
+            box-shadow: 0 2px 6px rgba(0, 122, 255, 0.25) !important;
+            font-weight: 600;
+        }
+        html.theme-light .sidebar-ws-item.active {
+            background: rgba(0, 122, 255, 0.12) !important;
+            border-color: #007aff !important;
+            color: #007aff !important;
+        }
+        .sidebar-ws-item-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+            flex: 1;
+        }
+        .sidebar-ws-item-icon {
+            font-size: 14px;
+            flex-shrink: 0;
+            width: 18px;
+            text-align: center;
+            line-height: 1;
+        }
+        .sidebar-ws-item-name {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+            color: inherit;
+        }
+        .sidebar-ws-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+            flex-shrink: 0;
+        }
+        .sidebar-ws-item:hover .sidebar-ws-item-actions,
+        .sidebar-ws-item.active .sidebar-ws-item-actions {
+            opacity: 1;
+        }
+        .sidebar-ws-action-btn {
+            background: transparent;
+            border: none;
+            color: inherit;
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 13px;
+            padding: 0;
+            opacity: 0.65;
+            transition: opacity 0.15s, background 0.15s;
+        }
+        .sidebar-ws-action-btn:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.18);
+        }
+
     </style>
 
 
@@ -3377,217 +3824,225 @@
 </head>
 <body class="theme-dark">
 
-    <header style="position: relative; z-index: 100000;">
-        <div class="header-brand">
-            <h1 class="app-header-title">
-                <svg class="header-logo-icon" width="26" height="26" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:7px; flex-shrink:0; box-shadow:0 2px 8px rgba(0,122,255,0.35); display:inline-block; vertical-align:middle;">
+    <!-- 1. BARRA LATERAL EXPANSIVA ESTILO APPLE HIG (MACOS / IPADOS) -->
+    <aside class="apple-sidebar" id="appleSidebar" role="navigation" aria-label="Barra Lateral de Navegação e Ferramentas">
+        <!-- Grupo Superior: Marca e Módulos Principais -->
+        <div class="sidebar-group sidebar-top">
+            <div class="sidebar-brand-card" onclick="openChangelogModal()" role="button" tabindex="0" title="Central de Scripts v2.9.0 - Clique para ver novidades">
+                <svg class="header-logo-icon" width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:8px; box-shadow:0 2px 8px rgba(0,122,255,0.35); flex-shrink:0;">
                     <defs>
-                        <linearGradient id="appleLogoGrad" x1="0" y1="0" x2="1" y2="1">
+                        <linearGradient id="appleLogoGradSidebar" x1="0" y1="0" x2="1" y2="1">
                             <stop offset="0%" stop-color="#007aff"/>
                             <stop offset="100%" stop-color="#5ac8fa"/>
                         </linearGradient>
                     </defs>
-                    <rect width="64" height="64" rx="16" fill="url(#appleLogoGrad)"/>
+                    <rect width="64" height="64" rx="16" fill="url(#appleLogoGradSidebar)"/>
                     <path d="M18 20h28a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4H30l-9 8v-8h-3a4 4 0 0 1-4-4V24a4 4 0 0 1 4-4z" fill="white"/>
                     <rect x="22" y="27" width="20" height="3" rx="1.5" fill="#007aff"/>
                     <rect x="22" y="33" width="13" height="3" rx="1.5" fill="#007aff"/>
                 </svg>
-                <span>Central de Scripts</span> <span class="header-brand-badge" id="appVersionBadge" onclick="openChangelogModal()" style="cursor:pointer;" title="Clique para ver o Histórico de Versões e Novidades (v2.7.0)">v2.7.0</span>
-            </h1>
-        </div>
-
-        <!-- 1. Campo de Busca Centralizado -->
-        <div class="header-search-wrap">
-            <svg class="search-icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <input type="search" class="search-input" id="searchInput" placeholder="Buscar script ou tag:whats..." aria-label="Pesquisar scripts ou filtrar por tags" oninput="filterScripts(this.value); updateSearchFilterStatusBar();">
-            <kbd class="search-kbd" onclick="openGlobalFindReplaceModal()" title="Localizar e Substituir em Massa (Ctrl+K)">Ctrl K</kbd>
-        </div>
-
-        <input type="file" id="importFile" style="display: none" accept=".json" onchange="importScripts(event)">
-        <input type="file" id="userscriptFile" style="display: none" accept=".js,.user.js,.txt" multiple="" onchange="importUserscripts(event)">
-
-        <div class="header-actions">
-            <!-- 2. Modos de Operação: Atendimento & Edição -->
-            <div class="header-capsule header-mode-capsule">
-                <button class="header-pill-btn btn-mode-atendimento" id="atendimentoModeToggleBtn" onclick="toggleModoAtendimento()" title="Alternar Modo Atendimento (Foco limpo durante o suporte)">
-                    🎧 Atendimento: <span id="atendimentoModeStatusText">Desativado</span>
-                </button>
-                <button class="header-pill-btn hide-on-atendimento" id="editToggleBtn" onclick="toggleEditMode()" title="Ativar ou desativar o modo de edição dos scripts">
-                    ✏️ Modo Edição
-                </button>
-            </div>
-
-            <!-- 3. Exibição: Layout (Grade/Lista), Zoom e Temas -->
-            <div class="header-capsule header-display-capsule">
-                <div class="size-ctrl" id="layoutCtrl" title="Disposição dos cards">
-                    <button data-mode="grid" onclick="setLayout('grid')" title="Quadro (colunas lado a lado)" class="on">▦</button>
-                    <button data-mode="list" onclick="setLayout('list')" title="Lista (colunas empilhadas)">☰</button>
-                </div>
-                <div class="header-capsule-divider"></div>
-                <div class="size-ctrl" title="Tamanho dos cards">
-                    <button onclick="adjustCardSize(-1)" title="Diminuir cards">−</button>
-                    <span id="sizeLabel" onclick="adjustCardSize(0)" title="Clique para voltar a 100%">100%</span>
-                    <button onclick="adjustCardSize(1)" title="Aumentar cards">+</button>
-                </div>
-                <div class="header-capsule-divider"></div>
-                <div class="theme-ctrl" id="themeCtrl" title="Alternar tema visual: Cinza, OLED ou Claro">
-                    <button type="button" id="themeBtnDark" onclick="changeTheme('dark')" title="Modo Cinza (Padrão)" class="on">🌘</button>
-                    <button type="button" id="themeBtnOled" onclick="changeTheme('oled')" title="Modo Escuro OLED">🌑</button>
-                    <button type="button" id="themeBtnLight" onclick="changeTheme('light')" title="Modo Claro">☀️</button>
+                <div class="sidebar-brand-info">
+                    <span class="sidebar-brand-title">Central de Scripts</span>
+                    <span class="sidebar-brand-badge">v2.9.0</span>
                 </div>
             </div>
 
-            <!-- 4. Ferramentas Secundárias, Admin e Usuário -->
-            <div class="header-user-section">
-                <button class="header-btn-more hide-on-atendimento" id="companionHeaderBtn" onclick="toggleCompanion()" title="Abrir Dock de Scripts flutuante (Alt+Shift+P)">
+            <div class="sidebar-section-header">Módulos</div>
+
+            <button class="sidebar-item-btn active" id="sbScriptsBtn" onclick="switchTab(lastActiveScriptTabId || getSavedTabOrder()[0] || 'tab_leo')" title="Scripts de Atendimento">
+                <span class="sidebar-item-icon">💬</span>
+                <span class="sidebar-item-label">Scripts</span>
+            </button>
+            <button class="sidebar-item-btn" id="sbTicketBtn" onclick="openTicketFormModal()" title="Gerador de Chamado Técnico (OS)">
+                <span class="sidebar-item-icon">📝</span>
+                <span class="sidebar-item-label">Chamado OS</span>
+            </button>
+            <button class="sidebar-item-btn" id="sbTestBtn" onclick="openTestFormModal()" title="Teste de Atendimento (Diagnóstico)">
+                <span class="sidebar-item-icon">🧪</span>
+                <span class="sidebar-item-label">Teste Técnico</span>
+            </button>
+            <button class="sidebar-item-btn" id="sbEquipBtn" onclick="openEquipBudgetModal()" title="Orçamento de Equipamentos & Cabos">
+                <span class="sidebar-item-icon">🔌</span>
+                <span class="sidebar-item-label">Equipamentos</span>
+            </button>
+
+            <div class="sidebar-divider" aria-hidden="true"></div>
+
+            <div class="sidebar-section-header sidebar-ws-header">
+                <span>Áreas de Trabalho</span>
+                <button type="button" class="sidebar-add-ws-btn" onclick="promptCreateWorkspace()" title="Criar nova Área de Trabalho (+)" aria-label="Criar nova Área de Trabalho">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="sidebar-workspaces-list" id="sidebarWorkspacesList" role="list" aria-label="Lista de Áreas de Trabalho"></div>
+
+        </div>
+
+        <!-- Grupo Inferior: Controles de Sistema, Modo e Usuário -->
+        <div class="sidebar-group sidebar-bottom">
+            <div class="sidebar-section-header">Sistema</div>
+
+            <button class="sidebar-item-btn" id="sbAlarmBtn" onclick="switchTab('tab_clients_alarm')" title="Clientes & Alarmes">
+                <span class="sidebar-item-icon">🔔</span>
+                <span class="sidebar-item-label">Clientes & Alarmes</span>
+            </button>
+            <button class="sidebar-item-btn" id="sbThemeBtn" onclick="cycleAppTheme()" title="Alternar Tema Visual (Cinza / OLED / Claro)">
+                <span class="sidebar-item-icon">🌘</span>
+                <span class="sidebar-item-label">Tema Visual</span>
+            </button>
+            <button class="sidebar-item-btn" id="sbAtendimentoBtn" onclick="toggleModoAtendimento()" title="Modo Atendimento (Foco Limpo)">
+                <span class="sidebar-item-icon">🎧</span>
+                <span class="sidebar-item-label">Modo Atendimento</span>
+            </button>
+            <button class="sidebar-item-btn hide-on-atendimento" id="sbEditBtn" onclick="toggleEditMode()" title="Ativar Modo Edição">
+                <span class="sidebar-item-icon">✏️</span>
+                <span class="sidebar-item-label">Modo Edição</span>
+            </button>
+
+            <div class="sidebar-divider" aria-hidden="true"></div>
+
+            <div class="sidebar-user-card" id="sidebarUserAvatarBtn" onclick="handleAuthButtonClick()" role="button" tabindex="0" title="Minha Conta, Modo Offline & Configurações">
+                <div class="auth-avatar-wrapper">
+                    <span class="sidebar-avatar-initial" style="background:#4b5563;">👤</span>
+                    <span class="auth-status-dot offline" title="Offline"></span>
+                </div>
+                <div class="sidebar-user-info">
+                    <span class="sidebar-user-name" id="sidebarUserNameText">Modo Offline</span>
+                    <span class="sidebar-user-sub" id="sidebarUserSubText">Conta & Config</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 2. ÁREA PRINCIPAL DA APLICAÇÃO (CONTEÚDO À DIREITA DA SIDEBAR) -->
+    <div class="app-main-area" id="appMainArea">
+        <header style="position: relative; z-index: 100000;">
+<!-- Campo de Busca Centralizado Spotlight -->
+            <div class="header-search-wrap">
+                <svg class="search-icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="search" class="search-input" id="searchInput" placeholder="Buscar script ou tag:whats..." aria-label="Pesquisar scripts ou filtrar por tags" oninput="filterScripts(this.value); updateSearchFilterStatusBar();">
+                <kbd class="search-kbd" onclick="openGlobalFindReplaceModal()" title="Localizar e Substituir em Massa (Ctrl+K)">Ctrl K</kbd>
+            </div>
+
+            <input type="file" id="importFile" style="display: none" accept=".json" onchange="importScripts(event)">
+            <input type="file" id="userscriptFile" style="display: none" accept=".js,.user.js,.txt" multiple="" onchange="importUserscripts(event)">
+
+            <!-- Ações Rápidas de Filtro e Ferramentas no Topo -->
+            <div class="header-actions">
+                <button class="shortcut-pill shortcut-pill-filter" id="filterFavsBtn" onclick="toggleFavoriteFilter(this)" title="Filtrar somente cards favoritos (⭐)">
+                    ⭐ Favoritos
+                </button>
+                <button class="shortcut-pill shortcut-pill-filter" id="filterColorBtn" onclick="toggleColorFilterMenu(this, event)" title="Filtrar cards por cor de borda">
+                    🎨 Cores ▾
+                </button>
+                <button class="shortcut-pill shortcut-pill-filter" id="recentsBtn" onclick="toggleRecentsMenu(this, event)" title="Ver últimos scripts copiados">
+                    🕒 Recentes ▾
+                </button>
+                <button class="shortcut-pill shortcut-pill-tool" id="undoHeaderBtn" onclick="undoLastAction()" title="Desfazer última alteração">
+                    ↩️ Desfazer
+                </button>
+                <button class="shortcut-pill shortcut-pill-tool hide-on-atendimento" id="companionHeaderBtn" onclick="toggleCompanion()" title="Dock de Scripts Flutuante (Alt+Shift+P)">
                     🪟 Dock
                 </button>
                 <button class="header-btn-more" id="moreHeaderMenuBtn" onclick="toggleMoreMenu(this, event)" title="Acessar ferramentas secundárias e configurações">
                     ⋯ Mais ▾
                 </button>
-                <button class="io-btn firebase-auth-btn" id="firebaseAuthBtn" onclick="handleAuthButtonClick()" title="Minha Conta, Modo Offline & Configurações" style="background:var(--tab-bg, #2a2a2a); color:var(--text-color, #e5e7eb); border:1px solid var(--border-color, #4b5563); padding:5px 12px;">
-                    <span style="font-size:14px; margin-right:4px;">👤</span>
-                    <span id="firebaseAuthBtnText" style="font-size:12px; font-weight:600;">Conta / Offline</span>
-                    <span style="font-size:9px; opacity:0.7; margin-left:3px;">⚙️</span>
-                </button>
             </div>
+
+            <!-- Menu Dropdown: Filtro por Cores -->
+            <div class="dropdown-popover" id="colorFilterDropdown" data-transient="true" onclick="event.stopPropagation()">
+                <div class="dropdown-popover-title">
+                    <span>🎨 Filtrar por Cor</span>
+                    <button class="vm-x" aria-label="Fechar menu" style="width:24px; height:24px; font-size:14px;" onclick="closeAllHeaderDropdowns()">✕</button>
+                </div>
+                <div class="dropdown-list">
+                    <div class="dropdown-list-item" onclick="setColorFilter(''); closeAllHeaderDropdowns();">
+                        <span>⚪ Todas as Cores</span>
+                    </div>
+                    <div class="dropdown-list-item" onclick="setColorFilter('green'); closeAllHeaderDropdowns();">
+                        <span style="display:flex; align-items:center; gap:6px;"><span class="color-dot" style="background:#22c55e;"></span> 🟢 Verde (Saudações/Fins)</span>
+                    </div>
+                    <div class="dropdown-list-item" onclick="setColorFilter('yellow'); closeAllHeaderDropdowns();">
+                        <span style="display:flex; align-items:center; gap:6px;"><span class="color-dot" style="background:#eab308;"></span> 🟡 Amarelo (Triagem)</span>
+                    </div>
+                    <div class="dropdown-list-item" onclick="setColorFilter('red'); closeAllHeaderDropdowns();">
+                        <span style="display:flex; align-items:center; gap:6px;"><span class="color-dot" style="background:#ef4444;"></span> 🔴 Vermelho (Alertas/Rompimentos)</span>
+                    </div>
+                    <div class="dropdown-list-item" onclick="setColorFilter('blue'); closeAllHeaderDropdowns();">
+                        <span style="display:flex; align-items:center; gap:6px;"><span class="color-dot" style="background:#3b82f6;"></span> 🔵 Azul (Procedimentos)</span>
+                    </div>
+                    <div class="dropdown-list-item" onclick="setColorFilter('purple'); closeAllHeaderDropdowns();">
+                        <span style="display:flex; align-items:center; gap:6px;"><span class="color-dot" style="background:#a855f7;"></span> 🟣 Roxo (Financeiro)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Menu Dropdown: Navegador Rápido de Abas -->
+            <div class="dropdown-popover" id="tabsMenuDropdown" data-transient="true" onclick="event.stopPropagation()">
+                <div class="dropdown-popover-title">
+                    <span>📑 Todas as Abas</span>
+                    <button class="vm-x" aria-label="Fechar menu" style="width:24px; height:24px; font-size:14px;" onclick="closeAllHeaderDropdowns()">✕</button>
+                </div>
+                <input type="text" id="tabFilterInput" class="var-modal-input" placeholder="🔍 Filtrar aba..." oninput="renderTabsDropdownList(this.value)" style="padding:6px 10px; font-size:12px;">
+                <div class="dropdown-list" id="tabsDropdownList"></div>
+            </div>
+
+            <!-- Menu Dropdown: Últimos Scripts Copiados -->
+            <div class="dropdown-popover" id="recentsMenuDropdown" data-transient="true" onclick="event.stopPropagation()">
+                <div class="dropdown-popover-title">
+                    <span>🕒 Scripts Recentes</span>
+                    <button class="vm-x" aria-label="Fechar menu" style="width:24px; height:24px; font-size:14px;" onclick="closeAllHeaderDropdowns()">✕</button>
+                </div>
+                <p style="margin:0; font-size:11px; opacity:0.75;">Últimos scripts copiados nesta sessão:</p>
+                <div class="dropdown-list" id="recentsDropdownList"></div>
+            </div>
+
+            <!-- Menu Dropdown: "⋯ Mais" (Ferramentas e Visual) -->
+            <div class="dropdown-popover" id="moreMenuDropdown" data-transient="true" onclick="event.stopPropagation()" style="min-width: 270px;">
+                <div class="dropdown-popover-title">
+                    <span>⋯ Mais Opções & Ferramentas</span>
+                    <button class="vm-x" aria-label="Fechar menu" style="width:24px; height:24px; font-size:14px;" onclick="closeAllHeaderDropdowns()">✕</button>
+                </div>
+                <div class="dropdown-list">
+                    <div class="dropdown-list-item hide-on-atendimento" id="userscriptHeaderBtn" onclick="openUserscriptManager(); closeAllHeaderDropdowns();">
+                        <span>🧩 Gerenciador de Userscripts</span>
+                    </div>
+                    <div class="dropdown-list-item" onclick="openChangelogModal(); closeAllHeaderDropdowns();">
+                        <span>📜 Histórico e Novidades (v2.9.0)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Menu de contexto do Card -->
+            <div class="card-popover-menu" id="cardActionMenu" data-transient="true" onclick="event.stopPropagation()"></div>
+        </header>
+
+        <!-- Barra de Filtros Ativos da Busca -->
+        <div class="search-filter-status-bar" id="searchFilterStatusBar">
+            <div class="search-filter-chips" id="searchFilterChipsContainer"></div>
+            <button class="search-clear-btn" onclick="clearAllSearchFilters()" title="Limpar pesquisa e filtros">Limpar filtros ✕</button>
         </div>
 
-        <!-- Menu Dropdown: Filtro por Cores -->
-        <div class="dropdown-popover" id="colorFilterDropdown" data-transient="true" onclick="event.stopPropagation()">
-            <div class="dropdown-popover-title">
-                <span>🎨 Filtrar por Cor</span>
-                <button class="vm-x" aria-label="Fechar menu" style="width:24px; height:24px; font-size:14px;" onclick="closeAllHeaderDropdowns()">✕</button>
-            </div>
-            <div class="dropdown-list">
-                <div class="dropdown-list-item" onclick="setColorFilter(''); closeAllHeaderDropdowns();">
-                    <span>⚪ Todas as Cores</span>
-                </div>
-                <div class="dropdown-list-item" onclick="setColorFilter('green'); closeAllHeaderDropdowns();">
-                    <span style="display:flex; align-items:center; gap:6px;"><span class="color-dot" style="background:#22c55e;"></span> 🟢 Verde (Saudações/Fins)</span>
-                </div>
-                <div class="dropdown-list-item" onclick="setColorFilter('yellow'); closeAllHeaderDropdowns();">
-                    <span style="display:flex; align-items:center; gap:6px;"><span class="color-dot" style="background:#eab308;"></span> 🟡 Amarelo (Triagem)</span>
-                </div>
-                <div class="dropdown-list-item" onclick="setColorFilter('red'); closeAllHeaderDropdowns();">
-                    <span style="display:flex; align-items:center; gap:6px;"><span class="color-dot" style="background:#ef4444;"></span> 🔴 Vermelho (Alertas/Rompimentos)</span>
-                </div>
-                <div class="dropdown-list-item" onclick="setColorFilter('blue'); closeAllHeaderDropdowns();">
-                    <span style="display:flex; align-items:center; gap:6px;"><span class="color-dot" style="background:#3b82f6;"></span> 🔵 Azul (Procedimentos)</span>
-                </div>
-                <div class="dropdown-list-item" onclick="setColorFilter('purple'); closeAllHeaderDropdowns();">
-                    <span style="display:flex; align-items:center; gap:6px;"><span class="color-dot" style="background:#a855f7;"></span> 🟣 Roxo (Financeiro)</span>
-                </div>
-            </div>
+        <!-- Barra de comandos rápidos (só aparece no modo edição) -->
+        <div class="quick-commands-bar" onmousedown="if (event.target.tagName === 'BUTTON') event.preventDefault()">
+            <span style="font-size: 11px; opacity: 0.7;">Inserir:</span>
+            <span id="cmdChips" style="display: contents;"><button class="cmd-chip" title="Insere (saudacao): Bom dia, Boa tarde ou Boa noite">(saudacao)</button><button class="cmd-chip" title="Insere (data): data de hoje">(data)</button><button class="cmd-chip" title="Insere (hora): hora atual">(hora)</button><button class="cmd-chip" title="Insere (hora+2): hora atual + 2 horas">(hora+2)</button><button class="cmd-chip" title="Insere (prazo): 3 dias úteis a partir de hoje">(prazo)</button><button class="cmd-chip" title="Insere (nome)">(nome)</button><button class="cmd-chip" title="Insere (telefone)">(telefone)</button><button class="cmd-chip" title="Insere (protocolo)">(protocolo)</button><button class="cmd-chip" title="Insere (plano)">(plano)</button><button class="cmd-chip" title="Insere (horas)">(horas)</button><button class="cmd-chip" title="Insere (link)">(link)</button><button class="cmd-chip" title="Insere (data_desligamento)">(data_desligamento)</button><button class="cmd-chip" title="Insere (atendente)">(atendente)</button><button class="cmd-chip" title="Insere (empresa)">(empresa)</button><button class="cmd-chip" title="Insere (cidade)">(cidade)</button><button class="cmd-chip" title="Insere (setor)">(setor)</button><button class="cmd-chip" title="Insere (usuario)">(usuario)</button><button class="cmd-chip" title="Insere (senha)">(senha)</button><button class="cmd-chip" title="Insere (email)">(email)</button><button class="cmd-chip" title="Insere (cliente)">(cliente)</button></span>
         </div>
 
-        <!-- Menu Dropdown: Navegador Rápido de Abas -->
-        <div class="dropdown-popover" id="tabsMenuDropdown" data-transient="true" onclick="event.stopPropagation()">
-            <div class="dropdown-popover-title">
-                <span>📑 Todas as Abas</span>
-                <button class="vm-x" aria-label="Fechar menu" style="width:24px; height:24px; font-size:14px;" onclick="closeAllHeaderDropdowns()">✕</button>
-            </div>
-            <input type="text" id="tabFilterInput" class="var-modal-input" placeholder="🔍 Filtrar aba..." oninput="renderTabsDropdownList(this.value)" style="padding:6px 10px; font-size:12px;">
-            <div class="dropdown-list" id="tabsDropdownList"></div>
+        <!-- Abas expandidas para ocupar toda a largura -->
+        <div style="background-color: var(--sidebar-bg); border-bottom: 1px solid var(--border-color); width: 100%;">
+            <div class="tabs" id="tabsBar" role="tablist" aria-label="Abas de scripts"></div>
         </div>
 
-        <!-- Menu Dropdown: Últimos Scripts Copiados -->
-        <div class="dropdown-popover" id="recentsMenuDropdown" data-transient="true" onclick="event.stopPropagation()">
-            <div class="dropdown-popover-title">
-                <span>🕒 Scripts Recentes</span>
-                <button class="vm-x" aria-label="Fechar menu" style="width:24px; height:24px; font-size:14px;" onclick="closeAllHeaderDropdowns()">✕</button>
-            </div>
-            <p style="margin:0; font-size:11px; opacity:0.75;">Últimos scripts copiados nesta sessão:</p>
-            <div class="dropdown-list" id="recentsDropdownList"></div>
-        </div>
-
-        <!-- Menu Dropdown: "⋯ Mais" (Ferramentas e Visual) -->
-        <div class="dropdown-popover" id="moreMenuDropdown" data-transient="true" onclick="event.stopPropagation()" style="min-width: 270px;">
-            <div class="dropdown-popover-title">
-                <span>⋯ Mais Opções & Ferramentas</span>
-                <button class="vm-x" aria-label="Fechar menu" style="width:24px; height:24px; font-size:14px;" onclick="closeAllHeaderDropdowns()">✕</button>
-            </div>
-            <div class="dropdown-list">
-                <div class="dropdown-list-item hide-on-atendimento" id="userscriptHeaderBtn" onclick="openUserscriptManager(); closeAllHeaderDropdowns();">
-                    <span>🧩 Gerenciador de Userscripts</span>
-                </div>
-                <div class="dropdown-list-item" onclick="openChangelogModal(); closeAllHeaderDropdowns();">
-                    <span>📜 Histórico e Novidades (v2.7.0)</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Menu de contexto do Card -->
-        <div class="card-popover-menu" id="cardActionMenu" data-transient="true" onclick="event.stopPropagation()"></div>
-    </header>
-
-    <!-- Barra de Filtros Ativos da Busca -->
-    <div class="search-filter-status-bar" id="searchFilterStatusBar">
-        <div class="search-filter-chips" id="searchFilterChipsContainer"></div>
-        <button class="search-clear-btn" onclick="clearAllSearchFilters()" title="Limpar pesquisa e filtros">Limpar filtros ✕</button>
+        <div class="content-container" id="contentContainer"></div>
     </div>
-
-    <!-- Linha de baixo: Barra de Atalhos (Desfazer, Cores, Favoritos, Recentes, Chamado, Abas) -->
-        <!-- Linha 2: Barra de Ações Rápidas & Ferramentas (Action Toolbar Slim) -->
-    <div class="shortcuts-subbar" role="toolbar" aria-label="Ferramentas e Ações Rápidas">
-        <div class="subbar-cluster">
-            <button class="shortcut-pill shortcut-pill-action" id="ticketModalBtn" onclick="openTicketFormModal()" title="Gerador rápido de chamado/ordem de serviço (OS Técnica)">
-                📝 Chamado
-            </button>
-            <button class="shortcut-pill shortcut-pill-action" id="testModalBtn" onclick="openTestFormModal()" title="Gerador rápido de teste de atendimento (Diagnóstico)">
-                🧪 Teste
-            </button>
-            <button class="shortcut-pill shortcut-pill-action" id="equipBudgetBtn" onclick="openEquipBudgetModal()" title="Orçamento e seleção rápida de equipamentos, cabos e acessórios">
-                🔌 Equipamentos & Valores
-            </button>
-        </div>
-
-        <div class="subbar-sep" aria-hidden="true"></div>
-
-        <div class="subbar-cluster">
-            <button class="shortcut-pill shortcut-pill-filter" id="filterFavsBtn" onclick="toggleFavoriteFilter(this)" title="Filtrar somente cards favoritos (⭐)">
-                ⭐ Favoritos
-            </button>
-            <button class="shortcut-pill shortcut-pill-filter" id="filterColorBtn" onclick="toggleColorFilterMenu(this, event)" title="Filtrar cards por cor de borda">
-                🎨 Cores ▾
-            </button>
-            <button class="shortcut-pill shortcut-pill-filter" id="recentsBtn" onclick="toggleRecentsMenu(this, event)" title="Ver últimos scripts copiados">
-                🕒 Recentes ▾
-            </button>
-        </div>
-
-        <div class="subbar-sep" aria-hidden="true"></div>
-
-        <div class="subbar-cluster">
-            <button class="shortcut-pill shortcut-pill-tool" id="undoHeaderBtn" onclick="undoLastAction()" title="Desfazer última alteração">
-                ↩️ Desfazer
-            </button>
-        </div>
-
-        <div class="subbar-sep" aria-hidden="true"></div>
-
-        <div class="subbar-cluster">
-            <button class="shortcut-pill shortcut-pill-nav" id="tabsMenuBtn" onclick="toggleTabsMenu(this, event)" title="Localizar e trocar de aba rapidamente">
-                📑 Localizar Aba ▾
-            </button>
-        </div>
-    </div>
-
-    <!-- Barra de comandos rápidos (só aparece no modo edição) -->
-    <div class="quick-commands-bar" onmousedown="if (event.target.tagName === 'BUTTON') event.preventDefault()">
-        <span style="font-size: 11px; opacity: 0.7;">Inserir:</span>
-        <span id="cmdChips" style="display: contents;"><button class="cmd-chip" title="Insere (saudacao): Bom dia, Boa tarde ou Boa noite">(saudacao)</button><button class="cmd-chip" title="Insere (data): data de hoje">(data)</button><button class="cmd-chip" title="Insere (hora): hora atual">(hora)</button><button class="cmd-chip" title="Insere (hora+2): hora atual + 2 horas">(hora+2)</button><button class="cmd-chip" title="Insere (prazo): 3 dias úteis a partir de hoje">(prazo)</button><button class="cmd-chip" title="Insere (nome)">(nome)</button><button class="cmd-chip" title="Insere (telefone)">(telefone)</button><button class="cmd-chip" title="Insere (protocolo)">(protocolo)</button><button class="cmd-chip" title="Insere (plano)">(plano)</button><button class="cmd-chip" title="Insere (horas)">(horas)</button><button class="cmd-chip" title="Insere (link)">(link)</button><button class="cmd-chip" title="Insere (data_desligamento)">(data_desligamento)</button><button class="cmd-chip" title="Insere (atendente)">(atendente)</button><button class="cmd-chip" title="Insere (empresa)">(empresa)</button><button class="cmd-chip" title="Insere (cidade)">(cidade)</button><button class="cmd-chip" title="Insere (setor)">(setor)</button><button class="cmd-chip" title="Insere (usuario)">(usuario)</button><button class="cmd-chip" title="Insere (senha)">(senha)</button><button class="cmd-chip" title="Insere (email)">(email)</button><button class="cmd-chip" title="Insere (cliente)">(cliente)</button></span>
-    </div>
-
-    <!-- Abas expandidas para ocupar toda a largura -->
-    <div style="background-color: var(--sidebar-bg); border-bottom: 1px solid var(--border-color); width: 100%;">
-        <div class="tabs" id="tabsBar" role="tablist" aria-label="Abas de scripts"></div>
-    </div>
-
-    <div class="content-container" id="contentContainer"></div>
 
     <script>
         
@@ -3624,7 +4079,7 @@
             return String(str).replace(/([ #;&,.+*~':"!^$\[\]()=>|\/@])/g, '\\$1');
         }
 
-        const APP_VERSION = '2.7.0';
+        const APP_VERSION = '2.9.0';
         const UPDATE_MANIFEST_URL = 'https://firestrykerfx.github.io/version.json';
         const UPDATE_CHECK_INTERVAL = 6 * 60 * 60 * 1000;
                 /* ===== Notificações Toasts Flutuantes Modernas ===== */
@@ -4774,6 +5229,450 @@
 
         const OLD_PLACEHOLDER = "Digite seu novo script ou texto aqui...";
         const STORAGE_KEY = 'scripts_dynamic_data_v38';
+        const WORKSPACES_STORAGE_KEY = 'scripts_workspaces_v1';
+        const ACTIVE_WORKSPACE_KEY = 'scripts_active_workspace_id_v1';
+        const DEFAULT_WORKSPACE_ID = 'ws_default';
+
+        /* ===== Módulo de Gestão de Áreas de Trabalho (Estilo Trello) ===== */
+        function getWorkspaces() {
+            try {
+                const raw = localStorage.getItem(WORKSPACES_STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        return parsed;
+                    }
+                }
+            } catch (e) {
+                console.warn('Erro ao carregar workspaces:', e);
+            }
+
+            // Migração transparente da base atual para a Área Principal
+            let existingData = null;
+            try {
+                const rawData = localStorage.getItem(STORAGE_KEY);
+                if (rawData) {
+                    const parsedData = JSON.parse(rawData);
+                    if (isValidData(parsedData)) existingData = parsedData;
+                }
+            } catch (e) {}
+
+            if (!existingData) {
+                try { existingData = JSON.parse(JSON.stringify(defaultData)); } catch (e) { existingData = defaultData; }
+            }
+            normalizeData(existingData);
+
+            let existingTabOrder = [];
+            try {
+                const rawOrder = localStorage.getItem(TAB_ORDER_KEY);
+                if (rawOrder) existingTabOrder = JSON.parse(rawOrder);
+            } catch (e) {}
+            if (!Array.isArray(existingTabOrder) || existingTabOrder.length === 0) {
+                existingTabOrder = Object.keys(existingData);
+            }
+
+            const defaultWs = {
+                id: DEFAULT_WORKSPACE_ID,
+                name: 'Suporte Principal',
+                icon: '💼',
+                data: existingData,
+                tabOrder: existingTabOrder,
+                createdAt: Date.now()
+            };
+
+            const initialWorkspaces = [defaultWs];
+            try {
+                localStorage.setItem(WORKSPACES_STORAGE_KEY, JSON.stringify(initialWorkspaces));
+                if (!localStorage.getItem(ACTIVE_WORKSPACE_KEY)) {
+                    localStorage.setItem(ACTIVE_WORKSPACE_KEY, DEFAULT_WORKSPACE_ID);
+                }
+            } catch (e) {}
+
+            return initialWorkspaces;
+        }
+
+        function setWorkspaces(workspaces) {
+            if (!Array.isArray(workspaces) || workspaces.length === 0) return;
+            try {
+                localStorage.setItem(WORKSPACES_STORAGE_KEY, JSON.stringify(workspaces));
+                markLocalChange();
+            } catch (e) {
+                console.error('Erro ao salvar workspaces:', e);
+            }
+        }
+
+        function getActiveWorkspaceId() {
+            try {
+                const id = localStorage.getItem(ACTIVE_WORKSPACE_KEY);
+                if (id) return id;
+            } catch (e) {}
+            return DEFAULT_WORKSPACE_ID;
+        }
+
+        function getActiveWorkspace() {
+            const workspaces = getWorkspaces();
+            const activeId = getActiveWorkspaceId();
+            let active = workspaces.find(w => w.id === activeId);
+            if (!active) {
+                active = workspaces[0];
+                try { localStorage.setItem(ACTIVE_WORKSPACE_KEY, active.id); } catch (e) {}
+            }
+            return active;
+        }
+
+        function createWorkspace(name, icon = '📁', template = 'blank') {
+            const wsName = (name && name.trim()) || 'Nova Área';
+            const wsIcon = (icon && icon.trim()) || '📁';
+            const wsId = 'ws_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 6);
+
+            let wsData = {};
+            let wsTabOrder = [];
+
+            if (template === 'duplicate') {
+                const currentData = getAppData();
+                wsData = JSON.parse(JSON.stringify(currentData));
+                wsTabOrder = getSavedTabOrder(currentData);
+            } else {
+                const starterTabId = 'tab_' + Date.now().toString(36);
+                wsData[starterTabId] = {
+                    name: 'Geral',
+                    groups: [{
+                        title: 'Scripts Rápidos',
+                        items: [{
+                            id: 'card_' + starterTabId + '_0_0',
+                            text: 'Bem-vindo à nova área de trabalho!\nClique no botão Modo Edição (✏️) para adicionar novos scripts.',
+                            tags: ['inicio'],
+                            alarm: '',
+                            favorite: false,
+                            color: '',
+                            copies: 0
+                        }]
+                    }]
+                };
+                wsTabOrder = [starterTabId];
+            }
+
+            const newWs = {
+                id: wsId,
+                name: wsName,
+                icon: wsIcon,
+                data: wsData,
+                tabOrder: wsTabOrder,
+                createdAt: Date.now()
+            };
+
+            const workspaces = getWorkspaces();
+            workspaces.push(newWs);
+            setWorkspaces(workspaces);
+            return newWs;
+        }
+
+        function deleteWorkspace(wsId) {
+            const workspaces = getWorkspaces();
+            if (workspaces.length <= 1) {
+                return { success: false, reason: 'min_one' };
+            }
+            const idx = workspaces.findIndex(w => w.id === wsId);
+            if (idx === -1) return { success: false, reason: 'not_found' };
+
+            const wasActive = getActiveWorkspaceId() === wsId;
+            workspaces.splice(idx, 1);
+            setWorkspaces(workspaces);
+
+            if (wasActive) {
+                const nextActive = workspaces[0];
+                localStorage.setItem(ACTIVE_WORKSPACE_KEY, nextActive.id);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(nextActive.data));
+                localStorage.setItem(TAB_ORDER_KEY, JSON.stringify(nextActive.tabOrder));
+            }
+            return { success: true };
+        }
+
+        function renameWorkspace(wsId, newName, newIcon) {
+            const workspaces = getWorkspaces();
+            const ws = workspaces.find(w => w.id === wsId);
+            if (!ws) return false;
+            if (newName && newName.trim()) ws.name = newName.trim();
+            if (newIcon && newIcon.trim()) ws.icon = newIcon.trim();
+            setWorkspaces(workspaces);
+            return true;
+        }
+
+        function renderWorkspacesList() {
+            const container = document.getElementById('sidebarWorkspacesList');
+            if (!container) return;
+            const workspaces = getWorkspaces();
+            const activeId = getActiveWorkspaceId();
+
+            container.innerHTML = workspaces.map(ws => {
+                const isActive = ws.id === activeId;
+                const safeName = escapeHtml(ws.name || 'Área');
+                const safeIcon = escapeHtml(ws.icon || '📁');
+                return `
+                    <div class="sidebar-ws-item ${isActive ? 'active' : ''}" 
+                         role="button" 
+                         tabindex="0" 
+                         onclick="switchWorkspace('${escapeHtml(ws.id)}')" 
+                         title="Área de Trabalho: ${safeName} (${isActive ? 'Ativa' : 'Clique para alternar'})"
+                         data-wsid="${escapeHtml(ws.id)}">
+                        <div class="sidebar-ws-item-left">
+                            <span class="sidebar-ws-item-icon">${safeIcon}</span>
+                            <span class="sidebar-ws-item-name">${safeName}</span>
+                        </div>
+                        <div class="sidebar-ws-item-actions" onclick="event.stopPropagation()">
+                            <button type="button" 
+                                    class="sidebar-ws-action-btn" 
+                                    onclick="openWorkspaceOptionsModal('${escapeHtml(ws.id)}', event)" 
+                                    title="Opções da Área (Renomear, Duplicar, Excluir)">
+                                ⋯
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function switchWorkspace(targetWsId) {
+            if (!targetWsId) return;
+            const currentId = getActiveWorkspaceId();
+            if (targetWsId === currentId) return;
+
+            // 1. Salva os dados atuais do DOM no workspace que está sendo deixado
+            saveAppData();
+
+            // 2. Atualiza o ID ativo
+            try {
+                localStorage.setItem(ACTIVE_WORKSPACE_KEY, targetWsId);
+            } catch (e) {}
+
+            // 3. Atualiza a aba ativa para a primeira aba da nova área
+            const workspaces = getWorkspaces();
+            const newWs = workspaces.find(w => w.id === targetWsId);
+            if (newWs && newWs.data) {
+                const order = getSavedTabOrder(newWs.data);
+                currentActiveTabId = (order && order[0]) || Object.keys(newWs.data)[0] || 'tab_leo';
+                lastActiveScriptTabId = currentActiveTabId;
+                try { localStorage.setItem(ACTIVE_TAB_KEY, currentActiveTabId); } catch (e) {}
+            }
+
+            // 4. Re-renderiza a lista da sidebar e os dados da aplicação
+            renderWorkspacesList();
+            loadAppData();
+
+            // 5. Garante que o botão Scripts da sidebar fique ativo
+            document.querySelectorAll('.sidebar-item-btn').forEach(btn => btn.classList.remove('active'));
+            const sbScriptsBtn = document.getElementById('sbScriptsBtn');
+            if (sbScriptsBtn) sbScriptsBtn.classList.add('active');
+
+            // 6. Notificação amigável
+            const wsName = newWs ? newWs.name : 'Área de Trabalho';
+            const wsIcon = (newWs && newWs.icon) || '💼';
+            showToast(`Área alterada: ${wsIcon} ${wsName}`, 'info', 2200);
+        }
+
+        function promptCreateWorkspace() {
+            document.querySelectorAll('.ws-modal-overlay').forEach(el => el.remove());
+
+            const overlay = document.createElement('div');
+            overlay.className = 'var-modal-overlay ws-modal-overlay';
+            overlay.setAttribute('data-transient', 'true');
+
+            overlay.innerHTML = `
+                <div class="var-modal-box" style="max-width: 440px; width: 92%;">
+                    <div class="vm-head">
+                        <div class="vm-title" style="font-size:15px; display:flex; align-items:center; gap:8px;">
+                            <span>📁 Nova Área de Trabalho</span>
+                        </div>
+                        <button class="vm-x" aria-label="Fechar janela" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
+                    </div>
+                    <div class="vm-body" style="padding: 16px 20px;">
+                        <div style="margin-bottom: 12px;">
+                            <label style="display:block; font-size:12px; font-weight:600; margin-bottom:5px; color:var(--text-color);">
+                                Nome da Área de Trabalho:
+                            </label>
+                            <input type="text" id="newWsNameInput" class="vm-input" placeholder="Ex: Suporte N2, Cobrança, Comercial, Pessoal..." style="width:100%; box-sizing:border-box;" autofocus>
+                        </div>
+                        <div style="margin-bottom: 14px;">
+                            <label style="display:block; font-size:12px; font-weight:600; margin-bottom:5px; color:var(--text-color);">
+                                Ícone / Emoji:
+                            </label>
+                            <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px;">
+                                ${['💼', '📁', '🚀', '🛠️', '📊', '🎧', '📞', '💡', '🏷️', '🏠'].map(em => `
+                                    <button type="button" class="btn" style="padding:4px 8px; font-size:14px;" onclick="document.getElementById('newWsIconInput').value='${em}'">${em}</button>
+                                `).join('')}
+                            </div>
+                            <input type="text" id="newWsIconInput" class="vm-input" value="💼" maxlength="4" style="width:60px; text-align:center; font-size:16px;">
+                        </div>
+                        <div style="margin-bottom: 16px;">
+                            <label style="display:block; font-size:12px; font-weight:600; margin-bottom:5px; color:var(--text-color);">
+                                Modelo Inicial:
+                            </label>
+                            <select id="newWsTemplateSelect" class="vm-input" style="width:100%;">
+                                <option value="blank">Em branco (1 aba Geral com exemplos)</option>
+                                <option value="duplicate">Duplicar área atual (com todos os scripts atuais)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="vm-foot" style="display:flex; justify-content:flex-end; gap:8px;">
+                        <button type="button" class="btn" onclick="this.closest('.var-modal-overlay').remove()">Cancelar</button>
+                        <button type="button" class="btn btn-primary" onclick="confirmCreateWorkspace(this)">Criar Área</button>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(overlay);
+            setTimeout(() => {
+                const input = document.getElementById('newWsNameInput');
+                if (input) {
+                    input.focus();
+                    input.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') confirmCreateWorkspace(input);
+                        if (e.key === 'Escape') overlay.remove();
+                    });
+                }
+            }, 50);
+        }
+
+        function confirmCreateWorkspace(triggerEl) {
+            const nameInput = document.getElementById('newWsNameInput');
+            const iconInput = document.getElementById('newWsIconInput');
+            const templateSelect = document.getElementById('newWsTemplateSelect');
+
+            const name = (nameInput && nameInput.value.trim()) || 'Nova Área';
+            const icon = (iconInput && iconInput.value.trim()) || '💼';
+            const template = (templateSelect && templateSelect.value) || 'blank';
+
+            // Salva antes os dados atuais
+            saveAppData();
+
+            const newWs = createWorkspace(name, icon, template);
+            if (triggerEl && triggerEl.closest('.var-modal-overlay')) {
+                triggerEl.closest('.var-modal-overlay').remove();
+            }
+
+            // Alterna para o novo workspace
+            switchWorkspace(newWs.id);
+            showToast(`✅ Área de trabalho "${name}" criada com sucesso!`, 'success', 2500);
+        }
+
+        function openWorkspaceOptionsModal(wsId, event) {
+            if (event) event.stopPropagation();
+            document.querySelectorAll('.ws-modal-overlay').forEach(el => el.remove());
+
+            const workspaces = getWorkspaces();
+            const ws = workspaces.find(w => w.id === wsId);
+            if (!ws) return;
+
+            const isOnlyOne = workspaces.length <= 1;
+
+            const overlay = document.createElement('div');
+            overlay.className = 'var-modal-overlay ws-modal-overlay';
+            overlay.setAttribute('data-transient', 'true');
+
+            overlay.innerHTML = `
+                <div class="var-modal-box" style="max-width: 400px; width: 92%;">
+                    <div class="vm-head">
+                        <div class="vm-title" style="font-size:15px; display:flex; align-items:center; gap:8px;">
+                            <span>⚙️ Opções da Área de Trabalho</span>
+                        </div>
+                        <button class="vm-x" aria-label="Fechar janela" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
+                    </div>
+                    <div class="vm-body" style="padding: 16px 20px;">
+                        <div style="margin-bottom: 12px;">
+                            <label style="display:block; font-size:12px; font-weight:600; margin-bottom:5px; color:var(--text-color);">
+                                Nome da Área:
+                            </label>
+                            <input type="text" id="editWsNameInput" class="vm-input" value="${escapeHtml(ws.name)}" style="width:100%; box-sizing:border-box;">
+                        </div>
+                        <div style="margin-bottom: 14px;">
+                            <label style="display:block; font-size:12px; font-weight:600; margin-bottom:5px; color:var(--text-color);">
+                                Ícone:
+                            </label>
+                            <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px;">
+                                ${['💼', '📁', '🚀', '🛠️', '📊', '🎧', '📞', '💡', '🏷️', '🏠'].map(em => `
+                                    <button type="button" class="btn" style="padding:4px 8px; font-size:14px;" onclick="document.getElementById('editWsIconInput').value='${em}'">${em}</button>
+                                `).join('')}
+                            </div>
+                            <input type="text" id="editWsIconInput" class="vm-input" value="${escapeHtml(ws.icon || '💼')}" maxlength="4" style="width:60px; text-align:center; font-size:16px;">
+                        </div>
+                        <div style="margin-top: 16px; border-top: 1px solid var(--border-color); padding-top: 12px; display:flex; flex-direction:column; gap:8px;">
+                            <button type="button" class="btn" style="width:100%; text-align:left; display:flex; align-items:center; gap:8px;" onclick="handleDuplicateWsAction('${escapeHtml(ws.id)}', this)">
+                                <span>📋 Duplicar esta Área de Trabalho</span>
+                            </button>
+                            ${!isOnlyOne ? `
+                                <button type="button" class="btn" style="width:100%; text-align:left; display:flex; align-items:center; gap:8px; color:#ff453a; border-color:rgba(255,69,58,0.3);" onclick="handleDeleteWsAction('${escapeHtml(ws.id)}', this)">
+                                    <span>🗑️ Excluir esta Área de Trabalho</span>
+                                </button>
+                            ` : `
+                                <div style="font-size:11px; opacity:0.65; color:var(--text-muted); padding:4px 0;">
+                                    ⚠️ Você não pode excluir a única área de trabalho restante.
+                                </div>
+                            `}
+                        </div>
+                    </div>
+                    <div class="vm-foot" style="display:flex; justify-content:flex-end; gap:8px;">
+                        <button type="button" class="btn" onclick="this.closest('.var-modal-overlay').remove()">Cancelar</button>
+                        <button type="button" class="btn btn-primary" onclick="confirmSaveWsOptions('${escapeHtml(ws.id)}', this)">Salvar Alterações</button>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(overlay);
+        }
+
+        function confirmSaveWsOptions(wsId, triggerEl) {
+            const nameInput = document.getElementById('editWsNameInput');
+            const iconInput = document.getElementById('editWsIconInput');
+            const newName = nameInput ? nameInput.value.trim() : '';
+            const newIcon = iconInput ? iconInput.value.trim() : '';
+
+            if (newName) {
+                renameWorkspace(wsId, newName, newIcon);
+                renderWorkspacesList();
+                showToast('Área de trabalho atualizada!', 'success', 2000);
+            }
+            if (triggerEl && triggerEl.closest('.var-modal-overlay')) {
+                triggerEl.closest('.var-modal-overlay').remove();
+            }
+        }
+
+        function handleDuplicateWsAction(wsId, triggerEl) {
+            const workspaces = getWorkspaces();
+            const ws = workspaces.find(w => w.id === wsId);
+            if (!ws) return;
+
+            saveAppData();
+
+            const newWs = createWorkspace((ws.name || 'Área') + ' (Cópia)', ws.icon || '📁', 'duplicate');
+            if (triggerEl && triggerEl.closest('.var-modal-overlay')) {
+                triggerEl.closest('.var-modal-overlay').remove();
+            }
+            switchWorkspace(newWs.id);
+            showToast(`Área duplicada: "${newWs.name}"!`, 'success', 2200);
+        }
+
+        function handleDeleteWsAction(wsId, triggerEl) {
+            const workspaces = getWorkspaces();
+            const ws = workspaces.find(w => w.id === wsId);
+            if (!ws) return;
+
+            if (!confirm(`Tem certeza que deseja excluir a área de trabalho "${ws.name}"?\nTodos os scripts e abas dela serão apagados permanentemente.`)) {
+                return;
+            }
+
+            const res = deleteWorkspace(wsId);
+            if (res.success) {
+                if (triggerEl && triggerEl.closest('.var-modal-overlay')) {
+                    triggerEl.closest('.var-modal-overlay').remove();
+                }
+                renderWorkspacesList();
+                loadAppData();
+                showToast(`Área de trabalho excluída com sucesso!`, 'info', 2200);
+            } else {
+                alert('Não foi possível excluir esta área.');
+            }
+        }
+
         const THEME_KEY = 'scripts_theme';
         const VARS_KEY = 'scripts_custom_defaults_v4';
         const CLIENTS_KEY = 'scripts_clients_alarms_v4';
@@ -4833,11 +5732,14 @@
         function getSavedTabOrder(data) {
             const currentData = data || getAppData();
             const validIds = Object.keys(currentData);
-            let savedOrder = [];
-            try {
-                const raw = localStorage.getItem(TAB_ORDER_KEY);
-                if (raw) savedOrder = JSON.parse(raw);
-            } catch (e) {}
+            const activeWs = getActiveWorkspace();
+            let savedOrder = activeWs ? activeWs.tabOrder : [];
+            if (!Array.isArray(savedOrder) || savedOrder.length === 0) {
+                try {
+                    const raw = localStorage.getItem(TAB_ORDER_KEY);
+                    if (raw) savedOrder = JSON.parse(raw);
+                } catch (e) {}
+            }
 
             const result = [];
             if (Array.isArray(savedOrder)) {
@@ -4854,6 +5756,13 @@
         function saveTabOrder(orderArray) {
             if (!Array.isArray(orderArray)) return;
             try {
+                const workspaces = getWorkspaces();
+                const activeId = getActiveWorkspaceId();
+                const idx = workspaces.findIndex(w => w.id === activeId);
+                if (idx !== -1) {
+                    workspaces[idx].tabOrder = orderArray;
+                    setWorkspaces(workspaces);
+                }
                 localStorage.setItem(TAB_ORDER_KEY, JSON.stringify(orderArray));
                 markLocalChange();
             } catch (e) {}
@@ -4941,12 +5850,20 @@
         function getAppData() {
             let data = null;
             try {
-                const saved = localStorage.getItem(STORAGE_KEY);
-                if (saved) {
-                    const parsed = JSON.parse(saved);
-                    if (isValidData(parsed)) data = parsed;
+                const activeWs = getActiveWorkspace();
+                if (activeWs && activeWs.data && isValidData(activeWs.data)) {
+                    data = activeWs.data;
                 }
-            } catch (e) { /* usa o padrão */ }
+            } catch (e) {}
+            if (!data) {
+                try {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved) {
+                        const parsed = JSON.parse(saved);
+                        if (isValidData(parsed)) data = parsed;
+                    }
+                } catch (e) { /* usa o padrão */ }
+            }
             if (!data) {
                 try { data = JSON.parse(JSON.stringify(defaultData)); } catch (e) { data = defaultData; }
             }
@@ -4955,7 +5872,17 @@
         }
 
         function setAppData(d) {
-            try { normalizeData(d); localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); }
+            try {
+                normalizeData(d);
+                const workspaces = getWorkspaces();
+                const activeId = getActiveWorkspaceId();
+                const idx = workspaces.findIndex(w => w.id === activeId);
+                if (idx !== -1) {
+                    workspaces[idx].data = d;
+                    setWorkspaces(workspaces);
+                }
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
+            }
             catch (e) { alert('Não foi possível salvar no navegador. Exporte um backup.'); }
         }
 
@@ -5075,10 +6002,13 @@
             if (!isOpen) {
                 const rect = btn.getBoundingClientRect();
                 popover.style.top = (rect.bottom + 8) + 'px';
-                let left = rect.left;
-                if (left + 320 > window.innerWidth) left = window.innerWidth - 330;
-                popover.style.left = Math.max(10, left) + 'px';
-                popover.style.right = 'auto';
+                if (rect.right > window.innerWidth / 2) {
+                    popover.style.right = Math.max(12, window.innerWidth - rect.right) + 'px';
+                    popover.style.left = 'auto';
+                } else {
+                    popover.style.left = Math.max(12, rect.left) + 'px';
+                    popover.style.right = 'auto';
+                }
                 renderRecentsDropdownList();
                 popover.classList.add('show');
             }
@@ -5463,7 +6393,40 @@
                     </div>
                     <div class="vm-body" style="padding: 16px 20px; overflow-y: auto;">
                         
-                                                <!-- Versão 2.7.0 Oficial -->
+                                                                                                <!-- Versão 2.9.0 Oficial -->
+                        <div class="changelog-version-card" style="border-color: #007aff;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>🚀 Versão 2.9.0</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">28/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>📂 Áreas de Trabalho Estilo Trello:</strong> Crie, organize e alterne instantaneamente entre múltiplas áreas de trabalho personalizadas (ex: <em>Suporte Principal</em>, <em>Atendimento N2</em>, <em>Comercial</em>, <em>Cobrança</em> ou <em>Projetos</em>) na barra lateral esquerda. Cada área mantém suas próprias abas de categorias, colunas e cards de forma 100% isolada.</li>
+                                <li><strong>➕ Criação e Gestão Completa de Áreas:</strong> Botão dedicado <code>+</code> para criar novas áreas a partir de um modelo em branco ou duplicando todos os scripts da área atual. Menu de opções rápido (<code>⋯</code>) para renomear, trocar ícone, duplicar ou excluir áreas com segurança.</li>
+                                <li><strong>🎯 Cabeçalho Enxuto & Sem Redundância:</strong> Remoção definitiva do título duplicado "Central de Scripts" do topo da tela, centralizando a identidade da marca com elegância e exclusividade na barra lateral esquerda da aplicação. O campo de busca agora alinha-se harmoniosamente à esquerda do cabeçalho.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versão 2.8.0 Oficial -->
+                        <div class="changelog-version-card" style="border-color: #007aff;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>🍎 Versão 2.8.0</span>
+                                    <span class="changelog-badge" style="background:#007aff; color:#fff;">Versão Atual</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">28/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>🍎 Barra Lateral Apple HIG:</strong> Nova barra lateral vertical esquerda expansiva (~210px) no padrão de design Apple (macOS / iPadOS), com acabamento em vidro translúcido (frosted glass), ícones compactos refinados e rótulos textuais elegantes ao lado de cada ferramenta para navegação clara e ágil.</li>
+                                <li><strong>⚡ Acesso Rápido a Ferramentas no Trilho Lateral:</strong> Ícones dedicados no topo da barra lateral para <em>Scripts (💬)</em>, <em>Chamado OS (📝)</em>, <em>Teste Técnico (🧪)</em>, <em>Valores & Equipamentos (🔌)</em> e <em>Dock Flutuante (🪟)</em>.</li>
+                                <li><strong>🎛️ Controles de Sistema na Base:</strong> Alarme de Clientes (🔔), Alternador Rápido de Temas (Cinza 🌘, OLED 🌑, Claro ☀️), Modo Atendimento (🎧), Modo Edição (✏️) e Foto/Avatar do Atendente com status de sincronização da nuvem.</li>
+                                <li><strong>📐 Descompressão do Topo (Fim da Linha 2):</strong> A antiga linha de atalhos secundária foi completamente eliminada da parte superior da tela. As ações de filtro (⭐ Favoritos, 🎨 Cores ▾, 🕒 Recentes ▾ e ↩️ Desfazer) foram incorporadas elegantemente ao cabeçalho ao lado do campo de busca, liberando espaço vertical valioso para os scripts.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versão 2.7.0 Oficial -->
                         <div class="changelog-version-card" style="border-color: #007aff;">
                             <div class="changelog-version-header">
                                 <div class="changelog-version-title">
@@ -7577,10 +8540,13 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             if (!isOpen) {
                 const rect = btn.getBoundingClientRect();
                 popover.style.top = (rect.bottom + 8) + 'px';
-                let left = rect.left;
-                if (left + 280 > window.innerWidth) left = window.innerWidth - 290;
-                popover.style.left = Math.max(10, left) + 'px';
-                popover.style.right = 'auto';
+                if (rect.right > window.innerWidth / 2) {
+                    popover.style.right = Math.max(12, window.innerWidth - rect.right) + 'px';
+                    popover.style.left = 'auto';
+                } else {
+                    popover.style.left = Math.max(12, rect.left) + 'px';
+                    popover.style.right = 'auto';
+                }
                 popover.classList.add('show');
             }
         }
@@ -7651,6 +8617,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         }
 
         function loadAppData() {
+            renderWorkspacesList();
             const data = getAppData();
             const tabsBar = document.getElementById('tabsBar');
             const contentContainer = document.getElementById('contentContainer');
@@ -7674,21 +8641,8 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                 currentActiveTabId = tabIds[0] || 'tab_leo';
             }
 
-            // 1. Inserir Aba Permanente de Clientes e Alarmes primeiro com ARIA
+            // 1. Painel Permanente de Clientes e Alarmes (acessível exclusivamente via menu lateral)
             const isClientsActive = clientsTabId === currentActiveTabId;
-            const clientsTabEl = document.createElement('div');
-            clientsTabEl.className = `tab ${isClientsActive ? 'active' : ''}`;
-            clientsTabEl.setAttribute('data-tabid', clientsTabId);
-            clientsTabEl.id = 'tab-btn-' + clientsTabId;
-            clientsTabEl.setAttribute('role', 'tab');
-            clientsTabEl.setAttribute('aria-selected', isClientsActive ? 'true' : 'false');
-            clientsTabEl.setAttribute('aria-controls', clientsTabId);
-            clientsTabEl.setAttribute('tabindex', isClientsActive ? '0' : '-1');
-            clientsTabEl.innerHTML = `<span class="tab-title">🔔 Clientes & Alarmes</span>`;
-            clientsTabEl.onclick = () => switchTab(clientsTabId);
-            clientsTabEl.onkeydown = (e) => handleTabKeyNav(e, clientsTabId);
-            tabsBar.appendChild(clientsTabEl);
-
             const clientsContentEl = document.createElement('div');
             clientsContentEl.id = clientsTabId;
             clientsContentEl.className = `tab-content ${isClientsActive ? 'active' : ''}`;
@@ -8318,8 +9272,12 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             scheduleCompanionRefresh();
         }
 
+        let lastActiveScriptTabId = null;
         function switchTab(tabId) {
             currentActiveTabId = tabId;
+            if (tabId !== 'tab_clients_alarm') {
+                lastActiveScriptTabId = tabId;
+            }
             try { localStorage.setItem(ACTIVE_TAB_KEY, tabId); } catch (e) {}
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -8337,6 +9295,11 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             
             const targetContent = document.getElementById(tabId);
             if(targetContent) targetContent.classList.add('active');
+
+            const sbScriptsBtn = document.getElementById('sbScriptsBtn');
+            const sbAlarmBtn = document.getElementById('sbAlarmBtn');
+            if (sbScriptsBtn) sbScriptsBtn.classList.toggle('active', tabId !== 'tab_clients_alarm');
+            if (sbAlarmBtn) sbAlarmBtn.classList.toggle('active', tabId === 'tab_clients_alarm');
             if (isEditing && targetContent) targetContent.querySelectorAll('.item-textarea').forEach(autoGrow);
 
             if (companion.surface) {
@@ -9424,11 +10387,34 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                 }
             }
 
+            const sbEditBtn = document.getElementById('sbEditBtn');
+            if (sbEditBtn) {
+                sbEditBtn.classList.toggle('active', isEditing);
+                sbEditBtn.innerHTML = `<span class="sidebar-item-icon">✏️</span><span class="sidebar-item-label">${isEditing ? 'Edição: Ativa' : 'Modo Edição'}</span>`;
+                sbEditBtn.setAttribute('title', isEditing ? 'Edição: Ativada ✏️' : 'Ativar Modo Edição');
+            }
+
             loadAppData();
             updateStorageIndicator();
             updateUndoButton();
             initAlarmConfigUI();
         }
+
+        
+        /* Alternador sequencial de temas para o botão da Barra Lateral */
+        function cycleAppTheme() {
+            const current = localStorage.getItem(THEME_KEY) || 'dark';
+            let next = 'dark';
+            if (current === 'dark') next = 'oled';
+            else if (current === 'oled') next = 'light';
+            else if (current === 'light') next = 'dark';
+            changeTheme(next);
+            if (typeof showToast === 'function') {
+                const names = { dark: 'Cinza (Padrão)', oled: 'Escuro OLED', light: 'Modo Claro' };
+                showToast('Tema alterado para: ' + (names[next] || next), 'info');
+            }
+        }
+        window.cycleAppTheme = cycleAppTheme;
 
         function changeTheme(theme, skipSync = false) {
             const current = (theme === 'oled' || theme === 'light') ? theme : 'dark';
@@ -9446,13 +10432,21 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             }
             syncCompanionTheme();
 
-            // Atualiza botões segmentados de tema
+            // Atualiza botões de tema
             const btnDark = document.getElementById('themeBtnDark');
             const btnOled = document.getElementById('themeBtnOled');
             const btnLight = document.getElementById('themeBtnLight');
             if (btnDark) btnDark.classList.toggle('on', current === 'dark');
             if (btnOled) btnOled.classList.toggle('on', current === 'oled');
             if (btnLight) btnLight.classList.toggle('on', current === 'light');
+
+            const sbThemeBtn = document.getElementById('sbThemeBtn');
+            if (sbThemeBtn) {
+                const icons = { dark: '🌘', oled: '🌑', light: '☀️' };
+                const names = { dark: 'Cinza', oled: 'OLED', light: 'Claro' };
+                sbThemeBtn.innerHTML = `<span class="sidebar-item-icon">${icons[current] || '🌘'}</span><span class="sidebar-item-label">Tema: ${names[current] || current}</span>`;
+                sbThemeBtn.setAttribute('title', 'Alternar Tema Visual (Cinza / OLED / Claro)');
+            }
         }
 
         function syncCompanionTheme() {
@@ -11523,6 +12517,40 @@ Clique para abrir Minha Conta e Sincronização`;
 
                 if (adminBtn) adminBtn.style.display = 'none';
             }
+
+            const sbUserBtn = document.getElementById('sidebarUserAvatarBtn');
+            if (sbUserBtn) {
+                if (currentUser) {
+                    const isAdmin = typeof isCurrentUserAdmin === 'function' ? isCurrentUserAdmin() : false;
+                    const photo = (currentUserProfile && currentUserProfile.photoURL) || currentUser.photoURL || '';
+                    const fullName = (currentUserProfile && currentUserProfile.displayName) || currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : 'Usuário');
+                    const firstName = fullName.split(' ')[0] || 'Usuário';
+                    const dotClass = isCloudSyncing ? 'syncing' : 'online';
+                    const avatarHtml = photo
+                        ? `<div class="auth-avatar-wrapper"><img src="${safeImageUrl(photo)}" class="sidebar-avatar-img" alt="Foto" referrerpolicy="no-referrer"><span class="auth-status-dot ${dotClass}" title="Nuvem: Conectado"></span></div>`
+                        : `<div class="auth-avatar-wrapper"><span class="sidebar-avatar-initial">${esc(firstName[0].toUpperCase())}</span><span class="auth-status-dot ${dotClass}" title="Nuvem: Conectado"></span></div>`;
+                    sbUserBtn.innerHTML = `
+                        ${avatarHtml}
+                        <div class="sidebar-user-info">
+                            <span class="sidebar-user-name" title="${esc(fullName)}">${esc(firstName)}</span>
+                            <span class="sidebar-user-sub">${isAdmin ? 'Admin' : 'Conectado'}</span>
+                        </div>
+                    `;
+                    sbUserBtn.title = `Conectado como: ${currentUser.email}\nClique para abrir Minha Conta e Configurações`;
+                } else {
+                    sbUserBtn.innerHTML = `
+                        <div class="auth-avatar-wrapper">
+                            <span class="sidebar-avatar-initial" style="background:#4b5563;">👤</span>
+                            <span class="auth-status-dot offline" title="Offline"></span>
+                        </div>
+                        <div class="sidebar-user-info">
+                            <span class="sidebar-user-name">Modo Offline</span>
+                            <span class="sidebar-user-sub">Conta & Config</span>
+                        </div>
+                    `;
+                    sbUserBtn.title = 'Modo Offline (Dados salvos localmente)\nClique para abrir Minha Conta e Configurações';
+                }
+            }
         }
 
         async function handleAuthStateChanged(user) {
@@ -13097,6 +14125,13 @@ service cloud.firestore {
             if (btn) btn.classList.toggle('active', isModoAtendimento);
             if (statusText) statusText.textContent = isModoAtendimento ? 'Ativado 🎧' : 'Desativado';
 
+            const sbAtendimentoBtn = document.getElementById('sbAtendimentoBtn');
+            if (sbAtendimentoBtn) {
+                sbAtendimentoBtn.classList.toggle('active', isModoAtendimento);
+                sbAtendimentoBtn.innerHTML = `<span class="sidebar-item-icon">🎧</span><span class="sidebar-item-label">${isModoAtendimento ? 'Atendimento Ativo' : 'Modo Atendimento'}</span>`;
+                sbAtendimentoBtn.setAttribute('title', isModoAtendimento ? 'Atendimento: Ativo 🎧' : 'Modo Atendimento (Foco Limpo)');
+            }
+
             // Se o modo edição estiver ativo ao entrar em atendimento, desliga a edição por segurança
             if (isModoAtendimento && isEditing) {
                 toggleEditMode();
@@ -13125,10 +14160,10 @@ service cloud.firestore {
             if (!isOpen) {
                 const rect = btn.getBoundingClientRect();
                 popover.style.top = (rect.bottom + 8) + 'px';
-                let left = rect.left - 80;
-                if (left + 260 > window.innerWidth) left = window.innerWidth - 270;
-                popover.style.left = Math.max(10, left) + 'px';
-                popover.style.right = 'auto';
+                // Ancora à margem direita da tela garantindo que o menu nunca ultrapasse a viewport
+                const rightOffset = Math.max(12, window.innerWidth - rect.right);
+                popover.style.right = rightOffset + 'px';
+                popover.style.left = 'auto';
                 popover.classList.add('show');
             }
         }
