@@ -3275,10 +3275,10 @@
         .header-actions {
             display: flex !important;
             align-items: center !important;
-            justify-content: flex-end !important;
+            justify-content: flex-start !important;
             gap: 8px !important;
             flex-wrap: nowrap !important;
-            flex: 1 1 auto;
+            flex: 0 1 auto;
         }
 
         .header-capsule {
@@ -4090,10 +4090,10 @@
         }
 
     
-        /* ===== Ajuste de Alinhamento da Busca no Cabeçalho sem Marca Duplicada ===== */
+        /* ===== Ajuste de Alinhamento: Botões na Esquerda e Busca na Direita ===== */
         .header-search-wrap {
-            margin-left: 0 !important;
-            margin-right: auto !important;
+            margin-left: auto !important;
+            margin-right: 0 !important;
         }
 
         /* ===== Áreas de Trabalho Estilo Trello na Barra Lateral ===== */
@@ -4272,7 +4272,7 @@
         <!-- Grupo Superior: Marca e Módulos Principais -->
         <div class="sidebar-group sidebar-top">
             <div class="sidebar-top-bar">
-                <div class="sidebar-brand-card" onclick="openChangelogModal()" role="button" tabindex="0" title="Central de Scripts v2.9.7 - Clique para ver o Histórico e Novidades">
+                <div class="sidebar-brand-card" onclick="openChangelogModal()" role="button" tabindex="0" title="Central de Scripts v2.9.9 - Clique para ver o Histórico e Novidades">
                     <svg class="header-logo-icon" width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:8px; box-shadow:0 2px 8px rgba(0,122,255,0.35); flex-shrink:0;">
                         <defs>
                             <linearGradient id="appleLogoGradSidebar" x1="0" y1="0" x2="1" y2="1">
@@ -4287,7 +4287,7 @@
                     </svg>
                     <div class="sidebar-brand-info">
                         <span class="sidebar-brand-title">Central de Scripts</span>
-                        <span class="sidebar-brand-badge">v2.9.7</span>
+                        <span class="sidebar-brand-badge">v2.9.9</span>
                     </div>
                 </div>
                 <button type="button" class="sidebar-collapse-toggle-btn" id="sidebarCollapseToggleBtn" onclick="toggleSidebarCollapse()" title="Recolher Barra Lateral (Ctrl+B)" aria-label="Recolher Barra Lateral">
@@ -4382,20 +4382,7 @@
     <!-- 2. ÁREA PRINCIPAL DA APLICAÇÃO (CONTEÚDO À DIREITA DA SIDEBAR) -->
     <div class="app-main-area" id="appMainArea">
         <header style="position: relative; z-index: 100000;">
-<!-- Campo de Busca Centralizado Spotlight -->
-            <div class="header-search-wrap">
-                <svg class="search-icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-                <input type="search" class="search-input" id="searchInput" placeholder="Buscar script ou tag:whats..." aria-label="Pesquisar scripts ou filtrar por tags" oninput="filterScripts(this.value); updateSearchFilterStatusBar();">
-                <kbd class="search-kbd" onclick="openGlobalFindReplaceModal()" title="Localizar e Substituir em Massa (Ctrl+K)">Ctrl K</kbd>
-            </div>
-
-            <input type="file" id="importFile" style="display: none" accept=".json" onchange="importScripts(event)">
-            <input type="file" id="userscriptFile" style="display: none" accept=".js,.user.js,.txt" multiple="" onchange="importUserscripts(event)">
-
-            <!-- Ações Rápidas de Filtro e Ferramentas no Topo -->
+            <!-- 1. Ações Rápidas de Filtro e Ferramentas na Esquerda -->
             <div class="header-actions">
                 <button class="shortcut-pill shortcut-pill-filter" id="filterFavsBtn" onclick="toggleFavoriteFilter(this)" title="Filtrar somente cards favoritos (⭐)">
                     ⭐ Favoritos
@@ -4412,6 +4399,19 @@
                 <button class="shortcut-pill shortcut-pill-tool" id="companionHeaderBtn" onclick="toggleCompanion()" title="Docker / Área de Transferência estilo Win+V (Atalho: Alt+V ou Alt+Shift+P)">
                     🪟 Docker (Alt+V)
                 </button>
+            </div>
+
+            <input type="file" id="importFile" style="display: none" accept=".json" onchange="importScripts(event)">
+            <input type="file" id="userscriptFile" style="display: none" accept=".js,.user.js,.txt" multiple="" onchange="importUserscripts(event)">
+
+            <!-- 2. Campo de Busca Posicionado na Direita -->
+            <div class="header-search-wrap">
+                <svg class="search-icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="search" class="search-input" id="searchInput" placeholder="Buscar script ou tag:whats..." aria-label="Pesquisar scripts ou filtrar por tags" oninput="filterScripts(this.value); updateSearchFilterStatusBar();">
+                <kbd class="search-kbd" onclick="openGlobalFindReplaceModal()" title="Localizar e Substituir em Massa (Ctrl+K)">Ctrl K</kbd>
             </div>
 
             <!-- Menu Dropdown: Filtro por Cores -->
@@ -4520,7 +4520,7 @@
             return String(str).replace(/([ #;&,.+*~':"!^$\[\]()=>|\/@])/g, '\\$1');
         }
 
-        const APP_VERSION = '2.9.7';
+        const APP_VERSION = '2.9.9';
         const UPDATE_MANIFEST_URL = 'https://firestrykerfx.github.io/version.json';
         const UPDATE_CHECK_INTERVAL = 6 * 60 * 60 * 1000;
                 /* ===== Notificações Toasts Flutuantes Modernas ===== */
@@ -7223,7 +7223,7 @@
                             </div>
                             <ul class="changelog-list">
                                 <li><strong>🔄 Arraste de Abas entre Áreas de Trabalho (Drag & Drop):</strong> Agora você pode mover qualquer aba de scripts (ex: <em>Webchat</em>, <em>Telefone</em>, <em>Script Visita</em>, etc.) de uma Área de Trabalho para outra apenas arrastando a aba e soltando sobre o nome ou ícone da área desejada na barra lateral esquerda. Todos os grupos, colunas e cards são transferidos instantaneamente e salvos de forma automática.</li>
-                                <li><strong>🧹 Acesso ao Changelog Exclusivo na Versão & Cabeçalho Despoluído:</strong> Conforme solicitado, o acesso ao histórico e novidades foi desvinculado de menus secundários e centralizado exclusivamente no clique sobre o badge de versão (<code>v2.9.7</code>) na marca da barra lateral esquerda. O botão redundante <code>⋯ Mais ▾</code> foi removido do topo para deixar o cabeçalho 100% limpo e focado no atendimento.</li>
+                                <li><strong>🧹 Acesso ao Changelog Exclusivo na Versão & Cabeçalho Despoluído:</strong> Conforme solicitado, o acesso ao histórico e novidades foi desvinculado de menus secundários e centralizado exclusivamente no clique sobre o badge de versão (<code>v2.9.9</code>) na marca da barra lateral esquerda. O botão redundante <code>⋯ Mais ▾</code> foi removido do topo para deixar o cabeçalho 100% limpo e focado no atendimento.</li>
                             </ul>
                         </div>
 
@@ -9520,8 +9520,10 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 
                 // Permite arrastar abas a qualquer momento (para mover entre Áreas de Trabalho ou reordenar em edição)
                 tabEl.setAttribute('draggable', 'true');
+                tabEl.title = `${tabInfo.name} — Clique para abrir ou arraste até uma Área de Trabalho na barra lateral para transferir a aba inteira`;
                 tabEl.addEventListener('dragstart', (e) => {
                     draggedTabId = tabId;
+                    draggedCard = null;
                     try {
                         e.dataTransfer.setData('text/plain', tabId);
                         e.dataTransfer.setData('application/x-script-tab', tabId);
@@ -9568,6 +9570,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                 const titleSpan = document.createElement('span');
                 titleSpan.className = 'tab-title';
                 titleSpan.textContent = tabInfo.name;
+                titleSpan.style.pointerEvents = 'none'; // Garante que arrastar o texto da aba acione o dragstart do elemento pai .tab
                 tabEl.appendChild(titleSpan);
 
                 // Botão de mover para a direita (alternativa sem arrastar)
@@ -9582,7 +9585,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                     tabEl.appendChild(btnMoveRight);
                 }
 
-                [['✏️', 'Renomear', () => renameTab(tabId)], ['❌', 'Excluir', () => deleteTab(tabId)]].forEach(([icon, title, fn]) => {
+                [['📦', 'Mover aba para outra Área de Trabalho', () => openMoveTabToWorkspaceModal(tabId)], ['✏️', 'Renomear', () => renameTab(tabId)], ['❌', 'Excluir', () => deleteTab(tabId)]].forEach(([icon, title, fn]) => {
                     const b = document.createElement('button');
                     b.className = 'tab-actions-btn';
                     b.style.display = actionDisplay;
@@ -10736,6 +10739,52 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             updateUndoButton();
             initAlarmConfigUI();
             syncToCloudDebounced();
+        }
+
+        function openMoveTabToWorkspaceModal(tabId) {
+            const workspaces = getWorkspaces();
+            if (workspaces.length <= 1) {
+                alert('Crie primeiro outra Área de Trabalho (botão + em "Áreas de Trabalho" na barra lateral) para poder transferir abas entre elas.');
+                return;
+            }
+            const currentWsId = getActiveWorkspaceId();
+            const data = getAppData();
+            const tabInfo = data[tabId];
+            if (!tabInfo) return;
+
+            const overlay = document.createElement('div');
+            overlay.className = 'var-modal-overlay';
+            overlay.setAttribute('data-transient', 'true');
+
+            const optionsHtml = workspaces
+                .filter(w => w.id !== currentWsId)
+                .map(w => `<option value="${escapeHtml(w.id)}">${escapeHtml((w.icon || '💼') + ' ' + w.name)}</option>`)
+                .join('');
+
+            overlay.innerHTML = `
+                <div class="var-modal-box" style="width: 390px;">
+                    <div class="var-modal-title">📦 Mover Aba Inteira para Outra Área</div>
+                    <div class="var-modal-desc">Transferir a aba <strong>${escapeHtml(tabInfo.name)}</strong> (com todas as suas colunas e scripts) para:</div>
+                    <select id="moveTabTargetWsSelect" class="theme-select" style="width:100%; box-sizing:border-box; margin:10px 0;">
+                        ${optionsHtml}
+                    </select>
+                    <div class="var-modal-btns">
+                        <button class="var-modal-btn var-modal-btn-cancel" id="cancelMoveTabWsBtn">Cancelar</button>
+                        <button class="var-modal-btn var-modal-btn-confirm" id="confirmMoveTabWsBtn">Mover Aba</button>
+                    </div>
+                </div>
+            `;
+
+            overlay.querySelector('#cancelMoveTabWsBtn').onclick = () => overlay.remove();
+            overlay.querySelector('#confirmMoveTabWsBtn').onclick = () => {
+                const targetWsId = overlay.querySelector('#moveTabTargetWsSelect').value;
+                overlay.remove();
+                if (targetWsId && targetWsId !== currentWsId) {
+                    moveTabToWorkspace(tabId, currentWsId, targetWsId);
+                }
+            };
+            overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+            document.body.appendChild(overlay);
         }
 
         function renameTab(tabId) {
@@ -14089,8 +14138,9 @@ console.log('Userscript carregado');`;
         function showConflictModal({ localData, remoteData }) {
             const remoteDate = remoteData.updatedAt ? new Date(remoteData.updatedAt).toLocaleString() : 'Data não informada';
             const remoteDevice = remoteData.deviceId ? `Dispositivo: ${remoteData.deviceId}` : 'Dispositivo remoto';
-            const remoteTabs = Object.keys(remoteData.scripts || {}).length;
-            const localTabs = Object.keys(localData.scripts || {}).length;
+            
+            const remoteStats = getWorkspacesUnifiedStats(remoteData.workspaces, remoteData.scripts, remoteData.tabOrder);
+            const localStats = getWorkspacesUnifiedStats(localData.workspaces, localData.scripts, localData.tabOrder);
 
             const contentHtml = `
                 <div style="font-size:12.5px; line-height:1.5;">
@@ -14100,7 +14150,8 @@ console.log('Userscript carregado');`;
                     <div style="background:rgba(37,99,235,0.08); border:1.5px solid #2563eb; border-radius:10px; padding:10px 12px;">
                         <div style="font-size:11px; font-weight:700; color:#2563eb; text-transform:uppercase;">☁️ Versão da Nuvem (Mais recente)</div>
                         <div style="font-size:12px; margin-top:4px;">
-                            • ${remoteTabs} aba(s) de scripts<br>
+                            • <strong>${remoteStats.totalWorkspaces}</strong> área(s) de trabalho<br>
+                            • <strong>${remoteStats.totalTabs}</strong> abas &nbsp;|&nbsp; <strong>${remoteStats.totalScripts}</strong> scripts<br>
                             • Atualizado em: <strong>${remoteDate}</strong><br>
                             <small style="opacity:0.8;">${remoteDevice}</small>
                         </div>
@@ -14108,7 +14159,8 @@ console.log('Userscript carregado');`;
                     <div style="background:var(--tab-bg); border:1px solid var(--border-color); border-radius:10px; padding:10px 12px;">
                         <div style="font-size:11px; font-weight:700; opacity:0.8; text-transform:uppercase;">💻 Versão deste Computador</div>
                         <div style="font-size:12px; margin-top:4px;">
-                            • ${localTabs} aba(s) de scripts<br>
+                            • <strong>${localStats.totalWorkspaces}</strong> área(s) de trabalho<br>
+                            • <strong>${localStats.totalTabs}</strong> abas &nbsp;|&nbsp; <strong>${localStats.totalScripts}</strong> scripts<br>
                             • Alterações locais não sincronizadas
                         </div>
                     </div>
@@ -14142,6 +14194,8 @@ console.log('Userscript carregado');`;
                 acceptBtn.onclick = () => {
                     modal.closeModal();
                     applyCloudDataToLocal(remoteData);
+                    renderWorkspacesList();
+                    loadAppData();
                     if (typeof showToast === 'function') showToast('Versão da nuvem aplicada com sucesso!', 'success');
                 };
             }
@@ -14567,8 +14621,13 @@ console.log('Userscript carregado');`;
                             </button>
 
                             <!-- Gerenciador de Userscripts Integrado -->
-                            <button type="button" class="io-btn hide-on-atendimento" id="userscriptAccountBtn" style="background:#8b5cf6; color:#fff; justify-content:center; padding:10px; font-weight:600; font-size:13px; gap:8px;" onclick="this.closest('.var-modal-overlay').remove(); openUserscriptManager();">
+                            <button type="button" class="io-btn" id="userscriptAccountBtn" style="background:#8b5cf6; color:#fff; justify-content:center; padding:10px; font-weight:600; font-size:13px; gap:8px;" onclick="this.closest('.var-modal-overlay').remove(); openUserscriptManager();">
                                 🧩 Gerenciador de Userscripts
+                            </button>
+
+                            <!-- Histórico e Novidades Integrado -->
+                            <button type="button" class="io-btn" id="changelogAccountBtn" style="background:#3b82f6; color:#fff; justify-content:center; padding:10px; font-weight:600; font-size:13px; gap:8px;" onclick="this.closest('.var-modal-overlay').remove(); openChangelogModal();">
+                                📜 Histórico e Novidades (v${APP_VERSION})
                             </button>
 
                             <!-- Botão Salvar HTML sempre acessível para todos -->
@@ -14642,66 +14701,140 @@ console.log('Userscript carregado');`;
             document.body.appendChild(overlay);
         }
 
-        /* Modal com Prévia antes de Salvar na Nuvem */
-        function openCloudUploadPreviewModal() {
-            const data = getAppData();
-            const tabIds = Object.keys(data);
-            let totalCards = 0;
-            const tabSummary = [];
+        /* Calcula resumo consolidado de todas as Áreas de Trabalho, Abas e Scripts */
+        function getWorkspacesUnifiedStats(customWorkspaces = null, customScripts = null, customTabOrder = null) {
+            let list = Array.isArray(customWorkspaces) && customWorkspaces.length > 0 ? customWorkspaces : null;
 
-            tabIds.forEach(id => {
-                const tab = data[id];
-                let count = 0;
-                if (Array.isArray(tab.groups)) {
-                    tab.groups.forEach(g => {
-                        if (Array.isArray(g.items)) count += g.items.length;
-                    });
-                }
-                totalCards += count;
-                tabSummary.push({ name: tab.name, count });
+            if (!list && customScripts && typeof customScripts === 'object') {
+                const order = Array.isArray(customTabOrder) ? customTabOrder : Object.keys(customScripts);
+                list = [{
+                    id: 'ws_default',
+                    name: 'Área Principal',
+                    icon: '💼',
+                    data: customScripts,
+                    tabOrder: order
+                }];
+            }
+
+            if (!list) {
+                list = getWorkspaces();
+            }
+
+            let totalWorkspaces = list.length;
+            let totalTabs = 0;
+            let totalScripts = 0;
+            const wsSummary = [];
+
+            list.forEach(ws => {
+                const wsIcon = ws.icon || '💼';
+                const wsName = ws.name || 'Área';
+                const data = ws.data || {};
+                const validIds = Object.keys(data);
+                let order = (Array.isArray(ws.tabOrder) && ws.tabOrder.length > 0)
+                    ? ws.tabOrder.filter(id => validIds.includes(id))
+                    : validIds;
+                validIds.forEach(id => { if (!order.includes(id)) order.push(id); });
+
+                let wsTabsCount = 0;
+                let wsScriptsCount = 0;
+                const tabs = [];
+
+                order.forEach(tabId => {
+                    if (tabId === 'tab_clients_alarm') return;
+                    const tab = data[tabId];
+                    if (!tab) return;
+                    wsTabsCount++;
+                    let count = 0;
+                    if (Array.isArray(tab.groups)) {
+                        tab.groups.forEach(g => {
+                            if (Array.isArray(g.items)) count += g.items.length;
+                        });
+                    }
+                    wsScriptsCount += count;
+                    tabs.push({ id: tabId, name: tab.name, count });
+                });
+
+                totalTabs += wsTabsCount;
+                totalScripts += wsScriptsCount;
+                wsSummary.push({
+                    id: ws.id,
+                    name: wsName,
+                    icon: wsIcon,
+                    tabsCount: wsTabsCount,
+                    scriptsCount: wsScriptsCount,
+                    tabs: tabs
+                });
             });
+
+            return { totalWorkspaces, totalTabs, totalScripts, wsSummary };
+        }
+        /* Modal com Prévia antes de Salvar na Nuvem (Consolidado de Todas as Áreas de Trabalho) */
+        function openCloudUploadPreviewModal() {
+            // Garante que qualquer edição atual no DOM seja salva na área de trabalho ativa
+            saveAppData();
+
+            const localStats = getWorkspacesUnifiedStats();
 
             const overlay = document.createElement('div');
             overlay.className = 'var-modal-overlay';
             overlay.setAttribute('data-transient', 'true');
 
             overlay.innerHTML = `
-                <div class="var-modal-box vm-box" style="width: min(540px, 94vw);">
+                <div class="var-modal-box vm-box" style="width: min(580px, 94vw);">
                     <div class="vm-head">
                         <div class="vm-title">☁️ Prévia: Salvar Scripts na Nuvem do Google</div>
                         <button class="vm-x" aria-label="Fechar janela" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
                     </div>
                     <div class="vm-body" style="padding: 18px 20px; gap: 14px;">
                         <div style="font-size: 12.5px; line-height: 1.5; opacity: 0.9;">
-                            Confira o resumo dos dados locais que serão salvos na sua conta da <strong>Nuvem do Google</strong> (<code>${escapeHtml(currentUser.email)}</code>):
+                            Confira o resumo unificado de todas as suas <strong>Áreas de Trabalho</strong> que serão salvas na sua conta da <strong>Nuvem do Google</strong> (<code>${escapeHtml(currentUser.email)}</code>):
                         </div>
 
-                        <!-- Indicadores de Contagem -->
+                        <!-- Indicadores Consolidados de Contagem -->
                         <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                            <div style="flex:1; min-width:120px; background:var(--tab-bg); border:1px solid var(--border-color); border-radius:10px; padding:10px 14px;">
-                                <div style="font-size:22px; font-weight:800; color:var(--title-color);">${tabIds.length}</div>
-                                <div style="font-size:11px; opacity:0.75; text-transform:uppercase; font-weight:600;">Abas Locais</div>
+                            <div style="flex:1; min-width:110px; background:var(--tab-bg); border:1px solid var(--border-color); border-radius:10px; padding:10px 12px; text-align:center;">
+                                <div style="font-size:22px; font-weight:800; color:#3b82f6;">${localStats.totalWorkspaces}</div>
+                                <div style="font-size:10.5px; opacity:0.8; text-transform:uppercase; font-weight:700; margin-top:2px;">Áreas de Trabalho</div>
                             </div>
-                            <div style="flex:1; min-width:120px; background:var(--tab-bg); border:1px solid var(--border-color); border-radius:10px; padding:10px 14px;">
-                                <div style="font-size:22px; font-weight:800; color:#22c55e;">${totalCards}</div>
-                                <div style="font-size:11px; opacity:0.75; text-transform:uppercase; font-weight:600;">Scripts / Textos</div>
+                            <div style="flex:1; min-width:110px; background:var(--tab-bg); border:1px solid var(--border-color); border-radius:10px; padding:10px 12px; text-align:center;">
+                                <div style="font-size:22px; font-weight:800; color:var(--title-color);">${localStats.totalTabs}</div>
+                                <div style="font-size:10.5px; opacity:0.8; text-transform:uppercase; font-weight:700; margin-top:2px;">Abas Totais</div>
                             </div>
-                            <div style="flex:1; min-width:120px; background:var(--tab-bg); border:1px solid var(--border-color); border-radius:10px; padding:10px 14px;">
-                                <div style="font-size:13px; font-weight:700; color:var(--text-color); margin-top:4px;">${new Date().toLocaleDateString()}</div>
-                                <div style="font-size:11px; opacity:0.75; text-transform:uppercase; font-weight:600;">Data do Backup</div>
+                            <div style="flex:1; min-width:110px; background:var(--tab-bg); border:1px solid var(--border-color); border-radius:10px; padding:10px 12px; text-align:center;">
+                                <div style="font-size:22px; font-weight:800; color:#22c55e;">${localStats.totalScripts}</div>
+                                <div style="font-size:10.5px; opacity:0.8; text-transform:uppercase; font-weight:700; margin-top:2px;">Scripts (Soma Total)</div>
+                            </div>
+                            <div style="flex:1; min-width:110px; background:var(--tab-bg); border:1px solid var(--border-color); border-radius:10px; padding:10px 12px; text-align:center;">
+                                <div style="font-size:13.5px; font-weight:700; color:var(--text-color); margin-top:6px;">${new Date().toLocaleDateString()}</div>
+                                <div style="font-size:10.5px; opacity:0.8; text-transform:uppercase; font-weight:700; margin-top:4px;">Data do Backup</div>
                             </div>
                         </div>
 
-                        <!-- Lista de Abas que serão salvas -->
+                        <!-- Lista de Áreas de Trabalho e Abas que serão salvas -->
                         <div style="font-size: 11.5px; font-weight: 700; opacity: 0.85;">
-                            Abas e Scripts que serão gravados:
+                            Áreas de Trabalho e Scripts que serão gravados:
                         </div>
-                        <div style="max-height: 160px; overflow-y: auto; background: var(--textarea-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 8px 12px; font-size: 12px; display: flex; flex-direction: column; gap: 5px;">
-                            ${tabSummary.map(t => `<div style="display:flex; justify-content:space-between; padding:2px 0; border-bottom:1px dashed rgba(255,255,255,0.06);"><span>${escapeHtml(t.name)}</span><span style="opacity:0.75; font-weight:600;">${t.count} scripts</span></div>`).join('')}
+                        <div style="max-height: 190px; overflow-y: auto; background: var(--textarea-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 12px; font-size: 12px; display: flex; flex-direction: column; gap: 8px;">
+                            ${localStats.wsSummary.map(ws => `
+                                <div style="background:color-mix(in srgb, var(--tab-bg) 75%, transparent); border:1px solid var(--border-color); border-radius:6px; padding:8px 10px;">
+                                    <div style="display:flex; justify-content:space-between; align-items:center; font-weight:700; font-size:12.5px; color:var(--title-color); border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:4px; margin-bottom:6px;">
+                                        <span>${escapeHtml(ws.icon)} ${escapeHtml(ws.name)}</span>
+                                        <span style="font-size:11px; opacity:0.85; color:var(--accent-color); font-weight:600;">${ws.tabsCount} abas • ${ws.scriptsCount} scripts</span>
+                                    </div>
+                                    <div style="display:flex; flex-direction:column; gap:4px; padding-left:4px;">
+                                        ${ws.tabs.map(t => `
+                                            <div style="display:flex; justify-content:space-between; font-size:11.5px; opacity:0.9;">
+                                                <span>${escapeHtml(t.name)}</span>
+                                                <span style="font-weight:600; opacity:0.75;">${t.count} scripts</span>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            `).join('')}
                         </div>
 
                         <div style="font-size: 11.5px; opacity: 0.85; line-height: 1.4; background: rgba(34, 197, 94, 0.08); border: 1px solid rgba(34, 197, 94, 0.25); padding: 9px 12px; border-radius: 8px;">
-                            ℹ️ <strong>Importante:</strong> Esta ação atualizará o seu backup individual na Nuvem do Google. Os demais membros da equipe não terão seus scripts alterados.
+                            ℹ️ <strong>Importante:</strong> Esta ação salvará <strong>todas as suas Áreas de Trabalho unificadas</strong> no seu backup da Nuvem do Google.
                         </div>
                     </div>
                     <div class="vm-foot" style="padding: 12px 20px; justify-content: space-between;">
@@ -14722,8 +14855,12 @@ console.log('Userscript carregado');`;
                     btn.textContent = '✅ Salvo com Sucesso!';
                     setTimeout(() => {
                         overlay.remove();
-                        alert('Seus scripts e configurações foram salvos na Nuvem do Google com sucesso!');
-                    }, 600);
+                        if (typeof showToast === 'function') {
+                            showToast(`✅ ${localStats.totalWorkspaces} Áreas e ${localStats.totalScripts} scripts salvos na Nuvem!`, 'success', 3000);
+                        } else {
+                            alert(`Todas as ${localStats.totalWorkspaces} Áreas de Trabalho e ${localStats.totalScripts} scripts foram salvos na Nuvem do Google com sucesso!`);
+                        }
+                    }, 500);
                 } catch (err) {
                     alert('Falha ao salvar na nuvem: ' + (err.message || err));
                     btn.textContent = '🚀 Confirmar e Salvar na Nuvem';
@@ -14734,7 +14871,7 @@ console.log('Userscript carregado');`;
             document.body.appendChild(overlay);
         }
 
-        /* Modal com Prévia antes de Baixar da Nuvem */
+        /* Modal com Prévia antes de Baixar da Nuvem (Consolidado de Todas as Áreas de Trabalho) */
         async function openCloudDownloadPreviewModal() {
             if (!currentUser || !firebaseDb) {
                 alert('Você precisa estar conectado com sua conta Google para baixar da nuvem.');
@@ -14766,12 +14903,13 @@ console.log('Userscript carregado');`;
                 let cloudData = (snap && snap.exists) ? snap.data() : null;
                 let isTeamDefault = false;
 
-                if (!cloudData || !cloudData.scripts || !isValidData(cloudData.scripts)) {
+                const hasWs = Array.isArray(cloudData && cloudData.workspaces) && cloudData.workspaces.length > 0;
+                if (!cloudData || (!hasWs && (!cloudData.scripts || !isValidData(cloudData.scripts)))) {
                     // Tenta obter o padrão corporativo da equipe
                     try {
                         const tmplRef = firebaseDb.collection('templates').doc('default_scripts');
                         const tmplSnap = await tmplRef.get();
-                        if (tmplSnap.exists && tmplSnap.data() && tmplSnap.data().scripts && isValidData(tmplSnap.data().scripts)) {
+                        if (tmplSnap.exists && tmplSnap.data()) {
                             cloudData = tmplSnap.data();
                             isTeamDefault = true;
                         }
@@ -14780,41 +14918,17 @@ console.log('Userscript carregado');`;
 
                 loadOverlay.remove();
 
-                if (!cloudData || !cloudData.scripts || !isValidData(cloudData.scripts)) {
+                const hasValidCloudWs = Array.isArray(cloudData && cloudData.workspaces) && cloudData.workspaces.length > 0;
+                const hasValidCloudScripts = cloudData && cloudData.scripts && isValidData(cloudData.scripts);
+
+                if (!cloudData || (!hasValidCloudWs && !hasValidCloudScripts)) {
                     alert('Nenhum backup de scripts encontrado na nuvem para a sua conta Google.\n\nDica: use o botão "Salvar meus Scripts na Nuvem" primeiro para enviar seus scripts atuais.');
                     return;
                 }
 
-                const cloudScripts = cloudData.scripts;
-                const cloudTabIds = Array.isArray(cloudData.tabOrder) && cloudData.tabOrder.length
-                    ? cloudData.tabOrder.filter(id => cloudScripts[id])
-                    : Object.keys(cloudScripts);
-                let cloudTotalCards = 0;
-                const cloudTabSummary = [];
-
-                cloudTabIds.forEach(id => {
-                    const tab = cloudScripts[id];
-                    let count = 0;
-                    if (Array.isArray(tab.groups)) {
-                        tab.groups.forEach(g => {
-                            if (Array.isArray(g.items)) count += g.items.length;
-                        });
-                    }
-                    cloudTotalCards += count;
-                    cloudTabSummary.push({ name: tab.name, count });
-                });
-
-                // Dados locais para comparação
-                const localData = getAppData();
-                const localTabIds = Object.keys(localData);
-                let localTotalCards = 0;
-                localTabIds.forEach(id => {
-                    const tab = localData[id];
-                    if (Array.isArray(tab.groups)) {
-                        tab.groups.forEach(g => { if (Array.isArray(g.items)) localTotalCards += g.items.length; });
-                    }
-                });
-
+                // Estatísticas consolidadas da Nuvem e Locais
+                const cloudStats = getWorkspacesUnifiedStats(cloudData.workspaces, cloudData.scripts, cloudData.tabOrder);
+                const localStats = getWorkspacesUnifiedStats();
                 const cloudDateStr = cloudData.updatedAt ? new Date(cloudData.updatedAt).toLocaleString() : 'Data não registrada';
 
                 const overlay = document.createElement('div');
@@ -14822,44 +14936,61 @@ console.log('Userscript carregado');`;
                 overlay.setAttribute('data-transient', 'true');
 
                 overlay.innerHTML = `
-                    <div class="var-modal-box vm-box" style="width: min(550px, 94vw);">
+                    <div class="var-modal-box vm-box" style="width: min(580px, 94vw);">
                         <div class="vm-head">
                             <div class="vm-title">📥 Prévia: Baixar Scripts da Nuvem do Google</div>
                             <button class="vm-x" aria-label="Fechar janela" onclick="this.closest('.var-modal-overlay').remove()">✕</button>
                         </div>
                         <div class="vm-body" style="padding: 18px 20px; gap: 14px;">
                             <div style="font-size: 12.5px; line-height: 1.5; opacity: 0.9;">
-                                Encontramos o seguinte backup na <strong>Nuvem do Google</strong> ${isTeamDefault ? '<span class="admin-badge role-admin" style="margin-left:4px;">Padrão da Equipe</span>' : '<span class="admin-badge status-active" style="margin-left:4px;">Seu Backup Pessoal</span>'}. Confira a comparação:
+                                Encontramos o seguinte backup na <strong>Nuvem do Google</strong> ${isTeamDefault ? '<span class="admin-badge role-admin" style="margin-left:4px;">Padrão da Equipe</span>' : '<span class="admin-badge status-active" style="margin-left:4px;">Seu Backup Pessoal</span>'}. Confira a comparação consolidada:
                             </div>
 
-                            <!-- Comparativo de Versão Nuvem vs Local -->
+                            <!-- Comparativo de Versão Nuvem vs Local com Áreas de Trabalho -->
                             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
                                 <div style="background:rgba(37,99,235,0.08); border:1.5px solid #2563eb; border-radius:10px; padding:10px 14px;">
                                     <div style="font-size:11px; font-weight:700; color:#2563eb; text-transform:uppercase;">☁️ Backup na Nuvem</div>
                                     <div style="margin-top:6px; font-size:12px; line-height:1.5;">
-                                        • <strong>${cloudTabIds.length}</strong> abas &nbsp;|&nbsp; <strong>${cloudTotalCards}</strong> scripts
-                                        <br><span style="font-size:11px; opacity:0.8;">Data: ${cloudDateStr}</span>
+                                        • <strong>${cloudStats.totalWorkspaces}</strong> área(s) de trabalho<br>
+                                        • <strong>${cloudStats.totalTabs}</strong> abas &nbsp;|&nbsp; <strong>${cloudStats.totalScripts}</strong> scripts<br>
+                                        <span style="font-size:11px; opacity:0.8;">Data: ${cloudDateStr}</span>
                                     </div>
                                 </div>
                                 <div style="background:var(--tab-bg); border:1px solid var(--border-color); border-radius:10px; padding:10px 14px;">
                                     <div style="font-size:11px; font-weight:700; opacity:0.75; text-transform:uppercase;">💻 Versão Atual no Navegador</div>
                                     <div style="margin-top:6px; font-size:12px; line-height:1.5;">
-                                        • <strong>${localTabIds.length}</strong> abas &nbsp;|&nbsp; <strong>${localTotalCards}</strong> scripts
-                                        <br><span style="font-size:11px; opacity:0.8;">Armazenado localmente</span>
+                                        • <strong>${localStats.totalWorkspaces}</strong> área(s) de trabalho<br>
+                                        • <strong>${localStats.totalTabs}</strong> abas &nbsp;|&nbsp; <strong>${localStats.totalScripts}</strong> scripts<br>
+                                        <span style="font-size:11px; opacity:0.8;">Armazenado localmente</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Lista das Abas da Nuvem -->
+                            <!-- Lista das Áreas e Abas da Nuvem -->
                             <div style="font-size: 11.5px; font-weight: 700; opacity: 0.85;">
-                                Abas que serão carregadas da Nuvem:
+                                Áreas de Trabalho e Scripts que serão restaurados da Nuvem:
                             </div>
-                            <div style="max-height: 150px; overflow-y: auto; background: var(--textarea-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 8px 12px; font-size: 12px; display: flex; flex-direction: column; gap: 5px;">
-                                ${cloudTabSummary.map(t => `<div style="display:flex; justify-content:space-between; padding:2px 0; border-bottom:1px dashed rgba(255,255,255,0.06);"><span>${escapeHtml(t.name)}</span><span style="opacity:0.75; font-weight:600;">${t.count} scripts</span></div>`).join('')}
+                            <div style="max-height: 180px; overflow-y: auto; background: var(--textarea-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 12px; font-size: 12px; display: flex; flex-direction: column; gap: 8px;">
+                                ${cloudStats.wsSummary.map(ws => `
+                                    <div style="background:color-mix(in srgb, var(--tab-bg) 75%, transparent); border:1px solid var(--border-color); border-radius:6px; padding:8px 10px;">
+                                        <div style="display:flex; justify-content:space-between; align-items:center; font-weight:700; font-size:12.5px; color:var(--title-color); border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:4px; margin-bottom:6px;">
+                                            <span>${escapeHtml(ws.icon)} ${escapeHtml(ws.name)}</span>
+                                            <span style="font-size:11px; opacity:0.85; color:var(--accent-color); font-weight:600;">${ws.tabsCount} abas • ${ws.scriptsCount} scripts</span>
+                                        </div>
+                                        <div style="display:flex; flex-direction:column; gap:4px; padding-left:4px;">
+                                            ${ws.tabs.map(t => `
+                                                <div style="display:flex; justify-content:space-between; font-size:11.5px; opacity:0.9;">
+                                                    <span>${escapeHtml(t.name)}</span>
+                                                    <span style="font-weight:600; opacity:0.75;">${t.count} scripts</span>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                `).join('')}
                             </div>
 
                             <div style="font-size: 11.5px; opacity: 0.9; line-height: 1.4; background: rgba(234, 179, 8, 0.08); border: 1px solid rgba(234, 179, 8, 0.3); padding: 9px 12px; border-radius: 8px;">
-                                ⚠️ <strong>Atenção:</strong> Ao confirmar o download, os scripts atuais do seu navegador serão substituídos pela versão da Nuvem. Será criado um ponto de restauração para desfazer com Ctrl+Z se necessário.
+                                ⚠️ <strong>Atenção:</strong> Ao confirmar o download, todas as Áreas de Trabalho e scripts do navegador serão substituídos pela versão unificada da Nuvem.
                             </div>
                         </div>
                         <div class="vm-foot" style="padding: 12px 20px; justify-content: space-between;">
@@ -14883,9 +15014,9 @@ console.log('Userscript carregado');`;
 
                     overlay.remove();
                     if (typeof showToast === 'function') {
-                        showToast('✅ Scripts e configurações restaurados da Nuvem com sucesso!', 'success');
+                        showToast(`✅ ${cloudStats.totalWorkspaces} Áreas e ${cloudStats.totalScripts} scripts restaurados da Nuvem!`, 'success', 3000);
                     } else {
-                        alert('✅ Scripts e configurações baixados e restaurados da Nuvem com sucesso!');
+                        alert(`✅ ${cloudStats.totalWorkspaces} Áreas de Trabalho e ${cloudStats.totalScripts} scripts restaurados da Nuvem com sucesso!`);
                     }
                 };
 
