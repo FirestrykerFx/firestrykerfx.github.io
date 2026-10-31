@@ -855,29 +855,43 @@
             background-color: #f04b48;
         }
 
+        /* ============================================================
+           JANELA COMPANHEIRA — DESIGN FLUENT CLIPBOARD (ESTILO WIN+V)
+           ============================================================ */
         .companion-panel {
             position: fixed;
-            top: 70px;
+            top: 64px;
             right: 20px;
-            width: 380px;
-            height: 560px;
-            min-width: 280px;
-            min-height: 320px;
+            width: 390px;
+            height: 620px;
+            min-width: 310px;
+            min-height: 380px;
             max-width: 96vw;
-            max-height: 92vh;
-            z-index: 99999;
-            background-color: var(--bg-color);
-            border: 1px solid var(--accent-color);
-            border-radius: 10px;
-            box-shadow: 0 18px 50px rgba(0, 0, 0, .6);
+            max-height: 94vh;
+            z-index: 999999;
+            background: var(--card-bg, #ffffff);
+            color: var(--text-color, #1e1e1e);
+            border: 1px solid var(--border-color, rgba(0, 0, 0, 0.12));
+            border-radius: 12px;
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.32), 0 4px 16px rgba(0, 0, 0, 0.12);
             overflow: hidden;
             resize: both;
             display: flex;
             flex-direction: column;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', system-ui, sans-serif;
+            user-select: none;
+            transition: box-shadow 0.2s ease;
+        }
+
+        body.theme-dark .companion-panel,
+        body.theme-oled .companion-panel {
+            background: #202020;
+            border-color: rgba(255, 255, 255, 0.14);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65), 0 4px 18px rgba(0, 0, 0, 0.4);
         }
 
         .companion-panel.hidden {
-            display: none;
+            display: none !important;
         }
 
         .comp-root {
@@ -885,191 +899,491 @@
             min-height: 0;
             display: flex;
             flex-direction: column;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Consolas', 'Courier New', monospace;
-            font-size: 13px;
+            background: inherit;
+            color: inherit;
+            font-family: inherit;
             overflow: hidden;
+            box-sizing: border-box;
         }
 
-        .comp-header {
+        /* 1. Barra de Título Superior Estilo Windows 11 Fluent */
+        .comp-fluent-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 8px;
-            padding: 8px 10px;
-            background-color: var(--sidebar-bg);
-            border-bottom: 1px solid var(--border-color);
-            user-select: none;
+            padding: 10px 14px 6px 14px;
+            background: transparent;
             cursor: grab;
+            user-select: none;
+            border-bottom: none;
         }
 
-        .comp-header:active {
+        .comp-fluent-header:active {
             cursor: grabbing;
         }
 
-        .comp-title {
-            font-size: 12px;
-            font-weight: bold;
-            color: var(--title-color);
-            letter-spacing: .4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .comp-header-btns {
+        .comp-fluent-header-left {
             display: flex;
-            gap: 4px;
-            flex: 0 0 auto;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-color);
+            letter-spacing: -0.01em;
         }
 
-        .comp-icon-btn {
-            width: 24px;
-            height: 24px;
+        .comp-fluent-header-left svg {
+            opacity: 0.85;
+        }
+
+        .comp-fluent-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .comp-fluent-icon-btn {
+            width: 28px;
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-radius: 6px;
             background: transparent;
-            border: 1px solid transparent;
-            border-radius: 4px;
+            border: none;
             color: var(--text-color);
-            font-family: inherit;
-            font-size: 12px;
-            line-height: 1;
             cursor: pointer;
-            opacity: .75;
+            opacity: 0.75;
+            transition: all 0.15s ease;
+            font-size: 13px;
         }
 
-        .comp-icon-btn:hover {
-            background-color: var(--tab-bg);
-            border-color: var(--border-color);
+        .comp-fluent-icon-btn:hover {
+            background: rgba(127, 127, 127, 0.15);
             opacity: 1;
         }
 
-        .comp-icon-btn.active {
-            background-color: var(--accent-color);
-            color: #fff;
+        .comp-fluent-icon-btn.close-btn:hover {
+            background: #e81123 !important;
+            color: #ffffff !important;
             opacity: 1;
         }
 
-        .comp-toolbar {
+        /* 2. Barra de Categorias e Ícones com Sublinhado Azul Ativo (Exato Win+V) */
+        .comp-nav-strip {
             display: flex;
-            gap: 6px;
-            padding: 8px 10px;
-            background-color: var(--sidebar-bg);
-            border-bottom: 1px solid var(--border-color);
+            align-items: center;
+            gap: 4px;
+            padding: 2px 14px 4px 14px;
+            border-bottom: 1px solid var(--border-color, rgba(0, 0, 0, 0.08));
+            overflow-x: auto;
+            scrollbar-width: none;
         }
 
-        .comp-select,
-        .comp-search {
-            background-color: var(--tab-bg);
+        .comp-nav-strip::-webkit-scrollbar {
+            display: none;
+        }
+
+        .comp-nav-item {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 46px;
+            height: 40px;
+            border-radius: 6px;
+            background: transparent;
+            border: none;
             color: var(--text-color);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 5px 7px;
+            cursor: pointer;
+            opacity: 0.65;
+            transition: all 0.18s ease;
+        }
+
+        .comp-nav-item:hover {
+            background: rgba(127, 127, 127, 0.12);
+            opacity: 1;
+        }
+
+        .comp-nav-item.active {
+            opacity: 1;
+            color: var(--accent-color, #0078d4);
+        }
+
+        .comp-nav-indicator {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 22px;
+            height: 3px;
+            background: var(--accent-color, #0078d4);
+            border-radius: 2px;
+            display: none;
+        }
+
+        .comp-nav-item.active .comp-nav-indicator {
+            display: block;
+        }
+
+        /* 3. Sub-cabeçalho de Seção (Seletores de Aba e Área de Trabalho + Ação) */
+        .comp-sub-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 14px 4px 14px;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .comp-sub-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-color);
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .comp-selectors-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            width: 100%;
+            min-width: 0;
+        }
+
+        .comp-fluent-tab-select,
+        .comp-fluent-ws-select {
+            background: var(--tab-bg, #f3f3f3);
+            color: var(--text-color, #1e1e1e);
+            border: 1px solid var(--border-color, rgba(0, 0, 0, 0.16));
+            border-radius: 6px;
+            padding: 4px 6px;
             font-family: inherit;
             font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            outline: none;
+            flex: 1 1 50%;
             min-width: 0;
+            text-overflow: ellipsis;
+            transition: all 0.15s ease;
+        }
+
+        body.theme-dark .comp-fluent-ws-select,
+        body.theme-oled .comp-fluent-ws-select {
+            background: #2b2b2b;
+            border-color: rgba(255, 255, 255, 0.16);
+        }
+
+        .comp-fluent-ws-select:focus {
+            border-color: var(--accent-color, #0078d4);
+            box-shadow: 0 0 0 1px var(--accent-color, #0078d4);
+        }
+
+        body.theme-dark .comp-fluent-tab-select,
+        body.theme-oled .comp-fluent-tab-select {
+            background: #2b2b2b;
+            border-color: rgba(255, 255, 255, 0.16);
+        }
+
+        .comp-fluent-tab-select:focus {
+            border-color: var(--accent-color, #0078d4);
+            box-shadow: 0 0 0 1px var(--accent-color, #0078d4);
+        }
+
+        .comp-card-tab-badge {
+            display: inline-block;
+            font-size: 10.5px;
+            font-weight: 600;
+            color: var(--accent-color, #0078d4);
+            background: color-mix(in srgb, var(--accent-color, #0078d4) 14%, transparent);
+            border-radius: 4px;
+            padding: 1px 6px;
+            margin-bottom: 5px;
+            letter-spacing: 0.2px;
+        }
+
+        .comp-sub-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .comp-sub-action-btn {
+            font-size: 11.5px;
+            font-weight: 500;
+            padding: 4px 9px;
+            border-radius: 5px;
+            background: transparent;
+            border: 1px solid var(--border-color, rgba(0, 0, 0, 0.14));
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            opacity: 0.85;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .comp-sub-action-btn:hover {
+            background: rgba(127, 127, 127, 0.15);
+            opacity: 1;
+        }
+
+        /* 4. Caixa de Pesquisa Integrada */
+        .comp-search-box {
+            margin: 4px 14px 8px 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--tab-bg, #f9f9f9);
+            border: 1px solid var(--border-color, rgba(0, 0, 0, 0.14));
+            border-radius: 6px;
+            padding: 5px 10px;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        body.theme-dark .comp-search-box,
+        body.theme-oled .comp-search-box {
+            background: #282828;
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .comp-search-box:focus-within {
+            border-color: var(--accent-color, #0078d4);
+            box-shadow: 0 0 0 1px var(--accent-color, #0078d4);
+        }
+
+        .comp-search-input {
+            flex: 1;
+            min-width: 0;
+            border: none;
+            background: transparent;
+            color: var(--text-color);
+            font-family: inherit;
+            font-size: 12px;
             outline: none;
         }
 
-        .comp-select { flex: 0 1 45%; cursor: pointer; }
-        .comp-search { flex: 1 1 55%; }
-
-        .comp-select:focus,
-        .comp-search:focus {
-            border-color: var(--accent-color);
+        .comp-search-clear-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            opacity: 0.5;
+            cursor: pointer;
+            font-size: 12px;
+            padding: 0 2px;
+            line-height: 1;
         }
+        .comp-search-clear-btn:hover { opacity: 1; }
 
+        /* 5. Lista de Cards Estilo Windows 11 Clipboard */
         .comp-list {
             flex: 1;
             min-height: 0;
             overflow-y: auto;
-            padding: 10px;
+            padding: 4px 14px 14px 14px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-        }
-
-        
-        .comp-group-header {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            color: var(--accent-color);
-            padding: 4px 2px 2px 2px;
-            border-bottom: 1px dashed var(--border-color);
-            margin-top: 4px;
-            opacity: 0.85;
+            gap: 10px;
+            scrollbar-width: thin;
+            outline: none;
         }
 
         .comp-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 8px 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            transition: border-color .15s;
+            position: relative;
+            background: var(--card-bg, #ffffff);
+            border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
+            border-radius: 8px;
+            padding: 12px 14px 14px 14px;
+            cursor: pointer;
+            user-select: none;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+            outline: none;
+        }
+
+        body.theme-dark .comp-card,
+        body.theme-oled .comp-card {
+            background: #2a2a2a;
+            border-color: rgba(255, 255, 255, 0.09);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
         }
 
         .comp-card:hover {
-            border-color: var(--accent-color);
+            border-color: rgba(127, 127, 127, 0.45);
+            background: color-mix(in srgb, var(--card-bg, #ffffff) 96%, var(--accent-color, #0078d4));
+        }
+
+        /* Card Selecionado / Focado (Destaque com borda idêntica ao 1º card da captura Win+V) */
+        .comp-card.focused,
+        .comp-card:focus-visible {
+            border: 2px solid var(--text-color, #0f0f0f) !important;
+            padding: 11px 13px 13px 13px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        }
+
+        body.theme-dark .comp-card.focused,
+        body.theme-dark .comp-card:focus-visible,
+        body.theme-oled .comp-card.focused,
+        body.theme-oled .comp-card:focus-visible {
+            border-color: #ffffff !important;
+        }
+
+        .comp-card-body {
+            padding-right: 32px;
+            min-height: 24px;
         }
 
         .comp-card-text {
             margin: 0;
             white-space: pre-wrap;
             word-break: break-word;
-            font-size: 12px;
+            font-size: 13px;
             line-height: 1.45;
-            max-height: 66px;
+            color: var(--text-color);
+            max-height: 60px;
             overflow: hidden;
-            user-select: text;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
         }
 
         .comp-card.expanded .comp-card-text {
             max-height: none;
+            -webkit-line-clamp: unset;
         }
 
-        .comp-card-actions {
+        /* Botão Mais Opções (...) no topo direito */
+        .comp-card-more-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 24px;
+            height: 24px;
             display: flex;
-            gap: 6px;
-            justify-content: flex-end;
-        }
-
-        .comp-btn {
-            border: none;
+            align-items: center;
+            justify-content: center;
             border-radius: 4px;
-            padding: 5px 10px;
-            font-family: inherit;
-            font-size: 11px;
-            cursor: pointer;
-        }
-
-        .comp-copy {
-            background-color: var(--btn-copy);
-            color: #fff;
-        }
-        .comp-copy:hover { background-color: var(--btn-copy-hover); }
-        .comp-copy.ok { background-color: #1f6feb; }
-
-        .comp-btn-secondary {
-            background-color: var(--tab-bg);
+            background: transparent;
+            border: none;
             color: var(--text-color);
-            border: 1px solid var(--border-color);
-            padding: 5px 8px;
+            font-size: 13px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: all 0.15s ease;
         }
-        .comp-btn-secondary:hover { border-color: var(--accent-color); }
+
+        .comp-card-more-btn:hover {
+            background: rgba(127, 127, 127, 0.2);
+            opacity: 1;
+        }
+
+        /* Botão Pin (Fixar) no canto inferior direito */
+        .comp-card-pin-btn {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            width: 26px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            opacity: 0.65;
+            transition: all 0.15s ease;
+        }
+
+        .comp-card-pin-btn:hover {
+            background: rgba(127, 127, 127, 0.2);
+            opacity: 1;
+        }
+
+        .comp-card-pin-btn.is-pinned {
+            opacity: 1;
+            color: var(--accent-color, #0078d4);
+        }
+
+        /* Feedback de Copiado no Card */
+        .comp-card-copied-badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: #107c41;
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            animation: compFadeIn 0.15s ease;
+            z-index: 5;
+        }
+
+        @keyframes compFadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Separadores de Coluna/Grupo */
+        .comp-group-header {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent-color, #0078d4);
+            padding: 6px 2px 2px 2px;
+            opacity: 0.85;
+        }
 
         .comp-empty {
             text-align: center;
-            opacity: .55;
-            padding: 30px 10px;
-            font-size: 12px;
+            opacity: .6;
+            padding: 40px 10px;
+            font-size: 12.5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
         }
+
+        /* Rodapé Informativo */
+        .comp-fluent-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 14px;
+            background: color-mix(in srgb, var(--sidebar-bg, #f3f3f3) 70%, transparent);
+            border-top: 1px solid var(--border-color, rgba(0, 0, 0, 0.08));
+            font-size: 11px;
+            color: var(--text-color);
+            opacity: 0.75;
+        }
+
+        .comp-fluent-footer kbd {
+            background: rgba(127, 127, 127, 0.18);
+            border: 1px solid var(--border-color, rgba(0, 0, 0, 0.15));
+            border-radius: 4px;
+            padding: 1px 5px;
+            font-family: inherit;
+            font-weight: 600;
+        }
+        
         /* ===== Userscripts (Tampermonkey-compatible metadata) ===== */
         .usm-overlay {
             position: fixed; inset: 0; z-index: 10000000;
@@ -3393,6 +3707,105 @@
             overflow-y: auto;
             overflow-x: hidden;
             scrollbar-width: thin;
+            transition: width 0.22s cubic-bezier(0.25, 1, 0.5, 1), padding 0.22s ease;
+        }
+
+        .sidebar-top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            width: 100%;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-collapse-toggle-btn {
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-muted, #8e8e93);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            flex-shrink: 0;
+            padding: 0;
+        }
+        .sidebar-collapse-toggle-btn:hover {
+            background: color-mix(in srgb, var(--accent-color) 18%, rgba(255, 255, 255, 0.08));
+            color: var(--title-color);
+            border-color: color-mix(in srgb, var(--accent-color) 25%, transparent);
+        }
+        .sidebar-collapse-toggle-btn:active {
+            transform: scale(0.94);
+        }
+
+        /* ===== MODO RECOLHIDO / RETRÁTIL (ESTILO TRILHO DE ÍCONES APPLE HIG) ===== */
+        .apple-sidebar.collapsed {
+            width: 58px !important;
+            padding: 10px 4px 12px 4px !important;
+        }
+        .apple-sidebar.collapsed .sidebar-top-bar {
+            flex-direction: column !important;
+            align-items: center !important;
+            gap: 6px !important;
+        }
+        .apple-sidebar.collapsed .sidebar-brand-card {
+            justify-content: center !important;
+            padding: 4px 0 !important;
+            width: 100% !important;
+            margin-bottom: 0 !important;
+        }
+        .apple-sidebar.collapsed .sidebar-brand-info,
+        .apple-sidebar.collapsed .sidebar-item-label,
+        .apple-sidebar.collapsed .sidebar-user-info,
+        .apple-sidebar.collapsed .sidebar-section-header span,
+        .apple-sidebar.collapsed .sidebar-add-ws-btn,
+        .apple-sidebar.collapsed .sidebar-ws-item-name,
+        .apple-sidebar.collapsed .sidebar-ws-item-actions {
+            display: none !important;
+        }
+        .apple-sidebar.collapsed .sidebar-section-header {
+            height: 1px !important;
+            padding: 0 !important;
+            margin: 6px 4px !important;
+            background: var(--border-color) !important;
+            opacity: 0.45 !important;
+            overflow: hidden !important;
+            text-indent: -9999px !important;
+            box-sizing: border-box !important;
+        }
+        .apple-sidebar.collapsed .sidebar-item-btn,
+        .apple-sidebar.collapsed .sidebar-icon-btn,
+        .apple-sidebar.collapsed .sidebar-user-card,
+        .apple-sidebar.collapsed .sidebar-user-avatar-wrap {
+            justify-content: center !important;
+            padding: 0 !important;
+            width: 100% !important;
+        }
+        .apple-sidebar.collapsed .sidebar-ws-item {
+            justify-content: center !important;
+            padding: 0 !important;
+            width: 100% !important;
+        }
+        .apple-sidebar.collapsed .sidebar-ws-item-left {
+            justify-content: center !important;
+            width: 100% !important;
+        }
+        .apple-sidebar.collapsed .collapse-icon-expanded {
+            display: none !important;
+        }
+        .apple-sidebar.collapsed .collapse-icon-collapsed {
+            display: inline-block !important;
+        }
+        .apple-sidebar:not(.collapsed) .collapse-icon-expanded {
+            display: inline-block !important;
+        }
+        .apple-sidebar:not(.collapsed) .collapse-icon-collapsed {
+            display: none !important;
         }
 
         html.theme-oled .apple-sidebar {
@@ -3747,6 +4160,21 @@
             background: color-mix(in srgb, var(--accent-color) 12%, rgba(255, 255, 255, 0.05));
             border-color: color-mix(in srgb, var(--accent-color) 20%, transparent);
         }
+        
+        .sidebar-ws-item.ws-drag-hover {
+            background: rgba(0, 122, 255, 0.35) !important;
+            border: 2px dashed #007aff !important;
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4) !important;
+        }
+        .tab.dragging {
+            opacity: 0.45;
+            transform: scale(0.97);
+        }
+        .sidebar-brand-card:hover .sidebar-brand-badge {
+            text-decoration: underline;
+        }
+
         .sidebar-ws-item.active {
             background: rgba(0, 122, 255, 0.22) !important;
             border-color: #007aff !important;
@@ -3754,7 +4182,22 @@
             box-shadow: 0 2px 6px rgba(0, 122, 255, 0.25) !important;
             font-weight: 600;
         }
-        html.theme-light .sidebar-ws-item.active {
+        html.theme-light 
+        .sidebar-ws-item.ws-drag-hover {
+            background: rgba(0, 122, 255, 0.35) !important;
+            border: 2px dashed #007aff !important;
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4) !important;
+        }
+        .tab.dragging {
+            opacity: 0.45;
+            transform: scale(0.97);
+        }
+        .sidebar-brand-card:hover .sidebar-brand-badge {
+            text-decoration: underline;
+        }
+
+        .sidebar-ws-item.active {
             background: rgba(0, 122, 255, 0.12) !important;
             border-color: #007aff !important;
             color: #007aff !important;
@@ -3828,23 +4271,37 @@
     <aside class="apple-sidebar" id="appleSidebar" role="navigation" aria-label="Barra Lateral de Navegação e Ferramentas">
         <!-- Grupo Superior: Marca e Módulos Principais -->
         <div class="sidebar-group sidebar-top">
-            <div class="sidebar-brand-card" onclick="openChangelogModal()" role="button" tabindex="0" title="Central de Scripts v2.9.0 - Clique para ver novidades">
-                <svg class="header-logo-icon" width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:8px; box-shadow:0 2px 8px rgba(0,122,255,0.35); flex-shrink:0;">
-                    <defs>
-                        <linearGradient id="appleLogoGradSidebar" x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0%" stop-color="#007aff"/>
-                            <stop offset="100%" stop-color="#5ac8fa"/>
-                        </linearGradient>
-                    </defs>
-                    <rect width="64" height="64" rx="16" fill="url(#appleLogoGradSidebar)"/>
-                    <path d="M18 20h28a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4H30l-9 8v-8h-3a4 4 0 0 1-4-4V24a4 4 0 0 1 4-4z" fill="white"/>
-                    <rect x="22" y="27" width="20" height="3" rx="1.5" fill="#007aff"/>
-                    <rect x="22" y="33" width="13" height="3" rx="1.5" fill="#007aff"/>
-                </svg>
-                <div class="sidebar-brand-info">
-                    <span class="sidebar-brand-title">Central de Scripts</span>
-                    <span class="sidebar-brand-badge">v2.9.0</span>
+            <div class="sidebar-top-bar">
+                <div class="sidebar-brand-card" onclick="openChangelogModal()" role="button" tabindex="0" title="Central de Scripts v2.9.7 - Clique para ver o Histórico e Novidades">
+                    <svg class="header-logo-icon" width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:8px; box-shadow:0 2px 8px rgba(0,122,255,0.35); flex-shrink:0;">
+                        <defs>
+                            <linearGradient id="appleLogoGradSidebar" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#007aff"/>
+                                <stop offset="100%" stop-color="#5ac8fa"/>
+                            </linearGradient>
+                        </defs>
+                        <rect width="64" height="64" rx="16" fill="url(#appleLogoGradSidebar)"/>
+                        <path d="M18 20h28a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4H30l-9 8v-8h-3a4 4 0 0 1-4-4V24a4 4 0 0 1 4-4z" fill="white"/>
+                        <rect x="22" y="27" width="20" height="3" rx="1.5" fill="#007aff"/>
+                        <rect x="22" y="33" width="13" height="3" rx="1.5" fill="#007aff"/>
+                    </svg>
+                    <div class="sidebar-brand-info">
+                        <span class="sidebar-brand-title">Central de Scripts</span>
+                        <span class="sidebar-brand-badge">v2.9.7</span>
+                    </div>
                 </div>
+                <button type="button" class="sidebar-collapse-toggle-btn" id="sidebarCollapseToggleBtn" onclick="toggleSidebarCollapse()" title="Recolher Barra Lateral (Ctrl+B)" aria-label="Recolher Barra Lateral">
+                    <svg class="collapse-icon-expanded" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="9" y1="3" x2="9" y2="21"></line>
+                        <path d="M15 10l-2 2 2 2"></path>
+                    </svg>
+                    <svg class="collapse-icon-collapsed" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="9" y1="3" x2="9" y2="21"></line>
+                        <path d="M13 10l2 2-2 2"></path>
+                    </svg>
+                </button>
             </div>
 
             <div class="sidebar-section-header">Módulos</div>
@@ -3864,6 +4321,10 @@
             <button class="sidebar-item-btn" id="sbEquipBtn" onclick="openEquipBudgetModal()" title="Orçamento de Equipamentos & Cabos">
                 <span class="sidebar-item-icon">🔌</span>
                 <span class="sidebar-item-label">Equipamentos</span>
+            </button>
+            <button class="sidebar-item-btn" id="sbCompanionBtn" onclick="toggleCompanion()" title="Docker Flutuante estilo Win+V (Alt+V)">
+                <span class="sidebar-item-icon">🪟</span>
+                <span class="sidebar-item-label">Docker</span>
             </button>
 
             <div class="sidebar-divider" aria-hidden="true"></div>
@@ -3948,11 +4409,8 @@
                 <button class="shortcut-pill shortcut-pill-tool" id="undoHeaderBtn" onclick="undoLastAction()" title="Desfazer última alteração">
                     ↩️ Desfazer
                 </button>
-                <button class="shortcut-pill shortcut-pill-tool hide-on-atendimento" id="companionHeaderBtn" onclick="toggleCompanion()" title="Dock de Scripts Flutuante (Alt+Shift+P)">
-                    🪟 Dock
-                </button>
-                <button class="header-btn-more" id="moreHeaderMenuBtn" onclick="toggleMoreMenu(this, event)" title="Acessar ferramentas secundárias e configurações">
-                    ⋯ Mais ▾
+                <button class="shortcut-pill shortcut-pill-tool" id="companionHeaderBtn" onclick="toggleCompanion()" title="Docker / Área de Transferência estilo Win+V (Atalho: Alt+V ou Alt+Shift+P)">
+                    🪟 Docker (Alt+V)
                 </button>
             </div>
 
@@ -4003,23 +4461,6 @@
                 <p style="margin:0; font-size:11px; opacity:0.75;">Últimos scripts copiados nesta sessão:</p>
                 <div class="dropdown-list" id="recentsDropdownList"></div>
             </div>
-
-            <!-- Menu Dropdown: "⋯ Mais" (Ferramentas e Visual) -->
-            <div class="dropdown-popover" id="moreMenuDropdown" data-transient="true" onclick="event.stopPropagation()" style="min-width: 270px;">
-                <div class="dropdown-popover-title">
-                    <span>⋯ Mais Opções & Ferramentas</span>
-                    <button class="vm-x" aria-label="Fechar menu" style="width:24px; height:24px; font-size:14px;" onclick="closeAllHeaderDropdowns()">✕</button>
-                </div>
-                <div class="dropdown-list">
-                    <div class="dropdown-list-item hide-on-atendimento" id="userscriptHeaderBtn" onclick="openUserscriptManager(); closeAllHeaderDropdowns();">
-                        <span>🧩 Gerenciador de Userscripts</span>
-                    </div>
-                    <div class="dropdown-list-item" onclick="openChangelogModal(); closeAllHeaderDropdowns();">
-                        <span>📜 Histórico e Novidades (v2.9.0)</span>
-                    </div>
-                </div>
-            </div>
-
             <!-- Menu de contexto do Card -->
             <div class="card-popover-menu" id="cardActionMenu" data-transient="true" onclick="event.stopPropagation()"></div>
         </header>
@@ -4079,7 +4520,7 @@
             return String(str).replace(/([ #;&,.+*~':"!^$\[\]()=>|\/@])/g, '\\$1');
         }
 
-        const APP_VERSION = '2.9.0';
+        const APP_VERSION = '2.9.7';
         const UPDATE_MANIFEST_URL = 'https://firestrykerfx.github.io/version.json';
         const UPDATE_CHECK_INTERVAL = 6 * 60 * 60 * 1000;
                 /* ===== Notificações Toasts Flutuantes Modernas ===== */
@@ -5240,6 +5681,29 @@
                 if (raw) {
                     const parsed = JSON.parse(raw);
                     if (Array.isArray(parsed) && parsed.length > 0) {
+                        let modified = false;
+                        parsed.forEach(ws => {
+                            if (!ws || !ws.data || !isValidData(ws.data)) {
+                                let recoveryData = null;
+                                try {
+                                    const rawMain = localStorage.getItem(STORAGE_KEY);
+                                    if (rawMain) {
+                                        const parsedMain = JSON.parse(rawMain);
+                                        if (isValidData(parsedMain)) recoveryData = parsedMain;
+                                    }
+                                } catch (err) {}
+                                if (!recoveryData) {
+                                    try { recoveryData = JSON.parse(JSON.stringify(defaultData)); } catch (err) { recoveryData = defaultData; }
+                                }
+                                normalizeData(recoveryData);
+                                ws.data = recoveryData;
+                                ws.tabOrder = Object.keys(recoveryData);
+                                modified = true;
+                            }
+                        });
+                        if (modified) {
+                            try { localStorage.setItem(WORKSPACES_STORAGE_KEY, JSON.stringify(parsed)); } catch (err) {}
+                        }
                         return parsed;
                     }
                 }
@@ -5291,11 +5755,14 @@
             return initialWorkspaces;
         }
 
-        function setWorkspaces(workspaces) {
+        function setWorkspaces(workspaces, skipCloudSync = false) {
             if (!Array.isArray(workspaces) || workspaces.length === 0) return;
             try {
                 localStorage.setItem(WORKSPACES_STORAGE_KEY, JSON.stringify(workspaces));
                 markLocalChange();
+                if (!skipCloudSync && typeof syncToCloudDebounced === 'function') {
+                    syncToCloudDebounced();
+                }
             } catch (e) {
                 console.error('Erro ao salvar workspaces:', e);
             }
@@ -5398,6 +5865,53 @@
             return true;
         }
 
+        /* ===== CONTROLE DA BARRA LATERAL RECOLHÍVEL (RETRÁTIL) ===== */
+        const SIDEBAR_COLLAPSED_KEY = 'scripts_sidebar_collapsed_v1';
+
+        function isSidebarCollapsed() {
+            try {
+                return localStorage.getItem(SIDEBAR_COLLAPSED_KEY) === 'true';
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function setSidebarCollapsed(collapsed) {
+            const sidebar = document.getElementById('appleSidebar');
+            const toggleBtn = document.getElementById('sidebarCollapseToggleBtn');
+            if (!sidebar) return;
+
+            if (collapsed) {
+                sidebar.classList.add('collapsed');
+                if (toggleBtn) {
+                    toggleBtn.title = 'Expandir Barra Lateral (Ctrl+B)';
+                    toggleBtn.setAttribute('aria-label', 'Expandir Barra Lateral');
+                }
+            } else {
+                sidebar.classList.remove('collapsed');
+                if (toggleBtn) {
+                    toggleBtn.title = 'Recolher Barra Lateral (Ctrl+B)';
+                    toggleBtn.setAttribute('aria-label', 'Recolher Barra Lateral');
+                }
+            }
+            try {
+                localStorage.setItem(SIDEBAR_COLLAPSED_KEY, collapsed ? 'true' : 'false');
+            } catch (e) {}
+        }
+
+        function toggleSidebarCollapse() {
+            const sidebar = document.getElementById('appleSidebar');
+            if (!sidebar) return;
+            const willCollapse = !sidebar.classList.contains('collapsed');
+            setSidebarCollapsed(willCollapse);
+        }
+
+        function initSidebarCollapse() {
+            if (isSidebarCollapsed()) {
+                setSidebarCollapsed(true);
+            }
+        }
+
         function renderWorkspacesList() {
             const container = document.getElementById('sidebarWorkspacesList');
             if (!container) return;
@@ -5413,8 +5927,12 @@
                          role="button" 
                          tabindex="0" 
                          onclick="switchWorkspace('${escapeHtml(ws.id)}')" 
-                         title="Área de Trabalho: ${safeName} (${isActive ? 'Ativa' : 'Clique para alternar'})"
-                         data-wsid="${escapeHtml(ws.id)}">
+                         title="Área de Trabalho: ${safeName} (${isActive ? 'Ativa' : 'Arraste um card ou aba aqui para mover'})"
+                         data-wsid="${escapeHtml(ws.id)}"
+                         ondragover="handleWsDragOver(event, '${escapeHtml(ws.id)}')"
+                         ondragenter="handleWsDragEnter(event, '${escapeHtml(ws.id)}')"
+                         ondragleave="handleWsDragLeave(event, '${escapeHtml(ws.id)}')"
+                         ondrop="handleWsDrop(event, '${escapeHtml(ws.id)}')">
                         <div class="sidebar-ws-item-left">
                             <span class="sidebar-ws-item-icon">${safeIcon}</span>
                             <span class="sidebar-ws-item-name">${safeName}</span>
@@ -5430,6 +5948,261 @@
                     </div>
                 `;
             }).join('');
+        }
+
+        
+        /* ===== Drag & Drop de Abas e Cards entre Áreas de Trabalho ===== */
+        function handleWsDragOver(e, targetWsId) {
+            e.preventDefault();
+            if (e.dataTransfer) {
+                e.dataTransfer.dropEffect = 'move';
+            }
+        }
+
+        function handleWsDragEnter(e, targetWsId) {
+            e.preventDefault();
+            const activeWsId = getActiveWorkspaceId();
+            if (targetWsId !== activeWsId) {
+                const item = e.currentTarget || document.querySelector(`.sidebar-ws-item[data-wsid="${targetWsId}"]`);
+                if (item) item.classList.add('ws-drag-hover');
+            }
+        }
+
+        function handleWsDragLeave(e, targetWsId) {
+            const item = e.currentTarget || document.querySelector(`.sidebar-ws-item[data-wsid="${targetWsId}"]`);
+            if (item && (!e.relatedTarget || !item.contains(e.relatedTarget))) {
+                item.classList.remove('ws-drag-hover');
+            }
+        }
+
+        function handleWsDrop(e, targetWsId) {
+            e.preventDefault();
+            const item = e.currentTarget || document.querySelector(`.sidebar-ws-item[data-wsid="${targetWsId}"]`);
+            if (item) item.classList.remove('ws-drag-hover');
+
+            const currentWsId = getActiveWorkspaceId();
+            if (targetWsId === currentWsId) {
+                showToast('Este item já está na área de trabalho atual!', 'info', 2000);
+                return;
+            }
+
+            // 1. Verifica primeiro se foi arrastado um CARD
+            let cardJson = '';
+            try {
+                cardJson = e.dataTransfer.getData('application/x-script-card');
+            } catch (err) {}
+
+            if (cardJson || draggedCard) {
+                moveCardToWorkspace(cardJson, currentWsId, targetWsId);
+                return;
+            }
+
+            // 2. Caso contrário, verifica se foi arrastada uma ABA
+            let tabId = '';
+            try {
+                tabId = e.dataTransfer.getData('application/x-script-tab');
+            } catch (err) {}
+            if (!tabId) {
+                try {
+                    const plain = e.dataTransfer.getData('text/plain');
+                    if (plain && plain.startsWith('tab_')) tabId = plain;
+                } catch (err) {}
+            }
+            if (!tabId && draggedTabId) {
+                tabId = draggedTabId;
+            }
+
+            if (tabId) {
+                moveTabToWorkspace(tabId, currentWsId, targetWsId);
+            }
+        }
+
+        function moveCardToWorkspace(cardJson, sourceWsId, targetWsId) {
+            if (!sourceWsId || !targetWsId || sourceWsId === targetWsId) return;
+
+            let cardObj = null;
+            try {
+                if (cardJson) cardObj = JSON.parse(cardJson);
+            } catch (e) {}
+
+            // Se não veio via JSON, extrai de draggedCard no DOM
+            if (!cardObj && draggedCard) {
+                const ta = draggedCard.querySelector('.item-textarea');
+                const tags = [...draggedCard.querySelectorAll('.card-tag')].map(t => t.dataset.tagName);
+                const alarmInput = draggedCard.querySelector('.card-alarm-input');
+                const alarmBadge = draggedCard.querySelector('.alarm-badge');
+                const alarm = (alarmInput && alarmInput.value) ? alarmInput.value : ((alarmBadge && alarmBadge.dataset.alarmTime) || '');
+                const colEl = draggedCard.closest('.column');
+                const colTitle = (colEl && colEl.querySelector('.col-title')) ? colEl.querySelector('.col-title').value : 'Geral';
+                const tabContentEl = draggedCard.closest('.tab-content');
+                const tabId = tabContentEl ? tabContentEl.id : currentActiveTabId;
+                const tabBtn = document.querySelector(`.tab[data-tabid="${safeCssEscape(tabId)}"] .tab-title`);
+                const tabName = tabBtn ? tabBtn.textContent : 'Geral';
+
+                cardObj = {
+                    id: draggedCard.dataset.cardId || createStableId(),
+                    text: ta ? ta.value : '',
+                    tags: tags,
+                    alarm: alarm,
+                    favorite: draggedCard.classList.contains('is-favorite'),
+                    color: draggedCard.dataset.cardColor || '',
+                    copies: parseInt(draggedCard.dataset.copyCount) || 0,
+                    sourceTabId: tabId,
+                    sourceTabName: tabName,
+                    sourceGroupTitle: colTitle
+                };
+            }
+
+            if (!cardObj) return;
+
+            pushUndoSnapshot('Mover Card para Área de Trabalho');
+
+            // 1. Remove o card do DOM atual se estiver visível e salva a área de origem
+            const domCard = document.querySelector(`.item-card[data-card-id="${safeCssEscape(cardObj.id)}"]`) || draggedCard;
+            if (domCard) {
+                domCard.remove();
+            }
+            draggedCard = null;
+            saveAppData();
+
+            // 2. Carrega todas as áreas de trabalho e insere na área de destino
+            const workspaces = getWorkspaces();
+            const dstWs = workspaces.find(w => w.id === targetWsId);
+            if (!dstWs) return;
+
+            if (!dstWs.data || typeof dstWs.data !== 'object') {
+                dstWs.data = {};
+            }
+
+            // Procura aba com o mesmo ID ou mesmo nome na área de destino; se não existir, usa a primeira aba ou cria uma
+            let dstTabId = null;
+            if (cardObj.sourceTabId && dstWs.data[cardObj.sourceTabId]) {
+                dstTabId = cardObj.sourceTabId;
+            } else if (cardObj.sourceTabName) {
+                dstTabId = Object.keys(dstWs.data).find(k => dstWs.data[k] && dstWs.data[k].name === cardObj.sourceTabName);
+            }
+            if (!dstTabId) {
+                const order = Array.isArray(dstWs.tabOrder) && dstWs.tabOrder.length > 0 ? dstWs.tabOrder : Object.keys(dstWs.data);
+                dstTabId = order.find(k => dstWs.data[k]);
+            }
+            if (!dstTabId) {
+                dstTabId = cardObj.sourceTabId || ('tab_' + Date.now().toString(36));
+                dstWs.data[dstTabId] = {
+                    name: cardObj.sourceTabName || 'Geral',
+                    groups: [{ title: cardObj.sourceGroupTitle || 'Geral', items: [] }]
+                };
+                dstWs.tabOrder = [dstTabId];
+            }
+
+            const dstTab = dstWs.data[dstTabId];
+            if (!Array.isArray(dstTab.groups) || dstTab.groups.length === 0) {
+                dstTab.groups = [{ title: cardObj.sourceGroupTitle || 'Geral', items: [] }];
+            }
+
+            // Procura grupo/coluna com o mesmo título ou insere na primeira coluna
+            let targetGroup = dstTab.groups.find(g => g && g.title === cardObj.sourceGroupTitle) || dstTab.groups[0];
+            if (!Array.isArray(targetGroup.items)) targetGroup.items = [];
+
+            targetGroup.items.unshift({
+                id: cardObj.id || createStableId(),
+                text: cardObj.text || '',
+                tags: Array.isArray(cardObj.tags) ? cardObj.tags : [],
+                alarm: cardObj.alarm || '',
+                favorite: !!cardObj.favorite,
+                color: cardObj.color || '',
+                copies: parseInt(cardObj.copies) || 0
+            });
+
+            // 3. Salva áreas de trabalho e sincroniza
+            setWorkspaces(workspaces);
+            renderWorkspacesList();
+            loadAppData();
+            refreshCompanion();
+
+            const dstIcon = dstWs.icon || '💼';
+            const dstName = dstWs.name || 'Área de Destino';
+            showToast(`✅ Card movido para ${dstIcon} ${dstName} (Aba: ${dstTab.name})!`, 'success', 3000);
+        }
+
+        function moveTabToWorkspace(tabId, sourceWsId, targetWsId) {
+            if (!tabId || !sourceWsId || !targetWsId || sourceWsId === targetWsId) return;
+
+            // 1. Salva o estado atual do DOM na área atual
+            saveAppData();
+
+            // 2. Carrega as áreas de trabalho
+            const workspaces = getWorkspaces();
+            const srcWs = workspaces.find(w => w.id === sourceWsId);
+            const dstWs = workspaces.find(w => w.id === targetWsId);
+
+            if (!srcWs || !dstWs || !srcWs.data || !srcWs.data[tabId]) {
+                showToast('Não foi possível localizar a aba selecionada.', 'error', 2500);
+                return;
+            }
+
+            // 3. Clona e transfere os dados da aba
+            const tabData = JSON.parse(JSON.stringify(srcWs.data[tabId]));
+            const tabName = tabData.name || 'Aba';
+
+            if (!dstWs.data) dstWs.data = {};
+            let finalTargetTabId = tabId;
+            if (dstWs.data[finalTargetTabId]) {
+                finalTargetTabId = tabId + '_' + Date.now();
+            }
+            dstWs.data[finalTargetTabId] = tabData;
+
+            if (!Array.isArray(dstWs.tabOrder)) {
+                dstWs.tabOrder = Object.keys(dstWs.data);
+            }
+            if (!dstWs.tabOrder.includes(finalTargetTabId)) {
+                dstWs.tabOrder.push(finalTargetTabId);
+            }
+
+            // 4. Remove a aba da área de origem
+            delete srcWs.data[tabId];
+            if (Array.isArray(srcWs.tabOrder)) {
+                srcWs.tabOrder = srcWs.tabOrder.filter(id => id !== tabId);
+            }
+
+            // Se a área de origem ficou sem abas, cria uma aba padrão vazia para integridade da UI
+            if (Object.keys(srcWs.data).length === 0) {
+                const fallbackTabId = 'tab_nova_' + Date.now();
+                srcWs.data[fallbackTabId] = {
+                    name: 'Nova Aba',
+                    groups: [{ title: 'Geral', items: [] }]
+                };
+                srcWs.tabOrder = [fallbackTabId];
+            }
+
+            // 5. Salva todas as áreas de trabalho no localStorage
+            setWorkspaces(workspaces);
+
+            // 6. Atualiza o STORAGE_KEY caso a origem seja a ativa
+            if (sourceWsId === getActiveWorkspaceId()) {
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(srcWs.data));
+                    localStorage.setItem(TAB_ORDER_KEY, JSON.stringify(srcWs.tabOrder));
+                } catch (e) {}
+
+                // Se a aba movida era a ativa, troca para a primeira aba restante
+                if (currentActiveTabId === tabId) {
+                    currentActiveTabId = (srcWs.tabOrder && srcWs.tabOrder[0]) || Object.keys(srcWs.data)[0];
+                    lastActiveScriptTabId = currentActiveTabId;
+                    try {
+                        localStorage.setItem(ACTIVE_TAB_KEY, currentActiveTabId);
+                    } catch (e) {}
+                }
+            }
+
+            // 7. Atualiza interface e sincroniza
+            renderWorkspacesList();
+            loadAppData();
+            syncToCloudDebounced();
+
+            // 8. Notificação de confirmação ao atendente
+            const dstIcon = dstWs.icon || '💼';
+            const dstName = dstWs.name || 'Área de Destino';
+            showToast(`Aba "${tabName}" movida para ${dstIcon} ${dstName}!`, 'success', 3000);
         }
 
         function switchWorkspace(targetWsId) {
@@ -5456,6 +6229,10 @@
             }
 
             // 4. Re-renderiza a lista da sidebar e os dados da aplicação
+            if (companion.surface) {
+                companion.wsId = targetWsId;
+                companion.tabId = 'all';
+            }
             renderWorkspacesList();
             loadAppData();
 
@@ -5702,12 +6479,16 @@
         /* Centralizador único para montar o payload da nuvem */
         function buildSyncPayload() {
             const scripts = getAppData();
+            const workspaces = getWorkspaces();
+            const activeWorkspaceId = getActiveWorkspaceId();
             return {
-                schemaVersion: 1,
+                schemaVersion: 2,
                 revision: localRevision,
                 deviceId: getOrCreateDeviceId(),
                 updatedBy: (currentUser && currentUser.uid) || (currentUser && currentUser.email) || 'user',
                 updatedAt: new Date().toISOString(),
+                workspaces: workspaces,
+                activeWorkspaceId: activeWorkspaceId,
                 scripts: scripts,
                 tabOrder: getSavedTabOrder(scripts),
                 customDefaults: getCustomDefaults(),
@@ -5718,6 +6499,7 @@
                     layout: localStorage.getItem(LAYOUT_KEY) || 'grid',
                     scale: parseFloat(localStorage.getItem(SCALE_KEY)) || 1,
                     activeTabId: currentActiveTabId || localStorage.getItem(ACTIVE_TAB_KEY) || '',
+                    activeWorkspaceId: activeWorkspaceId,
                     alarmConfig: getAlarmConfig()
                 }
             };
@@ -5778,11 +6560,14 @@
 
         const companion = {
             surface: null,
+            wsId: null,
             tabId: null,
             query: '',
             compact: false,
             expanded: new Set(),
-            refreshTimer: null
+            refreshTimer: null,
+            activeView: 'clipboard',
+            focusedIndex: 0
         };
 
         function getCustomDefaults() {
@@ -5808,10 +6593,13 @@
         }
 
         function isValidData(d) {
-            const okItems = a => Array.isArray(a) && a.every(i => (typeof i === 'string' || (i && typeof i === 'object' && typeof i.text === 'string')));
-            return d && typeof d === 'object' && !Array.isArray(d) && Object.keys(d).length > 0 &&
-                Object.values(d).every(t => t && typeof t.name === 'string' &&
-                    (okItems(t.items) || (Array.isArray(t.groups) && t.groups.every(g => g && okItems(g.items)))));
+            if (!d || typeof d !== 'object' || Array.isArray(d)) return false;
+            const keys = Object.keys(d);
+            if (keys.length === 0) return false;
+            return keys.some(k => {
+                const t = d[k];
+                return t && typeof t === 'object' && (typeof t.name === 'string' || Array.isArray(t.groups) || Array.isArray(t.items));
+            });
         }
 
         function normalizeData(d) {
@@ -6145,15 +6933,27 @@
             overlay.className = 'var-modal-overlay';
             overlay.setAttribute('data-transient', 'true');
 
+            const allWorkspaces = getWorkspaces();
+            const currentWsId = getActiveWorkspaceId();
+            let wsOptionsHtml = '';
+            allWorkspaces.forEach(w => {
+                wsOptionsHtml += '<option value="' + escapeHtml(w.id) + '"' + (w.id === currentWsId ? ' selected' : '') + '>' + escapeHtml((w.icon || '💼') + ' ' + w.name) + '</option>';
+            });
+
             let optionsHtml = '';
             tabIds.forEach(id => {
                 optionsHtml += '<option value="' + escapeHtml(id) + '"' + (id === currentActiveTabId ? ' selected' : '') + '>' + escapeHtml(data[id].name) + '</option>';
             });
 
-            overlay.innerHTML = '<div class="var-modal-box" style="width: 380px;">' +
-                '<div class="var-modal-title">📦 Mover Card para Outra Aba</div>' +
-                '<div class="var-modal-desc">Selecione a aba de destino para transferir este card:</div>' +
-                '<select id="moveTargetTabSelect" class="theme-select" style="width:100%; box-sizing:border-box; margin:8px 0;">' +
+            overlay.innerHTML = '<div class="var-modal-box" style="width: 400px;">' +
+                '<div class="var-modal-title">📦 Mover Card (Aba ou Área de Trabalho)</div>' +
+                '<div class="var-modal-desc">Escolha a Área de Trabalho e a Aba de destino:</div>' +
+                '<label style="font-size:11.5px; font-weight:600; display:block; margin-top:6px;">Área de Trabalho:</label>' +
+                '<select id="moveTargetWsSelect" class="theme-select" style="width:100%; box-sizing:border-box; margin:4px 0 8px 0;">' +
+                wsOptionsHtml +
+                '</select>' +
+                '<label style="font-size:11.5px; font-weight:600; display:block;">Aba de Destino:</label>' +
+                '<select id="moveTargetTabSelect" class="theme-select" style="width:100%; box-sizing:border-box; margin:4px 0 10px 0;">' +
                 optionsHtml +
                 '</select>' +
                 '<div class="var-modal-btns">' +
@@ -6161,11 +6961,23 @@
                 '<button class="var-modal-btn var-modal-btn-confirm" id="confirmMoveBtn">Mover Agora</button>' +
                 '</div></div>';
 
+            const wsSel = overlay.querySelector('#moveTargetWsSelect');
+            const tabSel = overlay.querySelector('#moveTargetTabSelect');
+            wsSel.onchange = () => {
+                const selectedWs = allWorkspaces.find(w => w.id === wsSel.value);
+                if (!selectedWs || !selectedWs.data) return;
+                const wOrder = Array.isArray(selectedWs.tabOrder) && selectedWs.tabOrder.length ? selectedWs.tabOrder : Object.keys(selectedWs.data);
+                tabSel.innerHTML = wOrder.filter(id => selectedWs.data[id]).map(id =>
+                    '<option value="' + escapeHtml(id) + '">' + escapeHtml(selectedWs.data[id].name) + '</option>'
+                ).join('');
+            };
+
             overlay.querySelector('#cancelMoveBtn').onclick = () => overlay.remove();
             overlay.querySelector('#confirmMoveBtn').onclick = () => {
-                const targetTabId = overlay.querySelector('#moveTargetTabSelect').value;
-                if (!targetTabId || !data[targetTabId]) return;
-                if (targetTabId === currentActiveTabId) {
+                const targetWsId = wsSel.value;
+                const targetTabId = tabSel.value;
+                if (!targetWsId || !targetTabId) return;
+                if (targetWsId === currentWsId && targetTabId === currentActiveTabId) {
                     overlay.remove();
                     return;
                 }
@@ -6174,11 +6986,14 @@
                 activeTargetCard.remove();
                 saveAppData();
 
-                const freshData = getAppData();
-                if (!freshData[targetTabId].groups || freshData[targetTabId].groups.length === 0) {
-                    freshData[targetTabId].groups = [{ title: 'Geral', items: [] }];
+                const workspacesList = getWorkspaces();
+                const targetWs = workspacesList.find(w => w.id === targetWsId);
+                if (!targetWs || !targetWs.data || !targetWs.data[targetTabId]) return;
+
+                if (!targetWs.data[targetTabId].groups || targetWs.data[targetTabId].groups.length === 0) {
+                    targetWs.data[targetTabId].groups = [{ title: 'Geral', items: [] }];
                 }
-                freshData[targetTabId].groups[0].items.unshift({
+                targetWs.data[targetTabId].groups[0].items.unshift({
                     id: cardId,
                     text: cardText,
                     tags: [...tags],
@@ -6187,7 +7002,11 @@
                     color: cardColor,
                     copies: cardCopies
                 });
-                setAppData(freshData);
+
+                setWorkspaces(workspacesList);
+                if (targetWsId === currentWsId) {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(targetWs.data));
+                }
                 markLocalChange();
                 loadAppData();
                 syncToCloudDebounced();
@@ -6393,7 +7212,38 @@
                     </div>
                     <div class="vm-body" style="padding: 16px 20px; overflow-y: auto;">
                         
-                                                                                                <!-- Versão 2.9.0 Oficial -->
+                                                                                                                        <!-- Versão 2.9.2 Oficial -->
+                        <div class="changelog-version-card" style="border-color: #007aff;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>🚀 Versão 2.9.2</span>
+                                    <span class="changelog-badge" style="background:#007aff; color:#fff;">Versão Atual</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">28/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>🔄 Arraste de Abas entre Áreas de Trabalho (Drag & Drop):</strong> Agora você pode mover qualquer aba de scripts (ex: <em>Webchat</em>, <em>Telefone</em>, <em>Script Visita</em>, etc.) de uma Área de Trabalho para outra apenas arrastando a aba e soltando sobre o nome ou ícone da área desejada na barra lateral esquerda. Todos os grupos, colunas e cards são transferidos instantaneamente e salvos de forma automática.</li>
+                                <li><strong>🧹 Acesso ao Changelog Exclusivo na Versão & Cabeçalho Despoluído:</strong> Conforme solicitado, o acesso ao histórico e novidades foi desvinculado de menus secundários e centralizado exclusivamente no clique sobre o badge de versão (<code>v2.9.7</code>) na marca da barra lateral esquerda. O botão redundante <code>⋯ Mais ▾</code> foi removido do topo para deixar o cabeçalho 100% limpo e focado no atendimento.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versão 2.9.1 Oficial -->
+                        <div class="changelog-version-card" style="border-color: #007aff;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>🚀 Versão 2.9.1</span>
+                                    <span class="changelog-badge" style="background:var(--tab-bg); color:var(--text-color); border:1px solid var(--border-color);">Atualização Anterior</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">28/10/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>👤 Correção da Conta no Rodapé Lateral:</strong> Corrigido o status da conta de usuário no rodapé da barra lateral que exibia incorretamente "Modo Offline" mesmo com o atendente autenticado na Conta Google/Firebase. Agora o nome do atendente, foto/iniciais e indicador de sincronização em nuvem são atualizados em tempo real.</li>
+                                <li><strong>🧩 Gerenciador de Userscripts Integrado à Conta:</strong> O Gerenciador de Userscripts foi transferido para dentro da janela de <em>Minha Conta</em>, despoluindo o menu superior e mantendo extensões, scripts de automação e dados de armazenamento centralizados em um só lugar.</li>
+                                <li><strong>◀️ Barra Lateral Retrátil & Recolhível (Modo Compacto):</strong> Novo botão de alternância suave no topo da barra lateral (e atalho de teclado <code>Ctrl + B</code>) que permite encolher a barra para o modo trilho de ícones (~58px) ou expandi-la com os rótulos completos, com memorização automática da sua preferência no navegador.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versão 2.9.0 Oficial -->
                         <div class="changelog-version-card" style="border-color: #007aff;">
                             <div class="changelog-version-header">
                                 <div class="changelog-version-title">
@@ -7067,6 +7917,7 @@
                 loadAppData();
                 updateStorageIndicator();
                 updateUndoButton();
+                initSidebarCollapse();
                 initAlarmConfigUI();
                 alert(`Estado restaurado com sucesso para: ${snapshot.time} (${snapshot.label})`);
             } catch (e) {
@@ -8667,25 +9518,33 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                 tabEl.setAttribute('aria-controls', tabId);
                 tabEl.setAttribute('tabindex', isActive ? '0' : '-1');
 
-                if (isEditing) {
-                    tabEl.setAttribute('draggable', 'true');
-                    tabEl.addEventListener('dragstart', (e) => {
-                        draggedTabId = tabId;
+                // Permite arrastar abas a qualquer momento (para mover entre Áreas de Trabalho ou reordenar em edição)
+                tabEl.setAttribute('draggable', 'true');
+                tabEl.addEventListener('dragstart', (e) => {
+                    draggedTabId = tabId;
+                    try {
                         e.dataTransfer.setData('text/plain', tabId);
-                        setTimeout(() => tabEl.classList.add('dragging'), 0);
-                    });
-                    tabEl.addEventListener('dragend', () => {
-                        tabEl.classList.remove('dragging');
-                        draggedTabId = null;
-                    });
-                    tabEl.addEventListener('dragover', (e) => e.preventDefault());
-                    tabEl.addEventListener('drop', (e) => {
+                        e.dataTransfer.setData('application/x-script-tab', tabId);
+                        e.dataTransfer.effectAllowed = 'copyMove';
+                    } catch (err) {}
+                    setTimeout(() => tabEl.classList.add('dragging'), 0);
+                });
+                tabEl.addEventListener('dragend', () => {
+                    tabEl.classList.remove('dragging');
+                    draggedTabId = null;
+                    document.querySelectorAll('.sidebar-ws-item').forEach(el => el.classList.remove('ws-drag-hover'));
+                });
+                tabEl.addEventListener('dragover', (e) => {
+                    if (isEditing) e.preventDefault();
+                });
+                tabEl.addEventListener('drop', (e) => {
+                    if (isEditing) {
                         e.preventDefault();
                         if (draggedTabId && draggedTabId !== tabId) {
                             reorderTabs(draggedTabId, tabId);
                         }
-                    });
-                }
+                    }
+                });
 
                 tabEl.onclick = (e) => {
                     if(e.target.tagName !== 'BUTTON') switchTab(tabId);
@@ -9303,7 +10162,9 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             if (isEditing && targetContent) targetContent.querySelectorAll('.item-textarea').forEach(autoGrow);
 
             if (companion.surface) {
-                companion.tabId = tabId;
+                if (companion.tabId !== 'all') {
+                    companion.tabId = tabId;
+                }
                 refreshCompanion();
             }
         }
@@ -9405,23 +10266,60 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             handle.title = 'Arraste para mover';
             handle.innerHTML = '⋮⋮';
 
-            handle.addEventListener('mousedown', () => {
-                if (isEditing) newCard.setAttribute('draggable', 'true');
-            });
-            handle.addEventListener('mouseup', () => {
-                newCard.removeAttribute('draggable');
-            });
+            // Permite arrastar o card para qualquer Área de Trabalho na barra lateral (ou reordenar em modo edição)
+            newCard.setAttribute('draggable', 'true');
 
             newCard.addEventListener('dragstart', (e) => {
-                if (!isEditing) return;
+                const tag = e.target && e.target.tagName ? e.target.tagName.toUpperCase() : '';
+                if (tag === 'TEXTAREA' || tag === 'INPUT' || tag === 'SELECT' || tag === 'BUTTON') {
+                    e.preventDefault();
+                    return;
+                }
+                // Se o usuário estiver selecionando texto dentro do <pre>, não inicia drag
+                const sel = window.getSelection ? window.getSelection().toString() : '';
+                if (sel && sel.length > 0) {
+                    e.preventDefault();
+                    return;
+                }
                 draggedCard = newCard;
+                try {
+                    const ta = newCard.querySelector('.item-textarea');
+                    const cardTags = [...newCard.querySelectorAll('.card-tag')].map(t => t.dataset.tagName);
+                    const alarmInp = newCard.querySelector('.card-alarm-input');
+                    const alarmBdg = newCard.querySelector('.alarm-badge');
+                    const alarmVal = (alarmInp && alarmInp.value) ? alarmInp.value : ((alarmBdg && alarmBdg.dataset.alarmTime) || '');
+                    const colEl = newCard.closest('.column');
+                    const colTitle = (colEl && colEl.querySelector('.col-title')) ? colEl.querySelector('.col-title').value : 'Geral';
+                    const tabContentEl = newCard.closest('.tab-content');
+                    const tabId = tabContentEl ? tabContentEl.id : currentActiveTabId;
+                    const tabBtn = document.querySelector(`.tab[data-tabid="${safeCssEscape(tabId)}"] .tab-title`);
+                    const tabName = tabBtn ? tabBtn.textContent : 'Geral';
+
+                    const payload = JSON.stringify({
+                        id: newCard.dataset.cardId || cardId,
+                        text: ta ? ta.value : text,
+                        tags: cardTags,
+                        alarm: alarmVal,
+                        favorite: newCard.classList.contains('is-favorite'),
+                        color: newCard.dataset.cardColor || '',
+                        copies: parseInt(newCard.dataset.copyCount) || 0,
+                        sourceTabId: tabId,
+                        sourceTabName: tabName,
+                        sourceGroupTitle: colTitle
+                    });
+                    e.dataTransfer.setData('application/x-script-card', payload);
+                    e.dataTransfer.setData('text/plain', ta ? ta.value : text);
+                    e.dataTransfer.effectAllowed = 'copyMove';
+                } catch (err) {}
                 setTimeout(() => newCard.classList.add('dragging'), 0);
             });
             newCard.addEventListener('dragend', () => {
                 newCard.classList.remove('dragging');
-                newCard.removeAttribute('draggable');
-                draggedCard = null;
-                saveAppData();
+                document.querySelectorAll('.sidebar-ws-item').forEach(el => el.classList.remove('ws-drag-hover'));
+                if (draggedCard) {
+                    draggedCard = null;
+                    saveAppData();
+                }
             });
             newCard.addEventListener('dragover', (e) => {
                 e.preventDefault();
@@ -10781,6 +11679,8 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                 type: 'CENTRAL_DE_SCRIPTS_FULL_BACKUP',
                 version: APP_VERSION,
                 exportedAt: new Date().toISOString(),
+                workspaces: getWorkspaces(),
+                activeWorkspaceId: getActiveWorkspaceId(),
                 scripts: appData,
                 tabOrder: getSavedTabOrder(appData),
                 customDefaults: getCustomDefaults(),
@@ -11059,6 +11959,13 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                         if (!confirm(`Importar Backup Completo (v${parsed.version || '2.x'}) gravado em ${new Date(parsed.exportedAt || Date.now()).toLocaleString()}?\n\nIsso restaurará scripts, abas, clientes, variáveis e preferências.`)) return;
 
                         const clean = sanitizeFullBackup(validation.sanitizedData || parsed);
+                        if (Array.isArray(parsed.workspaces) && parsed.workspaces.length > 0) {
+                            parsed.workspaces.forEach(ws => { if (ws && ws.data) normalizeData(ws.data); });
+                            localStorage.setItem(WORKSPACES_STORAGE_KEY, JSON.stringify(parsed.workspaces));
+                            if (parsed.activeWorkspaceId) {
+                                localStorage.setItem(ACTIVE_WORKSPACE_KEY, parsed.activeWorkspaceId);
+                            }
+                        }
                         setAppData(clean.scripts);
                         if (Array.isArray(clean.tabOrder)) saveTabOrder(clean.tabOrder);
                         if (clean.customDefaults) setCustomDefaults(clean.customDefaults);
@@ -11401,17 +12308,20 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         }
 
         /* ============================================================
-           JANELA COMPANHEIRA — LÓGICA
+           JANELA COMPANHEIRA — DESIGN FLUENT CLIPBOARD (ESTILO WIN+V)
            ============================================================ */
+
+
         function updateCompanionButton() {
-            const btn = document.getElementById('companionHeaderBtn') || document.getElementById('companionBtn');
-            if (!btn) return;
-            if (companion.surface) {
-                btn.textContent = '🪟 Fechar Dock';
-                btn.classList.add('active');
-            } else {
-                btn.textContent = '🪟 Dock';
-                btn.classList.remove('active');
+            const headerBtn = document.getElementById('companionHeaderBtn');
+            if (headerBtn) {
+                headerBtn.textContent = companion.surface ? '🪟 Fechar Docker' : '🪟 Docker (Alt+V)';
+                headerBtn.classList.toggle('active', !!companion.surface);
+            }
+            const sbBtn = document.getElementById('sbCompanionBtn');
+            if (sbBtn) {
+                sbBtn.classList.toggle('active', !!companion.surface);
+                sbBtn.setAttribute('title', companion.surface ? 'Docker (Aberto 🪟)' : 'Abrir Docker estilo Win+V (Alt+V)');
             }
         }
 
@@ -11431,7 +12341,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                 } catch (err) {}
             }
             try {
-                const win = window.open('', 'centralScriptsCompanion', 'width=400,height=640,menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=no');
+                const win = window.open('', 'centralScriptsCompanion', 'width=410,height=640,menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=no');
                 if (win) {
                     openPopupCompanion(win);
                     return;
@@ -11459,9 +12369,9 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         }
 
         async function openPipCompanion() {
-            const pipWin = await documentPictureInPicture.requestWindow({ width: 400, height: 620 });
+            const pipWin = await documentPictureInPicture.requestWindow({ width: 410, height: 640 });
             copyStylesTo(pipWin.document);
-            pipWin.document.title = 'Central de Scripts — Dock de Scripts';
+            pipWin.document.title = 'Docker — Área de Transferência & Scripts';
             pipWin.document.body.className = document.body.className;
 
             const root = pipWin.document.createElement('div');
@@ -11484,7 +12394,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         function openPopupCompanion(win) {
             const doc = win.document;
             try {
-                doc.title = 'Central de Scripts — Dock de Scripts';
+                doc.title = 'Docker — Área de Transferência & Scripts';
                 if (doc.body) {
                     doc.body.innerHTML = '';
                     doc.body.className = document.body.className;
@@ -11531,11 +12441,12 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             const surface = { mode: 'panel', doc: document, win: window, root: root, panel: panel };
             companion.surface = surface;
             buildCompanionShell(surface);
-            makePanelDraggable(panel, root.querySelector('.comp-header'));
+            makePanelDraggable(panel, root.querySelector('.comp-fluent-header'));
             updateCompanionButton();
         }
 
         function makePanelDraggable(panel, handle) {
+            if (!handle) return;
             let dragging = false;
             let startX = 0, startY = 0, startLeft = 0, startTop = 0;
 
@@ -11586,66 +12497,214 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             updateCompanionButton();
         }
 
+        function clearRecentCopies() {
+            try {
+                localStorage.removeItem(RECENTS_KEY);
+                if (typeof showToast === 'function') {
+                    showToast('Histórico de cópias recentes limpo com sucesso!', 'info', 2000);
+                }
+            } catch (e) {}
+            renderCompanionList();
+        }
+
         function buildCompanionShell(surface) {
             const doc = surface.doc;
             const root = surface.root;
 
             root.className = 'comp-root';
             root.setAttribute('data-mode', surface.mode);
+
+            // Shell HTML estritamente inspirado na Área de Transferência do Windows 11 (Win + V)
             root.innerHTML = `
-                <div class="comp-header">
-                    <span class="comp-title">⚡ Dock de Scripts</span>
-                    <div class="comp-header-btns">
-                        <button class="comp-icon-btn" data-act="compact" title="Alternar modo compacto">☰</button>
-                        <button class="comp-icon-btn" data-act="refresh" title="Recarregar dados">⟳</button>
-                        <button class="comp-icon-btn" data-act="close" title="Fechar janela companheira">✕</button>
+                <!-- 1. Barra Superior Estilo Windows 11 -->
+                <div class="comp-fluent-header">
+                    <div class="comp-fluent-header-left">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                        </svg>
+                        <span>Docker — Área de Transferência & Scripts</span>
+                    </div>
+                    <div class="comp-fluent-header-actions">
+                        <button type="button" class="comp-fluent-icon-btn" data-act="refresh" title="Recarregar Dados (⟳)">⟳</button>
+                        <button type="button" class="comp-fluent-icon-btn close-btn" data-act="close" title="Fechar (Esc)">✕</button>
                     </div>
                 </div>
-                <div class="comp-toolbar">
-                    <select class="comp-select" title="Escolher aba"></select>
-                    <input class="comp-search" type="search" placeholder="Filtrar scripts...">
+
+                <!-- 2. Barra de Categorias e Ícones com Sublinhado Azul Ativo (Exato Win+V) -->
+                <div class="comp-nav-strip" role="tablist">
+                    <!-- 1: Área de Transferência / Scripts -->
+                    <button type="button" class="comp-nav-item active" data-view="clipboard" title="Área de Transferência / Scripts da Aba">
+                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                            <line x1="9" y1="11" x2="15" y2="11"></line>
+                            <line x1="9" y1="15" x2="13" y2="15"></line>
+                        </svg>
+                        <span class="comp-nav-indicator"></span>
+                    </button>
+
+                    <!-- 2: Favoritos / Fixados -->
+                    <button type="button" class="comp-nav-item" data-view="favorites" title="Itens Fixados & Favoritos (📌)">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
+                        <span class="comp-nav-indicator"></span>
+                    </button>
+
+                    <!-- 3: Histórico Recente de Cópias -->
+                    <button type="button" class="comp-nav-item" data-view="recents" title="Histórico de Cópias Recentes">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        <span class="comp-nav-indicator"></span>
+                    </button>
+
+                    <!-- 4: Alternador de Abas de Atendimento -->
+                    <button type="button" class="comp-nav-item" data-view="tabs" title="Escolher Aba de Scripts (Webchat, Telefone, etc.)">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                        </svg>
+                        <span class="comp-nav-indicator"></span>
+                    </button>
+
+                    <!-- 5: Variáveis e Preenchimento Rápido -->
+                    <button type="button" class="comp-nav-item" data-view="vars" title="Variáveis Automáticas (nome, protocolo, etc.)">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 7V4h16v3M9 20h6M12 4v16"></path>
+                        </svg>
+                        <span class="comp-nav-indicator"></span>
+                    </button>
                 </div>
+
+                <!-- 3. Sub-cabeçalho de Seção (Título da Categoria + Ações Rápidas) -->
+                <div class="comp-sub-header">
+                    <span class="comp-sub-title" id="compSubTitle">Área de Transferência</span>
+                    <div class="comp-sub-actions" id="compSubActions">
+                        <button type="button" class="comp-sub-action-btn" id="compSubActionBtn" style="display:none;">Limpar tudo</button>
+                    </div>
+                </div>
+
+                <!-- 4. Caixa de Pesquisa Integrada -->
+                <div class="comp-search-box">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.6;">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="search" class="comp-search-input" id="compSearchInput" placeholder="Pesquisar scripts ou filtrar..." autocomplete="off">
+                    <button type="button" class="comp-search-clear-btn" id="compSearchClearBtn" style="display:none;" title="Limpar pesquisa">✕</button>
+                </div>
+
+                <!-- Host de Alarmes Urgentes na Janela -->
                 <div class="companion-alarm-host"></div>
-                <div class="comp-list"></div>
-                <div class="comp-footer">
-                    <span class="comp-count"></span>
-                    <span class="comp-mode"></span>
+
+                <!-- 5. Lista de Cards -->
+                <div class="comp-list" id="compList" tabindex="0" role="listbox"></div>
+
+                <!-- 6. Rodapé Informativo Estilo Windows -->
+                <div class="comp-fluent-footer">
+                    <span class="comp-count" id="compCount">0 script(s)</span>
+                    <span>Atalho: <kbd>Alt + V</kbd> • Copiar: <kbd>Enter</kbd></span>
                 </div>
             `;
 
             const refs = {
-                select: root.querySelector('.comp-select'),
-                search: root.querySelector('.comp-search'),
-                list: root.querySelector('.comp-list'),
+                title: root.querySelector('#compSubTitle'),
+                actionBtn: root.querySelector('#compSubActionBtn'),
+                search: root.querySelector('#compSearchInput'),
+                searchClear: root.querySelector('#compSearchClearBtn'),
+                list: root.querySelector('#compList'),
                 alarmHost: root.querySelector('.companion-alarm-host'),
-                count: root.querySelector('.comp-count'),
-                modeLabel: root.querySelector('.comp-mode'),
-                compactBtn: root.querySelector('[data-act="compact"]')
+                count: root.querySelector('#compCount')
             };
             surface.refs = refs;
 
-            refs.select.addEventListener('change', (e) => {
-                companion.tabId = e.target.value;
-                companion.expanded.clear();
-                renderCompanionList();
+            // Navegação por abas/ícones no topo
+            root.querySelectorAll('.comp-nav-item').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const view = btn.dataset.view;
+                    companion.activeView = view;
+                    companion.focusedIndex = 0;
+                    root.querySelectorAll('.comp-nav-item').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+                    renderCompanionList();
+                });
             });
 
+            // Campo de busca
             refs.search.addEventListener('input', (e) => {
                 companion.query = e.target.value;
+                refs.searchClear.style.display = companion.query ? 'block' : 'none';
+                companion.focusedIndex = 0;
                 renderCompanionList();
             });
 
-            refs.compactBtn.classList.toggle('active', companion.compact);
-            refs.compactBtn.addEventListener('click', () => {
-                companion.compact = !companion.compact;
-                refs.compactBtn.classList.toggle('active', companion.compact);
+            refs.searchClear.addEventListener('click', () => {
+                refs.search.value = '';
+                companion.query = '';
+                refs.searchClear.style.display = 'none';
+                refs.search.focus();
                 renderCompanionList();
             });
 
+            // Botão de ação secundária (Limpar tudo / Compacto)
+            refs.actionBtn.addEventListener('click', () => {
+                if (companion.activeView === 'recents') {
+                    if (confirm('Deseja limpar todo o histórico de scripts copiados recentemente?')) {
+                        clearRecentCopies();
+                    }
+                } else if (companion.query) {
+                    refs.search.value = '';
+                    companion.query = '';
+                    refs.searchClear.style.display = 'none';
+                    renderCompanionList();
+                } else {
+                    companion.compact = !companion.compact;
+                    renderCompanionList();
+                }
+            });
+
+            // Botões do cabeçalho
             root.querySelector('[data-act="refresh"]').addEventListener('click', () => refreshCompanion());
             root.querySelector('[data-act="close"]').addEventListener('click', () => closeCompanion());
 
+            // Navegação por teclado dentro da lista (↑, ↓, Enter, Esc)
+            root.addEventListener('keydown', (e) => {
+                const cards = root.querySelectorAll('.comp-card');
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    closeCompanion();
+                } else if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (cards.length > 0) {
+                        companion.focusedIndex = (companion.focusedIndex + 1) % cards.length;
+                        updateFocusedCard(cards);
+                    }
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (cards.length > 0) {
+                        companion.focusedIndex = (companion.focusedIndex - 1 + cards.length) % cards.length;
+                        updateFocusedCard(cards);
+                    }
+                } else if (e.key === 'Enter') {
+                    const focused = root.querySelector('.comp-card.focused');
+                    if (focused) {
+                        e.preventDefault();
+                        focused.click();
+                    }
+                }
+            });
+
             refreshCompanion();
+        }
+
+        function updateFocusedCard(cards) {
+            cards.forEach((c, idx) => {
+                const isFoc = idx === companion.focusedIndex;
+                c.classList.toggle('focused', isFoc);
+                if (isFoc) c.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            });
         }
 
         function scheduleCompanionRefresh() {
@@ -11657,30 +12716,36 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             }, 220);
         }
 
+        function getCompanionTargetData() {
+            const workspaces = getWorkspaces();
+            const activeWsId = getActiveWorkspaceId();
+            if (!companion.wsId || !workspaces.some(w => w.id === companion.wsId)) {
+                companion.wsId = activeWsId;
+            }
+            const targetWs = workspaces.find(w => w.id === companion.wsId) || workspaces[0];
+            const data = (targetWs && targetWs.data) ? targetWs.data : getAppData();
+            const validIds = Object.keys(data);
+            let order = (targetWs && Array.isArray(targetWs.tabOrder) && targetWs.tabOrder.length > 0)
+                ? targetWs.tabOrder.filter(id => validIds.includes(id))
+                : [];
+            validIds.forEach(id => { if (!order.includes(id)) order.push(id); });
+            return { workspaces, targetWs, data, ids: order };
+        }
+
         function refreshCompanion() {
             const surface = companion.surface;
             if (!surface || !surface.refs) return;
 
-            const data = getAppData();
-            // Utiliza estritamente a mesma ordem das abas do site principal
-            const ids = getSavedTabOrder(data);
+            const { data, ids } = getCompanionTargetData();
             if (ids.length === 0) return;
 
-            if (!companion.tabId || companion.tabId === 'tab_clients_alarm' || !data[companion.tabId]) {
-                companion.tabId = ids[0];
+            // Se companion.tabId for nulo, padrão é 'all' (para exibir TODOS os scripts da área!)
+            if (!companion.tabId || (companion.tabId !== 'all' && !data[companion.tabId])) {
+                companion.tabId = 'all';
             }
 
-            const select = surface.refs.select;
-            select.innerHTML = '';
-            ids.forEach(id => {
-                const opt = surface.doc.createElement('option');
-                opt.value = id;
-                opt.textContent = data[id].name;
-                if (id === companion.tabId) opt.selected = true;
-                select.appendChild(opt);
-            });
-
             renderCompanionList();
+
             const active = document.getElementById('activeAlarmPopup');
             if (active) {
                 const client = active.querySelector('.alarm-popup-client');
@@ -11699,87 +12764,428 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 
             const doc = surface.doc;
             const list = surface.refs.list;
-            const data = getAppData();
-            const tab = data[companion.tabId];
+            const { workspaces, targetWs, data, ids } = getCompanionTargetData();
+            const view = companion.activeView || 'clipboard';
+            const query = (companion.query || '').trim().toLowerCase();
 
             list.innerHTML = '';
-            if (!tab) return;
 
-            // Extrai todos os cards respeitando rigorosamente a ordem de colunas e cards do site
-            const allItems = [];
-            if (Array.isArray(tab.groups)) {
-                tab.groups.forEach(g => {
-                    if (Array.isArray(g.items)) {
-                        g.items.forEach(item => {
-                            allItems.push({
-                                ...item,
-                                groupTitle: g.title || ''
+            // Calcula total geral de scripts em todas as abas da área selecionada
+            let totalAllScripts = 0;
+            ids.forEach(id => {
+                if (id === 'tab_clients_alarm') return;
+                const t = data[id];
+                if (t && Array.isArray(t.groups)) {
+                    t.groups.forEach(g => totalAllScripts += (g.items || []).length);
+                }
+            });
+
+            // Atualiza o sub-título e botões de ação conforme a visão
+            if (view === 'clipboard') {
+                // Linha com Seletor de Aba (esquerda) + Seletor de Área de Trabalho (direita, onde o usuário marcou!)
+                let selectHtml = `<div class="comp-selectors-row">
+                    <span style="font-size:14px; flex-shrink:0;">📋</span>
+                    <select class="comp-fluent-tab-select" id="compTabSelect" title="Escolher Aba ou Todos os Scripts">
+                        <option value="all" ${companion.tabId === 'all' ? 'selected' : ''}>🌐 Todos os Scripts (${totalAllScripts})</option>`;
+                
+                ids.forEach(id => {
+                    if (id === 'tab_clients_alarm') return;
+                    const tab = data[id];
+                    if (!tab) return;
+                    const count = (tab.groups || []).reduce((acc, g) => acc + (g.items || []).length, 0);
+                    const isSel = companion.tabId === id;
+                    selectHtml += `<option value="${escapeHtml(id)}" ${isSel ? 'selected' : ''}>${escapeHtml(tab.name)} (${count})</option>`;
+                });
+                selectHtml += `</select>`;
+
+                // Seletor de Área de Trabalho à direita
+                selectHtml += `<select class="comp-fluent-ws-select" id="compWsSelect" title="Trocar Área de Trabalho no Docker">`;
+                workspaces.forEach(ws => {
+                    const isWsSel = ws.id === (targetWs ? targetWs.id : companion.wsId);
+                    const wsIcon = ws.icon || '💼';
+                    const wsName = ws.name || 'Área';
+                    selectHtml += `<option value="${escapeHtml(ws.id)}" ${isWsSel ? 'selected' : ''}>${escapeHtml(wsIcon + ' ' + wsName)}</option>`;
+                });
+                selectHtml += `</select></div>`;
+
+                surface.refs.title.innerHTML = selectHtml;
+
+                const tabSel = surface.refs.title.querySelector('#compTabSelect');
+                if (tabSel) {
+                    tabSel.onchange = (e) => {
+                        companion.tabId = e.target.value;
+                        companion.focusedIndex = 0;
+                        renderCompanionList();
+                    };
+                }
+
+                const wsSel = surface.refs.title.querySelector('#compWsSelect');
+                if (wsSel) {
+                    wsSel.onchange = (e) => {
+                        const newWsId = e.target.value;
+                        companion.wsId = newWsId;
+                        companion.tabId = 'all';
+                        companion.focusedIndex = 0;
+                        // Sincroniza também com a área de trabalho ativa da janela principal para manter tudo integrado
+                        if (newWsId !== getActiveWorkspaceId()) {
+                            switchWorkspace(newWsId);
+                        } else {
+                            renderCompanionList();
+                        }
+                    };
+                }
+
+                surface.refs.actionBtn.style.display = query ? 'inline-flex' : 'none';
+                surface.refs.actionBtn.textContent = 'Limpar busca';
+            } else if (view === 'favorites') {
+                surface.refs.title.innerHTML = `<span>🤍 Itens Fixados & Favoritos (📌)</span>`;
+                surface.refs.actionBtn.style.display = query ? 'inline-flex' : 'none';
+                surface.refs.actionBtn.textContent = 'Limpar busca';
+            } else if (view === 'recents') {
+                surface.refs.title.innerHTML = `<span>🕒 Histórico Recente de Cópias</span>`;
+                surface.refs.actionBtn.style.display = 'inline-flex';
+                surface.refs.actionBtn.textContent = 'Limpar tudo';
+            } else if (view === 'tabs') {
+                surface.refs.title.innerHTML = `<span>🗂️ Escolher Aba de Scripts</span>`;
+                surface.refs.actionBtn.style.display = 'none';
+            } else if (view === 'vars') {
+                surface.refs.title.innerHTML = `<span>⚙️ Variáveis Rápidas de Atendimento</span>`;
+                surface.refs.actionBtn.style.display = 'none';
+            }
+
+            // 1. Visão de Abas: Selecionar rapidamente qualquer uma das abas
+            if (view === 'tabs') {
+                const filteredTabs = ids.filter(id => {
+                    if (id === 'tab_clients_alarm') return false;
+                    const name = data[id] ? data[id].name : '';
+                    return !query || name.toLowerCase().includes(query);
+                });
+
+                surface.refs.count.textContent = `${filteredTabs.length} aba(s)`;
+
+                // Opção "Todos os Scripts" no topo da lista de abas
+                const allCard = doc.createElement('div');
+                allCard.className = 'comp-card' + (companion.tabId === 'all' ? ' focused' : '');
+                allCard.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div style="font-size:13.5px; font-weight:700; color:var(--accent-color);">
+                            🌐 Todos os Scripts (Todas as Abas)
+                        </div>
+                        <span style="font-size:11px; opacity:0.85; background:var(--tab-bg); padding:2px 8px; border-radius:10px; font-weight:600;">
+                            ${totalAllScripts} scripts
+                        </span>
+                    </div>
+                `;
+                allCard.onclick = () => {
+                    companion.tabId = 'all';
+                    companion.activeView = 'clipboard';
+                    surface.root.querySelectorAll('.comp-nav-item').forEach(b => b.classList.toggle('active', b.dataset.view === 'clipboard'));
+                    renderCompanionList();
+                };
+                list.appendChild(allCard);
+
+                filteredTabs.forEach((tabId) => {
+                    const tab = data[tabId];
+                    const isCurrent = tabId === companion.tabId;
+                    const card = doc.createElement('div');
+                    card.className = 'comp-card' + (isCurrent ? ' focused' : '');
+                    card.innerHTML = `
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div style="font-size:13.5px; font-weight:600; color:var(--text-color);">
+                                ${escapeHtml(tab.name)}
+                            </div>
+                            <span style="font-size:11px; opacity:0.75; background:var(--tab-bg); padding:2px 8px; border-radius:10px;">
+                                ${(tab.groups || []).reduce((acc, g) => acc + (g.items || []).length, 0)} script(s)
+                            </span>
+                        </div>
+                    `;
+                    card.onclick = () => {
+                        companion.tabId = tabId;
+                        companion.activeView = 'clipboard';
+                        surface.root.querySelectorAll('.comp-nav-item').forEach(b => b.classList.toggle('active', b.dataset.view === 'clipboard'));
+                        renderCompanionList();
+                    };
+                    list.appendChild(card);
+                });
+                return;
+            }
+
+            // 2. Visão de Variáveis Rápidas
+            if (view === 'vars') {
+                const defaults = getCustomDefaults();
+                const keys = Object.keys(defaults);
+                surface.refs.count.textContent = `${keys.length} variável(is)`;
+
+                if (keys.length === 0) {
+                    list.innerHTML = `
+                        <div class="comp-empty">
+                            <span>Nenhuma variável configurada.</span>
+                            <small>Configure suas variáveis em "Conta & Config" na barra lateral.</small>
+                        </div>`;
+                    return;
+                }
+
+                keys.forEach(k => {
+                    const val = defaults[k] || '';
+                    if (query && !k.toLowerCase().includes(query) && !val.toLowerCase().includes(query)) return;
+
+                    const card = doc.createElement('div');
+                    card.className = 'comp-card';
+                    card.innerHTML = `
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-weight:700; color:var(--accent-color);">(${escapeHtml(k)})</span>
+                            <span style="font-size:11px; opacity:0.65;">Clique para copiar</span>
+                        </div>
+                        <div style="font-size:12.5px; margin-top:4px; opacity:0.9;">${escapeHtml(val || '(vazio)')}</div>
+                    `;
+                    card.onclick = () => {
+                        copyTextToClipboard(val, doc).then(ok => {
+                            if (ok) {
+                                recordScriptUsage();
+                                addRecentCopy(val);
+                                showCardCopiedFeedback(card, doc);
+                            }
+                        });
+                    };
+                    list.appendChild(card);
+                });
+                return;
+            }
+
+            // 3. Visão de Histórico Recente de Cópias
+            if (view === 'recents') {
+                const recents = getRecentCopies();
+                const filtered = recents.filter(t => !query || t.toLowerCase().includes(query));
+                surface.refs.count.textContent = `${filtered.length} recente(s)`;
+
+                if (filtered.length === 0) {
+                    list.innerHTML = `
+                        <div class="comp-empty">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="opacity:0.4;">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            <span>Nenhum script recente no histórico.</span>
+                        </div>`;
+                    return;
+                }
+
+                filtered.forEach((txt, idx) => {
+                    const item = { id: 'recent_' + idx, text: txt, favorite: false };
+                    list.appendChild(buildCompanionCard(surface, item, idx));
+                });
+
+                const cards = list.querySelectorAll('.comp-card');
+                updateFocusedCard(cards);
+                return;
+            }
+
+            // 4. Visão de Favoritos Globais ou Scripts (Aba Específica ou Todos os Scripts)
+            let itemsToDisplay = [];
+
+            if (view === 'favorites') {
+                // Coleta todos os favoritos de todas as abas
+                ids.forEach(tabId => {
+                    if (tabId === 'tab_clients_alarm') return;
+                    const tab = data[tabId];
+                    if (tab && Array.isArray(tab.groups)) {
+                        tab.groups.forEach(g => {
+                            (g.items || []).forEach(it => {
+                                if (it && it.favorite) {
+                                    itemsToDisplay.push({
+                                        ...it,
+                                        tabId: tabId,
+                                        tabName: tab.name,
+                                        groupTitle: g.title || ''
+                                    });
+                                }
                             });
                         });
                     }
                 });
-            } else if (Array.isArray(tab.items)) {
-                tab.items.forEach(item => allItems.push(item));
+            } else if (companion.tabId === 'all') {
+                // VISÃO TODOS OS SCRIPTS: Coleta todos os scripts de todas as abas
+                ids.forEach(tabId => {
+                    if (tabId === 'tab_clients_alarm') return;
+                    const tab = data[tabId];
+                    if (tab && Array.isArray(tab.groups)) {
+                        tab.groups.forEach(g => {
+                            (g.items || []).forEach(it => {
+                                itemsToDisplay.push({
+                                    ...it,
+                                    tabId: tabId,
+                                    tabName: tab.name,
+                                    groupTitle: g.title || ''
+                                });
+                            });
+                        });
+                    }
+                });
+            } else {
+                // Visão de aba específica selecionada
+                const tab = data[companion.tabId] || data[ids[0]];
+                if (tab && Array.isArray(tab.groups)) {
+                    tab.groups.forEach(g => {
+                        (g.items || []).forEach(it => {
+                            itemsToDisplay.push({
+                                ...it,
+                                tabId: companion.tabId,
+                                tabName: tab.name,
+                                groupTitle: g.title || ''
+                            });
+                        });
+                    });
+                }
             }
 
-            const query = companion.query.trim().toLowerCase();
-            const filteredItems = allItems.filter(item => {
+            // Filtro de busca
+            const filteredItems = itemsToDisplay.filter(item => {
                 const text = item.text || '';
                 const tags = item.tags || [];
+                const tabName = item.tabName || '';
                 const matchText = !query || text.toLowerCase().includes(query);
                 const matchTag = tags.some(t => t.toLowerCase().includes(query));
-                return matchText || matchTag;
+                const matchTab = tabName.toLowerCase().includes(query);
+                return matchText || matchTag || matchTab;
             });
 
-            // Se não houver busca ativa, favoritos vão para o topo preservando a ordem original entre si
-            filteredItems.sort((a, b) => (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0));
+            // Se for visão normal de aba e sem busca, favoritos vão para o topo
+            if (view === 'clipboard' && companion.tabId !== 'all') {
+                filteredItems.sort((a, b) => (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0));
+            }
 
-            surface.refs.count.textContent = `${filteredItems.length} de ${allItems.length} script(s)`;
-            surface.refs.modeLabel.textContent = companion.compact ? 'Compacto' : 'Completo';
+            const isAllMode = companion.tabId === 'all';
+            surface.refs.count.textContent = `${filteredItems.length} de ${itemsToDisplay.length} script(s)${isAllMode ? ' (Todas as Abas)' : ''}`;
 
             if (filteredItems.length === 0) {
-                const empty = doc.createElement('div');
-                empty.className = 'comp-empty';
-                empty.textContent = 'Nenhum script encontrado.';
-                list.appendChild(empty);
+                list.innerHTML = `
+                    <div class="comp-empty">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="opacity:0.4;">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <span>Nenhum script encontrado${query ? ' para a busca' : ''}.</span>
+                    </div>`;
                 return;
             }
 
             let lastGroup = '';
             filteredItems.forEach((item, idx) => {
-                // Separador visual de coluna/grupo na Dock quando não compacto
-                if (!companion.compact && item.groupTitle && item.groupTitle !== lastGroup && !query) {
+                // Separador de aba ou grupo
+                if (isAllMode && item.tabName && item.tabName !== lastGroup && !query) {
+                    lastGroup = item.tabName;
+                    const grpHeader = doc.createElement('div');
+                    grpHeader.className = 'comp-group-header';
+                    grpHeader.textContent = '📁 ' + lastGroup;
+                    list.appendChild(grpHeader);
+                } else if (!isAllMode && view === 'clipboard' && !companion.compact && item.groupTitle && item.groupTitle !== lastGroup && !query) {
                     lastGroup = item.groupTitle;
                     const grpHeader = doc.createElement('div');
                     grpHeader.className = 'comp-group-header';
                     grpHeader.textContent = lastGroup;
                     list.appendChild(grpHeader);
+                } else if (view === 'favorites' && item.tabName && item.tabName !== lastGroup && !query) {
+                    lastGroup = item.tabName;
+                    const grpHeader = doc.createElement('div');
+                    grpHeader.className = 'comp-group-header';
+                    grpHeader.textContent = '📁 ' + lastGroup;
+                    list.appendChild(grpHeader);
                 }
-                list.appendChild(buildCompanionCard(surface, item, idx));
+                list.appendChild(buildCompanionCard(surface, item, idx, isAllMode));
             });
+
+            const cards = list.querySelectorAll('.comp-card');
+            updateFocusedCard(cards);
         }
 
-        function buildCompanionCard(surface, item, idx) {
+                /* SVG Idêntico ao Pushpin Tilted da Captura do Windows 11 (Win + V) */
+        function getPinSvg(isPinned) {
+            if (isPinned) {
+                return `
+                    <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10.5 1.5l4 4-2 2-1-1-3.5 3.5 1 2-2 1-3-3-2.5 2.5-1-1 2.5-2.5-3-3 1-2 2 1 3.5-3.5-1-1 2-2z" fill="currentColor"/>
+                        <path d="M2.5 13.5L0.5 15.5" stroke="currentColor" stroke-width="2.2"/>
+                    </svg>`;
+            }
+            return `
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10.5 1.5l4 4-2 2-1-1-3.5 3.5 1 2-2 1-3-3-2.5 2.5-1-1 2.5-2.5-3-3 1-2 2 1 3.5-3.5-1-1 2-2z"/>
+                    <path d="M2.5 13.5L0.5 15.5" stroke="currentColor" stroke-width="1.6"/>
+                </svg>`;
+        }
+
+        function showCardCopiedFeedback(card, doc) {
+            const existing = card.querySelector('.comp-card-copied-badge');
+            if (existing) existing.remove();
+
+            const badge = doc.createElement('div');
+            badge.className = 'comp-card-copied-badge';
+            badge.innerHTML = '<span>✓</span> <span>Copiado!</span>';
+            card.appendChild(badge);
+
+            setTimeout(() => {
+                badge.style.opacity = '0';
+                badge.style.transition = 'opacity 0.25s ease';
+                setTimeout(() => badge.remove(), 260);
+            }, 1200);
+        }
+
+        function buildCompanionCard(surface, item, idx, showTabBadge = false) {
             const doc = surface.doc;
             const text = item.text || '';
             const isFav = !!item.favorite;
+            const isFocused = idx === companion.focusedIndex;
+
             const card = doc.createElement('div');
-            card.className = 'comp-card' + (isFav ? ' is-favorite' : '');
+            card.className = 'comp-card' + (isFav ? ' is-favorite' : '') + (isFocused ? ' focused' : '');
             if (companion.expanded.has(idx)) card.classList.add('expanded');
+            card.setAttribute('tabindex', '0');
+            card.setAttribute('role', 'option');
+
+            // 1. Corpo com Texto do Script
+            const body = doc.createElement('div');
+            body.className = 'comp-card-body';
+
+            if (showTabBadge && item.tabName) {
+                const badge = doc.createElement('span');
+                badge.className = 'comp-card-tab-badge';
+                badge.textContent = item.tabName;
+                body.appendChild(badge);
+            }
 
             const p = doc.createElement('div');
             p.className = 'comp-card-text';
             p.textContent = companion.compact ? firstLineOf(text) : text;
+            body.appendChild(p);
+            card.appendChild(body);
 
-            const actions = doc.createElement('div');
-            actions.className = 'comp-card-actions';
-
-            const favBtn = doc.createElement('button');
-            favBtn.className = 'fav-btn' + (isFav ? '' : ' not-fav');
-            favBtn.textContent = isFav ? '⭐' : '☆';
-            favBtn.title = isFav ? 'Remover dos favoritos' : 'Favoritar';
-            favBtn.addEventListener('click', (e) => {
+            // 2. Botão Mais Opções (...) no topo direito
+            const moreBtn = doc.createElement('button');
+            moreBtn.type = 'button';
+            moreBtn.className = 'comp-card-more-btn';
+            moreBtn.title = 'Mais opções / Ver completo';
+            moreBtn.innerHTML = '⋯';
+            moreBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
+                if (companion.expanded.has(idx)) {
+                    companion.expanded.delete(idx);
+                } else {
+                    companion.expanded.add(idx);
+                }
+                renderCompanionList();
+            });
+            card.appendChild(moreBtn);
+
+            // 3. Botão Pin (Fixar) no canto inferior direito estilo Windows 11
+            const pinBtn = doc.createElement('button');
+            pinBtn.type = 'button';
+            pinBtn.className = 'comp-card-pin-btn' + (isFav ? ' is-pinned' : '');
+            pinBtn.title = isFav ? 'Desafixar dos favoritos' : 'Fixar no topo (Favoritar)';
+            pinBtn.innerHTML = getPinSvg(isFav);
+
+            pinBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                // 1. Tenta acionar o botão principal de favorito na tela
                 const targetCard = item.id
                     ? document.querySelector(`.item-card[data-card-id="${safeCssEscape(item.id)}"]`)
                     : null;
@@ -11791,8 +13197,11 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                         return;
                     }
                 }
+
+                // 2. Atualiza diretamente nos dados
                 const data = getAppData();
-                const tab = data[companion.tabId];
+                const targetTabId = item.tabId || companion.tabId;
+                const tab = data[targetTabId];
                 if (tab && Array.isArray(tab.groups)) {
                     for (const g of tab.groups) {
                         const found = (g.items || []).find(it => (item.id && it.id === item.id) || it.text === item.text);
@@ -11805,59 +13214,35 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                     markLocalChange();
                     loadAppData();
                     syncToCloudDebounced();
+                    renderCompanionList();
                 }
             });
+            card.appendChild(pinBtn);
 
-            const copyBtn = doc.createElement('button');
-            copyBtn.className = 'comp-btn comp-copy';
-            copyBtn.textContent = '📋 Copiar';
-            copyBtn.addEventListener('click', async () => {
+            // 4. Clique em qualquer área do Card copia diretamente com preenchimento de variáveis
+            card.addEventListener('click', async () => {
+                companion.focusedIndex = idx;
+                doc.querySelectorAll('.comp-card').forEach((c, i) => c.classList.toggle('focused', i === idx));
+
                 let resolved = await resolveVariables(text, doc);
                 if (resolved === null) return;
                 resolved = cleanExcessiveNewlines(resolved);
+
                 copyTextToClipboard(resolved, doc).then(ok => {
                     if (ok) {
                         recordScriptUsage();
                         addRecentCopy(resolved);
+                        showCardCopiedFeedback(card, doc);
                     }
-                    copyBtn.textContent = ok ? '✅ Copiado!' : '❌ Falhou';
-                    copyBtn.classList.toggle('ok', ok);
-                    setTimeout(() => {
-                        copyBtn.textContent = '📋 Copiar';
-                        copyBtn.classList.remove('ok');
-                    }, 1400);
                 });
             });
 
-            copyBtn.addEventListener('mouseenter', () => showCopyTooltip(copyBtn, text, doc));
-            copyBtn.addEventListener('mouseleave', () => hideCopyTooltip(doc));
-
-            actions.append(favBtn, copyBtn);
-
-            if (!companion.compact) {
-                const expandBtn = doc.createElement('button');
-                expandBtn.className = 'comp-btn comp-btn-secondary';
-                expandBtn.textContent = companion.expanded.has(idx) ? '▲' : '▼';
-                expandBtn.title = 'Expandir / recolher';
-                expandBtn.addEventListener('click', () => {
-                    if (companion.expanded.has(idx)) {
-                        companion.expanded.delete(idx);
-                    } else {
-                        companion.expanded.add(idx);
-                    }
-                    renderCompanionList();
-                });
-                actions.appendChild(expandBtn);
-            }
-
-            card.appendChild(p);
-            card.appendChild(actions);
             return card;
         }
 
-        function firstLineOf(text) {
+                function firstLineOf(text) {
             const line = (text || '').split('\n').map(l => l.trim()).find(l => l.length > 0) || '(vazio)';
-            return line.length > 90 ? line.slice(0, 90) + '…' : line;
+            return line.length > 95 ? line.slice(0, 95) + '…' : line;
         }
 
         /* ============================================================
@@ -12470,52 +13855,50 @@ console.log('Userscript carregado');`;
         function updateAuthUI() {
             const btn = document.getElementById('firebaseAuthBtn');
             const adminBtn = document.getElementById('adminPanelHeaderBtn');
-
-            if (!btn) return;
-
             const esc = typeof escapeHtml === 'function' ? escapeHtml : (s => (s || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"));
 
-            if (currentUser) {
-                const isAdmin = isCurrentUserAdmin();
-                const photo = (currentUserProfile && currentUserProfile.photoURL) || currentUser.photoURL || '';
-                const fullName = (currentUserProfile && currentUserProfile.displayName) || currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : 'Usuário');
-                const firstName = fullName.split(' ')[0] || 'Usuário';
+            if (btn) {
+                if (currentUser) {
+                    const isAdmin = isCurrentUserAdmin();
+                    const photo = (currentUserProfile && currentUserProfile.photoURL) || currentUser.photoURL || '';
+                    const fullName = (currentUserProfile && currentUserProfile.displayName) || currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : 'Usuário');
+                    const firstName = fullName.split(' ')[0] || 'Usuário';
 
-                btn.style.background = isAdmin ? '#7c3aed' : '#2563eb';
-                btn.style.color = '#fff';
-                btn.style.padding = '3px 12px 3px 5px';
-                btn.title = `Conectado como: ${currentUser.email} (${isAdmin ? 'Administrador' : 'Usuário'})
-Clique para abrir Minha Conta e Sincronização`;
+                    btn.style.background = isAdmin ? '#7c3aed' : '#2563eb';
+                    btn.style.color = '#fff';
+                    btn.style.padding = '3px 12px 3px 5px';
+                    btn.title = `Conectado como: ${currentUser.email} (${isAdmin ? 'Administrador' : 'Usuário'})\nClique para abrir Minha Conta e Sincronização`;
 
-                const dotClass = isCloudSyncing ? 'syncing' : 'online';
+                    const dotClass = isCloudSyncing ? 'syncing' : (syncStatus === 'error' ? 'error' : (syncStatus === 'pending' ? 'pending' : 'online'));
 
-                const avatarHtml = photo
-                    ? `<div class="auth-avatar-wrapper"><img src="${safeImageUrl(photo)}" class="firebase-auth-avatar" alt="Foto" referrerpolicy="no-referrer"><span class="auth-status-dot ${dotClass}" title="Nuvem do Google: Conectado"></span></div>`
-                    : `<div class="auth-avatar-wrapper"><span class="firebase-auth-initial">${esc(firstName[0].toUpperCase())}</span><span class="auth-status-dot ${dotClass}" title="Nuvem do Google: Conectado"></span></div>`;
+                    const avatarHtml = photo
+                        ? `<div class="auth-avatar-wrapper"><img src="${safeImageUrl(photo)}" class="firebase-auth-avatar" alt="Foto" referrerpolicy="no-referrer"><span class="auth-status-dot ${dotClass}" title="Nuvem do Google: Conectado"></span></div>`
+                        : `<div class="auth-avatar-wrapper"><span class="firebase-auth-initial">${esc(firstName[0].toUpperCase())}</span><span class="auth-status-dot ${dotClass}" title="Nuvem do Google: Conectado"></span></div>`;
 
-                btn.innerHTML = `
-                    ${avatarHtml}
-                    <span id="firebaseAuthBtnText" style="font-size:12.5px; font-weight:600; max-width:130px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; letter-spacing:0.2px;">${esc(firstName)}</span>
-                    <span style="font-size:9px; opacity:0.8; margin-left:-2px;">▾</span>
-                `;
+                    btn.innerHTML = `
+                        ${avatarHtml}
+                        <span id="firebaseAuthBtnText" style="font-size:12.5px; font-weight:600; max-width:130px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; letter-spacing:0.2px;">${esc(firstName)}</span>
+                        <span style="font-size:9px; opacity:0.8; margin-left:-2px;">▾</span>
+                    `;
 
-                if (adminBtn) {
-                    adminBtn.style.display = isAdmin ? 'inline-flex' : 'none';
+                    if (adminBtn) {
+                        adminBtn.style.display = isAdmin ? 'inline-flex' : 'none';
+                    }
+                } else {
+                    btn.style.background = 'var(--tab-bg, #2a2a2a)';
+                    btn.style.color = 'var(--text-color, #e5e7eb)';
+                    btn.style.border = '1px solid var(--border-color, #4b5563)';
+                    btn.style.padding = '5px 12px';
+                    btn.title = 'Minha Conta, Modo Offline & Configurações (Clique para abrir)';
+
+                    btn.innerHTML = `
+                        <span style="font-size:14px; margin-right:4px;">👤</span>
+                        <span id="firebaseAuthBtnText" style="font-size:12px; font-weight:600;">Conta / Offline</span>
+                        <span style="font-size:9px; opacity:0.7; margin-left:3px;">⚙️</span>
+                    `;
+
+                    if (adminBtn) adminBtn.style.display = 'none';
                 }
-            } else {
-                btn.style.background = 'var(--tab-bg, #2a2a2a)';
-                btn.style.color = 'var(--text-color, #e5e7eb)';
-                btn.style.border = '1px solid var(--border-color, #4b5563)';
-                btn.style.padding = '5px 12px';
-                btn.title = 'Minha Conta, Modo Offline & Configurações (Clique para abrir)';
-
-                btn.innerHTML = `
-                    <span style="font-size:14px; margin-right:4px;">👤</span>
-                    <span id="firebaseAuthBtnText" style="font-size:12px; font-weight:600;">Conta / Offline</span>
-                    <span style="font-size:9px; opacity:0.7; margin-left:3px;">⚙️</span>
-                `;
-
-                if (adminBtn) adminBtn.style.display = 'none';
             }
 
             const sbUserBtn = document.getElementById('sidebarUserAvatarBtn');
@@ -12525,7 +13908,7 @@ Clique para abrir Minha Conta e Sincronização`;
                     const photo = (currentUserProfile && currentUserProfile.photoURL) || currentUser.photoURL || '';
                     const fullName = (currentUserProfile && currentUserProfile.displayName) || currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : 'Usuário');
                     const firstName = fullName.split(' ')[0] || 'Usuário';
-                    const dotClass = isCloudSyncing ? 'syncing' : 'online';
+                    const dotClass = isCloudSyncing ? 'syncing' : (syncStatus === 'error' ? 'error' : (syncStatus === 'pending' ? 'pending' : 'online'));
                     const avatarHtml = photo
                         ? `<div class="auth-avatar-wrapper"><img src="${safeImageUrl(photo)}" class="sidebar-avatar-img" alt="Foto" referrerpolicy="no-referrer"><span class="auth-status-dot ${dotClass}" title="Nuvem: Conectado"></span></div>`
                         : `<div class="auth-avatar-wrapper"><span class="sidebar-avatar-initial">${esc(firstName[0].toUpperCase())}</span><span class="auth-status-dot ${dotClass}" title="Nuvem: Conectado"></span></div>`;
@@ -12533,10 +13916,10 @@ Clique para abrir Minha Conta e Sincronização`;
                         ${avatarHtml}
                         <div class="sidebar-user-info">
                             <span class="sidebar-user-name" title="${esc(fullName)}">${esc(firstName)}</span>
-                            <span class="sidebar-user-sub">${isAdmin ? 'Admin' : 'Conectado'}</span>
+                            <span class="sidebar-user-sub">${isAdmin ? 'Administrador' : 'Conectado'}</span>
                         </div>
                     `;
-                    sbUserBtn.title = `Conectado como: ${currentUser.email}\nClique para abrir Minha Conta e Configurações`;
+                    sbUserBtn.title = `Conectado como: ${currentUser.email} (${isAdmin ? 'Administrador' : 'Usuário'})\nClique para abrir Minha Conta e Configurações`;
                 } else {
                     sbUserBtn.innerHTML = `
                         <div class="auth-avatar-wrapper">
@@ -12548,7 +13931,7 @@ Clique para abrir Minha Conta e Sincronização`;
                             <span class="sidebar-user-sub">Conta & Config</span>
                         </div>
                     `;
-                    sbUserBtn.title = 'Modo Offline (Dados salvos localmente)\nClique para abrir Minha Conta e Configurações';
+                    sbUserBtn.title = 'Minha Conta, Modo Offline & Configurações (Clique para abrir)';
                 }
             }
         }
@@ -12775,8 +14158,40 @@ Clique para abrir Minha Conta e Sincronização`;
         }
 
         function applyCloudDataToLocal(cloudData) {
-            if (!cloudData || !cloudData.scripts || !isValidData(cloudData.scripts)) return;
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(cloudData.scripts));
+            if (!cloudData) return;
+            const hasValidWorkspaces = Array.isArray(cloudData.workspaces) && cloudData.workspaces.length > 0;
+            const hasValidScripts = cloudData.scripts && isValidData(cloudData.scripts);
+            if (!hasValidWorkspaces && !hasValidScripts) return;
+
+            if (hasValidWorkspaces) {
+                cloudData.workspaces.forEach(ws => {
+                    if (ws && ws.data) normalizeData(ws.data);
+                });
+                localStorage.setItem(WORKSPACES_STORAGE_KEY, JSON.stringify(cloudData.workspaces));
+                const targetWsId = cloudData.activeWorkspaceId || (cloudData.settings && cloudData.settings.activeWorkspaceId) || cloudData.workspaces[0].id;
+                localStorage.setItem(ACTIVE_WORKSPACE_KEY, targetWsId);
+                const activeWs = cloudData.workspaces.find(w => w.id === targetWsId) || cloudData.workspaces[0];
+                if (activeWs && activeWs.data) {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(activeWs.data));
+                    if (Array.isArray(activeWs.tabOrder)) {
+                        localStorage.setItem(TAB_ORDER_KEY, JSON.stringify(activeWs.tabOrder));
+                    }
+                }
+            } else if (hasValidScripts) {
+                normalizeData(cloudData.scripts);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(cloudData.scripts));
+                // Sincroniza também na área de trabalho ativa
+                try {
+                    const workspaces = getWorkspaces();
+                    const activeId = getActiveWorkspaceId();
+                    const idx = workspaces.findIndex(w => w.id === activeId);
+                    if (idx !== -1) {
+                        workspaces[idx].data = cloudData.scripts;
+                        if (Array.isArray(cloudData.tabOrder)) workspaces[idx].tabOrder = cloudData.tabOrder;
+                        localStorage.setItem(WORKSPACES_STORAGE_KEY, JSON.stringify(workspaces));
+                    }
+                } catch (e) {}
+            }
 
             if (cloudData.updatedAt) {
                 const remoteTimestamp = Date.parse(cloudData.updatedAt);
@@ -12841,7 +14256,8 @@ Clique para abrir Minha Conta e Sincronização`;
                 const snap = await dataDocRef.get();
                 if (snap.exists) {
                     const cloudData = snap.data();
-                    if (cloudData && cloudData.scripts && isValidData(cloudData.scripts)) {
+                    const hasWs = Array.isArray(cloudData && cloudData.workspaces) && cloudData.workspaces.length > 0;
+                    if (cloudData && (hasWs || (cloudData.scripts && isValidData(cloudData.scripts)))) {
                         // Verifica se os dados locais são mais recentes que a nuvem para evitar sobrescrever edições recentes
                         const cloudTime = cloudData.updatedAt ? new Date(cloudData.updatedAt).getTime() : 0;
                         const localTime = parseInt(localStorage.getItem(LAST_LOCAL_UPDATE_KEY) || '0', 10);
@@ -12883,10 +14299,10 @@ Clique para abrir Minha Conta e Sincronização`;
 
         function updateSyncStatusUI(status, message = '') {
             syncStatus = status;
-            const dot = document.querySelector('.auth-status-dot');
+            const dots = document.querySelectorAll('.auth-status-dot');
             const statusNotice = document.getElementById('cloudSyncStatusNotice');
 
-            if (dot) {
+            dots.forEach(dot => {
                 dot.className = 'auth-status-dot';
                 if (!navigator.onLine) {
                     dot.classList.add('offline');
@@ -12904,7 +14320,7 @@ Clique para abrir Minha Conta e Sincronização`;
                     dot.classList.add('online');
                     dot.title = 'Nuvem do Google: Sincronizado e Conectado';
                 }
-            }
+            });
 
             if (statusNotice) {
                 const labels = {
@@ -13148,6 +14564,11 @@ Clique para abrir Minha Conta e Sincronização`;
                             <!-- Valores de Variáveis Padrão -->
                             <button type="button" class="io-btn" style="background:#059669; color:#fff; justify-content:center; padding:10px; font-weight:600; font-size:13px; gap:8px;" onclick="this.closest('.var-modal-overlay').remove(); openVarManagerModal();">
                                 ⚙️ Configurar Valores de Variáveis
+                            </button>
+
+                            <!-- Gerenciador de Userscripts Integrado -->
+                            <button type="button" class="io-btn hide-on-atendimento" id="userscriptAccountBtn" style="background:#8b5cf6; color:#fff; justify-content:center; padding:10px; font-weight:600; font-size:13px; gap:8px;" onclick="this.closest('.var-modal-overlay').remove(); openUserscriptManager();">
+                                🧩 Gerenciador de Userscripts
                             </button>
 
                             <!-- Botão Salvar HTML sempre acessível para todos -->
@@ -13452,30 +14873,9 @@ Clique para abrir Minha Conta e Sincronização`;
 
                 overlay.querySelector('#btnConfirmDownloadAction').onclick = () => {
                     pushUndoSnapshot('Download da Nuvem');
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(cloudData.scripts));
-                    if (Array.isArray(cloudData.tabOrder)) {
-                        localStorage.setItem(TAB_ORDER_KEY, JSON.stringify(cloudData.tabOrder));
-                    }
-                    if (cloudData.customDefaults) {
-                        localStorage.setItem(VARS_KEY, JSON.stringify(cloudData.customDefaults));
-                    }
-                    if (cloudData.clients) {
-                        localStorage.setItem(CLIENTS_KEY, JSON.stringify(cloudData.clients));
-                    }
-                    if (typeof cloudData.scratchpad === 'string') {
-                        localStorage.setItem(SCRATCHPAD_KEY, cloudData.scratchpad);
-                        const scratchTa = document.getElementById('scratchpadText');
-                        if (scratchTa) scratchTa.value = cloudData.scratchpad;
-                    }
-                    if (cloudData.settings) {
-                        const s = cloudData.settings;
-                        if (s.theme) { localStorage.setItem(THEME_KEY, s.theme); changeTheme(s.theme); }
-                        if (s.layout) { localStorage.setItem(LAYOUT_KEY, s.layout); setLayout(s.layout); }
-                        if (s.scale) { localStorage.setItem(SCALE_KEY, s.scale); applyCardScale(parseFloat(s.scale) || 1); }
-                        if (s.activeTabId) { currentActiveTabId = s.activeTabId; localStorage.setItem(ACTIVE_TAB_KEY, s.activeTabId); }
-                        if (s.alarmConfig) { localStorage.setItem(ALARM_CONFIG_KEY, JSON.stringify(s.alarmConfig)); }
-                    }
+                    applyCloudDataToLocal(cloudData);
                     localStorage.setItem(LAST_LOCAL_UPDATE_KEY, String(Date.now()));
+                    renderWorkspacesList();
                     loadAppData();
                     updateStorageIndicator();
                     updateUndoButton();
@@ -14032,6 +15432,12 @@ service cloud.firestore {
         window.toggleEditMode = toggleEditMode;
         window.openVarManagerModal = openVarManagerModal;
         window.openChangelogModal = openChangelogModal;
+        window.handleWsDragOver = handleWsDragOver;
+        window.handleWsDragEnter = handleWsDragEnter;
+        window.handleWsDragLeave = handleWsDragLeave;
+        window.handleWsDrop = handleWsDrop;
+        window.moveTabToWorkspace = moveTabToWorkspace;
+
         window.openUserscriptManager = openUserscriptManager;
         window.openStorageInfoModal = openStorageInfoModal;
         window.toggleCompanion = toggleCompanion;
@@ -14748,6 +16154,13 @@ service cloud.firestore {
                     });
                 }
                 document.addEventListener('keydown', (e) => {
+                    if ((e.ctrlKey || e.metaKey) && (e.key === 'B' || e.key === 'b')) {
+                        const tag = document.activeElement ? document.activeElement.tagName : '';
+                        if (tag !== 'INPUT' && tag !== 'TEXTAREA' && !document.activeElement?.isContentEditable) {
+                            e.preventDefault();
+                            toggleSidebarCollapse();
+                        }
+                    }
                     if ((e.ctrlKey || e.metaKey) && (e.key === 'K' || e.key === 'k')) {
                         e.preventDefault();
                         openGlobalFindReplaceModal();
@@ -14759,9 +16172,26 @@ service cloud.firestore {
                             undoLastChange();
                         }
                     }
-                    if (e.altKey && e.shiftKey && (e.key === 'P' || e.key === 'p')) {
-                        e.preventDefault();
-                        toggleCompanion();
+                    // Atalhos Globais para a Janela Companheira / Dock (tipo Win+V):
+                    // Aceita Alt+V (atalho preferencial direto de 1 mão), Ctrl+Shift+V, Ctrl+Alt+V e Alt+Shift+P
+                    const isCompanionKey = (e.key === 'v' || e.key === 'V' || e.key === 'p' || e.key === 'P');
+                    if (isCompanionKey) {
+                        const isAltV = e.altKey && !e.ctrlKey && !e.shiftKey && (e.key === 'v' || e.key === 'V');
+                        const isCtrlShiftV = (e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'v' || e.key === 'V');
+                        const isCtrlAltV = (e.ctrlKey || e.metaKey) && e.altKey && (e.key === 'v' || e.key === 'V');
+                        const isAltShiftP = e.altKey && e.shiftKey && (e.key === 'p' || e.key === 'P');
+                        const isWinV = (e.metaKey || e.key === 'Meta') && (e.key === 'v' || e.key === 'V');
+
+                        if (isAltV || isCtrlAltV || isAltShiftP || isWinV) {
+                            e.preventDefault();
+                            toggleCompanion();
+                        } else if (isCtrlShiftV) {
+                            const tag = document.activeElement ? document.activeElement.tagName : '';
+                            if (tag !== 'INPUT' && tag !== 'TEXTAREA' && !document.activeElement?.isContentEditable) {
+                                e.preventDefault();
+                                toggleCompanion();
+                            }
+                        }
                     }
                 });
                 window.addEventListener('storage', (e) => {
