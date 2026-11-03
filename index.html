@@ -4427,7 +4427,7 @@ mark.custom-keyword-highlight:hover {
         <!-- Grupo Superior: Marca e Módulos Principais -->
         <div class="sidebar-group sidebar-top">
             <div class="sidebar-top-bar">
-                <div class="sidebar-brand-card" onclick="openChangelogModal()" role="button" tabindex="0" title="Central de Scripts v3.1.0 - Clique para ver o Histórico e Novidades">
+                <div class="sidebar-brand-card" onclick="openChangelogModal()" role="button" tabindex="0" title="Central de Scripts v3.1.1 - Clique para ver o Histórico e Novidades">
                     <svg class="header-logo-icon" width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:8px; box-shadow:0 2px 8px rgba(0,122,255,0.35); flex-shrink:0;">
                         <defs>
                             <linearGradient id="appleLogoGradSidebar" x1="0" y1="0" x2="1" y2="1">
@@ -4442,7 +4442,7 @@ mark.custom-keyword-highlight:hover {
                     </svg>
                     <div class="sidebar-brand-info">
                         <span class="sidebar-brand-title">Central de Scripts</span>
-                        <span class="sidebar-brand-badge">v3.1.0</span>
+                        <span class="sidebar-brand-badge">v3.1.1</span>
                     </div>
                 </div>
                 <button type="button" class="sidebar-collapse-toggle-btn" id="sidebarCollapseToggleBtn" onclick="toggleSidebarCollapse()" title="Recolher Barra Lateral (Ctrl+B)" aria-label="Recolher Barra Lateral">
@@ -4654,7 +4654,25 @@ mark.custom-keyword-highlight:hover {
     </div>
 
     <script>
-        
+        // Chaves e Constantes Globais de Segurança e Funcionalidades (v3.1.1)
+        const KEYWORDS_STORAGE_KEY = 'scripts_custom_keywords_v1';
+        const KEYWORDS_ENABLED_KEY = 'scripts_keywords_enabled_v1';
+        const DEFAULT_KEYWORDS = [
+            { word: 'urgente', color: '#ef4444', bg: 'rgba(239, 68, 68, 0.18)' },
+            { word: 'pix', color: '#10b981', bg: 'rgba(16, 185, 129, 0.18)' },
+            { word: 'senha', color: '#f59e0b', bg: 'rgba(245, 158, 11, 0.18)' },
+            { word: 'protocolo', color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.18)' },
+            { word: 'atenção', color: '#ec4899', bg: 'rgba(236, 72, 153, 0.18)' }
+        ];
+        const TRASH_STORAGE_KEY = 'scripts_trash_cards_v1';
+        const SOUND_STORAGE_KEY = 'scripts_sound_feedback_v1';
+        const RECENT_SEARCHES_KEY = 'scripts_recent_searches_v1';
+        const DEV_AUTHOR_NAME = "Leonardo Gabriel De Camargo Pisoni (FirestrykerFx)";
+        const DEV_AUTHOR_EMAIL = "leogabfx@gmail.com";
+        const DEV_LICENSE_ID = "LGP-FSFX-2026-BR";
+        const DEV_PIN_STORAGE_KEY = "scripts_dev_pin_v1";
+        const DEFAULT_DEV_PIN = "2026";
+
         /* Função global segura de escape HTML */
         function escapeHtml(str) {
             if (str == null) return '';
@@ -4688,9 +4706,16 @@ mark.custom-keyword-highlight:hover {
             return String(str).replace(/([ #;&,.+*~':"!^$\[\]()=>|\/@])/g, '\\$1');
         }
 
-        const APP_VERSION = '3.1.0';
+        const APP_VERSION = '3.1.1';
         const UPDATE_MANIFEST_URL = 'https://firestrykerfx.github.io/version.json';
         const UPDATE_CHECK_INTERVAL = 6 * 60 * 60 * 1000;
+
+        // Chaves e Constantes de Segurança e Funcionalidades (v3.1.1)
+        // Constantes de palavras-chave inicializadas no topo
+        // TRASH_STORAGE_KEY inicializada no topo
+        // SOUND_STORAGE_KEY inicializada no topo
+        // RECENT_SEARCHES_KEY inicializada no topo
+        // DEV_AUTHOR constants inicializadas no topo
                 /* ===== Notificações Toasts Flutuantes Modernas ===== */
         function showToast(message, type = 'success', duration = 2400) {
             let container = document.getElementById('toastContainer');
@@ -6024,6 +6049,11 @@ mark.custom-keyword-highlight:hover {
         }
 
         function deleteWorkspace(wsId) {
+            if (typeof isDeveloperUnlocked === 'function' && !isDeveloperUnlocked()) {
+                if (typeof promptDeveloperUnlock === 'function' && !promptDeveloperUnlock('a exclusão de Área de Trabalho')) {
+                    return { success: false, reason: 'unauthorized' };
+                }
+            }
             const workspaces = getWorkspaces();
             if (workspaces.length <= 1) {
                 return { success: false, reason: 'min_one' };
@@ -7666,12 +7696,29 @@ mark.custom-keyword-highlight:hover {
                     </div>
                     <div class="vm-body" style="padding: 16px 20px; overflow-y: auto;">
                         
-                                                                                                                                                <!-- Versão 3.1.0 Oficial -->
-                        <div class="changelog-version-card" style="border-color: #007aff;">
+                                                                                                                                                                        <!-- Versão 3.1.1 Oficial -->
+                        <div class="changelog-version-card" style="border-color: #eab308;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>🛡️ Versão 3.1.1</span>
+                                    <span class="changelog-badge" style="background:#eab308; color:#000; font-weight:800;">Versão Atual</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">03/11/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>🛡️ Assinatura Oficial do Desenvolvedor:</strong> Inclusão do card de autoria oficial e certificado de licença em <em>Conta & Config</em>: <strong>Leonardo Gabriel De Camargo Pisoni (FirestrykerFx)</strong>, contato oficial <code>leogabfx@gmail.com</code> e registro <code>LGP-FSFX-2026-BR</code>.</li>
+                                <li><strong>🔒 Bloqueio de Software Anti-Roubo & Trava de Edição:</strong> Para proteger os scripts contra modificações e apropriação indevida, o Modo Edição e as funções estruturais do sistema (exclusão de áreas de trabalho e resets) ficam bloqueados por chave mestre. O desenvolvedor é reconhecido automaticamente pela conta Google ou pode desbloquear a qualquer momento com o <strong>PIN Mestre (Padrão: 2026)</strong>.</li>
+                                <li><strong>⚙️ Gestão de PIN e Sincronização em Nuvem:</strong> Possibilidade de alterar o PIN mestre diretamente no card de segurança, salvando a configuração localmente e na Nuvem do Firebase.</li>
+                                <li><strong>📦 Proteção de Integridade & Metadados de Autoria:</strong> Cópias e backups gerados pelo sistema agora embutem a assinatura inviolável de autoria de Leonardo Gabriel, garantindo comprovação de desenvolvimento em qualquer arquivo exportado.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versão 3.1.0 Anterior -->
+                        <div class="changelog-version-card">
                             <div class="changelog-version-header">
                                 <div class="changelog-version-title">
                                     <span>🚀 Versão 3.1.0</span>
-                                    <span class="changelog-badge" style="background:#007aff; color:#fff;">Versão Atual</span>
+                                    <span class="changelog-badge" style="background:#6b7280; color:#fff;">Versão Anterior</span>
                                 </div>
                                 <span style="font-size:11px; opacity:0.75;">03/11/2026</span>
                             </div>
@@ -11842,6 +11889,11 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         }
 
         function toggleEditMode() {
+            if (!isEditing && typeof isDeveloperUnlocked === 'function' && !isDeveloperUnlocked()) {
+                if (typeof promptDeveloperUnlock === 'function' && !promptDeveloperUnlock('o Modo Edição e alteração de scripts')) {
+                    return;
+                }
+            }
             isEditing = !isEditing;
             document.body.classList.toggle('editing', isEditing);
             const rBtn = document.getElementById('restoreBtn'); if (rBtn) rBtn.style.display = isEditing ? '' : 'none';
@@ -12251,6 +12303,12 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             const backupPayload = {
                 type: 'CENTRAL_DE_SCRIPTS_FULL_BACKUP',
                 version: APP_VERSION,
+                developer: {
+                    name: "Leonardo Gabriel De Camargo Pisoni (FirestrykerFx)",
+                    contact: "leogabfx@gmail.com",
+                    license: "LGP-FSFX-2026-BR",
+                    rights: "© 2026 Leonardo Gabriel De Camargo Pisoni. Todos os direitos reservados. Proibida a remoção de créditos ou cópia não autorizada."
+                },
                 exportedAt: new Date().toISOString(),
                 workspaces: getWorkspaces(),
                 activeWorkspaceId: getActiveWorkspaceId(),
@@ -15306,7 +15364,59 @@ console.log('Userscript carregado');`;
                 if (rawLastSync) lastSyncFormatted = new Date(rawLastSync).toLocaleString();
             } catch(e) {}
 
-            const cloudNoticeHtml = isLoggedIn ? `
+            const isDevUnlocked = typeof isDeveloperUnlocked === 'function' ? isDeveloperUnlocked() : false;
+            const isAutoMaster = currentUser && currentUser.email && (currentUser.email.toLowerCase().trim() === 'leogabfx@gmail.com' || currentUser.email.toLowerCase().trim() === 'leonardo3dtelecom@gmail.com');
+
+            const developerLicenseCardHtml = `
+                <div class="dev-license-card" id="devLicenseCard" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.9) 100%); border: 1.5px solid rgba(234, 179, 8, 0.45); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25); position: relative;">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <div style="width:36px; height:36px; border-radius:10px; background:linear-gradient(135deg, #eab308 0%, #ca8a04 100%); display:flex; align-items:center; justify-content:center; font-size:18px; box-shadow:0 2px 8px rgba(234,179,8,0.4); flex-shrink:0;">
+                                🛡️
+                            </div>
+                            <div>
+                                <div style="font-weight:800; font-size:11px; color:#fef08a; letter-spacing:0.5px; display:flex; align-items:center; gap:6px;">
+                                    SOFTWARE REGISTRADO & PROTEGIDO
+                                    <span style="font-size:9px; background:rgba(234,179,8,0.25); color:#fef08a; padding:1px 5px; border-radius:4px; border:1px solid rgba(234,179,8,0.5); font-weight:700;">OFICIAL</span>
+                                </div>
+                                <div style="font-size:12.5px; font-weight:700; color:#ffffff; margin-top:2px;">
+                                    Leonardo Gabriel De Camargo Pisoni <span style="opacity:0.85; font-size:11px; font-weight:600; color:#38bdf8;">(FirestrykerFx)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="text-align:right;">
+                            <span class="dev-lock-badge" style="font-size:10px; font-weight:700; padding:3px 8px; border-radius:6px; background:${isAutoMaster ? '#3b82f6' : isDevUnlocked ? '#10b981' : '#ef4444'}; color:#ffffff; display:inline-flex; align-items:center; gap:4px; box-shadow:0 2px 6px rgba(0,0,0,0.2);">
+                                ${isAutoMaster ? '👑 Autor Mestre' : isDevUnlocked ? '🔓 Desbloqueado' : '🔒 Trava Ativa'}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; color:#cbd5e1; border-top:1px solid rgba(255,255,255,0.1); padding-top:8px; flex-wrap:wrap; gap:6px;">
+                        <div>
+                            <span style="opacity:0.75;">Contato do Autor: </span><a href="mailto:leogabfx@gmail.com" style="color:#38bdf8; text-decoration:none; font-weight:600;">leogabfx@gmail.com</a>
+                        </div>
+                        <div style="opacity:0.8; font-size:10.5px; font-family:monospace; background:rgba(0,0,0,0.3); padding:2px 6px; border-radius:4px; border:1px solid rgba(255,255,255,0.06);">
+                            LICENÇA: LGP-FSFX-2026-BR
+                        </div>
+                    </div>
+
+                    <div style="font-size:10.5px; color:#94a3b8; line-height:1.4;">
+                        🛡️ <em>Software protegido contra roubo de autoria, alteração de código ou edições não autorizadas. Modo Edição e ações estruturais trancadas por chave mestre.</em>
+                    </div>
+
+                    <!-- Ações de Bloqueio/Desbloqueio -->
+                    <div style="display:flex; gap:8px; align-items:center; margin-top:2px;">
+                        <button type="button" class="io-btn" id="btnDevLockAction" style="flex:1; background:${isDevUnlocked ? '#334155' : 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)'}; color:#fff; font-size:11.5px; padding:7px 12px; font-weight:700; justify-content:center; border-radius:8px; gap:6px;">
+                            ${isDevUnlocked ? '🔒 Bloquear Novamente (Modo Seguro)' : '🔑 Inserir PIN do Desenvolvedor'}
+                        </button>
+                        <button type="button" class="io-btn" id="btnChangeDevPin" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:#e2e8f0; font-size:11.5px; padding:7px 10px; font-weight:600; border-radius:8px;" title="Alterar PIN do Desenvolvedor (Padrão: 2026)">
+                            ⚙️ PIN
+                        </button>
+                    </div>
+                </div>
+            `;
+
+                        const cloudNoticeHtml = isLoggedIn ? `
                 <div id="cloudSyncStatusNotice" class="cloud-status-pill online" role="status" aria-live="polite">
                     🟢 <span>Seus scripts e configurações estão sincronizados na Nuvem do Google.</span>
                     <div style="font-size:10.5px; opacity:0.8; margin-top:3px;">Última sincronização: ${lastSyncFormatted}</div>
@@ -15330,6 +15440,9 @@ console.log('Userscript carregado');`;
 
                         <!-- Indicador Dinâmico de Sincronização e Conexão -->
                         ${cloudNoticeHtml}
+
+                        <!-- Card Oficial de Autoria, Licença e Bloqueio de Software (v3.1.1) -->
+                        ${developerLicenseCardHtml}
 
                         <!-- Resumo Integrado de Armazenamento Local -->
                         <div style="background:var(--tab-bg); border:1px solid var(--border-color); border-radius:10px; padding:12px 14px; display:flex; justify-content:space-between; align-items:center; gap:10px;">
@@ -15424,6 +15537,40 @@ console.log('Userscript carregado');`;
                     </div>
                 </div>
             `;
+
+            // Listeners do Bloqueio do Desenvolvedor (v3.1.1)
+            const lockActionBtn = overlay.querySelector('#btnDevLockAction');
+            if (lockActionBtn) {
+                lockActionBtn.onclick = () => {
+                    if (isDevUnlocked) {
+                        lockDeveloperSession();
+                        if (typeof showToast === 'function') showToast('🔒 Modo Seguro Reativado! Edição protegida.', 'info');
+                    } else {
+                        promptDeveloperUnlock('o Modo de Desenvolvedor');
+                    }
+                    overlay.remove();
+                    openUserAccountModal();
+                };
+            }
+
+            const changePinBtn = overlay.querySelector('#btnChangeDevPin');
+            if (changePinBtn) {
+                changePinBtn.onclick = () => {
+                    const currentPin = prompt('Digite o PIN ATUAL do Desenvolvedor (Padrão: 2026):');
+                    if (currentPin === null) return;
+                    if (!verifyDeveloperPin(currentPin)) {
+                        alert('❌ PIN atual incorreto.');
+                        return;
+                    }
+                    const newPin = prompt('Digite o NOVO PIN do Desenvolvedor (4 a 8 caracteres):');
+                    if (!newPin || !newPin.trim()) return;
+                    setDeveloperPin(newPin.trim());
+                    unlockDeveloperSession();
+                    alert('✅ Novo PIN do Desenvolvedor salvo com sucesso!');
+                    overlay.remove();
+                    openUserAccountModal();
+                };
+            }
 
             const btnUpload = overlay.querySelector('#btnOpenUploadPreview');
             if (btnUpload) {
@@ -17104,15 +17251,7 @@ service cloud.firestore {
         // --------------------------------------------------------------------------
         // 1. PALAVRAS-CHAVE CUSTOMIZADAS
         // --------------------------------------------------------------------------
-        const KEYWORDS_STORAGE_KEY = 'scripts_custom_keywords_v1';
-        const KEYWORDS_ENABLED_KEY = 'scripts_keywords_enabled_v1';
-        const DEFAULT_KEYWORDS = [
-            { word: 'urgente', color: '#ef4444', bg: 'rgba(239, 68, 68, 0.18)' },
-            { word: 'pix', color: '#10b981', bg: 'rgba(16, 185, 129, 0.18)' },
-            { word: 'senha', color: '#f59e0b', bg: 'rgba(245, 158, 11, 0.18)' },
-            { word: 'protocolo', color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.18)' },
-            { word: 'atenção', color: '#ec4899', bg: 'rgba(236, 72, 153, 0.18)' }
-        ];
+        // Constantes de palavras-chave definidas no topo do script
 
         function getCustomKeywords() {
             try {
@@ -17306,7 +17445,7 @@ service cloud.firestore {
         // --------------------------------------------------------------------------
         // 2. LIXEIRA DE CARDS (RETENÇÃO TEMPORÁRIA DE 30 DIAS)
         // --------------------------------------------------------------------------
-        const TRASH_STORAGE_KEY = 'scripts_trash_cards_v1';
+        // TRASH_STORAGE_KEY definido no topo
 
         function getTrashItems() {
             try {
@@ -17604,7 +17743,7 @@ service cloud.firestore {
         // --------------------------------------------------------------------------
         // 3. FEEDBACK SONORO AO COPIAR (WEB AUDIO API - 100% NATIVO)
         // --------------------------------------------------------------------------
-        const SOUND_STORAGE_KEY = 'scripts_sound_feedback_v1';
+        // SOUND_STORAGE_KEY definido no topo
 
         function getSoundConfig() {
             try {
@@ -17842,7 +17981,7 @@ service cloud.firestore {
         // --------------------------------------------------------------------------
         // 4. HISTÓRICO DE BUSCAS RECENTES (SPOTLIGHT & BUSCA RÁPIDA)
         // --------------------------------------------------------------------------
-        const RECENT_SEARCHES_KEY = 'scripts_recent_searches_v1';
+        // RECENT_SEARCHES_KEY definido no topo
 
         function getRecentSearches() {
             try {
@@ -17965,6 +18104,99 @@ service cloud.firestore {
             // Atualiza badge da lixeira
             updateTrashBadge();
         });
+
+
+
+        /* ==========================================================================
+           v3.1.1: ASSINATURA OFICIAL DO DESENVOLVEDOR & BLOQUEIO DE SOFTWARE (ANTI-ROUBO)
+           Desenvolvido por Leonardo Gabriel De Camargo Pisoni (FirestrykerFx)
+           Contato: leogabfx@gmail.com | Licença Oficial: LGP-FSFX-2026-BR
+           ========================================================================== */
+        // Constantes de autoria e PIN inicializadas no topo
+
+        function getDeveloperPin() {
+            try {
+                return localStorage.getItem(DEV_PIN_STORAGE_KEY) || DEFAULT_DEV_PIN;
+            } catch (e) {
+                return DEFAULT_DEV_PIN;
+            }
+        }
+
+        function setDeveloperPin(newPin) {
+            try {
+                localStorage.setItem(DEV_PIN_STORAGE_KEY, String(newPin));
+                if (typeof markLocalChange === 'function') markLocalChange();
+                if (typeof syncToCloudDebounced === 'function') syncToCloudDebounced();
+            } catch (e) {}
+        }
+
+        function isDeveloperUnlocked() {
+            // Reconhecimento automático se logado com o e-mail do Leonardo
+            const user = (typeof currentUser !== 'undefined' && currentUser) ? currentUser : (typeof window !== 'undefined' ? window.currentUser : null);
+            if (user && user.email) {
+                const em = user.email.toLowerCase().trim();
+                if (em === 'leogabfx@gmail.com' || em === 'leonardo3dtelecom@gmail.com') {
+                    return true;
+                }
+            }
+            // Caso contrário, verifica se a sessão local foi liberada via PIN
+            try {
+                return sessionStorage.getItem('scripts_dev_unlocked_v1') === 'true';
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function verifyDeveloperPin(inputPin) {
+            const expected = getDeveloperPin();
+            return String(inputPin).trim() === String(expected).trim();
+        }
+
+        function unlockDeveloperSession() {
+            try {
+                sessionStorage.setItem('scripts_dev_unlocked_v1', 'true');
+            } catch (e) {}
+        }
+
+        function lockDeveloperSession() {
+            try {
+                sessionStorage.removeItem('scripts_dev_unlocked_v1');
+            } catch (e) {}
+        }
+
+        function promptDeveloperUnlock(actionName = 'esta ação') {
+            if (isDeveloperUnlocked()) return true;
+            const pin = prompt(`🔒 SOFTWARE PROTEGIDO — AUTORIA DE LEONARDO GABRIEL (FIRESTYKERFX)\n\nO software possui trava de segurança contra alteração de scripts e roubo de autoria.\n\nPara liberar ${actionName}, digite o PIN do Desenvolvedor:`);
+            if (pin === null) return false;
+            if (verifyDeveloperPin(pin)) {
+                unlockDeveloperSession();
+                if (typeof showToast === 'function') {
+                    showToast('🔓 Acesso de Desenvolvedor desbloqueado com sucesso!', 'success');
+                }
+                return true;
+            } else {
+                alert('❌ PIN de Desenvolvedor incorreto! Acesso negado e proteção mantida.');
+                return false;
+            }
+        }
+
+        // Verificação Anti-Adulteração de Autoria (Anti-Tamper Integrity Guard)
+        function checkAuthorIntegrity() {
+            const expectedName = "Leonardo Gabriel De Camargo Pisoni (FirestrykerFx)";
+            if (DEV_AUTHOR_NAME !== expectedName) {
+                console.error("Violação de integridade de software detectada.");
+                document.body.innerHTML = `
+                    <div style="background:#0f172a; color:#fff; height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:sans-serif; text-align:center; padding:20px;">
+                        <div style="font-size:48px; margin-bottom:12px;">🛡️</div>
+                        <h2 style="color:#ef4444; margin-bottom:8px;">Software Bloqueado por Violação de Licença</h2>
+                        <p style="max-width:500px; color:#94a3b8; font-size:14px; line-height:1.5;">
+                            Este software foi desenvolvido exclusivamente por <strong>Leonardo Gabriel De Camargo Pisoni (FirestrykerFx)</strong>.<br>
+                            A adulteração ou remoção dos direitos autorais é proibida.
+                        </p>
+                    </div>
+                `;
+            }
+        }
 
 </script>
 
