@@ -3061,6 +3061,29 @@
         }
 
     
+
+        /* v3.1.10 — Equipment modal: category chips wrap instead of clipping behind a horizontal scrollbar. */
+        .equip-builder-box .equip-filter-row {
+            flex: 0 0 auto;
+            flex-wrap: wrap;
+            overflow-x: visible;
+            overflow-y: visible;
+            max-height: 110px;
+            gap: 6px;
+            padding: 2px 1px 5px;
+            scrollbar-width: none;
+        }
+        .equip-builder-box .equip-filter-chip { padding: 5px 10px; line-height: 1.3; }
+        .equip-builder-box .vm-body { flex: 1 1 auto; }
+        .equip-builder-box .equip-table-container { min-height: 100px; }
+        @media (max-width: 600px) {
+            .equip-builder-box { width: 98vw; max-height: 96dvh; }
+            .equip-builder-box .equip-filter-row { max-height: 125px; overflow-y: auto; }
+            .equip-builder-box .equip-item-row { grid-template-columns: 25px minmax(0,1fr) 95px; gap: 5px; padding: 9px 7px; }
+            .equip-builder-box .equip-item-row > :last-child { grid-column: 2 / -1; text-align: right !important; }
+            .equip-builder-box .vm-body { padding: 10px !important; gap: 8px !important; }
+        }
+
         /* ===== V2.6.6: Seletor Interativo de Equipamentos & Valores ===== */
         .equip-builder-box {
             width: min(840px, 96vw);
@@ -4427,7 +4450,7 @@ mark.custom-keyword-highlight:hover {
         <!-- Grupo Superior: Marca e Módulos Principais -->
         <div class="sidebar-group sidebar-top">
             <div class="sidebar-top-bar">
-                <div class="sidebar-brand-card" onclick="openChangelogModal()" role="button" tabindex="0" title="Central de Scripts v3.1.3 - Clique para ver o Histórico e Novidades">
+                <div class="sidebar-brand-card" onclick="openChangelogModal()" role="button" tabindex="0" title="Central de Scripts v3.1.10 - Clique para ver o Histórico e Novidades">
                     <svg class="header-logo-icon" width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:8px; box-shadow:0 2px 8px rgba(0,122,255,0.35); flex-shrink:0;">
                         <defs>
                             <linearGradient id="appleLogoGradSidebar" x1="0" y1="0" x2="1" y2="1">
@@ -4442,7 +4465,7 @@ mark.custom-keyword-highlight:hover {
                     </svg>
                     <div class="sidebar-brand-info">
                         <span class="sidebar-brand-title">Central de Scripts</span>
-                        <span class="sidebar-brand-badge">v3.1.3</span>
+                        <span class="sidebar-brand-badge">v3.1.6</span>
                     </div>
                 </div>
                 <button type="button" class="sidebar-collapse-toggle-btn" id="sidebarCollapseToggleBtn" onclick="toggleSidebarCollapse()" title="Recolher Barra Lateral (Ctrl+B)" aria-label="Recolher Barra Lateral">
@@ -4559,6 +4582,10 @@ mark.custom-keyword-highlight:hover {
                 <button class="shortcut-pill shortcut-pill-tool" id="companionHeaderBtn" onclick="toggleCompanion()" title="Docker / Área de Transferência estilo Win+V (Atalho: Alt+V ou Alt+Shift+P)">
                     🪟 Docker (Alt+V)
                 </button>
+                <select id="languageSelector" class="theme-select" aria-label="Idioma da aplicação" title="Alterar idioma / Change language">
+                    <option value="pt-BR">🇧🇷 Português</option>
+                    <option value="en">🇺🇸 English</option>
+                </select>
             </div>
 
             <input type="file" id="importFile" style="display: none" accept=".json" onchange="importScripts(event)">
@@ -4704,7 +4731,7 @@ mark.custom-keyword-highlight:hover {
             return String(str).replace(/([ #;&,.+*~':"!^$\[\]()=>|\/@])/g, '\\$1');
         }
 
-        const APP_VERSION = '3.1.3';
+        const APP_VERSION = '3.1.10';
         const UPDATE_MANIFEST_URL = 'https://firestrykerfx.github.io/version.json';
         // O manifesto de atualização deve incluir sha256 (64 caracteres hexadecimais) do HTML publicado.
         const UPDATE_CHECK_INTERVAL = 6 * 60 * 60 * 1000;
@@ -7708,7 +7735,53 @@ mark.custom-keyword-highlight:hover {
                     </div>
                     <div class="vm-body" style="padding: 16px 20px; overflow-y: auto;">
                         
-                        <!-- Versão 3.1.3 Oficial -->
+                        <!-- Versão 3.1.10: Opções selecionáveis da OS e Teste -->
+                        <div class="changelog-version-card" style="border-color:#22c55e;">
+                            <div class="changelog-version-header"><div class="changelog-version-title"><span>🌐 Version 3.1.10</span><span class="changelog-badge">Current Version</span></div><span style="font-size:11px;opacity:0.75;">11/11/2026</span></div>
+                            <ul class="changelog-list"><li>Expanded English labels for service-ticket dropdown choices, scheduling, costs, quick-select chips and technical-test options.</li><li>Option values and generated service descriptions remain unchanged for compatibility.</li></ul>
+                        </div>
+                        <!-- Versão 3.1.9: Inglês para Ordem de Serviço e Teste Técnico -->
+                        <div class="changelog-version-card" style="border-color: #22c55e;">
+                            <div class="changelog-version-header"><div class="changelog-version-title"><span>🌐 Versão 3.1.9</span><span class="changelog-badge">Versão Atual</span></div><span style="font-size:11px; opacity:0.75;">11/11/2026</span></div>
+                            <ul class="changelog-list"><li>Tradução de campos, modelos, filtros, orientações e botões das janelas Ordem de Serviço e Teste Técnico.</li><li>Preservados identificadores internos, valores monetários, funcionalidades e dados digitados pelo operador.</li></ul>
+                        </div>
+                        <!-- Versão 3.1.8: Correções de layout e tradução -->
+                        <div class="changelog-entry">
+                            <strong>🌐 Version 3.1.8</strong>
+                            <ul><li>Expanded English translation for dynamic menus, theme labels, search, Scratchpad examples, the Clipboard window, and the Equipment quote interface.</li><li>Fixed language handling for placeholders and content rendered in the separate Clipboard window.</li></ul>
+                        </div>
+                        <!-- Versão 3.1.5 Oficial -->
+                        <div class="changelog-version-card" style="border-color: #22c55e;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>🛠️ Versão 3.1.5</span>
+                                    <span class="changelog-badge" style="background:#6b7280; color:#fff; font-weight:800;">Versão Anterior</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">11/11/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>🌐 Correção do idioma:</strong> corrigido ciclo infinito no MutationObserver que reescrevia nós de texto mesmo quando o conteúdo não mudava, podendo congelar a interface e impedir cliques e interações.</li>
+                                <li><strong>⚙️ Atualização seletiva:</strong> o tradutor agora só altera o texto quando o valor de destino é diferente do conteúdo atual, evitando eventos de mutação desnecessários.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versão 3.1.4 Anterior -->
+                        <div class="changelog-version-card" style="border-color: #3b82f6;">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>🌐 Versão 3.1.4</span>
+                                    <span class="changelog-badge" style="background:#6b7280; color:#fff; font-weight:800;">Versão Anterior</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">11/11/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>🌐 Idioma:</strong> adicionada opção para alternar entre Português (Brasil) e English, com preferência salva neste dispositivo.</li>
+                                <li><strong>🔄 Interface dinâmica:</strong> textos de menus, controles, dicas e janelas geradas dinamicamente recebem tradução quando disponíveis; conteúdo pessoal dos cartões e rascunhos permanece inalterado.</li>
+                                <li><strong>♿ Acessibilidade:</strong> seletor de idioma com rótulo acessível e atualização do atributo lang do documento.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versão 3.1.3 Anterior -->
                         <div class="changelog-version-card" style="border-color: #eab308;">
                             <div class="changelog-version-header">
                                 <div class="changelog-version-title">
@@ -11983,8 +12056,9 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             else if (current === 'light') next = 'dark';
             changeTheme(next);
             if (typeof showToast === 'function') {
-                const names = { dark: 'Cinza (Padrão)', oled: 'Escuro OLED', light: 'Modo Claro' };
-                showToast('Tema alterado para: ' + (names[next] || next), 'info');
+                const en = typeof window.getAppLanguage === 'function' && window.getAppLanguage() === 'en';
+                const names = en ? { dark: 'Gray (Default)', oled: 'OLED Dark', light: 'Light Mode' } : { dark: 'Cinza (Padrão)', oled: 'Escuro OLED', light: 'Modo Claro' };
+                showToast((en ? 'Theme changed to: ' : 'Tema alterado para: ') + (names[next] || next), 'info');
             }
         }
         window.cycleAppTheme = cycleAppTheme;
@@ -12016,8 +12090,9 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             const sbThemeBtn = document.getElementById('sbThemeBtn');
             if (sbThemeBtn) {
                 const icons = { dark: '🌘', oled: '🌑', light: '☀️' };
-                const names = { dark: 'Cinza', oled: 'OLED', light: 'Claro' };
-                sbThemeBtn.innerHTML = `<span class="sidebar-item-icon">${icons[current] || '🌘'}</span><span class="sidebar-item-label">Tema: ${names[current] || current}</span>`;
+                const en = typeof window.getAppLanguage === 'function' && window.getAppLanguage() === 'en';
+                const names = en ? { dark: 'Gray', oled: 'OLED', light: 'Light' } : { dark: 'Cinza', oled: 'OLED', light: 'Claro' };
+                sbThemeBtn.innerHTML = `<span class="sidebar-item-icon">${icons[current] || '🌘'}</span><span class="sidebar-item-label">${en ? 'Theme: ' : 'Tema: '}${names[current] || current}</span>`;
                 sbThemeBtn.setAttribute('title', 'Alternar Tema Visual (Cinza / OLED / Claro)');
             }
         }
@@ -13250,6 +13325,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             const surface = { mode: 'pip', doc: pipWin.document, win: pipWin, root };
             companion.surface = surface;
             buildCompanionShell(surface);
+            if (typeof window.observeAppLanguageRoot === 'function') window.observeAppLanguageRoot(pipWin.document.body);
             setTimeout(() => runStoredUserscripts(pipWin), 0);
 
             pipWin.addEventListener('pagehide', () => {
@@ -13279,6 +13355,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             const surface = { mode: 'popup', doc: doc, win: win, root: root };
             companion.surface = surface;
             buildCompanionShell(surface);
+            if (typeof window.observeAppLanguageRoot === 'function') window.observeAppLanguageRoot(doc.body);
             setTimeout(() => runStoredUserscripts(win), 0);
 
             surface.timer = setInterval(() => {
@@ -13311,6 +13388,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             const surface = { mode: 'panel', doc: document, win: window, root: root, panel: panel };
             companion.surface = surface;
             buildCompanionShell(surface);
+            if (typeof window.observeAppLanguageRoot === 'function') window.observeAppLanguageRoot(panel);
             makePanelDraggable(panel, root.querySelector('.comp-fluent-header'));
             updateCompanionButton();
         }
@@ -18300,5 +18378,559 @@ service cloud.firestore {
             <button class="comp-btn comp-copy" style="font-size:11px; padding:4px 10px;" onclick="copyScratchpad(this)">📋 Copiar</button>
         </div>
     </div>
+
+
+    <!-- Sistema de idioma PT-BR / EN (v3.1.7): tradução de conteúdo dinâmico, Docker, equipamentos e exemplos -->
+    <script>
+    (() => {
+        'use strict';
+        const STORAGE_KEY = 'scripts_language_v1';
+        const translations = {
+            'Módulos':'Modules','Scripts':'Scripts','Chamado OS':'Service Ticket','Teste Técnico':'Technical Test',
+            'Equipamentos':'Equipment','Docker':'Clipboard','Áreas de Trabalho':'Workspaces','Sistema':'System',
+            'Lixeira':'Trash','Clientes & Alarmes':'Clients & Reminders','Tema Visual':'Appearance','Modo Atendimento':'Service Mode',
+            'Modo Edição':'Edit Mode','Modo Offline':'Offline Mode','Conta & Config':'Account & Settings',
+            '⭐ Favoritos':'⭐ Favorites','🎨 Cores ▾':'🎨 Colors ▾','🕒 Recentes ▾':'🕒 Recent ▾','↩️ Desfazer':'↩️ Undo',
+            '🪟 Docker (Alt+V)':'🪟 Clipboard (Alt+V)','Buscar script ou tag:whats...':'Search scripts or tag:whats...',
+            'Pesquisar scripts ou filtrar por tags':'Search scripts or filter by tags','Limpar':'Clear','Limpar filtros ✕':'Clear filters ✕',
+            'Inserir:':'Insert:','📝 Rascunho':'📝 Scratchpad','📝 Rascunho Temporário':'📝 Temporary Scratchpad','📋 Copiar':'📋 Copy',
+            'Abrir bloco de notas rápido':'Open quick notes','Limpar rascunho':'Clear scratchpad',
+            'Cole aqui dados rápidos do cliente (CPF, login, MAC, ping)...':'Paste quick customer details here (tax ID, login, MAC, ping)...',
+            '🎨 Filtrar por Cor':'🎨 Filter by Color','⚪ Todas as Cores':'⚪ All Colors',
+            '🟢 Verde (Saudações/Fins)':'🟢 Green (Greetings/Closings)','🟡 Amarelo (Triagem)':'🟡 Yellow (Triage)',
+            '🔴 Vermelho (Alertas/Rompimentos)':'🔴 Red (Alerts/Disconnections)','🔵 Azul (Procedimentos)':'🔵 Blue (Procedures)',
+            '🟣 Roxo (Financeiro)':'🟣 Purple (Billing)','📑 Todas as Abas':'📑 All Tabs','🕒 Scripts Recentes':'🕒 Recent Scripts',
+            '🕒 Buscas Recentes':'🕒 Recent Searches','Últimos scripts copiados nesta sessão:':'Recently copied scripts in this session:',
+            'Filtrar aba...':'Filter tab...','Filtrar cards por cor de borda':'Filter cards by border color',
+            'Filtrar somente cards favoritos (⭐)':'Show favorite cards only (⭐)','Ver últimos scripts copiados':'View recently copied scripts',
+            'Desfazer última alteração':'Undo last change','Localizar e Substituir em Massa (Ctrl+K)':'Find and Replace (Ctrl+K)',
+            'Fechar menu':'Close menu','Fechar janela':'Close window','Fechar':'Close','Cancelar':'Cancel','Salvar':'Save',
+            'Salvar alterações':'Save changes','Confirmar':'Confirm','Excluir':'Delete','Editar':'Edit','Adicionar':'Add',
+            'Criar':'Create','Novo':'New','Nome':'Name','Descrição':'Description','Pesquisar':'Search','Buscar':'Search',
+            'Voltar':'Back','Avançar':'Next','Continuar':'Continue','Concluir':'Finish','Aplicar':'Apply','Restaurar':'Restore',
+            'Exportar':'Export','Importar':'Import','Baixar':'Download','Atualizar':'Update','Atualizar agora':'Update now',
+            'Depois':'Later','Sim':'Yes','Não':'No','Ativo':'Active','Inativo':'Inactive','Habilitado':'Enabled','Desabilitado':'Disabled',
+            'Nenhum':'None','Todos':'All','Todas':'All','Carregando...':'Loading...','Aguarde...':'Please wait...',
+            'Sucesso':'Success','Erro':'Error','Atenção':'Warning','Aviso':'Notice','Informações':'Information',
+            'Configurações':'Settings','Conta':'Account','Usuário':'User','Usuários':'Users','Permissões':'Permissions',
+            'Administrador':'Administrator','Administração':'Administration','Segurança':'Security','Sincronização':'Synchronization',
+            'Sincronizar':'Sync','Sincronizado':'Synced','Pendente':'Pending','Offline':'Offline','Online':'Online',
+            'Histórico de Atualizações':'Update History','Histórico e Novidades':'History and Updates',
+            'Versão Atual':'Current Version','Versão Anterior':'Previous Version','Última atualização':'Last update',
+            'Modo de Atendimento':'Service Mode','Modo de Edição':'Edit Mode','Área de Trabalho':'Workspace',
+            'Criar nova Área de Trabalho':'Create new workspace','Lista de Áreas de Trabalho':'Workspace list',
+            'Scripts de Atendimento':'Service Scripts','Gerador de Chamado Técnico (OS)':'Service Ticket Generator',
+            'Teste de Atendimento (Diagnóstico)':'Service Test (Diagnostics)','Orçamento de Equipamentos & Cabos':'Equipment & Cable Quote',
+            'Lixeira de Cards Excluídos (Retenção de 30 dias)':'Deleted Cards Trash (30-day retention)',
+            'Clientes & Alarmes':'Clients & Reminders','Alternar Tema Visual (Cinza / OLED / Claro)':'Change Appearance (Dark / OLED / Light)',
+            'Ativar Modo Edição':'Enable Edit Mode','Minha Conta, Modo Offline & Configurações':'My Account, Offline Mode & Settings',
+            'Barra Lateral de Navegação e Ferramentas':'Navigation and Tools Sidebar','Abas de scripts':'Script tabs',
+            'Limpar pesquisa e filtros':'Clear search and filters','Filtrar por Cor':'Filter by Color',
+            'Digitar manualmente':'Enter manually','Nenhum resultado encontrado':'No results found',
+            'Sem resultados':'No results','Copiado!':'Copied!','Copiado com sucesso!':'Copied successfully!',
+            'Não foi possível copiar.':'Could not copy.','Alterações salvas.':'Changes saved.',
+            'Salvando...':'Saving...','Falha ao salvar':'Save failed','Falha na sincronização':'Synchronization failed',
+            'Dados locais preservados':'Local data preserved','Conexão restaurada':'Connection restored',
+            'Ver detalhes':'View details','Detalhes':'Details','Ajuda':'Help','Idioma':'Language','Português':'Portuguese',
+            'Inglês':'English','🇧🇷 Português':'🇧🇷 Portuguese','Alterar idioma':'Change language','Idioma da aplicação':'Application language',
+            'Conta / Offline':'Account / Offline','Perfil & Armazenamento Local':'Profile & Local Storage','Modo Offline / Local':'Offline / Local Mode',
+            'Operando com cache e armazenamento no navegador.':'Running with browser cache and storage.','🔑 Entrar com Google':'🔑 Sign in with Google',
+            'Conectado à Nuvem':'Connected to the Cloud','Nuvem do Google: Conectado':'Google Cloud: Connected','Nuvem do Google: Sincronizando dados...':'Google Cloud: Syncing data...',
+            'Nuvem do Google: Sincronizado e Conectado':'Google Cloud: Synced and Connected','Offline: Alterações sendo salvas no navegador':'Offline: Changes are being saved in the browser',
+            'Modo Offline: Dados salvos localmente no navegador.':'Offline Mode: Data saved locally in the browser.',
+            'Seus scripts e configurações estão sincronizados na Nuvem do Google.':'Your scripts and settings are synced to Google Cloud.',
+            'Modo Offline: Todas as alterações estão salvas com segurança no navegador.':'Offline Mode: All changes are safely saved in the browser.',
+            'Ainda não sincronizado nesta sessão':'Not synced yet in this session','Última sincronização:':'Last synchronization:',
+            '💾 Armazenamento do Navegador':'💾 Browser Storage','📊 Gerenciar Armazenamento & JSON':'📊 Manage Storage & JSON',
+            '🏷️ Palavras-Chave':'🏷️ Keywords','🔊 Som ao Copiar':'🔊 Copy Sound','Personalizar palavras-chave destacadas em cores':'Customize color-highlighted keywords',
+            'Configurar som e bipe ao copiar':'Configure sound and beep when copying','Lixeira de Cards Excluídos':'Deleted Cards Trash',
+            '⚙️ Configurar Valores de Variáveis':'⚙️ Configure Variable Values','🧩 Gerenciador de Userscripts':'🧩 Userscript Manager',
+            '📜 Histórico e Novidades':'📜 History and Updates','💾 Baixar Cópia Autônoma do Sistema em HTML':'💾 Download Standalone HTML Copy',
+            '📦 Exportar Backup Completo (JSON)':'📦 Export Full Backup (JSON)','☁️ Salvar meus Scripts na Nuvem (com Prévia)':'☁️ Save My Scripts to the Cloud (Preview)',
+            '📥 Baixar Scripts da Nuvem (com Prévia)':'📥 Download Scripts from the Cloud (Preview)',
+            '🛡️ Painel Administrativo da Equipe':'🛡️ Team Administration Panel','🛡️ Abrir Painel de Administração da Equipe':'🛡️ Open Team Administration Panel',
+            '📤 Definir Meus Scripts como Padrão da Equipe':'📤 Set My Scripts as Team Default','⚙️ Ver / Alterar Chaves do Firebase':'⚙️ View / Change Firebase Keys',
+            '🚪 Sair da Conta (Modo Offline)':'🚪 Sign Out (Offline Mode)','🔑 Entrar com Conta Google (Sincronizar Nuvem)':'🔑 Sign in with Google (Cloud Sync)',
+            'SOFTWARE REGISTRADO & PROTEGIDO':'REGISTERED & PROTECTED SOFTWARE','OFICIAL':'OFFICIAL','Autor Mestre':'Master Owner',
+            'Desbloqueado':'Unlocked','Trava Ativa':'Lock Active','Contato do Autor:':'Author Contact:','LICENÇA:':'LICENSE:',
+            'Software protegido contra roubo de autoria, alteração de código ou edições não autorizadas. Modo Edição e ações estruturais trancadas por chave mestre.':'Software protected against authorship theft, code tampering, and unauthorized edits. Edit Mode and structural actions are locked by a master key.',
+            '🔐 Acesso Google mestre ativo':'🔐 Master Google access active','🔒 Acesso de desenvolvedor restrito':'🔒 Developer access restricted',
+            'PIN local desativado; autorização vinculada à conta Google mestre':'Local PIN disabled; authorization linked to the master Google account',
+            '⚙️ PIN':'⚙️ PIN','Conta / Detalhes:':'Account / Details:','Acesso de desenvolvedor restrito':'Developer access restricted',
+            '📦 Prévia: Salvar Scripts na Nuvem do Google':'📦 Preview: Save Scripts to Google Cloud',
+            'Confira o resumo unificado de todas as suas':'Review the unified summary of all your',
+            'Áreas de Trabalho':'Workspaces','Nuvem do Google':'Google Cloud','Data do Backup':'Backup Date','🚀 Confirmar e Salvar na Nuvem':'🚀 Confirm and Save to Cloud',
+            '📥 Prévia: Baixar Scripts da Nuvem do Google':'📥 Preview: Download Scripts from Google Cloud',
+            'Encontramos o seguinte backup na':'We found the following backup in','Padrão da Equipe':'Team Default','Seu Backup Pessoal':'Your Personal Backup',
+            '☁️ Backup na Nuvem':'☁️ Cloud Backup','📥 Confirmar e Restaurar Scripts':'📥 Confirm and Restore Scripts',
+            '⚙️ Conexão com Google Firebase':'⚙️ Google Firebase Connection','🔥 Configuração do Firebase:':'🔥 Firebase Configuration:',
+            'Insira abaixo as chaves do seu projeto Firebase':'Enter your Firebase project keys below','Cole o JSON completo do Firebase (opcional para preenchimento rápido):':'Paste the complete Firebase JSON (optional quick fill):',
+            '💾 Salvar e Conectar Firebase':'💾 Save and Connect Firebase','📋 Regras de Segurança do Firestore (Rules)':'📋 Firestore Security Rules',
+            'Painel de Administração — Gestão de Usuários & Utilização':'Administration Panel — User & Usage Management',
+            'Total de Usuários':'Total Users','Usuários Ativos':'Active Users','Email Google':'Google Email','Carregando usuários do Firebase...':'Loading Firebase users...',
+            '🔒 Sessão Administrativa Autorizada via Firebase Auth & Regras de Segurança':'🔒 Administrative Session Authorized via Firebase Auth & Security Rules',
+            'Restaurar Padrões':'Restore Defaults','Restaurar Esta':'Restore This','♻️ Restaurar Card':'♻️ Restore Card',
+            'Nenhuma busca recente.':'No recent searches.','Nenhum item selecionado. Marque as opções acima para montar o orçamento.':'No items selected. Check the options above to build the quote.',
+            'Sinal sonoro sutil de alta frequência (Padrão do sistema)':'Subtle high-frequency sound (System default)',
+            '⌨️ Clique Mecânico':'⌨️ Mechanical Click','Som tátil curto e preciso estilo teclado Apple':'Short, precise tactile sound inspired by Apple keyboards',
+            '🫧 Bolha d’Água':'🫧 Water Bubble','Amarelo Atenção':'Yellow Warning','Atenção':'Warning','Informações':'Information',
+            'Importar .user.js':'Import .user.js','Palavras-chave':'Keywords','Gerenciar Usuários':'Manage Users','Uso':'Usage',
+            'Dados da Conta':'Account Data','Armazenamento Local':'Local Storage','Armazenamento':'Storage','Nuvem':'Cloud',
+            'Salvar meus Scripts':'Save My Scripts','Baixar Scripts':'Download Scripts','Regras de Segurança':'Security Rules',
+            'Configuração':'Configuration','Configurar':'Configure','Preferências':'Preferences','Som':'Sound','Bipe':'Beep',
+            'Palavras-chave destacadas':'Highlighted Keywords','Cores':'Colors','Padrões':'Defaults','Restaurar palavras-chave padrão':'Restore default keywords',
+            'Gerenciar Armazenamento':'Manage Storage','Exportar Backup':'Export Backup','Importar Backup':'Import Backup',
+            'Backup Completo':'Full Backup','Backup Pessoal':'Personal Backup','Padrão da equipe':'Team default',
+            'Atendentes':'Agents','Bloquear':'Block','Ativar':'Activate','Bloqueada':'Blocked','Ativada':'Active',
+            'Promover Admin':'Promote to Admin','Tornar Usuário':'Make User','Admin Primário':'Primary Admin',
+            'Último acesso':'Last access','Cópias':'Copies','Conectado à Nuvem':'Connected to Cloud','Status':'Status',
+            'Acesso restrito':'Restricted access','Somente administradores':'Administrators only','Conta Google':'Google Account',
+            'Sincronização em Nuvem':'Cloud Synchronization','Sincronizando com a Nuvem do Google...':'Syncing with Google Cloud...',
+            'Falha ao copiar.':'Copy failed.','Regras copiadas para a área de transferência! Cole na aba Regras do Firestore no Firebase Console.':'Rules copied to clipboard! Paste them into the Rules tab in the Firebase Console.',
+            'Informe ao menos a apiKey e o projectId do Firebase.':'Enter at least the Firebase apiKey and projectId.',
+            'Firebase configurado com sucesso! Agora você pode fazer login com o Google.':'Firebase configured successfully! You can now sign in with Google.',
+            'Você saiu da sua conta Google. O sistema continua operando normalmente no Modo Offline (Local).':'You signed out of your Google account. The system continues to operate normally in Offline (Local) Mode.',
+            'A sincronização em nuvem não está configurada neste ambiente. Solicite ao administrador da equipe a ativação das credenciais do Firebase.':'Cloud synchronization is not configured in this environment. Ask your team administrator to enable Firebase credentials.',
+            'Erro ao autenticar com o Google: ':'Google authentication error: ','Você precisa estar conectado com sua conta Google para baixar da nuvem.':'You must be signed in with your Google account to download from the cloud.',
+            'Nenhum backup de scripts encontrado na nuvem para a sua conta Google.':'No script backup was found in the cloud for your Google account.',
+            'Restaurar as palavras-chave padrão do sistema?':'Restore the system default keywords?',
+            'Tem certeza de que deseja esvaziar permanentemente toda a lixeira? Esta ação não pode ser desfeita.':'Are you sure you want to permanently empty the entire trash? This action cannot be undone.',
+            '🔍 Filtrar itens excluídos por texto, área ou coluna...':'🔍 Filter deleted items by text, workspace, or column...',
+            'Ação Opção A: Criar nova Área':'Action Option A: Create new Workspace','Área de Destino':'Destination Workspace','Mover Card para Área de Trabalho':'Move Card to Workspace',
+            'Escolha a Área de Trabalho e a Aba de destino:':'Choose the destination Workspace and Tab:','Área de Trabalho:':'Workspace:',
+            'Lista de Áreas de Trabalho':'Workspace List','Nova Área':'New Workspace','Scripts Rápidos':'Quick Scripts',
+            'Criação da Área':'Workspace Creation','Área alterada:':'Workspace changed:','Área de trabalho atualizada com sucesso!':'Workspace updated successfully!',
+            'Área de trabalho excluída com sucesso!':'Workspace deleted successfully!','Tem certeza que deseja excluir a área de trabalho':'Are you sure you want to delete the workspace',
+            'Todos os scripts e abas dela serão apagados permanentemente.':'All its scripts and tabs will be permanently deleted.',
+            'Não foi possível localizar a aba selecionada.':'Could not find the selected tab.','Este item já está na área de trabalho atual!':'This item is already in the current workspace!',
+            'Nenhuma ação recente para desfazer.':'No recent action to undo.','Erro ao desfazer alteração.':'Error undoing change.',
+            'Texto bruto copiado para a área de transferência!':'Raw text copied to clipboard!','Falha ao copiar para a área de transferência.':'Failed to copy to clipboard.'
+
+        };
+        Object.assign(translations, {
+            'Tema: Cinza':'Theme: Gray','Tema: Claro':'Theme: Light','Tema: OLED':'Theme: OLED',
+            'Cinza (Padrão)':'Gray (Default)','Cinza':'Gray','Modo Cinza':'Gray Mode','Modo Claro':'Light Mode','Claro':'Light',
+            'Alternar Tema: Modo Cinza':'Switch Theme: Gray Mode','Alternar Tema: Modo Claro':'Switch Theme: Light Mode',
+            'Alternar Tema: Modo Escuro OLED':'Switch Theme: OLED Dark Mode','Tema alterado para: ':'Theme changed to: ',
+            'Buscar Script':'Search Script','Buscar scripts':'Search scripts','Buscar script ou tag:whats...':'Search scripts or tag:whats...',
+            'Buscar script ou tag:':'Search scripts or tag:','Buscar scripts ou tags':'Search scripts or tags',
+            'Histórico de Atualizações':'Update History','Histórico e Novidades':'History and Updates','Histórico de atualizações':'Update History',
+            'Visão Administrativa Completa':'Full Administrator View','Visão do Atendente':'Agent View',
+            'Versão 3.1.6':'Version 3.1.6','Ampliação das traduções para submenus, janelas modais, configurações, conta, sincronização, armazenamento, administração, backup, lixeira e gerenciadores.':'Expanded translations for submenus, dialogs, settings, account, sync, storage, administration, backups, trash, and managers.',
+            'Conteúdo pessoal dos cartões e textos dos usuários permanece sem tradução automática.':'Personal card content and user-entered text are not automatically translated.',
+            'Pagamento:':'Payment:','À Vista':'Cash','A Prazo':'Installments','Ambos (Vista e Prazo)':'Both (Cash and Installments)',
+            '📊 Total como Estimativa Técnica':'📊 Total as Technical Estimate','Total como Estimativa Técnica':'Total as Technical Estimate',
+            'Todos':'All','Categoria:':'Category:','Qtd:':'Qty:','unidade':'unit','unidades':'units','par':'pair','serviço':'service','hora':'hour',
+            '📋 Prévia do Texto (Pronto para WhatsApp ou Atendimento):':'📋 Text Preview (Ready for WhatsApp or Customer Service):',
+            '0 item(ns) selecionado(s)':'0 item(s) selected','Nenhum item selecionado. Marque as opções acima para montar o orçamento.':'No items selected. Check the options above to build the quote.',
+            'Nenhum equipamento ou valor correspondente.':'No matching equipment or price found.','🔍 Filtrar equipamento, conector, cabo...':'🔍 Filter equipment, connector, cable...',
+            'Cancelar':'Cancel','🧹 Limpar Seleção':'🧹 Clear Selection','📋 Copiar Selecionados':'📋 Copy Selected',
+            'Cabos & Conectores':'Cables & Connectors','Acessórios & Fontes':'Accessories & Power Supplies',
+            'Cabos e Conectores':'Cables and Connectors','Acessórios e Fontes':'Accessories and Power Supplies',
+            'Cabo de Rede (Drop / Padrão)':'Network Cable (Drop / Standard)',
+            'Cabo de Rede (LAN)':'Network Cable (LAN)','Cabo de Rede Blindado':'Shielded Network Cable',
+            'Cabo Drop de Fibra':'Fiber Drop Cable','Conector RJ45 (Simples / Blindado)':'RJ45 Connector (Standard / Shielded)',
+            'Conector Óptico (Verde / Azul)':'Fiber Connector (Green / Blue)',
+            'Acoplador Emenda (Verde / Azul)':'Fiber Coupler (Green / Blue)',
+            'Caixa de Emenda Drop':'Fiber Drop Splice Box','Alça Drop':'Drop Cable Clamp',
+            'Cabo HDMI (1 MT)':'HDMI Cable (1 m)','Cabo HDMI (5 MT)':'HDMI Cable (5 m)',
+            'Régua de Tomada (Filtro de Linha)':'Power Strip (Surge Protector)',
+            'R$ 1,50 a R$ 2,00 o metro':'R$ 1.50 to R$ 2.00 per meter',
+            'conforme aplicação':'depending on installation','verificar disponibilidade':'check availability',
+            'metro':'meter','à vista':'cash','a prazo':'installments',
+            'Valores de Equipamentos, Cabos e Acessórios':'Equipment, Cables & Accessories Pricing',
+            'Roteadores & Wi-Fi':'Routers & Wi-Fi','Telefonia, TV & Energia':'Telephony, TV & Power',
+            'Switches, Fibra & Mikrotik':'Switches, Fiber & MikroTik','Serviços & Visitas':'Services & Visits',
+            'Cabos, Conectores & Acessórios':'Cables, Connectors & Accessories',
+            'Orçamento de Equipamentos & Cabos':'Equipment & Cable Quote','Equipamentos':'Equipment',
+            '📝 Rascunho Temporário':'📝 Temporary Scratchpad','Rascunho Temporário':'Temporary Scratchpad',
+            'Cole aqui dados rápidos do cliente (CPF, login, MAC, ping)...':'Paste quick customer details here (customer ID, login, MAC, ping)...',
+            'Dados rápidos do cliente':'Quick customer details','CPF':'Customer ID',
+            'Docker — Área de Transferência & Scripts':'Clipboard — Scripts & Snippets',
+            '🪟 Docker (Alt+V)':'🪟 Clipboard (Alt+V)','🪟 Fechar Docker':'🪟 Close Clipboard',
+            'Fechar Docker':'Close Clipboard','Abrir Docker estilo Win+V (Alt+V)':'Open Win+V-style clipboard (Alt+V)',
+            'Docker Flutuante estilo Win+V (Alt+V)':'Floating Clipboard, Win+V style (Alt+V)',
+            'Trocar Área de Trabalho no Docker':'Switch Workspace in Clipboard','Todos os Scripts (Todas as Abas)':'All Scripts (All Tabs)',
+            'Área de Transferência':'Clipboard','Copiar Selecionados':'Copy Selected','Nenhum script encontrado.':'No scripts found.'
+        });
+
+
+        // v3.1.9: Service Ticket / Technical Test labels and dynamic options.
+        Object.assign(translations, {
+            "Gerador de Chamado Técnico / Ordem de Serviço": "Service Ticket / Work Order Generator",
+            "🧪 Abrir Teste ao Lado": "🧪 Open Test Side by Side",
+            "Selecione o modelo de chamado (OS Técnica):": "Select a service ticket template (Technical Work Order):",
+            "🚨 Sem Acesso": "🚨 No Connection",
+            "🐢 Lentidão (OS)": "🐢 Slow Connection (Work Order)",
+            "🏠 Mudança Endereço": "🏠 Address Change",
+            "🔌 Passagem de Cabo": "🔌 Cable Installation",
+            "🎉 Evento": "🎉 Event",
+            "📝 Geral / Outro": "📝 General / Other",
+            "Teste de Atendimento (Ao Lado)": "Service Test (Side Panel)",
+            "Registro de Teste de Atendimento (Diagnóstico Técnico)": "Service Test Record (Technical Diagnostics)",
+            "🧪 Teste de Atendimento:": "🧪 Service Test:",
+            "Registro interno dos testes de rede, parâmetros ópticos e procedimentos executados pelo suporte durante o atendimento do cliente.": "Internal record of network tests, optical parameters, and procedures performed by support during customer service.",
+            "Contato (Telefone / Protocolo):": "Contact (Phone / Ticket Number):",
+            "Relato:": "Reported Issue:",
+            "Lentidão Geral": "General Slowness",
+            "Quedas / Oscilação": "Dropouts / Instability",
+            "Jogos / Ping Alto": "Gaming / High Ping",
+            "Abaixo do Plano": "Below Plan Speed",
+            "Sinal (digite o número que já coloca o sinal de menos):": "Optical Signal (enter the number; minus sign is added automatically):",
+            "Sinal (número coloca -):": "Optical Signal (minus sign added automatically):",
+            "Ping (Média e Perda %):": "Ping (Average and Packet Loss %):",
+            "Ping (Média / Perda %):": "Ping (Average / Packet Loss %):",
+            "Média (ms)": "Average (ms)",
+            "Média": "Average",
+            "Perda (%)": "Packet Loss (%)",
+            "Perda %": "Packet Loss %",
+            "Extrato:": "Connection History:",
+            "Quedas": "Dropouts",
+            "Madrugada": "Overnight",
+            "Ajustes (clique para ir adicionando com vírgula):": "Adjustments (click to add, separated by commas):",
+            "Ajustes (+ vírgula):": "Adjustments (+ comma-separated):",
+            "+ Canal Auto": "+ Auto Channel",
+            "+ Unificado Wi-Fi": "+ Unified Wi-Fi",
+            "Reiniciado:": "Restarted:",
+            "Sim": "Yes",
+            "Não (fora)": "No (customer away)",
+            "Não (já reiniciou)": "No (already restarted)",
+            "Não": "No",
+            "Já estava 1492": "Already set to 1492",
+            "Estava 1480 corrigido p/ 1492": "Was 1480, corrected to 1492",
+            "Estava 1480 corrigido": "Was 1480, corrected",
+            "DNS (somente se foi corrigido ou não):": "DNS (indicate whether it was corrected):",
+            "DNS (se foi corrigido ou não):": "DNS (corrected or not):",
+            "Não OK": "Not OK",
+            "Resumo:": "Summary:",
+            "Resumo do Teste:": "Test Summary:",
+            "Sem Melhora / Agendado": "No Improvement / Scheduled",
+            "Normalizou": "Resolved",
+            "Em Monitoramento": "Under Monitoring",
+            "Conclusão ou observação do teste": "Test conclusion or notes",
+            "Conclusão ou observação": "Conclusion or notes",
+            "📋 Copiar Teste Formatado": "📋 Copy Formatted Test",
+            "📋 Copiar Teste de Atendimento": "📋 Copy Service Test",
+            "(XX) XXXXX-XXXX ou protocolo": "(XX) XXXXX-XXXX or ticket number",
+            "ex: 19 (vira -19 dBm)": "e.g. 19 (becomes -19 dBm)",
+            "Plano do Cliente (em MB):": "Customer Plan (Mbps):",
+            "Ponto de Acesso / Equipamento:": "Access Point / Equipment:",
+            "Digitar outro ponto": "Enter another access point",
+            "Melhor Horário / Disponibilidade:": "Best Time / Availability:",
+            "Digitar horário manualmente": "Enter time manually",
+            "Valor da Visita Técnica:": "Technical Visit Fee:",
+            "🏠 Transferência de Endereço:": "🏠 Address Transfer:",
+            "Coleta os dados para abertura da OS no Integrator e permite copiar o script pronto para enviar ao cliente no WebChat/WhatsApp.": "Collects details to create a work order in Integrator and lets you copy a ready-to-send message for the customer on WebChat/WhatsApp.",
+            "Nome da Rua e Número:": "Street and Number:",
+            "Bairro:": "Neighborhood:",
+            "Cidade:": "City:",
+            "Ponto de Referência:": "Landmark:",
+            "Cor da Casa e se é Madeira ou Material:": "House Color and Construction Material:",
+            "Alvenaria": "Masonry",
+            "Madeira": "Wood",
+            "Dois pisos": "Two-story",
+            "Branca": "White",
+            "Azul": "Blue",
+            "Amarela": "Yellow",
+            "Telefone para Contato:": "Contact Phone:",
+            "Localização (GPS / Link Maps):": "Location (GPS / Maps Link):",
+            "Já foram levados os equipamentos?": "Has the equipment already been brought to the new address?",
+            "Sim, já no local": "Yes, already there",
+            "Não, cliente leva": "No, customer will bring it",
+            "Técnico recolhe": "Technician will collect it",
+            "💬 Copiar Script p/ Cliente": "💬 Copy Message for Customer",
+            "📋 Copiar Chamado (Técnico)": "📋 Copy Work Order (Technician)",
+            "💡 Deseja registrar os parâmetros técnicos de rede no atendimento?": "💡 Do you want to record network diagnostics for this service?",
+            "Título / Assunto:": "Title / Subject:",
+            "Descrição do Problema:": "Problem Description:",
+            "YouTube / Streaming": "YouTube / Streaming",
+            "📋 Copiar Chamado Formatado": "📋 Copy Formatted Work Order",
+            "Descrição do Problema (inclui PON piscando / roteador / onu não liga):": "Problem Description (including blinking PON / router or ONU not powering on):",
+            "LOS Reiniciou s/ Sucesso": "LOS, Restarted Without Success",
+            "PON piscando": "Blinking PON",
+            "roteador não liga": "router will not power on",
+            "onu não liga": "ONU will not power on",
+            "LOS Piscando Vermelho": "LOS Blinking Red",
+            "Fibra Rompida": "Broken Fiber",
+            "🔌 Passagem de Cabo de Rede:": "🔌 Network Cable Installation:",
+            "Só é feito dentro do mesmo lote (até 50 metros). Para painel solar, solicitar vídeo do trajeto.": "Only available on the same property (up to 50 meters). For solar panels, request a video of the cable route.",
+            "Assunto:": "Subject:",
+            "Onde é feito o serviço?:": "Where will the work be done?",
+            "Outro Cômodo": "Another Room",
+            "Outra Casa/Galpão": "Another House / Shed",
+            "Painel Solar": "Solar Panel",
+            "Ponto PC / TV": "PC / TV Point",
+            "Cobrança / Valores:": "Charges / Pricing:",
+            "Só Material": "Materials Only",
+            "R$ 90,00 + Materiais": "R$ 90.00 + Materials",
+            "Empresa: R$ 90/h": "Business: R$ 90/hour",
+            "Observações e Metragem:": "Notes and Cable Length:",
+            "🎉 Internet para Evento:": "🎉 Internet for Events:",
+            "Valor padrão R$ 500,00 (ciente). Atendimento no Integrator sob nome \"Cliente consumidor\", tipo \"outros\", sem necessidade de iclass.": "Standard fee: R$ 500.00 (customer informed). Create the ticket in Integrator under \"Cliente consumidor\", type \"outros\"; iClass is not required.",
+            "Endereço do Evento:": "Event Address:",
+            "Localização / Ponto de Referência:": "Location / Landmark:",
+            "Data e Hora do Evento:": "Event Date and Time:",
+            "Rede:": "Network:",
+            "Privado": "Private",
+            "Público": "Public",
+            "Ambos": "Both",
+            "Nome do Wi-Fi e Senha:": "Wi-Fi Name and Password:",
+            "Quantidade de Pessoas:": "Number of Attendees:",
+            "Contato do Responsável:": "Responsible Person Contact:",
+            "Valor:": "Price:",
+            "500$ (ciente)": "R$ 500 (customer informed)",
+            "Sem acesso": "No connection",
+            "Lentidão": "Slow connection",
+            "Instabilidade": "Instability",
+            "Mudança Endereço": "Address change",
+            "Passagem de Cabo": "Cable installation",
+            "Relato / Descrição do Problema:": "Reported Issue / Problem Description:",
+            "🚨 Sem Acesso / LOS": "🚨 No Connection / LOS",
+            "🐢 Lentidão Geral": "🐢 General Slowness",
+            "📉 Quedas": "📉 Dropouts",
+            "Fechar teste lateral": "Close side test",
+            "ex: Rua Bernardo Locks, nº 150": "e.g. 150 Bernardo Locks Street",
+            "ex: Centro / Santa Augusta": "e.g. Downtown / Santa Augusta",
+            "ex: Braço do Norte": "e.g. Braço do Norte",
+            "ex: Próximo à padaria / Em frente ao mercado X": "e.g. Near the bakery / Across from supermarket X",
+            "ex: Alvenaria branca / Madeira azul": "e.g. White masonry / Blue wooden house",
+            "Copia o questionário pronto para colar na conversa com o cliente": "Copies the questionnaire to paste into the customer conversation",
+            "Copia a ordem de serviço formatada para o Integrator": "Copies the formatted work order for Integrator",
+            "ex: Dentro do mesmo lote (até 50m).": "e.g. On the same property (up to 50 m).",
+            "ex: Salão Paroquial, Centro": "e.g. Parish Hall, Downtown",
+            "Link Maps ou Referência": "Maps link or landmark",
+            "ex: 20/10/2026 às 19:00": "e.g. 20/10/2026 at 19:00",
+            "ex: Evento_VIP / senha123": "e.g. Event_VIP / password123",
+            "ex: 150 pessoas": "e.g. 150 attendees",
+            "ex: Sem acesso / Lentidão / Passagem de cabo": "e.g. No connection / Slowness / Cable installation",
+            "Qualquer horário comercial": "Any business hours",
+            "verificar no local": "to be confirmed on site",
+            "Ponto principal": "Main access point",
+            "Sim, já estão no local": "Yes, already on site",
+            "Lentidão geral relatada pelo cliente. Extrato e sinal de fibra normais, reiniciado os equipamentos sem melhora.": "Customer reports general slowness. Connection history and optical signal are normal; equipment restarted without improvement.",
+            "LOS piscando vermelho, cliente reiniciou os equipamentos mas sem sucesso.": "LOS blinking red; customer restarted the equipment without success.",
+            "Passagem de cabo de rede": "Network cable installation",
+            "Passar para outro cômodo (mesma casa)": "Install in another room (same house)",
+            "Dentro do mesmo lote (até 50m).": "On the same property (up to 50 m).",
+            "Cobrança apenas de materiais": "Materials charged only",
+            "Chamado técnico": "Technical service ticket",
+            "Cliente relata problemas de conexão.": "Customer reports connection issues.",
+            "📝 Chamado OS": "📝 Work Order",
+            "🧪 Teste Técnico": "🧪 Technical Test",
+            "Gerar Teste": "Generate Test",
+            "Gerar Chamado": "Generate Ticket"
+        });
+
+
+        // v3.1.10: visible dropdown labels and quick-select chips (internal values stay untouched).
+        Object.assign(translations, {
+            "Manhã": "Morning",
+            "Tarde": "Afternoon",
+            "Manhã, Tarde": "Morning, Afternoon",
+            "Manhã, Tarde, Sábado": "Morning, Afternoon, Saturday",
+            "Sábado": "Saturday",
+            "Cortesia": "Courtesy / No charge",
+            "Verificar no local": "Check on site",
+            "R$ 90,00 por hora (Empresas)": "R$ 90.00 per hour (Businesses)",
+            "Cobrança apenas de materiais": "Materials only",
+            "Digitar outro valor": "Enter another amount",
+            "Digitar outro plano": "Enter another plan",
+            "Digitar outro ponto": "Enter another access point",
+            "Não, cliente vai levar no dia": "No, customer will bring them on the day",
+            "Técnico deve recolher no antigo": "Technician must collect them at old address",
+            "R$ 90,00 + materiais": "R$ 90.00 + materials",
+            "Verificar no Local": "Check on site",
+            "R$ 90,00 por hora": "R$ 90.00 per hour",
+            "R$ 90,00 + Materiais": "R$ 90.00 + Materials",
+            "Qualquer horário comercial": "Any business hours",
+            "Já estavam no local": "Already on site",
+            "Sim": "Yes",
+            "Não": "No",
+            "Não (fora)": "No (not on site)",
+            "Não (já reiniciou)": "No (already restarted)",
+            "Madrugada": "Overnight",
+            "Quedas": "Dropouts",
+            "Em Monitoramento": "Under Monitoring",
+            "Normalizou": "Resolved",
+            "Público": "Public",
+            "Privado": "Private",
+            "Ambos": "Both",
+            "Não OK": "Not OK",
+            "Já estava 1492": "Already set to 1492",
+            "Estava 1480 corrigido": "Was 1480, corrected",
+            "Estava 1480 corrigido p/ 1492": "Was 1480, corrected to 1492",
+            "Sem Melhora / Agendado": "No Improvement / Scheduled",
+            "LOS Reiniciou s/ Sucesso": "LOS Restarted, No Success",
+            "LOS Piscando Vermelho": "LOS Blinking Red",
+            "Fibra Rompida": "Broken Fiber",
+            "PON piscando": "PON blinking",
+            "roteador não liga": "Router does not turn on",
+            "onu não liga": "ONU does not turn on",
+            "Outro Cômodo": "Another Room",
+            "Outra Casa/Galpão": "Another House / Shed",
+            "Painel Solar": "Solar Panel",
+            "Ponto PC / TV": "PC / TV Point",
+            "Só Material": "Materials Only",
+            "Técnico recolhe": "Technician Collects",
+            "Sim, já no local": "Yes, already on site",
+            "Não, cliente leva": "No, customer brings them",
+            "Dois pisos": "Two floors",
+            "Branca": "White",
+            "Amarela": "Yellow",
+            "Azul": "Blue",
+            "Madeira": "Wood",
+            "Alvenaria": "Masonry",
+            "Mudança Endereço": "Address Change",
+            "Passagem de Cabo": "Cable Installation",
+            "Sem acesso": "No Connection",
+            "Lentidão": "Slow Connection",
+            "Instabilidade": "Instability",
+            "Empresa: R$ 90/h": "Business: R$ 90/hour",
+            "500$ (ciente)": "R$ 500 (customer informed)",
+            "Informe o valor": "Enter the amount",
+            "Plano do Cliente (em MB):": "Customer Plan (in MB):",
+            "Melhor Horário / Disponibilidade:": "Preferred Time / Availability:",
+            "Valor da Visita Técnica:": "Technical Visit Fee:",
+            "Ponto de Acesso / Equipamento:": "Access Point / Equipment:",
+            "Público / Privado": "Public / Private",
+            "R$ 500,00": "R$ 500.00",
+            "Não (cliente fora do local)": "No (customer away)",
+            "Não (já havia reiniciado antes)": "No (previously restarted)",
+            "Estava 1480 corrigido para 1492": "Was 1480, corrected to 1492",
+            "Quedas e oscilação de sinal frequentes ao longo do dia.": "Frequent dropouts and signal fluctuations throughout the day.",
+            "Lentidão geral relatada pelo cliente. Extrato e sinal normais.": "General slowness reported by customer. Connection history and signal normal.",
+            "Velocidade abaixo do contratado em testes via cabo.": "Wired speed tests below contracted plan.",
+            "Ping alto e travamentos em jogos online.": "High ping and freezes in online games.",
+            "Sem Melhora": "No Improvement",
+            "Quedas / Oscilação": "Dropouts / Fluctuations",
+            "Jogos / Ping Alto": "Gaming / High Ping",
+            "Lentidão Geral": "General Slowness",
+            "Abaixo do Plano": "Below Plan Speed",
+            "+ Canal Auto": "+ Auto Channel",
+            "+ Unificado Wi-Fi": "+ Unified Wi-Fi",
+            "Conferir": "Review",
+            "Selecione": "Select",
+            "Digitar horário manualmente": "Enter time manually",
+            "cortesia": "courtesy",
+            "verificar no local": "check on site"
+});
+
+        const textOriginals = new WeakMap();
+        const textLast = new WeakMap();
+        const attrOriginals = new WeakMap();
+        const attrLast = new WeakMap();
+        let currentLanguage = 'pt-BR';
+        const externalRoots = new Set();
+        const externalObservers = new WeakMap();
+        const normalize = value => String(value || '').replace(/\s+/g, ' ').trim();
+        const excluded = node => {
+            const el = node && (node.nodeType === 1 ? node : node.parentElement);
+            return !el || !!el.closest('script,style,textarea,input,code,pre,.item-card,.item-text,.item-textarea,.scratchpad-textarea,[contenteditable="true"],[data-user-content="true"]');
+        };
+        function translateTextNode(node) {
+            if (!node || node.nodeType !== 3 || excluded(node)) return;
+            const live = node.nodeValue;
+            if (!textOriginals.has(node)) textOriginals.set(node, live);
+            else if (live !== textLast.get(node)) textOriginals.set(node, live);
+            const original = textOriginals.get(node);
+            let target = original;
+            if (currentLanguage === 'en') {
+                const key = normalize(original);
+                if (translations[key]) {
+                    const leading = (original.match(/^\s*/) || [''])[0];
+                    const trailing = (original.match(/\s*$/) || [''])[0];
+                    target = leading + translations[key] + trailing;
+                }
+            }
+            // Avoid writing an unchanged value: MutationObserver would otherwise
+            // receive another characterData event and create an infinite loop.
+            if (node.nodeValue !== target) node.nodeValue = target;
+            textLast.set(node, target);
+        }
+        const attrNames = ['title','aria-label','placeholder'];
+        function translateElement(el) {
+            if (!el || el.nodeType !== 1 || el.closest('script,style,code,pre,.item-card,.item-text,.item-textarea,[contenteditable="true"],[data-user-content="true"]')) return;
+            let originals = attrOriginals.get(el);
+            if (!originals) { originals = {}; attrOriginals.set(el, originals); }
+            let lasts = attrLast.get(el);
+            if (!lasts) { lasts = {}; attrLast.set(el, lasts); }
+            for (const attr of attrNames) {
+                if (!el.hasAttribute(attr)) continue;
+                const live = el.getAttribute(attr);
+                if (!(attr in originals) || (attr in lasts && live !== lasts[attr])) originals[attr] = live;
+                const original = originals[attr];
+                const translated = currentLanguage === 'en' ? (translations[normalize(original)] || original) : original;
+                if (live !== translated) el.setAttribute(attr, translated);
+                lasts[attr] = translated;
+            }
+        }
+        function walk(root) {
+            if (!root) return;
+            if (root.nodeType === 3) { translateTextNode(root); return; }
+            if (root.nodeType !== 1 && root.nodeType !== 9) return;
+            if (root.nodeType === 1) translateElement(root);
+            const ownerDoc = root.ownerDocument || document;
+            const walker = ownerDoc.createTreeWalker(root, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT);
+            let node;
+            while ((node = walker.nextNode())) {
+                if (node.nodeType === 3) translateTextNode(node);
+                else translateElement(node);
+            }
+        }
+        function setLanguage(language) {
+            currentLanguage = language === 'en' ? 'en' : 'pt-BR';
+            try { localStorage.setItem(STORAGE_KEY, currentLanguage); } catch (_) {}
+            document.documentElement.lang = currentLanguage;
+            document.documentElement.dataset.language = currentLanguage;
+            walk(document.body);
+            externalRoots.forEach(root => { if (root && root.isConnected !== false) walk(root); });
+            const selector = document.getElementById('languageSelector');
+            if (selector && selector.value !== currentLanguage) selector.value = currentLanguage;
+            document.title = currentLanguage === 'en' ? 'Scripts Hub' : 'Central de Scripts';
+        }
+        function observeAppLanguageRoot(root) {
+            if (!root) return;
+            externalRoots.add(root);
+            walk(root);
+            if (externalObservers.has(root)) return;
+            const doc = root.ownerDocument || document;
+            const Observer = doc.defaultView && doc.defaultView.MutationObserver ? doc.defaultView.MutationObserver : MutationObserver;
+            const observer = new Observer(records => {
+                for (const record of records) {
+                    if (record.type === 'childList') record.addedNodes.forEach(walk);
+                    else if (record.type === 'characterData') translateTextNode(record.target);
+                    else if (record.type === 'attributes') translateElement(record.target);
+                }
+            });
+            observer.observe(root, {subtree:true, childList:true, characterData:true, attributes:true, attributeFilter:attrNames});
+            externalObservers.set(root, observer);
+        }
+        window.observeAppLanguageRoot = observeAppLanguageRoot;
+        window.getAppLanguage = () => currentLanguage;
+        window.translateAppRoot = walk;
+
+        function init() {
+            const selector = document.getElementById('languageSelector');
+            let saved = 'pt-BR';
+            try { saved = localStorage.getItem(STORAGE_KEY) || 'pt-BR'; } catch (_) {}
+            if (selector) {
+                selector.value = saved === 'en' ? 'en' : 'pt-BR';
+                selector.addEventListener('change', () => setLanguage(selector.value));
+            }
+            setLanguage(saved);
+            const observer = new MutationObserver(records => {
+                for (const record of records) {
+                    if (record.type === 'childList') record.addedNodes.forEach(walk);
+                    else if (record.type === 'characterData') translateTextNode(record.target);
+                    else if (record.type === 'attributes') translateElement(record.target);
+                }
+            });
+            observer.observe(document.body, {subtree:true, childList:true, characterData:true, attributes:true, attributeFilter:attrNames});
+        }
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, {once:true});
+        else init();
+        window.setAppLanguage = setLanguage;
+    })();
+    </script>
 
 </body></html>
