@@ -1,10 +1,9 @@
 {
-  "version": "3.2.1",
+  "version": "3.2.2",
   "url": "https://firestrykerfx.github.io/index.html",
-  "sha256": "a81eabc222c2c975fcf5a9ff3d24b63fd4fef15ba870d41fe832b52897429d1e",
+  "sha256": "e1a56c6a23fe435c80252f80b1a9a13e9299dff140e1111cd593c122a1a79c15",
   "changelog": [
-    "Readable card comparisons with workspace, tab and column labels.",
-    "Individual card, reminder and preference selection.",
-    "Unchecked changes preserved with recovery and version checks."
+    "Copy counts sync automatically using the higher local or cloud value.",
+    "Usage-only differences no longer require comparison or confirmation."
   ]
 }

@@ -1,7 +1,7 @@
 {
   "name": "central-de-scripts-validation",
   "private": true,
-  "version": "3.2.1",
+  "version": "3.2.2",
   "scripts": {"test": "node --test tests/*.test.cjs", "manifest": "node scripts/update-manifest.cjs", "check:manifest": "node scripts/update-manifest.cjs --check"},
   "devDependencies": {"playwright": "1.62.1"}
 }

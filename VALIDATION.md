@@ -1,4 +1,4 @@
-# Validation — 3.2.1
+# Validation — 3.2.2
 
 Local validation performed on 2026-11-11 before the authorized GitHub publication. Repository publication does not deploy or validate Firebase rules.
 
@@ -21,3 +21,7 @@ Live Google OAuth, live Firestore authorization/rules, production synchronizatio
 ## Selectable review — 3.2.1
 
 Additional tests verify friendly card/setting/reminder previews with no JSON or internal IDs; per-card, per-client and per-setting choices; dependency handling for new tabs/workspaces; preserving unchecked removals and edits; legacy string cards and clients without IDs; search/select-visible/clear/keep-current actions; selected-only cloud download and upload via fake backend; selected-only recovery; desktop side-by-side and mobile stacked layout; PT/EN switching without resetting checkboxes; and preventing a second commit while confirmation is running. Desktop and mobile screenshots were inspected. The HTML is 1,267,716 bytes (1,267.716 decimal KB / 1,238.004 KiB).
+
+## Automatic copy counters — 3.2.2
+
+39 browser/syntax tests pass. Counter-only changes are excluded from comparison and content fingerprints. Tests cover maximum merging in both directions, all/none/partial selection, duplicate IDs, preserving removed cards, and automatic synchronization despite remote timestamps/device differences. Transactions merge against their fresh remote snapshot; local counters are merged again after the commit to preserve usage during a request. Firebase is mocked in these tests.

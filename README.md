@@ -1,6 +1,6 @@
 # Central de Scripts
 
-Aplicação estática em `index.html`, compatível com GitHub Pages e uso local. Versão: **3.2.1**. As regras do Firebase continuam sendo candidatas para revisão separada.
+Aplicação estática em `index.html`, compatível com GitHub Pages e uso local. Versão: **3.2.2**. As regras do Firebase continuam sendo candidatas para revisão separada.
 
 ## Desenvolvimento e verificação
 
@@ -40,3 +40,5 @@ A revisão mostra cards lado a lado no computador e empilhados no celular, com �
 Cards novos/alterados começam selecionados; exclusões e preferências exigem seleção explícita. Use a busca, “Selecionar exibidos”, “Limpar seleção” ou “Manter versão atual”. A estrutura mínima necessária acompanha os cards escolhidos; desmarcar uma exclusão preserva o card e impede a remoção da aba/área que o contém.
 
 Nos envios manuais à nuvem, a seleção define a versão comum a este dispositivo e à nuvem; a versão local anterior recebe um ponto de recuperação. Nos recebimentos, alterações desmarcadas mantêm a versão local. As verificações de versão e recuperação continuam ativas. Os testes de nuvem usam um backend simulado; as regras reais do Firebase não são alteradas pela publicação do HTML.
+
+Contadores de cópias não geram diferenças de conteúdo: sincronização usa o maior valor local/remoto, inclusive em seleções parciais.

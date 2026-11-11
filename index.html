@@ -4548,7 +4548,7 @@ mark.custom-keyword-highlight:hover {
         <!-- Grupo Superior: Marca e Módulos Principais -->
         <div class="sidebar-group sidebar-top">
             <div class="sidebar-top-bar">
-                <div class="sidebar-brand-card" onclick="openChangelogModal()" role="button" tabindex="0" title="Central de Scripts v3.2.1 - Clique para ver o Histórico e Novidades">
+                <div class="sidebar-brand-card" onclick="openChangelogModal()" role="button" tabindex="0" title="Central de Scripts v3.2.2 - Clique para ver o Histórico e Novidades">
                     <svg class="header-logo-icon" width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:8px; box-shadow:0 2px 8px rgba(0,122,255,0.35); flex-shrink:0;">
                         <defs>
                             <linearGradient id="appleLogoGradSidebar" x1="0" y1="0" x2="1" y2="1">
@@ -4563,7 +4563,7 @@ mark.custom-keyword-highlight:hover {
                     </svg>
                     <div class="sidebar-brand-info">
                         <span class="sidebar-brand-title">Central de Scripts</span>
-                        <span class="sidebar-brand-badge">v3.2.1</span>
+                        <span class="sidebar-brand-badge">v3.2.2</span>
                     </div>
                 </div>
                 <button type="button" class="sidebar-collapse-toggle-btn" id="sidebarCollapseToggleBtn" onclick="toggleSidebarCollapse()" title="Recolher Barra Lateral (Ctrl+B)" aria-label="Recolher Barra Lateral">
@@ -4832,7 +4832,7 @@ mark.custom-keyword-highlight:hover {
             return String(str).replace(/([ #;&,.+*~':"!^$\[\]()=>|\/@])/g, '\\$1');
         }
 
-        const APP_VERSION = '3.2.1';
+        const APP_VERSION = '3.2.2';
         // Localize application dialogs without changing browser APIs or user data.
         function appMessage(message) {
             return window.translateAppMessage ? window.translateAppMessage(message) : message;
@@ -7844,9 +7844,13 @@ mark.custom-keyword-highlight:hover {
                     </div>
                     <div class="vm-body" style="padding: 16px 20px; overflow-y: auto;">
                         
+                        <div class="changelog-version-card" style="border-color:#22c55e;">
+                            <div class="changelog-version-header"><div class="changelog-version-title"><span data-i18n="release.322">📋 Versão 3.2.2</span><span class="changelog-badge">Versão Atual</span></div><span style="font-size:11px;opacity:0.75;">11/11/2026</span></div>
+                            <ul class="changelog-list"><li data-i18n="release.copyCounts">Contadores de cópias sincronizados automaticamente pelo maior valor, sem aparecer como diferenças na comparação.</li></ul>
+                        </div>
                         <!-- Versão 3.2.1 -->
                         <div class="changelog-version-card" style="border-color:#22c55e;">
-                            <div class="changelog-version-header"><div class="changelog-version-title"><span data-i18n="release.321">🌐 Versão 3.2.1</span><span class="changelog-badge">Versão Atual</span></div><span style="font-size:11px;opacity:0.75;">11/11/2026</span></div>
+                            <div class="changelog-version-header"><div class="changelog-version-title"><span data-i18n="release.321">🌐 Versão 3.2.1</span><span class="changelog-badge">Versão Anterior</span></div><span style="font-size:11px;opacity:0.75;">11/11/2026</span></div>
                             <ul class="changelog-list"><li data-i18n="release.selection">Comparação visual com cards, áreas, abas, preferências e alarmes; seleção individual sem exibir código.</li><li data-i18n="release.selectionSafety">Alterações desmarcadas são preservadas, com recuperação e verificação de versões antes de confirmar.</li></ul>
                         </div>
                         <!-- Versão 3.2.0 -->
@@ -8838,6 +8842,8 @@ mark.custom-keyword-highlight:hover {
 
         /* v3.2.0 — Explicit UI messages, independent documents and safe comparisons. */
         const APP_UI_MESSAGES = {
+            'release.322':['📋 Versão 3.2.2','📋 Version 3.2.2'],
+            'release.copyCounts':['Contadores de cópias sincronizados automaticamente pelo maior valor, sem aparecer como diferenças na comparação.','Copy counters sync automatically using the higher value, without appearing as differences in the comparison.'],
             'release.321':['🌐 Versão 3.2.1','🌐 Version 3.2.1'],
             'release.selection':['Comparação visual com cards, áreas, abas, preferências e alarmes; seleção individual sem exibir código.','Visual comparison for cards, workspaces, tabs, preferences and reminders; individual selection without code.'],
             'release.selectionSafety':['Alterações desmarcadas são preservadas, com recuperação e verificação de versões antes de confirmar.','Unchecked changes are preserved, with recovery and version checks before confirmation.'],
@@ -9022,6 +9028,36 @@ mark.custom-keyword-highlight:hover {
             before.forEach((_,index)=>{left[index]||='client:before:'+index;});after.forEach((_,index)=>{right[index]||='client:after:'+index;});
             return {left,right};
         }
+        // Usage counters are monotonic statistics, independent of reviewed content.
+        function syncCards(payload, visit) {
+            const spaces=Array.isArray(payload.workspaces)&&payload.workspaces.length?payload.workspaces:[{id:'legacy',data:payload.scripts||{}}];
+            for(const ws of spaces)for(const [tabId,tab] of Object.entries(ws.data||{}))
+                for(const [gi,group] of (tab.groups||[]).entries())for(const [ii,card] of (group.items||[]).entries())
+                    if(card&&typeof card==='object')visit(card,[ws.id,tabId,gi,ii]);
+        }
+        function mergeCardCopyCounts(target,...sources) {
+            const result=JSON.parse(JSON.stringify(target));
+            const payloads=[target,...sources];const duplicates=new Set();
+            for(const payload of payloads){const seen=new Set();syncCards(payload,card=>{if(card.id){if(seen.has(card.id))duplicates.add(card.id);seen.add(card.id);}});}
+            const key=(card,path)=>card.id&&!duplicates.has(card.id)?'id:'+card.id:JSON.stringify([path,card.id||'',card.id?'':card.text]);
+            const counts=new Map();
+            for(const payload of payloads)syncCards(payload,(card,path)=>{const n=Number(card.copies);if(Number.isFinite(n)&&n>=0)counts.set(key(card,path),Math.max(counts.get(key(card,path))||0,n));});
+            syncCards(result,(card,path)=>{if(counts.has(key(card,path)))card.copies=counts.get(key(card,path));});
+            if(result.workspaces?.length&&result.scripts){const active=result.workspaces.find(ws=>ws.id===(result.activeWorkspaceId||result.settings?.activeWorkspaceId))||result.workspaces[0];result.scripts=JSON.parse(JSON.stringify(active.data));}
+            return result;
+        }
+        function persistSyncedCopyCounts(source) {
+            const current=buildSyncPayload();const merged=mergeCardCopyCounts(current,source);
+            if(stableSerialize(current.workspaces)!==stableSerialize(merged.workspaces)||stableSerialize(current.scripts)!==stableSerialize(merged.scripts))withLocalStorageRollback(()=>{
+                localStorage.setItem(WORKSPACES_STORAGE_KEY,JSON.stringify(merged.workspaces));
+                localStorage.setItem(STORAGE_KEY,JSON.stringify(merged.scripts));
+            });
+            return merged;
+        }
+        function cardContent(value) {
+            if(!value||typeof value!=='object')return value;
+            const {copies,...content}=value;return content;
+        }
         function buildSyncComparison(before, after) {
             const clientKeys=syncClientKeys(before.clients||[],after.clients||[]);
             const duplicateCardIds=new Set();
@@ -9054,7 +9090,7 @@ mark.custom-keyword-highlight:hover {
             const left = index(before,clientKeys.left), right = index(after,clientKeys.right), entries=[];
             for (const key of new Set([...left.keys(),...right.keys()])) {
                 const a=left.get(key), b=right.get(key);
-                let change = !a ? 'added' : !b ? 'removed' : stableSerialize(a.value)!==stableSerialize(b.value) ? 'changed' : a.location && stableSerialize(a.location)!==stableSerialize(b.location) ? 'moved' : null;
+                let change = !a ? 'added' : !b ? 'removed' : stableSerialize(a.kind==='card'?cardContent(a.value):a.value)!==stableSerialize(b.kind==='card'?cardContent(b.value):b.value) ? 'changed' : a.location && stableSerialize(a.location)!==stableSerialize(b.location) ? 'moved' : null;
                 if (change) entries.push({key,change,kind:(b||a).kind,name:(b||a).name,workspaceId:(b||a).workspaceId,tabId:(b||a).tabId,settingKey:(b||a).settingKey,beforeLocation:a?.location,afterLocation:b?.location,beforeWorkspaceName:a?.workspaceName,afterWorkspaceName:b?.workspaceName,beforeColumnName:a?.columnName,afterColumnName:b?.columnName,rawBefore:a?.raw,rawAfter:b?.raw,beforeIndex:a?.index,afterIndex:b?.index,before:a?.value,after:b?.value});
             }
             const counts={added:0,changed:0,removed:0,moved:0}; entries.forEach(e=>counts[e.change]++);
@@ -9077,8 +9113,8 @@ mark.custom-keyword-highlight:hover {
         function mergeSelectedSyncChanges(before, after, selectedKeys, comparison=buildSyncComparison(before,after)) {
             const clone=value=>value===undefined?undefined:JSON.parse(JSON.stringify(value));
             const selected=normalizeSyncSelection(comparison.entries,new Set(selectedKeys));
-            if(!selected.size)return clone(before);
-            if(comparison.entries.every(entry=>selected.has(entry.key)))return clone(after);
+            if(!selected.size)return mergeCardCopyCounts(before,after);
+            if(comparison.entries.every(entry=>selected.has(entry.key)))return mergeCardCopyCounts(after,before);
             const result=clone(before);
             const source=Array.isArray(after.workspaces)&&after.workspaces.length?after.workspaces:[{id:'legacy',name:'Scripts',data:after.scripts||{}}];
             if(!Array.isArray(result.workspaces)||!result.workspaces.length)result.workspaces=Object.keys(before.scripts||{}).length?[{id:'legacy',name:'Scripts',data:clone(before.scripts)}]:[];
@@ -9142,7 +9178,7 @@ mark.custom-keyword-highlight:hover {
                 if(!Object.hasOwn(target.data,result.settings.activeTabId)&&result.settings.activeTabId!=='tab_clients_alarm')result.settings.activeTabId=target.tabOrder[0]||'';
             }
             for(const key of ['schemaVersion','revision','deviceId','updatedBy','updatedAt'])if(Object.hasOwn(after,key))result[key]=clone(after[key]);
-            return result;
+            return mergeCardCopyCounts(result,before,after);
         }
 
         const RECOVERY_POINTS_KEY = 'scripts_recovery_points_v1';
@@ -9656,9 +9692,10 @@ mark.custom-keyword-highlight:hover {
             const reference=teamDefault?firebaseDb.collection('templates').doc('default_scripts'):firebaseDb.collection('users').doc(currentUser.uid).collection('settings').doc('app_data');
             const snap=await reference.get();
             if(!snap.exists||syncFingerprint(validateCloudPayload(snap.data()))!==syncFingerprint(data))throw new Error(appUiText('sync.stale'));
+            selectedData=mergeCardCopyCounts(selectedData,buildSyncPayload(),validateCloudPayload(snap.data()));
             applyCloudDataToLocal(selectedData);
             acknowledgedRemoteFingerprint=syncFingerprint(data);
-            if(syncFingerprint(selectedData)!==syncFingerprint(data)){localRevision=Math.max(localRevision,Number(data.revision)||0);markLocalChange();}
+            if(syncFingerprint(selectedData)!==syncFingerprint(data)||stableSerialize(selectedData)!==stableSerialize(data)){localRevision=Math.max(localRevision,Number(data.revision)||0);markLocalChange();syncToCloudDebounced();}
         }
         async function commitReviewedUpload(expectedRemote, selectedData) {
             if(!currentUser||!firebaseDb)throw new Error(appUiText('sync.error'));
@@ -9666,6 +9703,7 @@ mark.custom-keyword-highlight:hover {
             const latest=await reference.get();
             const fresh=latest.exists?validateCloudPayload(latest.data()):{workspaces:[],scripts:{}};
             if(syncFingerprint(fresh)!==syncFingerprint(expectedRemote))throw new Error(appUiText('sync.stale'));
+            selectedData=mergeCardCopyCounts(selectedData,buildSyncPayload(),fresh);
             applyCloudDataToLocal(selectedData);
             acknowledgedRemoteFingerprint=syncFingerprint(fresh);
             markLocalChange();
@@ -9673,7 +9711,10 @@ mark.custom-keyword-highlight:hover {
         }
         function syncFingerprint(payload) {
             const {updatedAt, revision, deviceId, updatedBy, ...data} = payload;
-            return stableSerialize(data);
+            const clean=JSON.parse(JSON.stringify(data));
+            syncCards(clean,card=>delete card.copies);
+            if(clean.scripts)syncCards({scripts:clean.scripts},card=>delete card.copies);
+            return stableSerialize(clean);
         }
         function effectiveSyncPayload(before, after) {
             const result={...before,...after,settings:{...(before.settings||{}),...(after.settings||{})}};
@@ -16253,6 +16294,13 @@ console.log('Userscript carregado');`;
                     const cloudData = validateCloudPayload(snap.data());
                     const hasWs = Array.isArray(cloudData && cloudData.workspaces) && cloudData.workspaces.length > 0;
                     if (cloudData && (hasWs || (cloudData.scripts && isValidData(cloudData.scripts)))) {
+                        const counterLocal=buildSyncPayload();
+                        if(!buildSyncComparison(counterLocal,effectiveSyncPayload(counterLocal,cloudData)).entries.length){
+                            persistSyncedCopyCounts(cloudData);
+                            acknowledgedRemoteFingerprint=syncFingerprint(cloudData);
+                            if(stableSerialize(mergeCardCopyCounts(cloudData,counterLocal))!==stableSerialize(cloudData))await syncToCloud();
+                            return;
+                        }
                         // Verifica se os dados locais são mais recentes que a nuvem para evitar sobrescrever edições recentes
                         const cloudTime = cloudData.updatedAt ? new Date(cloudData.updatedAt).getTime() : 0;
                         const localTime = parseInt(localStorage.getItem(LAST_LOCAL_UPDATE_KEY) || '0', 10);
@@ -16367,7 +16415,8 @@ console.log('Userscript carregado');`;
             }
 
             const revisionAtStart = localRevision;
-            const payloadToSync = pendingSyncPayload || buildSyncPayload();
+            let payloadToSync = pendingSyncPayload || buildSyncPayload();
+            let committedPayload;
 
             isCloudSyncing = true;
             updateSyncStatusUI('syncing');
@@ -16388,9 +16437,11 @@ console.log('Userscript carregado');`;
                             const error=new Error('remote-conflict');error.code='app/remote-conflict';error.remote=data;throw error;
                         }
                     }
-                    transaction.set(dataDocRef,payloadToSync,{merge:true});
+                    committedPayload=mergeCardCopyCounts(payloadToSync,remote.exists?validateCloudPayload(remote.data()):{});
+                    transaction.set(dataDocRef,committedPayload,{merge:true});
                 });
-                acknowledgedRemoteFingerprint=syncFingerprint(payloadToSync);
+                persistSyncedCopyCounts(committedPayload);
+                acknowledgedRemoteFingerprint=syncFingerprint(committedPayload);
                 lastSyncedRevision = revisionAtStart;
                 const nowIso = new Date().toISOString();
                 localStorage.setItem(LAST_LOCAL_UPDATE_KEY, String(Date.now()));
