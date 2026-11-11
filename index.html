@@ -3062,7 +3062,7 @@
 
     
 
-        /* v3.1.10 — Equipment modal: category chips wrap instead of clipping behind a horizontal scrollbar. */
+        /* v3.1.11 — Equipment modal: category chips wrap instead of clipping behind a horizontal scrollbar. */
         .equip-builder-box .equip-filter-row {
             flex: 0 0 auto;
             flex-wrap: wrap;
@@ -4450,7 +4450,7 @@ mark.custom-keyword-highlight:hover {
         <!-- Grupo Superior: Marca e Módulos Principais -->
         <div class="sidebar-group sidebar-top">
             <div class="sidebar-top-bar">
-                <div class="sidebar-brand-card" onclick="openChangelogModal()" role="button" tabindex="0" title="Central de Scripts v3.1.10 - Clique para ver o Histórico e Novidades">
+                <div class="sidebar-brand-card" onclick="openChangelogModal()" role="button" tabindex="0" title="Central de Scripts v3.1.12 - Clique para ver o Histórico e Novidades">
                     <svg class="header-logo-icon" width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:8px; box-shadow:0 2px 8px rgba(0,122,255,0.35); flex-shrink:0;">
                         <defs>
                             <linearGradient id="appleLogoGradSidebar" x1="0" y1="0" x2="1" y2="1">
@@ -4465,7 +4465,7 @@ mark.custom-keyword-highlight:hover {
                     </svg>
                     <div class="sidebar-brand-info">
                         <span class="sidebar-brand-title">Central de Scripts</span>
-                        <span class="sidebar-brand-badge">v3.1.6</span>
+                        <span class="sidebar-brand-badge">v3.1.12</span>
                     </div>
                 </div>
                 <button type="button" class="sidebar-collapse-toggle-btn" id="sidebarCollapseToggleBtn" onclick="toggleSidebarCollapse()" title="Recolher Barra Lateral (Ctrl+B)" aria-label="Recolher Barra Lateral">
@@ -4731,7 +4731,7 @@ mark.custom-keyword-highlight:hover {
             return String(str).replace(/([ #;&,.+*~':"!^$\[\]()=>|\/@])/g, '\\$1');
         }
 
-        const APP_VERSION = '3.1.10';
+        const APP_VERSION = '3.1.12';
         const UPDATE_MANIFEST_URL = 'https://firestrykerfx.github.io/version.json';
         // O manifesto de atualização deve incluir sha256 (64 caracteres hexadecimais) do HTML publicado.
         const UPDATE_CHECK_INTERVAL = 6 * 60 * 60 * 1000;
@@ -7735,14 +7735,25 @@ mark.custom-keyword-highlight:hover {
                     </div>
                     <div class="vm-body" style="padding: 16px 20px; overflow-y: auto;">
                         
-                        <!-- Versão 3.1.10: Opções selecionáveis da OS e Teste -->
+                        <!-- Versão 3.1.12 -->
                         <div class="changelog-version-card" style="border-color:#22c55e;">
-                            <div class="changelog-version-header"><div class="changelog-version-title"><span>🌐 Version 3.1.10</span><span class="changelog-badge">Current Version</span></div><span style="font-size:11px;opacity:0.75;">11/11/2026</span></div>
+                            <div class="changelog-version-header"><div class="changelog-version-title"><span>🌐 Versão 3.1.12</span><span class="changelog-badge">Versão Atual</span></div><span style="font-size:11px;opacity:0.75;">11/11/2026</span></div>
+                            <ul class="changelog-list">
+                                <li>Sugestões e preenchimentos automáticos traduzidos na OS, no Teste Técnico e no painel lateral.</li>
+                                <li>Textos digitados preservados ao alternar idioma e modelo; documentos copiados mantêm os valores operacionais em português.</li>
+                                <li>Seletores mantêm os valores internos e os chips permanecem sincronizados nos dois idiomas.</li>
+                                <li>Corrigidos os valores das opções de custo da visita técnica.</li>
+                                <li>Ampliadas as traduções de equipamentos, Docker e menus de configuração, com busca de equipamentos em inglês.</li>
+                            </ul>
+                        </div>
+                        <!-- Versão 3.1.11: Opções selecionáveis da OS e Teste -->
+                        <div class="changelog-version-card" style="border-color:#22c55e;">
+                            <div class="changelog-version-header"><div class="changelog-version-title"><span>🌐 Version 3.1.11</span><span class="changelog-badge">Previous Version</span></div><span style="font-size:11px;opacity:0.75;">11/11/2026</span></div>
                             <ul class="changelog-list"><li>Expanded English labels for service-ticket dropdown choices, scheduling, costs, quick-select chips and technical-test options.</li><li>Option values and generated service descriptions remain unchanged for compatibility.</li></ul>
                         </div>
                         <!-- Versão 3.1.9: Inglês para Ordem de Serviço e Teste Técnico -->
                         <div class="changelog-version-card" style="border-color: #22c55e;">
-                            <div class="changelog-version-header"><div class="changelog-version-title"><span>🌐 Versão 3.1.9</span><span class="changelog-badge">Versão Atual</span></div><span style="font-size:11px; opacity:0.75;">11/11/2026</span></div>
+                            <div class="changelog-version-header"><div class="changelog-version-title"><span>🌐 Versão 3.1.9</span><span class="changelog-badge">Versão Anterior</span></div><span style="font-size:11px; opacity:0.75;">11/11/2026</span></div>
                             <ul class="changelog-list"><li>Tradução de campos, modelos, filtros, orientações e botões das janelas Ordem de Serviço e Teste Técnico.</li><li>Preservados identificadores internos, valores monetários, funcionalidades e dados digitados pelo operador.</li></ul>
                         </div>
                         <!-- Versão 3.1.8: Correções de layout e tradução -->
@@ -7786,7 +7797,7 @@ mark.custom-keyword-highlight:hover {
                             <div class="changelog-version-header">
                                 <div class="changelog-version-title">
                                     <span>🔐 Versão 3.1.3</span>
-                                    <span class="changelog-badge" style="background:#eab308; color:#000; font-weight:800;">Versão Atual</span>
+                                    <span class="changelog-badge" style="background:#eab308; color:#000; font-weight:800;">Versão Anterior</span>
                                 </div>
                                 <span style="font-size:11px; opacity:0.75;">11/11/2026</span>
                             </div>
@@ -7927,7 +7938,7 @@ mark.custom-keyword-highlight:hover {
                             <div class="changelog-version-header">
                                 <div class="changelog-version-title">
                                     <span>🍎 Versão 2.8.0</span>
-                                    <span class="changelog-badge" style="background:#007aff; color:#fff;">Versão Atual</span>
+                                    <span class="changelog-badge" style="background:#007aff; color:#fff;">Versão Anterior</span>
                                 </div>
                                 <span style="font-size:11px; opacity:0.75;">28/10/2026</span>
                             </div>
@@ -7944,7 +7955,7 @@ mark.custom-keyword-highlight:hover {
                             <div class="changelog-version-header">
                                 <div class="changelog-version-title">
                                     <span>✨ Versão 2.7.0</span>
-                                    <span class="changelog-badge" style="background:#007aff; color:#fff;">Versão Atual</span>
+                                    <span class="changelog-badge" style="background:#007aff; color:#fff;">Versão Anterior</span>
                                 </div>
                                 <span style="font-size:11px; opacity:0.75;">27/10/2026</span>
                             </div>
@@ -7982,7 +7993,7 @@ mark.custom-keyword-highlight:hover {
                             <div class="changelog-version-header">
                                 <div class="changelog-version-title">
                                     <span>✨ Versão 2.6.8</span>
-                                    <span class="changelog-badge" style="background:#007aff; color:#fff;">Versão Atual</span>
+                                    <span class="changelog-badge" style="background:#007aff; color:#fff;">Versão Anterior</span>
                                 </div>
                                 <span style="font-size:11px; opacity:0.75;">17/10/2026</span>
                             </div>
@@ -8652,14 +8663,14 @@ mark.custom-keyword-highlight:hover {
             const root = chipEl && chipEl.closest ? chipEl.closest('.var-modal-overlay') : document;
             const el = root.querySelector ? root.querySelector('#' + inputId) : document.getElementById(inputId);
             if (!el) return;
-            let items = (el.value || '').split(',').map(s => s.trim()).filter(Boolean);
+            let items = (window.getAppFormValue(el) || '').split(',').map(s => s.trim()).filter(Boolean);
             const idx = items.indexOf(chipVal);
             if (idx > -1) {
                 items.splice(idx, 1);
             } else {
                 items.push(chipVal);
             }
-            el.value = items.join(', ');
+            window.setAppPresetValue(el, items.join(', '), true);
             el.dispatchEvent(new Event('input', { bubbles: true }));
             if (typeof syncTicketChipStates === 'function') syncTicketChipStates();
         }
@@ -8670,11 +8681,11 @@ mark.custom-keyword-highlight:hover {
             const el = root.querySelector ? root.querySelector('#' + inputId) : document.getElementById(inputId);
             if (!el) return;
             if (chipVal === 'Qualquer horário comercial') {
-                el.value = 'Qualquer horário comercial';
+                window.setAppPresetValue(el, 'Qualquer horário comercial');
                 el.dispatchEvent(new Event('input', { bubbles: true }));
                 return;
             }
-            let clean = (el.value || '').replace('Qualquer horário comercial', '').trim();
+            let clean = (window.getAppFormValue(el) || '').replace('Qualquer horário comercial', '').trim();
             let items = clean.split(',').map(s => s.trim()).filter(Boolean);
             const idx = items.indexOf(chipVal);
             if (idx > -1) {
@@ -8682,7 +8693,7 @@ mark.custom-keyword-highlight:hover {
             } else {
                 items.push(chipVal);
             }
-            el.value = items.length > 0 ? items.join(', ') : 'Qualquer horário comercial';
+            window.setAppPresetValue(el, items.length > 0 ? items.join(', ') : 'Qualquer horário comercial', true);
             el.dispatchEvent(new Event('input', { bubbles: true }));
         }
 
@@ -8727,11 +8738,11 @@ mark.custom-keyword-highlight:hover {
                         <div>
                             <label style="font-size:11px; font-weight:600; opacity:0.85;">Relato:</label>
                             <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
-                                <span class="ticket-chip" onclick="document.getElementById('tstRelato').value = 'lentidão/youtube/whatsapp/netflix'">YouTube/Netflix</span>
-                                <span class="ticket-chip" onclick="document.getElementById('tstRelato').value = 'Lentidão geral relatada pelo cliente. Extrato e sinal normais.'">Lentidão Geral</span>
-                                <span class="ticket-chip" onclick="document.getElementById('tstRelato').value = 'Quedas e oscilação de sinal frequentes ao longo do dia.'">Quedas / Oscilação</span>
-                                <span class="ticket-chip" onclick="document.getElementById('tstRelato').value = 'Ping alto e travamentos em jogos online.'">Jogos / Ping Alto</span>
-                                <span class="ticket-chip" onclick="document.getElementById('tstRelato').value = 'Velocidade abaixo do contratado em testes via cabo.'">Abaixo do Plano</span>
+                                <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstRelato'), 'lentidão/youtube/whatsapp/netflix')">YouTube/Netflix</span>
+                                <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstRelato'), 'Lentidão geral relatada pelo cliente. Extrato e sinal normais.')">Lentidão Geral</span>
+                                <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstRelato'), 'Quedas e oscilação de sinal frequentes ao longo do dia.')">Quedas / Oscilação</span>
+                                <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstRelato'), 'Ping alto e travamentos em jogos online.')">Jogos / Ping Alto</span>
+                                <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstRelato'), 'Velocidade abaixo do contratado em testes via cabo.')">Abaixo do Plano</span>
                             </div>
                             <textarea id="tstRelato" class="var-modal-input" style="height:60px; resize:vertical;">${escapeHtml(testModalState.relato)}</textarea>
                         </div>
@@ -8741,10 +8752,10 @@ mark.custom-keyword-highlight:hover {
                             <div>
                                 <label style="font-size:11px; font-weight:600; opacity:0.85;">Sinal (digite o número que já coloca o sinal de menos):</label>
                                 <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
-                                    <span class="ticket-chip" onclick="document.getElementById('tstSinal').value = '-19 dBm'">-19 dBm</span>
-                                    <span class="ticket-chip" onclick="document.getElementById('tstSinal').value = '-21 dBm'">-21 dBm</span>
-                                    <span class="ticket-chip" onclick="document.getElementById('tstSinal').value = '-24 dBm'">-24 dBm</span>
-                                    <span class="ticket-chip" onclick="document.getElementById('tstSinal').value = '-27 dBm'">-27 dBm</span>
+                                    <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstSinal'), '-19 dBm')">-19 dBm</span>
+                                    <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstSinal'), '-21 dBm')">-21 dBm</span>
+                                    <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstSinal'), '-24 dBm')">-24 dBm</span>
+                                    <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstSinal'), '-27 dBm')">-27 dBm</span>
                                 </div>
                                 <input type="text" id="tstSinal" class="var-modal-input" placeholder="ex: 19 (vira -19 dBm)" value="${escapeHtml(testModalState.sinal || '-19 dBm')}" oninput="handleSinalInput(this)" onblur="if(this.value && !this.value.includes('dBm')) this.value += ' dBm';">
                             </div>
@@ -8755,20 +8766,20 @@ mark.custom-keyword-highlight:hover {
                                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:2px;">
                                     <div>
                                         <div class="ticket-chip-row" style="margin-bottom:4px;">
-                                            <span class="ticket-chip" onclick="document.getElementById('tstPingMedia').value = '3'">3ms</span>
-                                            <span class="ticket-chip" onclick="document.getElementById('tstPingMedia').value = '4'">4ms</span>
-                                            <span class="ticket-chip" onclick="document.getElementById('tstPingMedia').value = '5'">5ms</span>
-                                            <span class="ticket-chip" onclick="document.getElementById('tstPingMedia').value = '6'">6ms</span>
-                                            <span class="ticket-chip" onclick="document.getElementById('tstPingMedia').value = '8'">8ms</span>
-                                            <span class="ticket-chip" onclick="document.getElementById('tstPingMedia').value = '10'">10ms</span>
+                                            <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstPingMedia'), '3')">3ms</span>
+                                            <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstPingMedia'), '4')">4ms</span>
+                                            <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstPingMedia'), '5')">5ms</span>
+                                            <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstPingMedia'), '6')">6ms</span>
+                                            <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstPingMedia'), '8')">8ms</span>
+                                            <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstPingMedia'), '10')">10ms</span>
                                         </div>
                                         <input type="text" id="tstPingMedia" class="var-modal-input" placeholder="Média (ms)" value="${escapeHtml(testModalState.pingMedia || '6')}">
                                     </div>
                                     <div>
                                         <div class="ticket-chip-row" style="margin-bottom:4px;">
-                                            <span class="ticket-chip" onclick="document.getElementById('tstPingPerda').value = '0'">0%</span>
-                                            <span class="ticket-chip" onclick="document.getElementById('tstPingPerda').value = '1'">1%</span>
-                                            <span class="ticket-chip" onclick="document.getElementById('tstPingPerda').value = '5'">5%</span>
+                                            <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstPingPerda'), '0')">0%</span>
+                                            <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstPingPerda'), '1')">1%</span>
+                                            <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstPingPerda'), '5')">5%</span>
                                         </div>
                                         <input type="text" id="tstPingPerda" class="var-modal-input" placeholder="Perda (%)" value="${escapeHtml(testModalState.pingPerda || '0')}">
                                     </div>
@@ -8781,9 +8792,9 @@ mark.custom-keyword-highlight:hover {
                             <div>
                                 <label style="font-size:11px; font-weight:600; opacity:0.85;">Extrato:</label>
                                 <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
-                                    <span class="ticket-chip" onclick="document.getElementById('tstExtrato').value = 'ok'">OK</span>
-                                    <span class="ticket-chip" onclick="document.getElementById('tstExtrato').value = 'quedas frequentes no extrato'">Quedas</span>
-                                    <span class="ticket-chip" onclick="document.getElementById('tstExtrato').value = 'quedas na madrugada'">Madrugada</span>
+                                    <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstExtrato'), 'ok')">OK</span>
+                                    <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstExtrato'), 'quedas frequentes no extrato')">Quedas</span>
+                                    <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstExtrato'), 'quedas na madrugada')">Madrugada</span>
                                 </div>
                                 <input type="text" id="tstExtrato" class="var-modal-input" value="${escapeHtml(testModalState.extrato || 'ok')}">
                             </div>
@@ -8804,19 +8815,19 @@ mark.custom-keyword-highlight:hover {
                             <div>
                                 <label style="font-size:11px; font-weight:600; opacity:0.85;">Reiniciado:</label>
                                 <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
-                                    <span class="ticket-chip" onclick="document.getElementById('tstReiniciado').value = 'Sim'">Sim</span>
-                                    <span class="ticket-chip" onclick="document.getElementById('tstReiniciado').value = 'Não (cliente fora do local)'">Não (fora)</span>
-                                    <span class="ticket-chip" onclick="document.getElementById('tstReiniciado').value = 'Não (já havia reiniciado antes)'">Não (já reiniciou)</span>
+                                    <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstReiniciado'), 'Sim')">Sim</span>
+                                    <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstReiniciado'), 'Não (cliente fora do local)')">Não (fora)</span>
+                                    <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstReiniciado'), 'Não (já havia reiniciado antes)')">Não (já reiniciou)</span>
                                 </div>
                                 <input type="text" id="tstReiniciado" class="var-modal-input" value="${escapeHtml(testModalState.reiniciado || 'Sim')}">
                             </div>
                             <div>
                                 <label style="font-size:11px; font-weight:600; opacity:0.85;">MTU/MRU:</label>
                                 <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
-                                    <span class="ticket-chip" onclick="document.getElementById('tstMtu').value = 'Já estava 1492'">Já estava 1492</span>
-                                    <span class="ticket-chip" onclick="document.getElementById('tstMtu').value = 'Estava 1480 corrigido para 1492'">Estava 1480 corrigido p/ 1492</span>
-                                    <span class="ticket-chip" onclick="document.getElementById('tstMtu').value = '1492 MRU'">1492 MRU</span>
-                                    <span class="ticket-chip" onclick="document.getElementById('tstMtu').value = '1500'">1500</span>
+                                    <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstMtu'), 'Já estava 1492')">Já estava 1492</span>
+                                    <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstMtu'), 'Estava 1480 corrigido para 1492')">Estava 1480 corrigido p/ 1492</span>
+                                    <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstMtu'), '1492 MRU')">1492 MRU</span>
+                                    <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstMtu'), '1500')">1500</span>
                                 </div>
                                 <input type="text" id="tstMtu" class="var-modal-input" value="${escapeHtml(testModalState.mtu || 'Já estava 1492')}">
                             </div>
@@ -8827,16 +8838,16 @@ mark.custom-keyword-highlight:hover {
                             <div>
                                 <label style="font-size:11px; font-weight:600; opacity:0.85;">WAN:</label>
                                 <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
-                                    <span class="ticket-chip" onclick="document.getElementById('tstWan').value = '1000Mbps porta fixa ok'">1000Mbps OK</span>
-                                    <span class="ticket-chip" onclick="document.getElementById('tstWan').value = '100Mbps negociado'">100Mbps</span>
+                                    <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstWan'), '1000Mbps porta fixa ok')">1000Mbps OK</span>
+                                    <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstWan'), '100Mbps negociado')">100Mbps</span>
                                 </div>
                                 <input type="text" id="tstWan" class="var-modal-input" value="${escapeHtml(testModalState.wan || '1000Mbps porta fixa ok')}">
                             </div>
                             <div>
                                 <label style="font-size:11px; font-weight:600; opacity:0.85;">DNS (somente se foi corrigido ou não):</label>
                                 <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
-                                    <span class="ticket-chip" onclick="document.getElementById('tstDns').value = 'OK'">OK</span>
-                                    <span class="ticket-chip" onclick="document.getElementById('tstDns').value = 'Não OK'">Não OK</span>
+                                    <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstDns'), 'OK')">OK</span>
+                                    <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstDns'), 'Não OK')">Não OK</span>
                                 </div>
                                 <input type="text" id="tstDns" class="var-modal-input" value="${escapeHtml(testModalState.dns || 'OK')}">
                             </div>
@@ -8846,9 +8857,9 @@ mark.custom-keyword-highlight:hover {
                         <div>
                             <label style="font-size:11px; font-weight:600; opacity:0.85;">Resumo:</label>
                             <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
-                                <span class="ticket-chip" onclick="document.getElementById('tstResumo').value = 'Testes realizados sem melhora. Encaminhado para agendamento técnico.'">Sem Melhora / Agendado</span>
-                                <span class="ticket-chip" onclick="document.getElementById('tstResumo').value = 'Ajustes de canal realizados, cliente testou e normalizou.'">Normalizou</span>
-                                <span class="ticket-chip" onclick="document.getElementById('tstResumo').value = 'Feitos testes preliminares, necessário monitoramento.'">Em Monitoramento</span>
+                                <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstResumo'), 'Testes realizados sem melhora. Encaminhado para agendamento técnico.')">Sem Melhora / Agendado</span>
+                                <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstResumo'), 'Ajustes de canal realizados, cliente testou e normalizou.')">Normalizou</span>
+                                <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('tstResumo'), 'Feitos testes preliminares, necessário monitoramento.')">Em Monitoramento</span>
                             </div>
                             <input type="text" id="tstResumo" class="var-modal-input" placeholder="Conclusão ou observação do teste" value="${escapeHtml(testModalState.resumo)}">
                         </div>
@@ -8872,9 +8883,10 @@ mark.custom-keyword-highlight:hover {
             }
 
             overlay.querySelector('#btnCopyTestOutput').onclick = () => {
+                window.saveAppFormEdits(overlay, testModalState);
                 const getVal = id => {
                     const el = overlay.querySelector('#' + id);
-                    return el ? el.value.trim() : '';
+                    return el ? window.getAppFormValue(el).trim() : '';
                 };
 
                 testModalState.contato = getVal('tstContato');
@@ -8914,14 +8926,14 @@ mark.custom-keyword-highlight:hover {
             function syncStandaloneTestChips() {
                 overlay.querySelectorAll('.ticket-chip').forEach(chip => {
                     const handler = chip.getAttribute('onclick') || '';
-                    let m = handler.match(/document\.getElementById\(['"]([^'"]+)['"]\)\.value\s*=\s*['"]([^'"]*)['"]/);
+                    let m = handler.match(/setAppPresetValue\(document\.getElementById\(['"]([^'"]+)['"]\),\s*['"]([^'"]*)['"]/);
                     if (!m) {
                         m = handler.match(/toggleAppendChip\(['"]([^'"]+)['"],\s*['"]([^'"]*)['"]/);
                     }
                     if (!m) return;
                     const field = overlay.querySelector('#' + m[1]);
                     if (!field) return;
-                    const current = String(field.value || '');
+                    const current = window.getAppFormValue(field);
                     const multi = handler.includes('toggleAppendChip');
                     const active = multi
                         ? current.split(',').map(v => v.trim()).filter(Boolean).includes(m[2])
@@ -8932,7 +8944,7 @@ mark.custom-keyword-highlight:hover {
 
             overlay.addEventListener('click', (e) => {
                 if (e.target.closest('.ticket-chip')) {
-                    setTimeout(syncStandaloneTestChips, 0);
+                    setTimeout(() => { syncStandaloneTestChips(); if (window.translateAppRoot) window.translateAppRoot(overlay); }, 0);
                 }
             });
             overlay.addEventListener('input', (e) => {
@@ -8940,7 +8952,9 @@ mark.custom-keyword-highlight:hover {
             });
             syncStandaloneTestChips();
 
+            window.restoreAppFormEdits(overlay, testModalState);
             document.body.appendChild(overlay);
+            if (window.translateAppRoot) window.translateAppRoot(overlay);
         }
 
         /* ===== Gerador de Chamado Técnico com suporte a Painel Lateral de Teste ===== */
@@ -9055,9 +9069,9 @@ mark.custom-keyword-highlight:hover {
                             <div>
                                 <label style="font-size:11px; font-weight:600; opacity:0.85;">Relato:</label>
                                 <div class="ticket-chip-row" style="margin-bottom:4px;">
-                                    <span class="ticket-chip" onclick="document.getElementById('sideTstRelato').value = 'lentidão/youtube/whatsapp/netflix'">YouTube/Netflix</span>
-                                    <span class="ticket-chip" onclick="document.getElementById('sideTstRelato').value = 'Lentidão geral relatada pelo cliente. Extrato e sinal normais.'">Lentidão Geral</span>
-                                    <span class="ticket-chip" onclick="document.getElementById('sideTstRelato').value = 'Quedas e oscilação de sinal ao longo do dia.'">Quedas</span>
+                                    <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('sideTstRelato'), 'lentidão/youtube/whatsapp/netflix')">YouTube/Netflix</span>
+                                    <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('sideTstRelato'), 'Lentidão geral relatada pelo cliente. Extrato e sinal normais.')">Lentidão Geral</span>
+                                    <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('sideTstRelato'), 'Quedas e oscilação de sinal ao longo do dia.')">Quedas</span>
                                 </div>
                                 <textarea id="sideTstRelato" class="var-modal-input" style="height:55px; resize:vertical;">lentidão/youtube/whatsapp/netflix</textarea>
                             </div>
@@ -9071,12 +9085,12 @@ mark.custom-keyword-highlight:hover {
                                 <div>
                                     <label style="font-size:11px; font-weight:600; opacity:0.85;">Ping (Média / Perda %):</label>
                                     <div class="ticket-chip-row" style="margin-bottom:4px;">
-                                        <span class="ticket-chip" onclick="document.getElementById('sideTstPingMedia').value = '3'">3ms</span>
-                                        <span class="ticket-chip" onclick="document.getElementById('sideTstPingMedia').value = '4'">4ms</span>
-                                        <span class="ticket-chip" onclick="document.getElementById('sideTstPingMedia').value = '5'">5ms</span>
-                                        <span class="ticket-chip" onclick="document.getElementById('sideTstPingMedia').value = '6'">6ms</span>
-                                        <span class="ticket-chip" onclick="document.getElementById('sideTstPingMedia').value = '8'">8ms</span>
-                                        <span class="ticket-chip" onclick="document.getElementById('sideTstPingMedia').value = '10'">10ms</span>
+                                        <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('sideTstPingMedia'), '3')">3ms</span>
+                                        <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('sideTstPingMedia'), '4')">4ms</span>
+                                        <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('sideTstPingMedia'), '5')">5ms</span>
+                                        <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('sideTstPingMedia'), '6')">6ms</span>
+                                        <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('sideTstPingMedia'), '8')">8ms</span>
+                                        <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('sideTstPingMedia'), '10')">10ms</span>
                                     </div>
                                     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:4px;">
                                         <input type="text" id="sideTstPingMedia" class="var-modal-input" placeholder="Média" value="6">
@@ -9090,8 +9104,8 @@ mark.custom-keyword-highlight:hover {
                                 <div>
                                     <label style="font-size:11px; font-weight:600; opacity:0.85;">Extrato:</label>
                                     <div class="ticket-chip-row" style="margin-bottom:4px;">
-                                        <span class="ticket-chip" onclick="document.getElementById('sideTstExtrato').value = 'ok'">OK</span>
-                                        <span class="ticket-chip" onclick="document.getElementById('sideTstExtrato').value = 'quedas frequentes'">Quedas</span>
+                                        <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('sideTstExtrato'), 'ok')">OK</span>
+                                        <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('sideTstExtrato'), 'quedas frequentes')">Quedas</span>
                                     </div>
                                     <input type="text" id="sideTstExtrato" class="var-modal-input" value="ok">
                                 </div>
@@ -9116,8 +9130,8 @@ mark.custom-keyword-highlight:hover {
                                 <div>
                                     <label style="font-size:11px; font-weight:600; opacity:0.85;">MTU/MRU:</label>
                                     <div class="ticket-chip-row" style="margin-bottom:4px;">
-                                        <span class="ticket-chip" onclick="document.getElementById('sideTstMtu').value = 'Já estava 1492'">Já estava 1492</span>
-                                        <span class="ticket-chip" onclick="document.getElementById('sideTstMtu').value = 'Estava 1480 corrigido para 1492'">Estava 1480 corrigido</span>
+                                        <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('sideTstMtu'), 'Já estava 1492')">Já estava 1492</span>
+                                        <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('sideTstMtu'), 'Estava 1480 corrigido para 1492')">Estava 1480 corrigido</span>
                                     </div>
                                     <input type="text" id="sideTstMtu" class="var-modal-input" value="Já estava 1492">
                                 </div>
@@ -9131,8 +9145,8 @@ mark.custom-keyword-highlight:hover {
                                 <div>
                                     <label style="font-size:11px; font-weight:600; opacity:0.85;">DNS (se foi corrigido ou não):</label>
                                     <div class="ticket-chip-row" style="margin-bottom:4px;">
-                                        <span class="ticket-chip" onclick="document.getElementById('sideTstDns').value = 'OK'">OK</span>
-                                        <span class="ticket-chip" onclick="document.getElementById('sideTstDns').value = 'Não OK'">Não OK</span>
+                                        <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('sideTstDns'), 'OK')">OK</span>
+                                        <span class="ticket-chip" onclick="window.setAppPresetValue(document.getElementById('sideTstDns'), 'Não OK')">Não OK</span>
                                     </div>
                                     <input type="text" id="sideTstDns" class="var-modal-input" value="OK">
                                 </div>
@@ -9191,9 +9205,9 @@ mark.custom-keyword-highlight:hover {
                 if (!el) return '';
                 if (el.tagName === 'SELECT' && el.value === '__custom__') {
                     const custom = overlay.querySelector('#' + id + 'Custom');
-                    return custom ? custom.value.trim() : '';
+                    return custom ? window.getAppFormValue(custom).trim() : '';
                 }
-                return String(el.value || '').trim();
+                return window.getAppFormValue(el).trim();
             }
 
             // Gerador de chips de planos mais vendidos: 500 MB, 700 MB, 800 MB, 1000 MB, 1.5 GB
@@ -9270,7 +9284,7 @@ mark.custom-keyword-highlight:hover {
                         <div class="ticket-chip-row" style="margin-top:2px; margin-bottom:4px;">
                             ${costs.map(c => `<span class="ticket-chip ${currentVal === c.val ? 'active' : ''}" onclick="setFieldVal('tkCost', '${c.val}')">${c.label}</span>`).join('')}
                         </div>
-                        ${renderTicketSelect('tkCost', currentVal || 'verificar no local', allCosts, 'Digitar outro valor')}
+                        ${renderTicketSelect('tkCost', currentVal || 'verificar no local', allCosts.map(c => ({value:c.val,label:c.label})), 'Digitar outro valor')}
                     </div>
                 `;
             }
@@ -9287,7 +9301,7 @@ mark.custom-keyword-highlight:hover {
                         fieldId = m[1];
                         value = m[2];
                     } else {
-                        m = handler.match(/document\.getElementById\(['"]([^'"]+)['"]\)\.value\s*=\s*['"]([^'"]*)['"]/);
+                        m = handler.match(/setAppPresetValue\(document\.getElementById\(['"]([^'"]+)['"]\),\s*['"]([^'"]*)['"]/);
                         if (m) {
                             fieldId = m[1];
                             value = m[2];
@@ -9299,7 +9313,7 @@ mark.custom-keyword-highlight:hover {
                     if (!field) return;
                     const current = (field.tagName === 'SELECT' && typeof getTicketFieldValue === 'function')
                         ? getTicketFieldValue(fieldId)
-                        : String(field.value || '');
+                        : window.getAppFormValue(field);
                     const isMulti = handler.includes('toggleAppendChip') || handler.includes('toggleHorarioChip');
                     const active = isMulti
                         ? current.split(',').map(v => v.trim()).filter(Boolean).includes(value)
@@ -9318,12 +9332,12 @@ mark.custom-keyword-highlight:hover {
                     } else {
                         el.value = '__custom__';
                         const custom = overlay.querySelector('#' + id + 'Custom');
-                        if (custom) custom.value = val;
+                        if (custom) window.setAppPresetValue(custom, val);
                         if (custom) custom.style.display = 'block';
                     }
                     el.dispatchEvent(new Event('change', { bubbles: true }));
                 } else {
-                    el.value = val;
+                    window.setAppPresetValue(el, val);
                     el.dispatchEvent(new Event('input', { bubbles: true }));
                 }
                 syncTicketChipStates();
@@ -9335,7 +9349,7 @@ mark.custom-keyword-highlight:hover {
                         return getTicketFieldValue(id);
                     }
                     const el = overlay.querySelector('#' + id);
-                    return el ? el.value.trim() : '';
+                    return el ? window.getAppFormValue(el).trim() : '';
                 };
 
                 if (overlay.querySelector('#tkPhone')) tkState.phone = getVal('tkPhone');
@@ -9931,7 +9945,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             overlay.querySelector('#btnCopySideTest').onclick = () => {
                 const getVal = id => {
                     const el = overlay.querySelector('#' + id);
-                    return el ? el.value.trim() : '';
+                    return el ? window.getAppFormValue(el).trim() : '';
                 };
 
                 const contato = getVal('sideTstContato') || tkState.phone || 'Não informado';
@@ -9970,7 +9984,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             // Sincroniza o estado visual dos chips após cada clique.
             overlay.addEventListener('click', (event) => {
                 if (event.target.closest('.ticket-chip')) {
-                    setTimeout(syncTicketChipStates, 0);
+                    setTimeout(() => { syncTicketChipStates(); if (window.translateAppRoot) window.translateAppRoot(overlay); }, 0);
                 }
             });
 
@@ -9983,6 +9997,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 
             syncTicketChipStates();
             document.body.appendChild(overlay);
+            if (window.translateAppRoot) window.translateAppRoot(overlay);
         }
 
         function setCardColor(card, color) {
@@ -17156,7 +17171,9 @@ service cloud.firestore {
 
                 const filtered = EQUIP_CATALOG.filter(item => {
                     const matchCat = activeCategory === 'Todos' || item.cat === activeCategory;
-                    const matchQ = !q || item.name.toLowerCase().includes(q) || item.cat.toLowerCase().includes(q) || item.obs.toLowerCase().includes(q);
+                    const searchable = [item.name, item.cat, item.obs];
+                    if (window.translateAppText) searchable.push(...searchable.map(text => window.translateAppText(text)));
+                    const matchQ = !q || searchable.some(text => String(text || '').toLowerCase().includes(q));
                     return matchCat && matchQ;
                 });
 
@@ -17275,7 +17292,9 @@ service cloud.firestore {
 
             function updatePreview() {
                 const { text, count } = generateBudgetText();
-                overlay.querySelector('#equipPreviewText').textContent = text;
+                const preview = overlay.querySelector('#equipPreviewText');
+                preview.toggleAttribute('data-document-content', count > 0);
+                preview.textContent = text;
                 overlay.querySelector('#equipTotalSummary').textContent = `${count} item(ns) selecionado(s)`;
             }
 
@@ -18718,11 +18737,33 @@ service cloud.firestore {
             "📝 Chamado OS": "📝 Work Order",
             "🧪 Teste Técnico": "🧪 Technical Test",
             "Gerar Teste": "Generate Test",
-            "Gerar Chamado": "Generate Ticket"
+            "Gerar Chamado": "Generate Ticket",
+            "Cliente relata problemas de conexão.": "Customer reports connection issues.",
+            "LOS, reiniciou os equipamentos mas sem sucesso.": "LOS; customer restarted the equipment without success.",
+            "LOS piscando vermelho, cliente reiniciou os equipamentos mas sem sucesso.": "LOS blinking red; customer restarted the equipment without success.",
+            "Lentidão e travamentos ao carregar vídeos/streaming (YouTube/Netflix). Teste via cabo abaixo do contratado.": "Slowness and buffering while loading videos/streaming (YouTube/Netflix). Wired speed test below the subscribed plan.",
+            "Conexão oscilando com quedas frequentes ao longo do dia.": "Connection unstable with frequent dropouts throughout the day.",
+            "Ping alto e oscilação de latência em jogos online.": "High ping and latency fluctuations in online games.",
+            "Cabo óptico rompido / danificado no local.": "Optical cable broken / damaged on site.",
+            "Passar para outros cômodos (mesma casa)": "Install to other rooms (same house)",
+            "Passar pra outra casa, galpão ou garagem (mesmo lote)": "Install to another house, shed, or garage (same property)",
+            "Painel solar (vídeo anexado/recebido)": "Solar panel (video attached/received)",
+            "Ponto fixo PC / Smart TV / Console": "Fixed point for PC / Smart TV / Console",
+            "Link Google Maps ou 'Mesmo local'": "Google Maps link or 'Same location'",
+            "1000Mbps porta fixa ok": "1000 Mbps fixed port OK",
+            "Conclusão ou observação": "Conclusion or note",
+            "Lentidão geral relatada pelo cliente. Extrato e sinal de fibra normais, reiniciado os equipamentos sem melhora.": "Customer reports general slowness. Connection history and optical signal are normal; equipment restarted without improvement.",
+            "lentidão/youtube/whatsapp/netflix": "slowness/youtube/whatsapp/netflix",
+            "quedas frequentes": "frequent dropouts",
+            "setado canal auto": "auto channel set",
+            "ajustado 2.4 GHz para 20 MHz": "2.4 GHz adjusted to 20 MHz",
+            "unificado rede wifi": "Wi-Fi network unified",
+            "ajustado DNS": "DNS adjusted",
+            "Já estavam no local": "Already on site"
         });
 
 
-        // v3.1.10: visible dropdown labels and quick-select chips (internal values stay untouched).
+        // v3.1.11: visible dropdown labels and quick-select chips (internal values stay untouched).
         Object.assign(translations, {
             "Manhã": "Morning",
             "Tarde": "Afternoon",
@@ -18815,17 +18856,243 @@ service cloud.firestore {
             "verificar no local": "check on site"
 });
 
+        Object.assign(translations, {
+            'Corrigidos os valores das opções de custo da visita técnica.': 'Fixed the internal values of technical visit cost options.',
+            'Ampliadas as traduções de equipamentos, Docker e menus de configuração, com busca de equipamentos em inglês.': 'Expanded Equipment, Clipboard and settings translations, including English equipment search.'
+        });
+
+        // v3.1.12: form suggestions and equipment details.
+        Object.assign(translations, {
+            "Telefone de Contato:": "Contact Phone:",
+            "Já foram levados os equipamentos?:": "Has the equipment been taken to the new address?",
+            "Publico": "Public",
+            "Privado e Publico": "Private and Public",
+            "quedas frequentes no extrato": "frequent dropouts in connection history",
+            "quedas na madrugada": "overnight dropouts",
+            "100Mbps negociado": "100 Mbps negotiated",
+            "Testes realizados sem melhora. Encaminhado para agendamento técnico.": "Tests completed without improvement. Referred for a technician appointment.",
+            "Ajustes de canal realizados, cliente testou e normalizou.": "Channel adjustments completed; customer tested and service returned to normal.",
+            "Feitos testes preliminares, necessário monitoramento.": "Preliminary tests completed; monitoring required.",
+            "• R$ 1,50 a R$ 2,00 o metro": "• R$ 1,50 to R$ 2,00 per meter",
+            "• conforme aplicação": "• depending on the application",
+            "• verificar disponibilidade": "• check availability",
+            "Prateleira \"Fitbox\" Organizadora": "\"Fitbox\" Organizer Shelf",
+            "Fonte (Roteador / ONU / ATA / Box)": "Power Supply (Router / ONU / ATA / Box)",
+            "Fonte PoE Injector 48V 24W Gigabit (Ubiquiti)": "48V 24W Gigabit PoE Injector (Ubiquiti)",
+            "Fonte PoE 48V 24W Gigabit (Outras Marcas)": "48V 24W Gigabit PoE Power Supply (Other Brands)",
+            "Roteador Huawei AX2": "Huawei AX2 Router",
+            "Roteador Huawei AX2S": "Huawei AX2S Router",
+            "Roteador Huawei AX3": "Huawei AX3 Router",
+            "Roteador Huawei AX3S": "Huawei AX3S Router",
+            "Roteador TP-Link EX511 / EX520": "TP-Link EX511 / EX520 Router",
+            "Roteador TP-Link EX510 Pro (Planos 1.5 GB)": "TP-Link EX510 Pro Router (1.5 GB Plans)",
+            "• indisponível / sob consulta": "• unavailable / inquire for details",
+            "• Recomendado para planos de 1.5 GB": "• Recommended for 1.5 GB plans",
+            "• em até 6x": "• up to 6 installments",
+            "Powerline TL-PA4010 (Unidade)": "Powerline TL-PA4010 (Unit)",
+            "Telefone IP": "IP Phone",
+            "• Garantia 6 meses": "• 6-month warranty",
+            "Controle Box IPTV": "IPTV Box Remote Control",
+            "Mini Nobreak": "Mini UPS",
+            "• venda sob consulta prévia": "• sale subject to prior inquiry",
+            "Switch Gigabit 5 Portas (Hub)": "5-Port Gigabit Switch (Hub)",
+            "Switch Gigabit 8 Portas (Hub)": "8-Port Gigabit Switch (Hub)",
+            "Switch TP-Link TL-SG116 (16 Portas Giga)": "TP-Link TL-SG116 Switch (16 Gigabit Ports)",
+            "Equipamento Ponto a Ponto (Par)": "Point-to-Point Equipment (Pair)",
+            "Equipamento Ponto a Ponto (Par + 2 Módulos SFP)": "Point-to-Point Equipment (Pair + 2 SFP Modules)",
+            "• Não precisa módulos. Não inclui metragem de cabo": "• No modules needed. Cable length not included",
+            "• Conversor de mídia. Não inclui metragem de cabo": "• Media converter. Cable length not included",
+            "• Unitário": "• Per unit",
+            "Fiber to Copper (Mikrotik RBFTC11 - Par + 2 Módulos)": "Fiber to Copper (Mikrotik RBFTC11 - Pair + 2 Modules)",
+            "• Recomendado para instalação externa/exposto a sujeira": "• Recommended for outdoor installation / exposure to dirt",
+            "Módulos SFP 3KM": "3 KM SFP Modules",
+            "• Usados em copper ou conversor de mídia": "• Used in copper or media converters",
+            "Mikrotik RouterBoard cAP ac AP (Parede/Teto)": "Mikrotik RouterBoard cAP ac AP (Wall/Ceiling)",
+            "Mikrotik hAP ax³ WiFi6 1 Porta 2.5Gb": "Mikrotik hAP ax³ WiFi6 1 Port 2.5Gb",
+            "Taxa de Visita / Manutenção Técnica": "Visit / Technical Maintenance Fee",
+            "• Valor fixo para qualquer cidade + materiais utilizados": "• Fixed fee for any city + materials used",
+            "Visita Técnica p/ Empresas (por hora)": "Business Technical Visit (per hour)",
+            "• Mínimo de 1 hora ou fração + materiais": "• Minimum 1 hour or part thereof + materials",
+            "Copiar": "Copy",
+            "+ Adicionar card": "+ Add card",
+            "Excluir card": "Delete card",
+            "🌐 Versão 3.1.12": "🌐 Version 3.1.12",
+            "Sugestões e preenchimentos automáticos traduzidos na OS, no Teste Técnico e no painel lateral.": "Translated suggestions and automatic values in Work Orders, Technical Tests and the side panel.",
+            "Textos digitados preservados ao alternar idioma e modelo; documentos copiados mantêm os valores operacionais em português.": "User edits preserved across language and template changes; copied documents retain operational values in Portuguese.",
+            "Seletores mantêm os valores internos e os chips permanecem sincronizados nos dois idiomas.": "Dropdowns retain internal values and quick-select chips remain synchronized in both languages."
+});
+
+        Object.assign(translations, {
+            "👤 Perfil & Armazenamento Local": "👤 Profile & Local Storage",
+            "🔒 Trava Ativa": "🔒 Lock Active",
+            "LICENÇA: LGP-FSFX-2026-BR": "LICENSE: LGP-FSFX-2026-BR",
+            "🗑️ Lixeira de Cards Excluídos (": "🗑️ Deleted Cards Trash (",
+            "💾 Segurança e Uso do Armazenamento": "💾 Storage Safety & Usage",
+            "Armazenamento local (localStorage):": "Local storage (localStorage):",
+            "• Scripts e Abas:": "• Scripts and Tabs:",
+            "• Clientes e Alarmes:": "• Clients and Reminders:",
+            "• Variáveis salvas:": "• Saved variables:",
+            "📦 Backup & Importação": "📦 Backup & Import",
+            "📄 Exportar Somente Scripts": "📄 Export Scripts Only",
+            "📥 Importar Backup / Scripts": "📥 Import Backup / Scripts",
+            "💾 Salvar HTML": "💾 Save HTML",
+            "⚙️ Redefinição e Gerenciamento de Scripts": "⚙️ Reset & Script Management",
+            "Você pode restaurar todos os scripts padrão inclusos ou apagar todos os cards para começar com a central totalmente zerada:": "You can restore all included default scripts or delete all cards to start with an empty workspace:",
+            "♻️ Restaurar Todas as 11 Abas Padrão": "♻️ Restore All 11 Default Tabs",
+            "🗑️ Zerar Tudo (Limpar Cards)": "🗑️ Reset Everything (Clear Cards)",
+            "🧹 Limpar Alarmes Concluídos": "🧹 Clear Completed Reminders",
+            "🧩 Userscripts — formato Tampermonkey": "🧩 Userscripts — Tampermonkey Format",
+            "Nenhum userscript instalado.": "No userscripts installed.",
+            "+ Novo": "+ New",
+            "📥 Importar .user.js": "📥 Import .user.js",
+            "▶ Executar": "▶ Run",
+            "💾 Salvar": "💾 Save",
+            "Compatibilidade focada no formato e APIs comuns de userscripts. Scripts que dependem de APIs internas específicas do Tampermonkey podem exigir adaptação.": "Supports the userscript format and common APIs. Scripts relying on specific internal Tampermonkey APIs may need adaptation.",
+            "⚙️ Valores padrão e Comportamento de Variáveis": "⚙️ Default Values & Variable Behavior",
+            "Configure os valores padrão e escolha se a variável será": "Set default values and choose whether the variable is",
+            "Automática": "Automatic",
+            "Automático": "Automatic",
+            "(usa o valor salvo sem perguntar) ou": "(uses the saved value without asking) or",
+            "(abre janela de digitação a cada cópia). As variáveis desta lista aparecem no menu": "(opens an input prompt for each copy). Variables in this list appear in the menu",
+            "Inserir": "Insert",
+            "; ao excluir uma daqui, ela sai do menu.": "; deleting one here removes it from the menu.",
+            "Pop-up de Digitação": "Input Pop-up",
+            "+ Adicionar variável": "+ Add variable",
+            "🔊 Feedback Sonoro ao Copiar": "🔊 Copy Sound Feedback",
+            "Tocar Som ao Copiar": "Play Sound on Copy",
+            "Feedback imediato ao clicar em copiar ou usar o Docker.": "Immediate feedback when copying or using the Clipboard.",
+            "Efeitos Sonoros Disponíveis": "Available Sound Effects",
+            "⚡ Blip Moderno": "⚡ Modern Blip",
+            "▶ Testar": "▶ Test",
+            "🎵 Acorde Suave": "🎵 Soft Chord",
+            "Dois tons harmoniosos e elegantes": "Two harmonious, elegant tones",
+            "🫧 Bolha d'Água": "🫧 Water Bubble",
+            "Efeito suave e relaxante com subida de tom": "Soft, relaxing effect with rising pitch",
+            "Volume do Feedback": "Feedback Volume",
+            "⏳ Os cards excluídos ficam guardados por até": "⏳ Deleted cards are retained for up to",
+            "30 dias": "30 days",
+            "para restauração rápida com 1 clique.": "for quick one-click restoration.",
+            "A Lixeira está vazia": "Trash is empty",
+            "Nenhum card foi excluído recentemente.": "No cards have been deleted recently.",
+            "Limpar busca": "Clear search",
+            "🤍 Itens Fixados & Favoritos (📌)": "🤍 Pinned Items & Favorites (📌)",
+            "🕒 Histórico Recente de Cópias": "🕒 Recent Copy History",
+            "Limpar tudo": "Clear all",
+            "🗂️ Escolher Aba de Scripts": "🗂️ Choose Script Tab",
+            "🌐 Todos os Scripts (Todas as Abas)": "🌐 All Scripts (All Tabs)",
+            "Nenhum script recente no histórico.": "No recent scripts in history.",
+            "⚙️ Variáveis Rápidas de Atendimento": "⚙️ Quick Service Variables",
+            "Clique para copiar": "Click to copy",
+            "Atalho:": "Shortcut:",
+            "• Copiar:": "• Copy:",
+            "Docker — Área de Transferência & Scripts": "Clipboard — Scripts & Snippets",
+            "Trocar Área de Trabalho no Docker": "Switch Clipboard Workspace",
+            "Escolher Aba ou Todos os Scripts": "Choose a Tab or All Scripts",
+            "Verificar no local": "Check on site"
+});
+
         const textOriginals = new WeakMap();
         const textLast = new WeakMap();
         const attrOriginals = new WeakMap();
         const attrLast = new WeakMap();
+        const presetValues = new WeakMap();
+        const userFields = new WeakMap();
+        const savedUserFields = new WeakMap();
+        const observedForms = new WeakSet();
         let currentLanguage = 'pt-BR';
         const externalRoots = new Set();
         const externalObservers = new WeakMap();
         const normalize = value => String(value || '').replace(/\s+/g, ' ').trim();
+        const translateUiText = value => {
+            const original = String(value ?? '');
+            if (currentLanguage !== 'en') return original;
+            const key = normalize(original);
+            if (translations[key]) return translations[key];
+            // Only UI counters and labels have parameterized translations.
+            // Script bodies and user-owned content are excluded by the walker.
+            const patterns = [
+                [/^(\d+) item\(ns\) selecionado\(s\)$/, '$1 item(s) selected'],
+                [/^(\d+) de (\d+) script\(s\)( \(Todas as Abas\))?$/, '$1 of $2 script(s)$3'],
+                [/^(\d+) aba\(s\)$/, '$1 tab(s)'],
+                [/^(\d+) recente\(s\)$/, '$1 recent item(s)'],
+                [/^(\d+) variável\(is\)$/, '$1 variable(s)'],
+                [/^🌐 Todos os Scripts \((\d+)\)$/, '🌐 All Scripts ($1)'],
+                [/^🗑️ Lixeira de Cards Excluídos \((\d+)\)$/, '🗑️ Deleted Cards Trash ($1)'],
+                [/^📜 Histórico e Novidades \(v([\d.]+)\)$/, '📜 History and Updates (v$1)'],
+                [/^([\d.,]+) KB utilizados de ~5 MB \((\d+)%\)$/, '$1 KB used of ~5 MB ($2%)'],
+                [/^([\d.,]+) KB de ~5 MB \((\d+)%\)$/, '$1 KB of ~5 MB ($2%)'],
+                [/^Central de Scripts v([\d.]+) - Clique para ver o Histórico e Novidades$/, 'Scripts Hub v$1 - Click to view History and Updates']
+            ];
+            for (const [pattern, replacement] of patterns) {
+                if (pattern.test(key)) return key.replace(pattern, replacement).replace('(Todas as Abas)', '(All Tabs)');
+            }
+            return original;
+        };
+        // Only known suggestion fields are localized. Names, notes, scripts,
+        // credentials and arbitrary modal inputs are never inferred as presets.
+        const presetFieldIds = new Set([
+            'tkCorTipo','tkEquip','tkTitleLentidao','tkProblemaLentidao','tkTitleSemAcesso',
+            'tkProblemaSemAcesso','tkAssuntoCabo','tkOndeCabo','tkObsCabo',
+            'tkCobrancaCabo','tkRedeEvento','tkValorEvento','tkTitleGeral','tkProblemaGeral',
+            'tstRelato','tstExtrato','tstAjustes','tstReiniciado','tstMtu','tstWan','tstDns','tstResumo',
+            'sideTstRelato','sideTstExtrato','sideTstAjustes','sideTstReiniciado',
+            'sideTstMtu','sideTstWan','sideTstDns','sideTstResumo'
+        ]);
+        const formRoot = el => el && el.closest('.var-modal-overlay');
+        function getUserFields(root) {
+            if (!userFields.has(root)) userFields.set(root, new Map());
+            return userFields.get(root);
+        }
+        function observeForm(root) {
+            if (!root || observedForms.has(root)) return;
+            observedForms.add(root);
+            root.addEventListener('input', event => {
+                // Preset buttons emit synthetic input events; only the operator's
+                // edits make a field manual, even if they match a dictionary key.
+                if (!event.isTrusted || !event.target.matches('input,textarea')) return;
+                const el = event.target;
+                getUserFields(root).set(el.id, el.value);
+                presetValues.delete(el);
+            }, true);
+        }
+        function getFormValue(el) {
+            if (!el) return '';
+            const live = String(el.value || '');
+            const preset = presetValues.get(el);
+            return preset && live === preset.display ? preset.original : live;
+        }
+        function displayPreset(el, original, manual = false) {
+            const compound = /^(?:tst|sideTst)Ajustes$/.test(el.id);
+            const display = manual ? original : (compound
+                ? original.split(',').map(part => translateUiText(part.trim())).join(', ')
+                : translateUiText(original));
+            if (el.value !== display) el.value = display;
+            presetValues.set(el, { original, display, manual });
+        }
+        function setPresetValue(el, value, preserveManual = false) {
+            if (!el) return;
+            const root = formRoot(el);
+            const edits = root && getUserFields(root);
+            const manual = !!(preserveManual && edits && edits.has(el.id));
+            if (edits) {
+                if (manual) edits.set(el.id, String(value));
+                else edits.delete(el.id);
+            }
+            if (!presetFieldIds.has(el.id) && !el.id.endsWith('Custom')) {
+                el.value = value;
+                return;
+            }
+            displayPreset(el, String(value), manual);
+        }
+        window.getAppFormValue = getFormValue;
+        window.setAppPresetValue = setPresetValue;
+        window.saveAppFormEdits = (root, state) => savedUserFields.set(state, new Map(getUserFields(root)));
+        window.restoreAppFormEdits = (root, state) => {
+            userFields.set(root, new Map(savedUserFields.get(state) || []));
+        };
         const excluded = node => {
             const el = node && (node.nodeType === 1 ? node : node.parentElement);
-            return !el || !!el.closest('script,style,textarea,input,code,pre,.item-card,.item-text,.item-textarea,.scratchpad-textarea,[contenteditable="true"],[data-user-content="true"]');
+            return !el || !!el.closest('script,style,textarea,input,code,pre,.comp-card-text,.item-text,.item-textarea,.scratchpad-textarea,[contenteditable="true"],[data-user-content="true"],[data-document-content]');
         };
         function translateTextNode(node) {
             if (!node || node.nodeType !== 3 || excluded(node)) return;
@@ -18835,12 +19102,10 @@ service cloud.firestore {
             const original = textOriginals.get(node);
             let target = original;
             if (currentLanguage === 'en') {
-                const key = normalize(original);
-                if (translations[key]) {
-                    const leading = (original.match(/^\s*/) || [''])[0];
-                    const trailing = (original.match(/\s*$/) || [''])[0];
-                    target = leading + translations[key] + trailing;
-                }
+                const leading = (original.match(/^\s*/) || [''])[0];
+                const trailing = (original.match(/\s*$/) || [''])[0];
+                const translated = translateUiText(normalize(original));
+                target = leading + translated + trailing;
             }
             // Avoid writing an unchanged value: MutationObserver would otherwise
             // receive another characterData event and create an infinite loop.
@@ -18849,7 +19114,8 @@ service cloud.firestore {
         }
         const attrNames = ['title','aria-label','placeholder'];
         function translateElement(el) {
-            if (!el || el.nodeType !== 1 || el.closest('script,style,code,pre,.item-card,.item-text,.item-textarea,[contenteditable="true"],[data-user-content="true"]')) return;
+            if (!el || el.nodeType !== 1 || el.closest('script,style,code,pre,.comp-card-text,.item-text,.item-textarea,[contenteditable="true"],[data-user-content="true"],[data-document-content]')) return;
+            if (el.tagName === 'OPTION' && !el.hasAttribute('value')) el.setAttribute('value', el.textContent);
             let originals = attrOriginals.get(el);
             if (!originals) { originals = {}; attrOriginals.set(el, originals); }
             let lasts = attrLast.get(el);
@@ -18859,22 +19125,48 @@ service cloud.firestore {
                 const live = el.getAttribute(attr);
                 if (!(attr in originals) || (attr in lasts && live !== lasts[attr])) originals[attr] = live;
                 const original = originals[attr];
-                const translated = currentLanguage === 'en' ? (translations[normalize(original)] || original) : original;
+                const translated = translateUiText(original);
                 if (live !== translated) el.setAttribute(attr, translated);
                 lasts[attr] = translated;
+            }
+        }
+        function translateControlValue(el) {
+            if (!el || (!presetFieldIds.has(el.id) && !presetValues.has(el)) || !el.matches('input,textarea')) return;
+            const root = formRoot(el);
+            if (!root) return;
+            observeForm(root);
+            const live = String(el.value || '');
+            const previous = presetValues.get(el);
+            const edits = getUserFields(root);
+            if (edits.has(el.id) && edits.get(el.id) === live) return;
+            if (previous && live === previous.display) {
+                displayPreset(el, previous.original, previous.manual);
+            } else if (!previous) {
+                displayPreset(el, live);
+            } else {
+                // Unknown writes are user data, not permission to translate them.
+                edits.set(el.id, live);
+                presetValues.delete(el);
             }
         }
         function walk(root) {
             if (!root) return;
             if (root.nodeType === 3) { translateTextNode(root); return; }
             if (root.nodeType !== 1 && root.nodeType !== 9) return;
-            if (root.nodeType === 1) translateElement(root);
+            if (root.nodeType === 1) {
+                observeForm(formRoot(root));
+                translateElement(root);
+                translateControlValue(root);
+            }
             const ownerDoc = root.ownerDocument || document;
             const walker = ownerDoc.createTreeWalker(root, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT);
             let node;
             while ((node = walker.nextNode())) {
                 if (node.nodeType === 3) translateTextNode(node);
-                else translateElement(node);
+                else {
+                    translateElement(node);
+                    translateControlValue(node);
+                }
             }
         }
         function setLanguage(language) {
@@ -18883,7 +19175,19 @@ service cloud.firestore {
             document.documentElement.lang = currentLanguage;
             document.documentElement.dataset.language = currentLanguage;
             walk(document.body);
-            externalRoots.forEach(root => { if (root && root.isConnected !== false) walk(root); });
+            externalRoots.forEach(root => {
+                const doc = root && root.ownerDocument;
+                if (!root || root.isConnected === false || (doc && doc.defaultView && doc.defaultView.closed)) {
+                    externalObservers.get(root)?.disconnect();
+                    externalRoots.delete(root);
+                    return;
+                }
+                if (doc && doc !== document) {
+                    doc.documentElement.lang = currentLanguage;
+                    doc.title = translateUiText('Docker — Área de Transferência & Scripts');
+                }
+                walk(root);
+            });
             const selector = document.getElementById('languageSelector');
             if (selector && selector.value !== currentLanguage) selector.value = currentLanguage;
             document.title = currentLanguage === 'en' ? 'Scripts Hub' : 'Central de Scripts';
@@ -18894,12 +19198,19 @@ service cloud.firestore {
             walk(root);
             if (externalObservers.has(root)) return;
             const doc = root.ownerDocument || document;
+            if (doc !== document) {
+                doc.documentElement.lang = currentLanguage;
+                doc.title = translateUiText('Docker — Área de Transferência & Scripts');
+            }
             const Observer = doc.defaultView && doc.defaultView.MutationObserver ? doc.defaultView.MutationObserver : MutationObserver;
             const observer = new Observer(records => {
                 for (const record of records) {
                     if (record.type === 'childList') record.addedNodes.forEach(walk);
                     else if (record.type === 'characterData') translateTextNode(record.target);
-                    else if (record.type === 'attributes') translateElement(record.target);
+                    else if (record.type === 'attributes') {
+                        translateElement(record.target);
+                        translateControlValue(record.target);
+                    }
                 }
             });
             observer.observe(root, {subtree:true, childList:true, characterData:true, attributes:true, attributeFilter:attrNames});
@@ -18908,6 +19219,7 @@ service cloud.firestore {
         window.observeAppLanguageRoot = observeAppLanguageRoot;
         window.getAppLanguage = () => currentLanguage;
         window.translateAppRoot = walk;
+        window.translateAppText = translateUiText;
 
         function init() {
             const selector = document.getElementById('languageSelector');
@@ -18922,7 +19234,10 @@ service cloud.firestore {
                 for (const record of records) {
                     if (record.type === 'childList') record.addedNodes.forEach(walk);
                     else if (record.type === 'characterData') translateTextNode(record.target);
-                    else if (record.type === 'attributes') translateElement(record.target);
+                    else if (record.type === 'attributes') {
+                        translateElement(record.target);
+                        translateControlValue(record.target);
+                    }
                 }
             });
             observer.observe(document.body, {subtree:true, childList:true, characterData:true, attributes:true, attributeFilter:attrNames});
