@@ -1,0 +1,83 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function googleUser() {
+      return request.auth != null && request.auth.token.email_verified == true &&
+        request.auth.token.firebase.sign_in_provider == 'google.com';
+    }
+    function userExists(uid) { return exists(/databases/$(database)/documents/users/$(uid)); }
+    function activeUser() {
+      return googleUser() && userExists(request.auth.uid) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.status == 'active';
+    }
+    function masterEmail() {
+      return googleUser() && request.auth.token.email in ['leogabfx@gmail.com', 'leonardo3dtelecom@gmail.com'];
+    }
+    function masterAdmin() {
+      return masterEmail() && (!userExists(request.auth.uid) || activeUser());
+    }
+    function admin() {
+      return activeUser() && (masterEmail() ||
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin');
+    }
+    function validProfile(data) {
+      return data.keys().hasAll(['uid', 'email', 'displayName', 'photoURL', 'createdAt', 'lastLogin', 'role', 'status', 'scriptCopies']) &&
+        data.keys().hasOnly(['uid', 'email', 'displayName', 'photoURL', 'createdAt', 'lastLogin', 'role', 'status', 'scriptCopies']) &&
+        data.uid is string && data.email is string && data.email.size() <= 320 &&
+        data.displayName is string && data.displayName.size() <= 120 &&
+        data.photoURL is string && data.photoURL.size() <= 2048 &&
+        data.createdAt is string && data.createdAt.size() <= 40 &&
+        data.lastLogin is string && data.lastLogin.size() <= 40 &&
+        data.role in ['user','admin'] && data.status in ['active','blocked'] &&
+        data.scriptCopies is int && data.scriptCopies >= 0;
+    }
+    function validBackup(data) {
+      return data.keys().hasOnly(['schemaVersion','revision','deviceId','updatedBy','updatedAt','workspaces',
+        'activeWorkspaceId','scripts','tabOrder','customDefaults','clients','scratchpad','trash',
+        'customKeywords','keywordsEnabled','soundConfig','settings']) &&
+        data.scripts is map && data.scripts.size() <= 60 &&
+        data.workspaces is list && data.workspaces.size() <= 40 &&
+        data.clients is list && data.clients.size() <= 500 &&
+        data.scratchpad is string && data.scratchpad.size() <= 200000 &&
+        data.revision is int && data.revision >= 0 &&
+        data.deviceId is string && data.deviceId.size() <= 120;
+    }
+    match /users/{userId} {
+      allow get: if googleUser() && (request.auth.uid == userId || admin());
+      allow list: if admin();
+      allow create: if googleUser() && request.auth.uid == userId && validProfile(request.resource.data) &&
+        request.resource.data.uid == userId && request.resource.data.email == request.auth.token.email &&
+        request.resource.data.status == 'active' && request.resource.data.role == (masterEmail() ? 'admin' : 'user');
+      allow update: if validProfile(request.resource.data) &&
+        request.resource.data.uid == resource.data.uid && request.resource.data.email == resource.data.email &&
+        request.resource.data.createdAt == resource.data.createdAt &&
+        (admin() || (activeUser() && request.auth.uid == userId &&
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['lastLogin','displayName','photoURL','scriptCopies'])));
+      allow delete: if masterAdmin();
+      match /settings/{documentId} {
+        allow read: if documentId == 'app_data' && (admin() || (activeUser() && request.auth.uid == userId));
+        allow create, update: if documentId == 'app_data' && validBackup(request.resource.data) &&
+          (admin() || (activeUser() && request.auth.uid == userId));
+        allow delete: if masterAdmin();
+      }
+    }
+    match /templates/{documentId} {
+      allow read: if activeUser() && documentId == 'default_scripts';
+      allow create, update: if admin() && documentId == 'default_scripts' && validBackup(request.resource.data);
+      allow delete: if masterAdmin();
+    }
+    match /global_settings/{documentId} {
+      allow read: if activeUser() && documentId == 'default_scripts';
+      allow create, update: if admin() && documentId == 'default_scripts' && validBackup(request.resource.data);
+      allow delete: if masterAdmin();
+    }
+    match /audit_logs/{logId} {
+      allow create: if admin() && request.resource.data.performedBy == request.auth.uid &&
+        request.resource.data.keys().hasOnly(['action','targetId','targetEmail','details','performedBy',
+          'performedByEmail','deviceId','appVersion','userAgent','createdAt']);
+      allow read: if admin();
+      allow update, delete: if false;
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}

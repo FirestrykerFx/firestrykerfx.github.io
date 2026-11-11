@@ -4502,7 +4502,7 @@ mark.custom-keyword-highlight:hover {
         <!-- Grupo Superior: Marca e Módulos Principais -->
         <div class="sidebar-group sidebar-top">
             <div class="sidebar-top-bar">
-                <div class="sidebar-brand-card" onclick="openChangelogModal()" role="button" tabindex="0" title="Central de Scripts v3.1.14 - Clique para ver o Histórico e Novidades">
+                <div class="sidebar-brand-card" onclick="openChangelogModal()" role="button" tabindex="0" title="Central de Scripts v3.2.0 - Clique para ver o Histórico e Novidades">
                     <svg class="header-logo-icon" width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:8px; box-shadow:0 2px 8px rgba(0,122,255,0.35); flex-shrink:0;">
                         <defs>
                             <linearGradient id="appleLogoGradSidebar" x1="0" y1="0" x2="1" y2="1">
@@ -4517,7 +4517,7 @@ mark.custom-keyword-highlight:hover {
                     </svg>
                     <div class="sidebar-brand-info">
                         <span class="sidebar-brand-title">Central de Scripts</span>
-                        <span class="sidebar-brand-badge">v3.1.14</span>
+                        <span class="sidebar-brand-badge">v3.2.0</span>
                     </div>
                 </div>
                 <button type="button" class="sidebar-collapse-toggle-btn" id="sidebarCollapseToggleBtn" onclick="toggleSidebarCollapse()" title="Recolher Barra Lateral (Ctrl+B)" aria-label="Recolher Barra Lateral">
@@ -4786,7 +4786,7 @@ mark.custom-keyword-highlight:hover {
             return String(str).replace(/([ #;&,.+*~':"!^$\[\]()=>|\/@])/g, '\\$1');
         }
 
-        const APP_VERSION = '3.1.14';
+        const APP_VERSION = '3.2.0';
         // Localize application dialogs without changing browser APIs or user data.
         function appMessage(message) {
             return window.translateAppMessage ? window.translateAppMessage(message) : message;
@@ -7798,9 +7798,14 @@ mark.custom-keyword-highlight:hover {
                     </div>
                     <div class="vm-body" style="padding: 16px 20px; overflow-y: auto;">
                         
+                        <!-- Versão 3.2.0 -->
+                        <div class="changelog-version-card" style="border-color:#22c55e;">
+                            <div class="changelog-version-header"><div class="changelog-version-title"><span data-i18n="release.320">🌐 Versão 3.2.0</span><span class="changelog-badge">Versão Atual</span></div><span style="font-size:11px;opacity:0.75;">11/11/2026</span></div>
+                            <ul class="changelog-list"><li data-i18n="release.language">Idioma dos documentos separado da interface; novos controles traduzidos por identificadores fixos.</li><li data-i18n="release.required">Campos obrigatórios nos modelos de OS e Teste Técnico, com indicação e validação antes de copiar.</li><li data-i18n="release.sync">Comparação detalhada antes das substituições, revalidação de versões e transações para conflitos entre computadores.</li><li data-i18n="release.backup">Backups completos preservam variáveis, lixeira e preferências; substituições ganham recuperação e reversão em caso de falha.</li><li data-i18n="release.debug">Testes automatizados adicionados; corrigido o fuso horário de recorrência e soneca dos alarmes.</li><li data-i18n="release.security">Regras candidatas do Firestore e manifesto de atualização preparados para revisão; nenhum serviço foi publicado.</li></ul>
+                        </div>
                         <!-- Versão 3.1.14 -->
                         <div class="changelog-version-card" style="border-color:#22c55e;">
-                            <div class="changelog-version-header"><div class="changelog-version-title"><span>🌐 Versão 3.1.14</span><span class="changelog-badge">Versão Atual</span></div><span style="font-size:11px;opacity:0.75;">11/11/2026</span></div>
+                            <div class="changelog-version-header"><div class="changelog-version-title"><span>🌐 Versão 3.1.14</span><span class="changelog-badge">Versão Anterior</span></div><span style="font-size:11px;opacity:0.75;">11/11/2026</span></div>
                             <ul class="changelog-list"><li>Corrigidas as traduções da conta conectada, badges de administrador e autor mestre, última sincronização e modo atendimento ativo.</li></ul>
                         </div>
                         <!-- Versão 3.1.13 -->
@@ -8780,6 +8785,378 @@ mark.custom-keyword-highlight:hover {
             }
         }
 
+        /* v3.2.0 — Explicit UI messages, independent documents and safe comparisons. */
+        const APP_UI_MESSAGES = {
+            'documents.language': ['Idioma dos documentos', 'Document language'],
+            "release.320": ["🌐 Versão 3.2.0", "🌐 Version 3.2.0"],
+            "release.language": ["Idioma dos documentos separado da interface; novos controles traduzidos por identificadores fixos.", "Document language separated from the interface; new controls translated by stable message identifiers."],
+            "release.required": ["Campos obrigatórios nos modelos de OS e Teste Técnico, com indicação e validação antes de copiar.", "Required fields in Work Orders and Technical Tests, with indicators and validation before copying."],
+            "release.sync": ["Comparação detalhada antes das substituições, revalidação de versões e transações para conflitos entre computadores.", "Detailed comparisons before replacements, version revalidation and transactions for conflicts between computers."],
+            "release.backup": ["Backups completos preservam variáveis, lixeira e preferências; substituições ganham recuperação e reversão em caso de falha.", "Full backups preserve variables, trash and preferences; replacements gain recovery points and rollback on failure."],
+            "release.debug": ["Testes automatizados adicionados; corrigido o fuso horário de recorrência e soneca dos alarmes.", "Automated tests added; fixed time zones for recurring reminders and snooze."],
+            "release.security": ["Regras candidatas do Firestore e manifesto de atualização preparados para revisão; nenhum serviço foi publicado.", "Candidate Firestore rules and update manifest prepared for review; no service was published."],
+
+            "sync.status.syncing": ["🔄 Sincronizando com a Nuvem do Google...", "🔄 Syncing with Google Cloud..."],
+            "sync.status.offline": ["⚡ Modo Offline: Dados salvos localmente no navegador.", "⚡ Offline Mode: Data saved locally in the browser."],
+            "sync.status.pending": ["💾 Salvo localmente (pendente de envio para a nuvem).", "💾 Saved locally (pending cloud upload)."],
+            "sync.status.review": ["Sincronização pausada para revisão.", "Synchronization paused for review."],
+            "sync.status.error": ["⚠️ Falha na sincronização com a Nuvem.", "⚠️ Cloud synchronization failed."],
+            "sync.status.synced": ["🟢 Seus scripts e configurações estão sincronizados na Nuvem do Google.", "🟢 Your scripts and settings are synced to Google Cloud."],
+            "sync.tip.syncing": ["Nuvem do Google: Sincronizando dados...", "Google Cloud: Syncing data..."],
+            "sync.tip.error": ["Aviso: Falha ao sincronizar na Nuvem. Clique para tentar novamente.", "Warning: Cloud sync failed. Click to retry."],
+            "sync.tip.pending": ["Alterações locais salvas (sincronização agendada)", "Local changes saved (sync scheduled)"],
+            "sync.tip.synced": ["Nuvem do Google: Sincronizado e Conectado", "Google Cloud: Synced and Connected"],
+            "sync.tip.offline": ["Offline: Alterações sendo salvas no navegador", "Offline: Changes are saved in the browser"],
+
+            'validation.missing': ['Preencha os campos obrigatórios antes de copiar.', 'Fill in the required fields before copying.'],
+            'validation.phone': ['Informe um telefone com 10 a 15 dígitos.', 'Enter a phone number with 10 to 15 digits.'],
+            'sync.review': ['Comparar antes de substituir', 'Compare before replacing'],
+            'sync.apply': ['Confirmar substituição', 'Confirm replacement'],
+            'sync.cancel': ['Cancelar', 'Cancel'],
+            'sync.added': ['Adicionados', 'Added'], 'sync.changed': ['Alterados', 'Changed'],
+            'sync.removed': ['Removidos', 'Removed'], 'sync.moved': ['Movidos', 'Moved'],
+            'sync.before': ['Antes', 'Before'], 'sync.after': ['Depois', 'After'],
+            'sync.stale': ['Os dados mudaram. Reabra a comparação antes de confirmar.', 'Data has changed. Reopen the comparison before confirming.'],
+            'sync.error': ['Não foi possível preparar a comparação. Seus dados foram preservados.', 'Could not prepare the comparison. Your data was preserved.'],
+            'sync.recovery': ['Um ponto de recuperação será salvo antes da substituição.', 'A recovery point will be saved before replacement.'],
+            'sync.none': ['Nenhuma diferença encontrada.', 'No differences found.'],
+            'account.admin': ['🛡️ Administrador', '🛡️ Administrator'],
+            'account.user': ['👤 Usuário', '👤 User'],
+            'account.connected': ['🟢 Conectado à Nuvem', '🟢 Connected to Cloud'],
+            'account.master': ['👑 Autor Mestre', '👑 Master Owner'],
+            'account.unlocked': ['🔓 Desbloqueado', '🔓 Unlocked'],
+            'account.locked': ['🔒 Trava Ativa', '🔒 Lock Active'],
+            'account.sync': ['Última sincronização:', 'Last synchronization:'],
+            'recovery.open': ['Pontos de recuperação', 'Recovery points'],
+            'recovery.empty': ['Nenhum ponto de recuperação salvo.', 'No recovery points saved.'],
+            'recovery.restore': ['Restaurar', 'Restore'],
+            'recovery.unavailable': ['Não foi possível salvar o ponto de recuperação. Nada foi substituído.', 'Could not save the recovery point. Nothing was replaced.']
+        };
+        function appUiText(key, language) {
+            const locale = language || (window.getAppLanguage ? window.getAppLanguage() : 'pt-BR');
+            return (APP_UI_MESSAGES[key] || [key, key])[locale === 'en' ? 1 : 0];
+        }
+        const DOCUMENT_LANGUAGE_KEY = 'scripts_document_language_v1';
+        function getDocumentLanguage() { return localStorage.getItem(DOCUMENT_LANGUAGE_KEY) === 'en' ? 'en' : 'pt-BR'; }
+        function setDocumentLanguage(language) {
+            localStorage.setItem(DOCUMENT_LANGUAGE_KEY, language === 'en' ? 'en' : 'pt-BR');
+            document.querySelectorAll('[data-document-language]').forEach(el => { el.value = getDocumentLanguage(); });
+        }
+        function documentLanguageControl() {
+            const label = document.createElement('label');
+            label.style.cssText = 'display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;padding:8px 0;';
+            const text = document.createElement('span'); text.dataset.i18n = 'documents.language'; text.textContent = appUiText(text.dataset.i18n);
+            const select = document.createElement('select'); select.className = 'theme-select'; select.dataset.documentLanguage = ''; select.dataset.i18nAriaLabel='documents.language';
+            select.setAttribute('aria-label', appUiText('documents.language'));
+            select.innerHTML = '<option value="pt-BR">Português (Brasil)</option><option value="en">English (US)</option>';
+            select.value = getDocumentLanguage(); select.addEventListener('change', () => setDocumentLanguage(select.value));
+            label.append(text, select); return label;
+        }
+        const REQUIRED_TICKET_FIELDS = {
+            sem_acesso: ['tkPhone','tkTitleSemAcesso','tkProblemaSemAcesso'],
+            lentidao: ['tkPhone','tkProblemaLentidao'],
+            mudanca_endereco: ['tkPhone','tkRua','tkBairro','tkCidade'],
+            passagem_cabo: ['tkPhone','tkAssuntoCabo','tkOndeCabo'],
+            evento: ['tkPhone','tkEndEvento','tkDataHoraEvento','tkQtdEvento'],
+            geral: ['tkPhone','tkTitleGeral','tkProblemaGeral']
+        };
+        function requiredFormFields(root, buttonId) {
+            if (buttonId === 'btnCopyTestOutput') return ['tstContato','tstRelato','tstResumo'];
+            if (buttonId === 'btnCopySideTest') return ['sideTstContato','sideTstRelato','sideTstResumo'];
+            const active = root.querySelector('.ticket-template-tab.active');
+            return REQUIRED_TICKET_FIELDS[active && active.dataset.tpl] || [];
+        }
+        function markRequiredFields(root) {
+            const fields=new Set([...requiredFormFields(root,'btnCopyTicket'),...requiredFormFields(root,'btnCopyTestOutput'),...requiredFormFields(root,'btnCopySideTest')]);
+            fields.forEach(id=>{
+                const el=root.querySelector('#'+id);if(!el)return;
+                el.setAttribute('aria-required','true');el.required=true;
+                const parent=el.parentElement;
+                const label=parent.querySelector(':scope > label');
+                if(label&&!label.querySelector('[data-required-marker]')){const star=document.createElement('span');star.dataset.requiredMarker='';star.setAttribute('aria-hidden','true');star.textContent=' *';star.style.color='#ef4444';label.append(star);}
+            });
+        }
+        function enhanceOperationalForm(root) {
+            markRequiredFields(root);
+            if (!root.querySelector('[data-document-language]')) {
+                const host = root.querySelector('.vm-head');
+                if (host) host.after(documentLanguageControl());
+            }
+            if (root.dataset.validationAttached) return;
+            root.dataset.validationAttached = 'true';
+            root.addEventListener('click', event => {
+                const button = event.target.closest('#btnCopyTicket,#btnCopyTestOutput,#btnCopySideTest');
+                if (!button) return;
+                const ids = requiredFormFields(root, button.id);
+                let invalid = null;
+                root.querySelectorAll('[aria-invalid]').forEach(el => el.removeAttribute('aria-invalid'));
+                for (const id of ids) {
+                    const el = root.querySelector('#' + id); if (!el) continue;
+                    const value = window.getAppFormValue(el).trim();
+                    const badPhone = id === 'tkPhone' && !/^\d{10,15}$/.test(value.replace(/\D/g, ''));
+                    if (!value || badPhone) { el.setAttribute('aria-invalid', 'true'); invalid ||= {el, badPhone}; }
+                }
+                root.querySelector('[data-required-errors]')?.remove();
+                if (!invalid) return;
+                event.preventDefault(); event.stopImmediatePropagation();
+                const error = document.createElement('div'); error.dataset.requiredErrors = ''; error.setAttribute('role','alert');
+                error.dataset.i18n = invalid.badPhone ? 'validation.phone' : 'validation.missing';
+                error.textContent = appUiText(error.dataset.i18n);
+                error.style.cssText = 'padding:10px;color:var(--text-color);border:1px solid #ef4444;border-radius:8px;margin:8px;';
+                button.parentElement.before(error); invalid.el.focus();
+            }, true);
+            root.addEventListener('input', event => event.target.removeAttribute('aria-invalid'));
+        }
+        const DOCUMENT_LABELS_EN = {
+            'MUDANÇA DE ENDEREÇO':'ADDRESS CHANGE', 'LENTIDÃO':'SLOW CONNECTION', 'SEM ACESSO':'NO CONNECTION',
+            '🔌 PASSAGEM DE CABO DE REDE':'🔌 NETWORK CABLE INSTALLATION','🎉 INTERNET PARA EVENTO':'🎉 INTERNET FOR EVENTS',
+            'Contato':'Contact','Relato':'Reported issue','Sinal':'Optical signal','Ping':'Ping','Extrato':'Connection history','Ajustes':'Adjustments',
+            'Reiniciado':'Restarted','MTU/MRU':'MTU/MRU','WAN':'WAN','DNS':'DNS','Resumo':'Summary',
+            'Título':'Title','Descrição problema':'Problem description','Melhor horário':'Preferred time','Telefone':'Phone','Plano':'Plan',
+            'Ponto de acesso':'Access point','Valor':'Fee','Valor visita':'Visit fee','Endereço':'Address','Ponto de referência':'Landmark',
+            'Localização':'Location','Equipamentos no local':'Equipment on site','Assunto':'Subject','Onde é feito':'Job location',
+            'Cobrança / Valor':'Charges / Fee','Observações':'Notes','Loc':'Location','Data e hora':'Date and time','Rede':'Network',
+            'Nome do wifi e senha':'Wi-Fi name and password','Quantidade de pessoas':'Number of attendees',
+            '* Abrir atendimento nome do responsável pelo evento.':'* Open the ticket under the event organizer’s name.'
+        };
+        function createDocumentWriter(root) {
+            const values = new Map(); let number = 0; const prefix = 'DOC_' + createStableId() + '_';
+            function value(el, fallback = '') {
+                let text = el ? window.getAppDocumentValue(el, getDocumentLanguage()) : fallback;
+                if (!text) return '';
+                const key = prefix + number++; values.set(key, String(text)); return key;
+            }
+            return {
+                token(text) { if(!text)return '';const key=prefix+number++;values.set(key,String(text));return key; },
+                state(state, mapping) {
+                    const result = {...state};
+                    for (const [key,id] of Object.entries(mapping)) result[key] = value(root.querySelector('#'+id), state[key] || '');
+                    return result;
+                },
+                finish(text) {
+                    if (getDocumentLanguage() === 'en') {
+                        text = text.split('\n').map(line => {
+                            const trimmed = line.trim();
+                            if (DOCUMENT_LABELS_EN[trimmed]) return DOCUMENT_LABELS_EN[trimmed];
+                            return line.replace(/^(\s*-?\s*)([^:]+)(:)/, (all,start,label,end) => start + (DOCUMENT_LABELS_EN[label] || label) + end);
+                        }).join('\n');
+                        for(const [pt,en]of Object.entries({'Não informado':'Not provided','Mesmo endereço':'Same address','A combinar':'To be arranged','A definir':'To be defined','Não especificado':'Not specified','verificar no local':'check on site','Qualquer horário comercial':'Any business hours','Ponto principal':'Main access point'}))text=text.split(pt).join(en);
+                        text = text.replace(/média (\S+) perda (\S+)/g,'average $1 loss $2');
+                    }
+                    return text.replace(new RegExp(prefix.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\d+','g'), key => values.get(key));
+                }
+            };
+        }
+        function stableSerialize(value) {
+            if (value === undefined) return 'null';
+            if (value === null || typeof value !== 'object') return JSON.stringify(value);
+            if (Array.isArray(value)) return '[' + value.map(stableSerialize).join(',') + ']';
+            return '{' + Object.keys(value).sort().map(key => JSON.stringify(key)+':'+stableSerialize(value[key])).join(',') + '}';
+        }
+        function buildSyncComparison(before, after) {
+            const duplicateCardIds=new Set();
+            for(const payload of [before,after]) {
+                const counts=new Map();
+                const workspaces=Array.isArray(payload.workspaces)&&payload.workspaces.length?payload.workspaces:[{data:payload.scripts||{}}];
+                for(const ws of workspaces)for(const tab of Object.values(ws.data||{}))for(const group of tab.groups||[])for(const item of group.items||[])if(item&&typeof item==='object'&&item.id){const count=(counts.get(item.id)||0)+1;counts.set(item.id,count);if(count>1)duplicateCardIds.add(item.id);}
+            }
+            function index(payload) {
+                const result = new Map();
+                const workspaces = Array.isArray(payload.workspaces) && payload.workspaces.length ? payload.workspaces : [{id:'legacy',name:'Scripts',data:payload.scripts || {}}];
+                workspaces.forEach(ws => {
+                    result.set('workspace:'+ws.id, {kind:'workspace',name:ws.name,value:{name:ws.name,icon:ws.icon,color:ws.color,tabOrder:ws.tabOrder}});
+                    Object.entries(ws.data || {}).forEach(([id,tab]) => {
+                        result.set('tab:'+ws.id+':'+id, {kind:'tab',name:tab.name,value:{name:tab.name,groups:(tab.groups||[]).map(g=>g.title)}});
+                        (tab.groups || []).forEach((group,gi) => (group.items || []).forEach((item,ii) => {
+                            const value = typeof item === 'string' ? {text:item} : item;
+                            const key = value.id && !duplicateCardIds.has(value.id) ? 'card:'+value.id : 'card:'+ws.id+':'+id+':'+gi+':'+ii+(value.id?':'+value.id:'');
+                            result.set(key,{kind:'card',name:tab.name,location:[ws.id,id,gi,ii],value});
+                        }));
+                    });
+                });
+                ['clients','customDefaults','scratchpad','trash','customKeywords','keywordsEnabled','soundConfig','settings'].forEach(key => {
+                    if (Object.hasOwn(payload,key)) result.set(key,{kind:key,name:key,value:payload[key]});
+                });
+                return result;
+            }
+            const left = index(before), right = index(after), entries=[];
+            for (const key of new Set([...left.keys(),...right.keys()])) {
+                const a=left.get(key), b=right.get(key);
+                let change = !a ? 'added' : !b ? 'removed' : stableSerialize(a.value)!==stableSerialize(b.value) ? 'changed' : a.location && stableSerialize(a.location)!==stableSerialize(b.location) ? 'moved' : null;
+                if (change) entries.push({key,change,kind:(b||a).kind,name:(b||a).name,before:a?.value,after:b?.value});
+            }
+            const counts={added:0,changed:0,removed:0,moved:0}; entries.forEach(e=>counts[e.change]++);
+            return {counts,entries};
+        }
+        const RECOVERY_POINTS_KEY = 'scripts_recovery_points_v1';
+        function getRecoveryPoints() { try { const data=JSON.parse(localStorage.getItem(RECOVERY_POINTS_KEY)||'[]'); return Array.isArray(data)?data:[]; } catch { return []; } }
+        function saveRecoveryPoint() {
+            const keys = applicationStorageKeys();
+            const data = Object.fromEntries(keys.map(key=>[key,localStorage.getItem(key)]));
+            const point={id:createStableId(),time:new Date().toISOString(),data};
+            const candidates=[point,...getRecoveryPoints()].slice(0,3);
+            while(candidates.length) {try {localStorage.setItem(RECOVERY_POINTS_KEY,JSON.stringify(candidates));return point;}catch {candidates.pop();}}
+            throw new Error(appUiText('recovery.unavailable'));
+            return point;
+        }
+        function openRecoveryPoints() {
+            const points=getRecoveryPoints();
+            const modal=createAccessibleModal({id:'recoveryPointsModal',title:appUiText('recovery.open'),contentHtml:points.length?points.map(p=>`<button type="button" class="var-modal-btn" data-recovery-id="${escapeHtml(p.id)}">${escapeHtml(p.time)}</button>`).join(''):`<p data-i18n="recovery.empty">${appUiText('recovery.empty')}</p>`,footerHtml:''});
+            modal.overlay.querySelectorAll('[data-recovery-id]').forEach(button=>button.onclick=()=>{
+                const point=points.find(p=>p.id===button.dataset.recoveryId);
+                const before=buildSyncPayload(); const candidate={};
+                // Preview the complete raw backup without writing until confirmation.
+                const data=Object.fromEntries(applicationStorageKeys().map(key=>[key,typeof point.data?.[key]==='string'?point.data[key]:null]));
+                candidate.workspaces=JSON.parse(data[WORKSPACES_STORAGE_KEY]||'[]'); candidate.scripts=JSON.parse(data[STORAGE_KEY]||'{}');
+                for(const [field,key] of Object.entries({customDefaults:VARS_KEY,clients:CLIENTS_KEY,trash:TRASH_STORAGE_KEY,customKeywords:KEYWORDS_STORAGE_KEY,soundConfig:SOUND_STORAGE_KEY}))if(data[key]!==null)candidate[field]=JSON.parse(data[key]);
+                candidate.scratchpad=data[SCRATCHPAD_KEY]||'';
+                candidate.settings={theme:data[THEME_KEY]||'dark',layout:data[LAYOUT_KEY]||'grid',scale:Number(data[SCALE_KEY]||1)};
+                showSyncComparison(before,candidate,()=>{
+                    const rollback=Object.fromEntries(Object.keys(data).map(key=>[key,localStorage.getItem(key)]));
+                    saveRecoveryPoint();
+                    try { Object.entries(data).forEach(([key,value])=>value===null?localStorage.removeItem(key):localStorage.setItem(key,value)); }
+                    catch(error){ Object.entries(rollback).forEach(([key,value])=>value===null?localStorage.removeItem(key):localStorage.setItem(key,value)); throw error; }
+                    location.reload();
+                });
+            });
+        }
+        let pendingCloudReview = null;
+        let cloudReviewCommitting = false;
+        let acknowledgedRemoteFingerprint = null;
+        function showSyncComparison(before, after, onConfirm, options = {}) {
+            if(options.cloudReview)pendingCloudReview={before,after,onConfirm,options};
+            const baseline=syncFingerprint(buildSyncPayload()); const comparison=buildSyncComparison(before,effectiveSyncPayload(before,after));
+            const content = `<p data-i18n="sync.recovery">${appUiText('sync.recovery')}</p><div>${Object.entries(comparison.counts).map(([key,count])=>`<span style="margin-right:12px;"><span data-i18n="sync.${key}">${appUiText('sync.'+key)}</span>: ${count}</span>`).join('')}</div><div style="max-height:45vh;overflow:auto;">${comparison.entries.map(e=>`<details style="margin-top:8px;"><summary><span data-i18n="sync.${e.change}">${appUiText('sync.'+e.change)}</span> · <span data-user-content="true">${escapeHtml(e.name || e.key)}</span></summary><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"><div><span data-i18n="sync.before">${appUiText('sync.before')}</span><pre data-user-content="true" style="white-space:pre-wrap;word-break:break-word;max-height:220px;overflow:auto;">${escapeHtml(JSON.stringify(e.before ?? null,null,2))}</pre></div><div><span data-i18n="sync.after">${appUiText('sync.after')}</span><pre data-user-content="true" style="white-space:pre-wrap;word-break:break-word;max-height:220px;overflow:auto;">${escapeHtml(JSON.stringify(e.after ?? null,null,2))}</pre></div></div></details>`).join('') || `<p data-i18n="sync.none">${appUiText('sync.none')}</p>`}</div>`;
+            const modal=createAccessibleModal({id:'syncComparisonModal',title:appUiText('sync.review'),contentHtml:content,footerHtml:`<button type="button" class="var-modal-btn" data-sync-cancel data-i18n="sync.cancel">${appUiText('sync.cancel')}</button><button type="button" class="var-modal-btn var-modal-btn-confirm" data-sync-apply data-i18n="sync.apply">${appUiText('sync.apply')}</button>`,width:'min(800px,95vw)'});
+            modal.overlay.querySelector('[data-sync-cancel]').onclick=()=>{modal.closeModal();options.onCancel?.();};
+            modal.overlay.querySelector('[data-sync-apply]').onclick=async event=>{
+                if (syncFingerprint(buildSyncPayload())!==baseline) { appAlert(appUiText('sync.stale')); return; }
+                event.target.disabled=true;
+                try {
+                    cloudReviewCommitting=!!options.cloudReview;
+                    await onConfirm();
+                    if(options.cloudReview)pendingCloudReview=null;
+                    modal.closeModal();
+                } catch(error){event.target.disabled=false;appAlert(error.message || appUiText('sync.error'));}
+                finally {cloudReviewCommitting=false;}
+            };
+            return modal;
+        }
+
+        function validateExtendedPayload(payload) {
+            const fail=reason=>({valid:false,reason});
+            let count=0;
+            function inspect(value,depth=0) {
+                if(depth>45 || ++count>250000)throw new Error('Estrutura de dados excede os limites.');
+                if(!value || typeof value!=='object')return;
+                for(const key of Object.keys(value)) {
+                    if(['__proto__','constructor','prototype'].includes(key))throw new Error('Chave reservada no arquivo.');
+                    inspect(value[key],depth+1);
+                }
+            }
+            try { inspect(payload); } catch(error) {return fail(error.message);}
+            if(payload.workspaces!==undefined) {
+                if(!Array.isArray(payload.workspaces)||payload.workspaces.length>40)return fail('Lista de áreas inválida.');
+                const ids=new Set();
+                for(const ws of payload.workspaces) {
+                    if(!ws||typeof ws.id!=='string'||!ws.id||ws.id.length>120||ids.has(ws.id)||typeof ws.name!=='string'||ws.name.length>120)return fail('Área de trabalho inválida ou duplicada.');
+                    if(!/^[A-Za-z0-9_-]{1,120}$/.test(ws.id)|| (ws.color && !/^#[0-9a-f]{6}$/i.test(ws.color)))return fail('Identificador ou cor de área inválido.');
+                    ids.add(ws.id);
+                    const validation=validateImportPayload(ws.data);
+                    if(!validation.valid)return validation;
+                    if(ws.history!==undefined) {
+                        if(!Array.isArray(ws.history)||ws.history.length>50)return fail('Histórico de área inválido.');
+                        for(const snapshot of ws.history) {const valid=validateImportPayload(snapshot?.data);if(!valid.valid)return valid;}
+                    }
+                }
+            }
+            if(payload.customDefaults!==undefined) {
+                if(!payload.customDefaults||typeof payload.customDefaults!=='object'||Array.isArray(payload.customDefaults))return fail('Variáveis inválidas.');
+                for(const val of Object.values(payload.customDefaults))if(typeof val!=='string'&&(!val||typeof val.val!=='string'||!['auto','popup',undefined].includes(val.mode)))return fail('Variável com formato inválido.');
+            }
+            if(payload.scratchpad!==undefined && (typeof payload.scratchpad!=='string'||payload.scratchpad.length>200000))return fail('Rascunho inválido ou excede 200000 caracteres.');
+            for(const [key,limit] of [['trash',2000],['customKeywords',200],['clients',500]]) {
+                if(payload[key]!==undefined && (!Array.isArray(payload[key])||payload[key].length>limit))return fail('Lista inválida: '+key);
+            }
+            for(const item of payload.trash||[])if(!item||typeof item.id!=='string'||!/^[A-Za-z0-9_-]{1,120}$/.test(item.id)||typeof item.text!=='string')return fail('Card da lixeira inválido.');
+            for(const item of payload.customKeywords||[])if(!item||typeof item.word!=='string'||item.word.length>120)return fail('Palavra-chave inválida.');
+            for(const item of payload.customKeywords||[])for(const key of ['color','bg'])if(item[key] && !/^(#[0-9a-f]{3,8}|rgba?\([0-9., %]+\))$/i.test(item[key]))return fail('Cor inválida.');
+            for(const client of payload.clients||[])if(!client||typeof client.name!=='string'||(client.contact!==undefined&&typeof client.contact!=='string')||!['pending','done',undefined].includes(client.status)||!['none','daily','weekly','monthly',undefined].includes(client.recurrence))return fail('Cliente inválido.');
+            return {valid:true};
+        }
+        function validateCloudPayload(data) {
+            if(!data || typeof data!=='object')throw new Error('Backup inválido.');
+            const scripts=data.scripts || data.workspaces?.find(w=>w.id===data.activeWorkspaceId)?.data || data.workspaces?.[0]?.data;
+            const validation=validateImportPayload({...data,type:'CENTRAL_DE_SCRIPTS_FULL_BACKUP',scripts});
+            if(!validation.valid)throw new Error(validation.reason);
+            const clean=validation.sanitizedData;if(!Object.hasOwn(data,'type'))delete clean.type;return clean;
+        }
+        function restoreFullBackup(clean) {
+            const workspaces=clean.workspaces.length?clean.workspaces:getWorkspaces();
+            const target=workspaces.find(w=>w.id===clean.activeWorkspaceId)||workspaces.find(w=>w.id===getActiveWorkspaceId())||workspaces[0];
+            if(!clean.workspaces.length && target){target.data=clean.scripts;target.tabOrder=clean.tabOrder;}
+            const settings=clean.settings;
+            const storage={
+                [WORKSPACES_STORAGE_KEY]:JSON.stringify(workspaces),[ACTIVE_WORKSPACE_KEY]:target.id,
+                [STORAGE_KEY]:JSON.stringify(target.data),[TAB_ORDER_KEY]:JSON.stringify(target.tabOrder||clean.tabOrder),
+                [VARS_KEY]:JSON.stringify(clean.customDefaults),[CLIENTS_KEY]:JSON.stringify(clean.clients),
+                [SCRATCHPAD_KEY]:clean.scratchpad,[USERSCRIPTS_KEY]:JSON.stringify(clean.userscripts),
+                [TRASH_STORAGE_KEY]:JSON.stringify(clean.trash),[KEYWORDS_STORAGE_KEY]:JSON.stringify(clean.customKeywords),
+                [KEYWORDS_ENABLED_KEY]:clean.keywordsEnabled?'true':'false',[SOUND_STORAGE_KEY]:JSON.stringify(clean.soundConfig),
+                [THEME_KEY]:settings.theme,[LAYOUT_KEY]:settings.layout,[SCALE_KEY]:String(settings.scale),
+                [ACTIVE_TAB_KEY]:settings.activeTabId,[ALARM_CONFIG_KEY]:JSON.stringify(settings.alarmConfig),
+                [DOCUMENT_LANGUAGE_KEY]:clean.documentLanguage
+            };
+            Object.entries(storage).forEach(([key,val])=>localStorage.setItem(key,val));
+            currentActiveTabId=settings.activeTabId;
+            const scratch=document.getElementById('scratchpadText');if(scratch)scratch.value=clean.scratchpad;
+            changeTheme(settings.theme,true);setLayout(settings.layout,true);applyCardScale(settings.scale);
+        }
+        function applicationStorageKeys() {
+            return [STORAGE_KEY,WORKSPACES_STORAGE_KEY,ACTIVE_WORKSPACE_KEY,TAB_ORDER_KEY,VARS_KEY,CLIENTS_KEY,SCRATCHPAD_KEY,TRASH_STORAGE_KEY,KEYWORDS_STORAGE_KEY,KEYWORDS_ENABLED_KEY,SOUND_STORAGE_KEY,THEME_KEY,LAYOUT_KEY,SCALE_KEY,ACTIVE_TAB_KEY,ALARM_CONFIG_KEY,USERSCRIPTS_KEY,DOCUMENT_LANGUAGE_KEY,LAST_LOCAL_UPDATE_KEY,LAST_SYNC_TIME_KEY,'scripts_last_remote_device_v1'];
+        }
+        function withLocalStorageRollback(action) {
+            const previous=Object.fromEntries(applicationStorageKeys().map(key=>[key,localStorage.getItem(key)]));
+            const revisions=[localRevision,lastSyncedRevision];
+            try {return action();}
+            catch(error) {
+                applicationStorageKeys().forEach(key=>localStorage.removeItem(key));
+                Object.entries(previous).forEach(([key,val])=>{if(val!==null)localStorage.setItem(key,val);});
+                [localRevision,lastSyncedRevision]=revisions;
+                loadAppData(); const scratch=document.getElementById('scratchpadText');if(scratch)scratch.value=localStorage.getItem(SCRATCHPAD_KEY)||'';
+                throw error;
+            }
+        }
+        function applyCloudDataToLocal(data) {
+            const clean=validateCloudPayload(data);
+            const remoteFingerprint=syncFingerprint(clean);
+            saveRecoveryPoint();
+            const result=withLocalStorageRollback(()=>applyCloudDataToLocalUnsafe(clean));
+            pendingSyncPayload=null;clearTimeout(syncRetryTimer);syncRetryCount=0;acknowledgedRemoteFingerprint=remoteFingerprint;
+            return result;
+        }
+
+        async function acceptReviewedCloudData(data, teamDefault=false) {
+            if(!currentUser||!firebaseDb)throw new Error(appUiText('sync.error'));
+            const reference=teamDefault?firebaseDb.collection('templates').doc('default_scripts'):firebaseDb.collection('users').doc(currentUser.uid).collection('settings').doc('app_data');
+            const snap=await reference.get();
+            if(!snap.exists||syncFingerprint(validateCloudPayload(snap.data()))!==syncFingerprint(data))throw new Error(appUiText('sync.stale'));
+            applyCloudDataToLocal(data);
+        }
+        function syncFingerprint(payload) {
+            const {updatedAt, revision, deviceId, updatedBy, ...data} = payload;
+            return stableSerialize(data);
+        }
+        function effectiveSyncPayload(before, after) {
+            const result={...before,...after,settings:{...(before.settings||{}),...(after.settings||{})}};
+            if (!Array.isArray(after.workspaces) && after.scripts && Array.isArray(before.workspaces)) {
+                result.workspaces=JSON.parse(JSON.stringify(before.workspaces));
+                const active=result.workspaces.find(w=>w.id===before.activeWorkspaceId)||result.workspaces[0];
+                if(active) { active.data=after.scripts; if(after.tabOrder)active.tabOrder=after.tabOrder; }
+            }
+            return result;
+        }
+
         /* ===== Gerador de Teste de Atendimento (Diagnóstico Técnico) ===== */
         function openTestFormModal() {
             const overlay = document.createElement('div');
@@ -8975,22 +9352,24 @@ mark.custom-keyword-highlight:hover {
                 testModalState.dns = getVal('tstDns');
                 testModalState.resumo = getVal('tstResumo');
 
+                const writer = createDocumentWriter(overlay);
+                const docState = writer.state(testModalState, {"contato": "tstContato", "relato": "tstRelato", "sinal": "tstSinal", "pingMedia": "tstPingMedia", "pingPerda": "tstPingPerda", "extrato": "tstExtrato", "ajustes": "tstAjustes", "reiniciado": "tstReiniciado", "mtu": "tstMtu", "wan": "tstWan", "dns": "tstDns", "resumo": "tstResumo"});
                 const media = testModalState.pingMedia.replace(/ms$/i, '').trim();
                 const perda = testModalState.pingPerda.replace(/%$/, '').trim();
 
-                const text = `- Contato: ${testModalState.contato || 'Não informado'}
-- Relato: ${testModalState.relato || 'lentidão/youtube/whatsapp/netflix'}
-- Sinal: ${testModalState.sinal || '-19 dBm'}
+                const text = `- Contato: ${docState.contato || 'Não informado'}
+- Relato: ${docState.relato || 'lentidão/youtube/whatsapp/netflix'}
+- Sinal: ${docState.sinal || '-19 dBm'}
 - Ping: média ${media} perda ${perda}%
-- Extrato: ${testModalState.extrato || 'ok'}
-- Ajustes: ${testModalState.ajustes || 'setado canal auto'}
-- Reiniciado: ${testModalState.reiniciado || 'Sim'}
-- MTU/MRU: ${testModalState.mtu || '1492 MRU'}
-- WAN: ${testModalState.wan || '1000Mbps porta fixa ok'}
-- DNS: ${testModalState.dns || 'OK'}
-- Resumo: ${testModalState.resumo || ''}`;
+- Extrato: ${docState.extrato || 'ok'}
+- Ajustes: ${docState.ajustes || 'setado canal auto'}
+- Reiniciado: ${docState.reiniciado || 'Sim'}
+- MTU/MRU: ${docState.mtu || '1492 MRU'}
+- WAN: ${docState.wan || '1000Mbps porta fixa ok'}
+- DNS: ${docState.dns || 'OK'}
+- Resumo: ${docState.resumo || ''}`;
 
-                copyTextToClipboard(text).then(ok => {
+                copyTextToClipboard(writer.finish(text)).then(ok => {
                     appAlert(ok ? 'Teste de atendimento copiado com sucesso!' : 'Falha ao copiar.');
                     overlay.remove();
                 });
@@ -9026,6 +9405,7 @@ mark.custom-keyword-highlight:hover {
             syncStandaloneTestChips();
 
             window.restoreAppFormEdits(overlay, testModalState);
+            enhanceOperationalForm(overlay);
             document.body.appendChild(overlay);
             if (window.translateAppRoot) window.translateAppRoot(overlay);
         }
@@ -9913,6 +10293,7 @@ Já foram levados os equipamentos?: ${tkState.equipamentos || '...'}`;
                     `;
                 }
 
+                markRequiredFields(overlay);
                 const phoneInput = overlay.querySelector('#tkPhone');
                 if (phoneInput) {
                     phoneInput.oninput = () => { phoneInput.value = maskPhone(phoneInput.value); };
@@ -9922,79 +10303,81 @@ Já foram levados os equipamentos?: ${tkState.equipamentos || '...'}`;
                 if (btnCopy) {
                     btnCopy.onclick = () => {
                         saveCurrentInputs();
+                        const writer = createDocumentWriter(overlay);
+                        const docState = writer.state(tkState, {"phone": "tkPhone", "plan": "tkPlan", "time": "tkTime", "cost": "tkCost", "ponto": "tkPonto", "rua": "tkRua", "bairro": "tkBairro", "cidade": "tkCidade", "referencia": "tkRef", "cor_tipo": "tkCorTipo", "localizacao": "tkLoc", "equipamentos": "tkEquip", "problema_lentidao": "tkProblemaLentidao", "titulo_sem_acesso": "tkTitleSemAcesso", "problema_sem_acesso": "tkProblemaSemAcesso", "assunto_cabo": "tkAssuntoCabo", "onde_cabo": "tkOndeCabo", "obs_cabo": "tkObsCabo", "endereco_evento": "tkEndEvento", "loc_evento": "tkLocEvento", "data_hora_evento": "tkDataHoraEvento", "rede_evento": "tkRedeEvento", "wifi_senha_evento": "tkWifiSenhaEvento", "qtd_pessoas_evento": "tkQtdEvento", "valor_evento": "tkValorEvento", "titulo_geral": "tkTitleGeral", "problema_geral": "tkProblemaGeral"});
                         let text = '';
 
                         if (tkState.template === 'mudanca_endereco') {
                             text = `🏠 TRANSFERÊNCIA DE ENDEREÇO
-- Endereço: ${tkState.rua || 'Não informado'}${tkState.bairro ? ', ' + tkState.bairro : ''}${tkState.cidade ? ' - ' + tkState.cidade : ''}
-- Ponto de referência: ${tkState.referencia || 'Não informado'}${tkState.cor_tipo ? ' (Casa: ' + tkState.cor_tipo + ')' : ''}
-- Localização: ${tkState.localizacao || 'Mesmo endereço'}
-- Telefone: ${tkState.phone || 'Não informado'}
-- Ponto de acesso: ${tkState.ponto || 'Ponto principal'}
-- Melhor horário: ${tkState.time || 'Qualquer horário comercial'}
-- Equipamentos no local: ${tkState.equipamentos || 'Sim, já estão no local'}
-- Valor visita: ${tkState.cost || 'cortesia'}`;
+- Endereço: ${docState.rua || 'Não informado'}${tkState.bairro ? ', ' + docState.bairro : ''}${tkState.cidade ? ' - ' + docState.cidade : ''}
+- Ponto de referência: ${docState.referencia || 'Não informado'}${tkState.cor_tipo ? ' (Casa: ' + docState.cor_tipo + ')' : ''}
+- Localização: ${docState.localizacao || 'Mesmo endereço'}
+- Telefone: ${docState.phone || 'Não informado'}
+- Ponto de acesso: ${docState.ponto || 'Ponto principal'}
+- Melhor horário: ${docState.time || 'Qualquer horário comercial'}
+- Equipamentos no local: ${docState.equipamentos || 'Sim, já estão no local'}
+- Valor visita: ${docState.cost || 'cortesia'}`;
 
                         } else if (tkState.template === 'lentidao') {
                             text = `LENTIDÃO
 
 - Título: Lentidão
-- Descrição problema: ${tkState.problema_lentidao || 'Lentidão relatada pelo cliente'}
-- Melhor horário: ${tkState.time || 'Qualquer horário comercial'}
-- Telefone: ${tkState.phone || 'Não informado'}
-- Plano: ${tkState.plan || '700 MB'}
-- Ponto de acesso: ${tkState.ponto || 'Ponto principal'}
-- Valor: ${tkState.cost || 'verificar no local'}`;
+- Descrição problema: ${docState.problema_lentidao || 'Lentidão relatada pelo cliente'}
+- Melhor horário: ${docState.time || 'Qualquer horário comercial'}
+- Telefone: ${docState.phone || 'Não informado'}
+- Plano: ${docState.plan || '700 MB'}
+- Ponto de acesso: ${docState.ponto || 'Ponto principal'}
+- Valor: ${docState.cost || 'verificar no local'}`;
 
                         } else if (tkState.template === 'sem_acesso') {
                             text = `SEM ACESSO
 
-- Título: ${tkState.titulo_sem_acesso || 'Sem acesso'}
-- Descrição problema: ${tkState.problema_sem_acesso || 'LOS, reiniciou os equipamentos mas sem sucesso.'}
-- Melhor horário: ${tkState.time || 'Qualquer horário comercial'}
-- Telefone: ${tkState.phone || 'Não informado'}
-- Plano: ${tkState.plan || '700 MB'}
-- Ponto de acesso: ${tkState.ponto || 'Ponto principal'}
-- Valor: ${tkState.cost || 'verificar no local'}`;
+- Título: ${docState.titulo_sem_acesso || 'Sem acesso'}
+- Descrição problema: ${docState.problema_sem_acesso || 'LOS, reiniciou os equipamentos mas sem sucesso.'}
+- Melhor horário: ${docState.time || 'Qualquer horário comercial'}
+- Telefone: ${docState.phone || 'Não informado'}
+- Plano: ${docState.plan || '700 MB'}
+- Ponto de acesso: ${docState.ponto || 'Ponto principal'}
+- Valor: ${docState.cost || 'verificar no local'}`;
 
                         } else if (tkState.template === 'passagem_cabo') {
                             text = `🔌 PASSAGEM DE CABO DE REDE
-- Assunto: ${tkState.assunto_cabo || 'Passagem de cabo de rede'}
-- Onde é feito: ${tkState.onde_cabo || 'Passar para outros cômodos'}
-- Telefone: ${tkState.phone || 'Não informado'}
-- Plano: ${tkState.plan || '700 MB'}
-- Ponto de acesso: ${tkState.ponto || 'Ponto principal'}
-- Melhor horário: ${tkState.time || 'Qualquer horário comercial'}
-- Cobrança / Valor: ${tkState.cost || 'Cobrança apenas de materiais'}
-- Observações: ${tkState.obs_cabo || 'Dentro do mesmo lote (até 50m).'}`;
+- Assunto: ${docState.assunto_cabo || 'Passagem de cabo de rede'}
+- Onde é feito: ${docState.onde_cabo || 'Passar para outros cômodos'}
+- Telefone: ${docState.phone || 'Não informado'}
+- Plano: ${docState.plan || '700 MB'}
+- Ponto de acesso: ${docState.ponto || 'Ponto principal'}
+- Melhor horário: ${docState.time || 'Qualquer horário comercial'}
+- Cobrança / Valor: ${docState.cost || 'Cobrança apenas de materiais'}
+- Observações: ${docState.obs_cabo || 'Dentro do mesmo lote (até 50m).'}`;
 
                         } else if (tkState.template === 'evento') {
                             text = `🎉 INTERNET PARA EVENTO
-Endereço: ${tkState.endereco_evento || 'Não informado'}
-- Loc: ${tkState.loc_evento || 'Não informado'}
-- Data e hora: ${tkState.data_hora_evento || 'A combinar'}
-- Rede: ${tkState.rede_evento || 'Privado'}
-- Nome do wifi e senha: ${tkState.wifi_senha_evento || 'A definir'}
-- Quantidade de pessoas: ${tkState.qtd_pessoas_evento || 'Não especificado'}
-- Contato: ${tkState.phone || 'Não informado'}
-- Ponto de acesso: ${tkState.ponto || 'Ponto principal'}
-Valor: ${tkState.valor_evento || '500$ (ciente)'}
+Endereço: ${docState.endereco_evento || 'Não informado'}
+- Loc: ${docState.loc_evento || 'Não informado'}
+- Data e hora: ${docState.data_hora_evento || 'A combinar'}
+- Rede: ${docState.rede_evento || 'Privado'}
+- Nome do wifi e senha: ${docState.wifi_senha_evento || 'A definir'}
+- Quantidade de pessoas: ${docState.qtd_pessoas_evento || 'Não especificado'}
+- Contato: ${docState.phone || 'Não informado'}
+- Ponto de acesso: ${docState.ponto || 'Ponto principal'}
+Valor: ${docState.valor_evento || '500$ (ciente)'}
 -----------------------------------
 * Abrir atendimento nome do cliente é: Cliente consumidor
 * Tipo de atendimento: outros
 * Não precisa de iclass`;
 
                         } else {
-                            text = `- Título: ${tkState.titulo_geral || 'Sem acesso'}
-- Descrição problema: ${tkState.problema_geral || 'LOS reiniciou sem sucesso'}
-- Melhor horário: ${tkState.time || 'Qualquer horário comercial'}
-- Telefone: ${tkState.phone || 'Não informado'}
-- Plano: ${tkState.plan || '700 MB'}
-- Ponto de acesso: ${tkState.ponto || 'Ponto principal'}
-- Valor: ${tkState.cost || 'verificar no local'}`;
+                            text = `- Título: ${docState.titulo_geral || 'Sem acesso'}
+- Descrição problema: ${docState.problema_geral || 'LOS reiniciou sem sucesso'}
+- Melhor horário: ${docState.time || 'Qualquer horário comercial'}
+- Telefone: ${docState.phone || 'Não informado'}
+- Plano: ${docState.plan || '700 MB'}
+- Ponto de acesso: ${docState.ponto || 'Ponto principal'}
+- Valor: ${docState.cost || 'verificar no local'}`;
                         }
 
-                        copyTextToClipboard(text).then(ok => {
+                        copyTextToClipboard(writer.finish(text)).then(ok => {
                             appAlert(ok ? 'Chamado copiado com sucesso! Pronto para colar no Integrator.' : 'Falha ao copiar.');
                             overlay.remove();
                         });
@@ -10016,9 +10399,14 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             overlay.querySelector('#btnCloseSideTest').onclick = () => window.toggleSideTestView(false);
 
             overlay.querySelector('#btnCopySideTest').onclick = () => {
+                const writer = createDocumentWriter(overlay);
                 const getVal = id => {
                     const el = overlay.querySelector('#' + id);
-                    return el ? window.getAppFormValue(el).trim() : '';
+                    if(!el)return '';
+                    let value=window.getAppDocumentValue(el,getDocumentLanguage()).trim();
+                    if(id==='sideTstPingMedia')value=value.replace(/ms$/i,'').trim();
+                    if(id==='sideTstPingPerda')value=value.replace(/%$/,'').trim();
+                    return writer.token(value);
                 };
 
                 const contato = getVal('sideTstContato') || tkState.phone || 'Não informado';
@@ -10046,7 +10434,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 - DNS: ${dns}
 - Resumo: ${resumo}`;
 
-                copyTextToClipboard(text).then(ok => {
+                copyTextToClipboard(writer.finish(text)).then(ok => {
                     appAlert(ok ? 'Teste de atendimento copiado com sucesso!' : 'Falha ao copiar.');
                 });
             };
@@ -10069,6 +10457,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             });
 
             syncTicketChipStates();
+            enhanceOperationalForm(overlay);
             document.body.appendChild(overlay);
             if (window.translateAppRoot) window.translateAppRoot(overlay);
         }
@@ -10776,6 +11165,11 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             }
         }
 
+        function toDateTimeLocal(date) {
+            const pad=value=>String(value).padStart(2,'0');
+            return date.getFullYear()+'-'+pad(date.getMonth()+1)+'-'+pad(date.getDate())+'T'+pad(date.getHours())+':'+pad(date.getMinutes());
+        }
+
         function snoozeAlarm(minutes) {
             if (activeAlarmClientIndex === -1) return;
             const idx = activeAlarmClientIndex;
@@ -10787,7 +11181,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             const clients = getClientsData();
             if (clients[idx]) {
                 const nextDate = new Date(Date.now() + minutes * 60 * 1000);
-                clients[idx].alarm = nextDate.toISOString().slice(0, 16);
+                clients[idx].alarm = toDateTimeLocal(nextDate);
                 clients[idx].status = 'pending';
                 setClientsData(clients);
                 renderClientTable();
@@ -10810,7 +11204,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                     if (c.recurrence === 'daily') alarmDate.setDate(alarmDate.getDate() + 1);
                     else if (c.recurrence === 'weekly') alarmDate.setDate(alarmDate.getDate() + 7);
                     else if (c.recurrence === 'monthly') alarmDate.setMonth(alarmDate.getMonth() + 1);
-                    c.alarm = alarmDate.toISOString().slice(0, 16);
+                    c.alarm = toDateTimeLocal(alarmDate);
                     c.status = 'pending';
                 } else {
                     c.status = 'done';
@@ -12534,6 +12928,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                 customDefaults: getCustomDefaults(),
                 clients: getClientsData(),
                 scratchpad: localStorage.getItem(SCRATCHPAD_KEY) || '',
+                documentLanguage: getDocumentLanguage(),
                 userscripts: getUserscripts(),
                 trash: typeof getTrashItems === 'function' ? getTrashItems() : [],
                 customKeywords: typeof getCustomKeywords === 'function' ? getCustomKeywords() : [],
@@ -12584,11 +12979,21 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             const rawDefaults = (parsed && typeof parsed.customDefaults === 'object' && !Array.isArray(parsed.customDefaults)) ? parsed.customDefaults : {};
             const cleanDefaults = {};
             Object.keys(rawDefaults).forEach(k => {
-                if (!dangerousKeys.has(k) && typeof rawDefaults[k] === 'string') cleanDefaults[k] = rawDefaults[k].slice(0, 500);
+                if (dangerousKeys.has(k)) return;
+                const item=rawDefaults[k];
+                if (typeof item === 'string') cleanDefaults[k]=item;
+                else if(item && typeof item.val==='string') cleanDefaults[k]={val:item.val,mode:item.mode==='popup'?'popup':'auto'};
             });
             const settings = (parsed && typeof parsed.settings === 'object') ? parsed.settings : {};
 
             return {
+                workspaces: Array.isArray(parsed.workspaces)?JSON.parse(JSON.stringify(parsed.workspaces)):[],
+                activeWorkspaceId: parsed.activeWorkspaceId,
+                trash: Array.isArray(parsed.trash)?JSON.parse(JSON.stringify(parsed.trash)):[],
+                customKeywords: Array.isArray(parsed.customKeywords)?JSON.parse(JSON.stringify(parsed.customKeywords)):[],
+                keywordsEnabled: parsed.keywordsEnabled !== false,
+                soundConfig: parsed.soundConfig || null,
+                documentLanguage: parsed.documentLanguage === 'en' ? 'en' : 'pt-BR',
                 type: 'CENTRAL_DE_SCRIPTS_FULL_BACKUP',
                 version: String((parsed && parsed.version) || APP_VERSION),
                 exportedAt: (parsed && parsed.exportedAt) || new Date().toISOString(),
@@ -12601,16 +13006,16 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                     ? parsed.clients.filter(c => c && typeof c === 'object').slice(0, 500)
                     : [],
                 scratchpad: typeof (parsed && parsed.scratchpad) === 'string'
-                    ? parsed.scratchpad.slice(0, 20000)
+                    ? parsed.scratchpad
                     : '',
                 userscripts: Array.isArray(parsed && parsed.userscripts)
                     ? parsed.userscripts
                         .filter(u => u && typeof u === 'object')
-                        .slice(0, 50)
+                        .slice(0, 60)
                         .map(u => ({
                             id: typeof u.id === 'string' ? u.id : createStableId(),
                             name: typeof u.name === 'string' ? u.name.slice(0, 120) : 'Userscript',
-                            source: typeof u.source === 'string' ? u.source.slice(0, 100000) : '',
+                            source: typeof u.source === 'string' ? u.source : '',
                             origin: typeof u.origin === 'string' ? u.origin.slice(0, 200) : 'backup',
                             importedAt: u.importedAt || new Date().toISOString(),
                             // Regra de Ouro de Segurança: Todo userscript restaurado de backup exige aprovação explícita
@@ -12639,7 +13044,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             const MAX_GROUP_TITLE_LEN = 80;
             const MAX_CLIENTS = 500;
             const MAX_USERSCRIPTS = 60;
-            const MAX_USERSCRIPT_SIZE = 100000; // 100 KB
+            const MAX_USERSCRIPT_SIZE = 100 * 1024; // 100 KiB
             const ALLOWED_COLORS = ['', 'green', 'yellow', 'red', 'blue', 'purple'];
             const ALLOWED_THEMES = ['dark', 'oled', 'light'];
             const ALLOWED_LAYOUTS = ['grid', 'list'];
@@ -12658,6 +13063,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 
             const isFullBackup = parsed.type === 'CENTRAL_DE_SCRIPTS_FULL_BACKUP';
             const scripts = isFullBackup ? parsed.scripts : parsed;
+            if(Array.isArray(parsed))return {valid:false,reason:'Arquivo inválido.'};
 
             if (!scripts || typeof scripts !== 'object' || Array.isArray(scripts)) {
                 return { valid: false, reason: 'Arquivo incompatível: nenhuma estrutura de abas de scripts encontrada.' };
@@ -12674,7 +13080,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 
             const dangerousKeys = new Set(['__proto__', 'constructor', 'prototype']);
             for (const tabId of tabKeys) {
-                if (typeof tabId !== 'string' || tabId.trim() === '' || dangerousKeys.has(tabId)) {
+                if (typeof tabId !== 'string' || tabId.trim() === '' || dangerousKeys.has(tabId) || !/^[A-Za-z0-9_-]{1,120}$/.test(tabId)) {
                     return { valid: false, reason: 'ID de aba inválido ou reservado encontrado.' };
                 }
                 const tab = scripts[tabId];
@@ -12712,6 +13118,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                             if (item.text !== undefined && typeof item.text !== 'string') {
                                 return { valid: false, reason: `Card na aba "${tab.name}" possui campo de texto não textual.` };
                             }
+                            if(item.id!==undefined && (typeof item.id!=='string'||!/^[A-Za-z0-9_-]{1,120}$/.test(item.id)))return {valid:false,reason:'Identificador de card inválido.'};
                             const txt = item.text || '';
                             if (txt.length > MAX_TEXT_LEN) {
                                 return { valid: false, reason: `Card na aba "${tab.name}" excede o limite de ${MAX_TEXT_LEN} caracteres.` };
@@ -12737,6 +13144,9 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                 }
             }
 
+            const extraValidation = validateExtendedPayload(parsed);
+            if (!extraValidation.valid) return extraValidation;
+
             // Validações adicionais para Backup Completo
             if (isFullBackup) {
                 if (parsed.clients) {
@@ -12759,7 +13169,8 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                         if (!us || typeof us !== 'object' || typeof us.source !== 'string') {
                             return { valid: false, reason: 'Userscript com formato corrompido.' };
                         }
-                        if (us.source.length > MAX_USERSCRIPT_SIZE) {
+                        if(us.name!==undefined&&(typeof us.name!=='string'||us.name.length>120))return {valid:false,reason:'Nome de userscript inválido.'};
+                        if (new TextEncoder().encode(us.source).byteLength > MAX_USERSCRIPT_SIZE) {
                             return { valid: false, reason: `Userscript "${us.name || 'sem nome'}" excede o limite de 100 KB.` };
                         }
                     }
@@ -12942,7 +13353,6 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             reader.onload = function(e) {
                 try {
                     const parsed = JSON.parse(e.target.result);
-                    pushUndoSnapshot('Importação de Backup');
 
                     // Validação abrangente de limites, tipos e integridade
                     const validation = validateImportPayload(parsed);
@@ -12956,47 +13366,8 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                         if (!appConfirm(`Importar Backup Completo (v${parsed.version || '2.x'}) gravado em ${new Date(parsed.exportedAt || Date.now()).toLocaleString()}?\n\nIsso restaurará scripts, abas, clientes, variáveis e preferências.`)) return;
 
                         const clean = sanitizeFullBackup(validation.sanitizedData || parsed);
-                        if (Array.isArray(parsed.workspaces) && parsed.workspaces.length > 0) {
-                            parsed.workspaces.forEach(ws => { if (ws && ws.data) normalizeData(ws.data); });
-                            localStorage.setItem(WORKSPACES_STORAGE_KEY, JSON.stringify(parsed.workspaces));
-                            if (parsed.activeWorkspaceId) {
-                                localStorage.setItem(ACTIVE_WORKSPACE_KEY, parsed.activeWorkspaceId);
-                            }
-                        }
-                        setAppData(clean.scripts);
-                        if (Array.isArray(clean.tabOrder)) saveTabOrder(clean.tabOrder);
-                        if (clean.customDefaults) setCustomDefaults(clean.customDefaults);
-                        if (Array.isArray(clean.clients)) setClientsData(clean.clients);
-                        if (typeof clean.scratchpad === 'string') {
-                            localStorage.setItem(SCRATCHPAD_KEY, clean.scratchpad);
-                            const scratchTa = document.getElementById('scratchpadText');
-                            if (scratchTa) scratchTa.value = clean.scratchpad;
-                        }
-                        if (Array.isArray(clean.userscripts)) setUserscripts(clean.userscripts);
-                        if (Array.isArray(clean.trash)) {
-                            localStorage.setItem(TRASH_STORAGE_KEY, JSON.stringify(clean.trash));
-                            if (typeof updateTrashBadge === 'function') updateTrashBadge();
-                        }
-                        if (Array.isArray(clean.customKeywords)) {
-                            localStorage.setItem(KEYWORDS_STORAGE_KEY, JSON.stringify(clean.customKeywords));
-                            if (typeof reRenderAllCardPreviews === 'function') reRenderAllCardPreviews();
-                        }
-                        if (typeof clean.keywordsEnabled === 'boolean') {
-                            localStorage.setItem(KEYWORDS_ENABLED_KEY, clean.keywordsEnabled ? 'true' : 'false');
-                        }
-                        if (clean.soundConfig) {
-                            localStorage.setItem(SOUND_STORAGE_KEY, JSON.stringify(clean.soundConfig));
-                        }
-
-                        if (clean.settings) {
-                            const s = clean.settings;
-                            if (s.theme) { localStorage.setItem(THEME_KEY, s.theme); changeTheme(s.theme, true); }
-                            if (s.layout) { localStorage.setItem(LAYOUT_KEY, s.layout); setLayout(s.layout, true); }
-                            if (s.scale) { localStorage.setItem(SCALE_KEY, s.scale); applyCardScale(parseFloat(s.scale) || 1); }
-                            if (s.activeTabId) { currentActiveTabId = s.activeTabId; localStorage.setItem(ACTIVE_TAB_KEY, s.activeTabId); }
-                            if (s.alarmConfig) localStorage.setItem(ALARM_CONFIG_KEY, JSON.stringify(s.alarmConfig));
-                        }
-
+                        saveRecoveryPoint();
+                        withLocalStorageRollback(()=>restoreFullBackup(clean));
                         markLocalChange();
                         loadAppData();
                         updateStorageIndicator();
@@ -14392,11 +14763,11 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         }
 
         function runUserscript(source, targetWindow = window) {
-            if (typeof source !== 'string' || !source.trim() || source.length > 100 * 1024) {
+            if (typeof source !== 'string' || !source.trim() || new TextEncoder().encode(source).byteLength > 100 * 1024) {
                 return { ok: false, reason: 'Userscript inválido ou acima do limite de 100 KB.' };
             }
             const foundScript = getUserscripts().find(item => item.source === source);
-            if (foundScript && foundScript.trusted !== true) {
+            if (!foundScript || foundScript.trusted !== true) {
                 return { ok: false, reason: 'Este userscript ainda não foi marcado como confiável pelo atendente.' };
             }
             const meta = parseUserscriptMeta(source);
@@ -14489,7 +14860,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             editor.className = 'usm-editor';
             editor.placeholder = `// ==UserScript==
 // @name         Meu script
-// @match        *
+// @match        https://firestrykerfx.github.io/*
 // @grant        GM_getValue
 // @grant        GM_setValue
 // ==/UserScript==
@@ -14564,9 +14935,11 @@ console.log('Userscript carregado');`;
                     status.textContent = 'Crie ou importe um userscript primeiro.';
                     return;
                 }
+                const validationError=validateUserscriptSource(editor.value);
+                if(validationError){status.textContent=window.translateAppMessage(validationError);return;}
                 const prev = scripts[selected] || {};
                 const wantsEnable = enabled.querySelector('input').checked;
-                let isTrusted = prev.trusted === true;
+                let isTrusted = prev.trusted === true && prev.source === editor.value;
                 if (wantsEnable && !isTrusted) {
                     const approved = appConfirm(
                         '⚠️ Aviso de Segurança:\n\nEste script poderá executar código JavaScript na Central de Scripts.\nVocê confia na integridade e origem deste código?'
@@ -14621,15 +14994,15 @@ console.log('Userscript carregado');`;
             if (scripts.length) selectScript(0);
         }
 
-        const MAX_USERSCRIPT_SIZE = 300 * 1024; // 300 KB
-        const MAX_USERSCRIPTS = 50;
+        const MAX_USERSCRIPT_SIZE = 100 * 1024; // 100 KiB
+        const MAX_USERSCRIPTS = 60;
 
         function validateUserscriptSource(source) {
             if (typeof source !== 'string' || !source.trim()) {
                 return 'Userscript vazio.';
             }
-            if (source.length > MAX_USERSCRIPT_SIZE) {
-                return 'Userscript excede o limite máximo permitido de 300 KB.';
+            if (new TextEncoder().encode(source).byteLength > MAX_USERSCRIPT_SIZE) {
+                return 'Userscript excede o limite máximo permitido de 100 KB.';
             }
             const meta = parseUserscriptMeta(source);
             if (!meta.name) {
@@ -14916,7 +15289,10 @@ console.log('Userscript carregado');`;
             }
         }
 
+        function isVerifiedGoogleUser(user) { return !!(user && user.emailVerified === true && Array.isArray(user.providerData) && user.providerData.some(provider=>provider.providerId==='google.com')); }
+
         function isCurrentUserAdmin() {
+            if (!isVerifiedGoogleUser(currentUser) || currentUserProfile?.status==='blocked') return false;
             if (!currentUser || !currentUser.email) return false;
             const emailLower = currentUser.email.toLowerCase().trim();
             // Autoridade primária irrestrita e auditável: e-mails de administradores mestres
@@ -15009,12 +15385,13 @@ console.log('Userscript carregado');`;
         }
 
         async function handleAuthStateChanged(user) {
+            if(currentUser?.uid!==user?.uid){pendingCloudReview=null;acknowledgedRemoteFingerprint=null;pendingSyncPayload=null;clearTimeout(syncRetryTimer);}
             currentUser = user;
             updateAuthUI();
             if (user) {
                 console.log('Usuário autenticado:', user.email);
                 const emailLower = (user.email || '').toLowerCase().trim();
-                const isAdminEmail = DEFAULT_ADMIN_EMAILS.some(a => a.toLowerCase().trim() === emailLower);
+                const isAdminEmail = isVerifiedGoogleUser(user) && DEFAULT_ADMIN_EMAILS.some(a => a.toLowerCase().trim() === emailLower);
 
                 try {
                     const userRef = firebaseDb.collection('users').doc(user.uid);
@@ -15159,6 +15536,7 @@ console.log('Userscript carregado');`;
         }
 
         function showConflictModal({ localData, remoteData }) {
+            pendingCloudReview={before:localData,after:remoteData};
             const remoteDate = remoteData.updatedAt ? new Date(remoteData.updatedAt).toLocaleString() : 'Data não informada';
             const remoteDevice = remoteData.deviceId ? `Dispositivo: ${remoteData.deviceId}` : 'Dispositivo remoto';
             
@@ -15216,10 +15594,8 @@ console.log('Userscript carregado');`;
             if (acceptBtn) {
                 acceptBtn.onclick = () => {
                     modal.closeModal();
-                    applyCloudDataToLocal(remoteData);
-                    renderWorkspacesList();
-                    loadAppData();
-                    if (typeof showToast === 'function') showToast('Versão da nuvem aplicada com sucesso!', 'success');
+                    showSyncComparison(buildSyncPayload(),remoteData,()=>acceptReviewedCloudData(remoteData),{cloudReview:true});
+
                 };
             }
 
@@ -15227,21 +15603,19 @@ console.log('Userscript carregado');`;
             if (keepBtn) {
                 keepBtn.onclick = async () => {
                     modal.closeModal();
-                    markLocalChange();
-                    const saved = await syncToCloud();
-                    if (typeof showToast === 'function') {
-                        showToast(
-                            saved
-                                ? 'Versão local gravada na nuvem com sucesso!'
-                                : 'Versão local preservada neste computador, mas a nuvem ainda não confirmou o envio.',
-                            saved ? 'success' : 'warning'
-                        );
-                    }
+                    const local=buildSyncPayload();
+                    showSyncComparison(remoteData,local,async()=>{
+                        const snap=await firebaseDb.collection('users').doc(currentUser.uid).collection('settings').doc('app_data').get();
+                        const fresh=snap.exists?validateCloudPayload(snap.data()):null;
+                        if(!fresh||syncFingerprint(fresh)!==syncFingerprint(remoteData))throw new Error(appUiText('sync.stale'));
+                        acknowledgedRemoteFingerprint=syncFingerprint(fresh);
+                        if(!await syncToCloud())throw new Error(appUiText('sync.error'));
+                    },{cloudReview:true});
                 };
             }
         }
 
-        function applyCloudDataToLocal(cloudData) {
+        function applyCloudDataToLocalUnsafe(cloudData) {
             if (!cloudData) return;
             const hasValidWorkspaces = Array.isArray(cloudData.workspaces) && cloudData.workspaces.length > 0;
             const hasValidScripts = cloudData.scripts && isValidData(cloudData.scripts);
@@ -15354,7 +15728,7 @@ console.log('Userscript carregado');`;
                 const dataDocRef = firebaseDb.collection('users').doc(currentUser.uid).collection('settings').doc('app_data');
                 const snap = await dataDocRef.get();
                 if (snap.exists) {
-                    const cloudData = snap.data();
+                    const cloudData = validateCloudPayload(snap.data());
                     const hasWs = Array.isArray(cloudData && cloudData.workspaces) && cloudData.workspaces.length > 0;
                     if (cloudData && (hasWs || (cloudData.scripts && isValidData(cloudData.scripts)))) {
                         // Verifica se os dados locais são mais recentes que a nuvem para evitar sobrescrever edições recentes
@@ -15363,7 +15737,7 @@ console.log('Userscript carregado');`;
 
                         if (localTime > (cloudTime + 2000)) {
                             console.log('Alterações locais mais recentes detectadas. Sincronizando do navegador para a Nuvem...');
-                            await syncToCloud();
+                            showConflictModal({localData:buildSyncPayload(),remoteData:cloudData});
                             return;
                         }
 
@@ -15374,7 +15748,12 @@ console.log('Userscript carregado');`;
                             return;
                         }
 
-                        applyCloudDataToLocal(cloudData);
+                        const local=buildSyncPayload();
+                        if(buildSyncComparison(local,effectiveSyncPayload(local,cloudData)).entries.length) {
+                            showSyncComparison(local,cloudData,()=>acceptReviewedCloudData(cloudData),{cloudReview:true});
+                            return;
+                        }
+                        acknowledgedRemoteFingerprint=syncFingerprint(cloudData);
                         console.log('Dados, ordem das abas e configurações sincronizados da nuvem com sucesso!');
                     }
                 } else {
@@ -15419,17 +15798,19 @@ console.log('Userscript carregado');`;
                     dot.classList.add('online');
                     dot.title = 'Nuvem do Google: Sincronizado e Conectado';
                 }
+
+                dot.dataset.i18nTitle='sync.tip.'+(!navigator.onLine?'offline':status==='syncing'||status==='error'||status==='pending'?status:'synced');
+                dot.title=appUiText(dot.dataset.i18nTitle);
             });
 
             if (statusNotice) {
-                const labels = {
-                    syncing: '🔄 Sincronizando com a Nuvem do Google...',
-                    offline: '⚡ Modo Offline: Dados salvos localmente no navegador.',
-                    pending: '💾 Salvo localmente (pendente de envio para a nuvem).',
-                    error: '⚠️ Falha na sincronização com a Nuvem.',
-                    synced: '🟢 Seus scripts e configurações estão sincronizados na Nuvem do Google.'
-                };
-                statusNotice.textContent = message || labels[status] || '';
+                const key='sync.status.'+(pendingCloudReview&&!cloudReviewCommitting?'review':status);
+                const text=document.createElement('span');
+                if(!message)text.dataset.i18n=key;
+                text.textContent=message||appUiText(key);
+                statusNotice.replaceChildren(text);
+                const last=localStorage.getItem(LAST_SYNC_TIME_KEY);
+                if(last){const line=document.createElement('small');const label=document.createElement('span');label.dataset.i18n='account.sync';label.textContent=appUiText('account.sync');line.append(label,document.createTextNode(' '+new Date(last).toLocaleString()));statusNotice.append(line);}
                 statusNotice.className = 'cloud-status-pill ' + status;
                 statusNotice.dataset.status = status;
             }
@@ -15456,6 +15837,7 @@ console.log('Userscript carregado');`;
         }
 
         async function processSyncQueue() {
+            if(pendingCloudReview&&!cloudReviewCommitting){updateSyncStatusUI('pending');return;}
             if (!currentUser || !firebaseDb || isCloudSyncing) return;
             if (!navigator.onLine) {
                 updateSyncStatusUI('offline');
@@ -15475,7 +15857,18 @@ console.log('Userscript carregado');`;
                     .collection('settings')
                     .doc('app_data');
 
-                await dataDocRef.set(payloadToSync, { merge: true });
+                await firebaseDb.runTransaction(async transaction => {
+                    const remote=await transaction.get(dataDocRef);
+                    if(remote.exists) {
+                        const data=validateCloudPayload(remote.data());
+                        const changed=buildSyncComparison(payloadToSync,effectiveSyncPayload(payloadToSync,data)).entries.length>0;
+                        if(changed && syncFingerprint(data)!==acknowledgedRemoteFingerprint) {
+                            const error=new Error('remote-conflict');error.code='app/remote-conflict';error.remote=data;throw error;
+                        }
+                    }
+                    transaction.set(dataDocRef,payloadToSync,{merge:true});
+                });
+                acknowledgedRemoteFingerprint=syncFingerprint(payloadToSync);
                 lastSyncedRevision = revisionAtStart;
                 const nowIso = new Date().toISOString();
                 localStorage.setItem(LAST_LOCAL_UPDATE_KEY, String(Date.now()));
@@ -15495,6 +15888,11 @@ console.log('Userscript carregado');`;
                     setTimeout(() => processSyncQueue(), 0);
                 }
             } catch (err) {
+                if(err.code==='app/remote-conflict') {
+                    pendingSyncPayload=buildSyncPayload();updateSyncStatusUI('pending');clearTimeout(syncRetryTimer);
+                    showSyncComparison(buildSyncPayload(),err.remote,()=>acceptReviewedCloudData(err.remote),{cloudReview:true});
+                    return;
+                }
                 console.warn('Erro ao processar sincronização na nuvem:', err);
                 // Se houve novas edições durante a tentativa que falhou, nunca recoloca
                 // na fila o snapshot antigo: preserva o estado local mais recente.
@@ -15510,6 +15908,7 @@ console.log('Userscript carregado');`;
         }
 
         function manualRetrySync() {
+            if(pendingCloudReview){openCloudDownloadPreviewModal();return;}
             syncRetryCount = 0;
             processSyncQueue();
         }
@@ -15599,8 +15998,8 @@ console.log('Userscript carregado');`;
                         <div data-user-content="true" style="font-weight:700; font-size:15px; color:var(--title-color);">${escapeHtml(fullName)}</div>
                         <div data-user-content="true" style="font-size:12px; opacity:0.8; word-break:break-all;">${escapeHtml(emailStr)}</div>
                         <div style="margin-top:6px; display:flex; gap:6px; align-items:center;">
-                            <span class="admin-badge ${isAdmin ? 'role-admin' : 'role-user'}">${isAdmin ? '🛡️ Administrador' : '👤 Usuário'}</span>
-                            <span class="admin-badge status-active">🟢 Conectado à Nuvem</span>
+                            <span data-i18n="${isAdmin ? 'account.admin' : 'account.user'}" class="admin-badge ${isAdmin ? 'role-admin' : 'role-user'}">${isAdmin ? '🛡️ Administrador' : '👤 Usuário'}</span>
+                            <span class="admin-badge status-active" data-i18n="account.connected">🟢 Conectado à Nuvem</span>
                         </div>
                     </div>
                 </div>
@@ -15627,7 +16026,7 @@ console.log('Userscript carregado');`;
             } catch(e) {}
 
             const isDevUnlocked = typeof isDeveloperUnlocked === 'function' ? isDeveloperUnlocked() : false;
-            const isAutoMaster = currentUser && currentUser.email && (currentUser.email.toLowerCase().trim() === 'leogabfx@gmail.com' || currentUser.email.toLowerCase().trim() === 'leonardo3dtelecom@gmail.com');
+            const isAutoMaster = isVerifiedGoogleUser(currentUser) && currentUser.email && (currentUser.email.toLowerCase().trim() === 'leogabfx@gmail.com' || currentUser.email.toLowerCase().trim() === 'leonardo3dtelecom@gmail.com');
 
             const developerLicenseCardHtml = `
                 <div class="dev-license-card" id="devLicenseCard" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.9) 100%); border: 1.5px solid rgba(234, 179, 8, 0.45); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25); position: relative;">
@@ -15647,7 +16046,7 @@ console.log('Userscript carregado');`;
                             </div>
                         </div>
                         <div style="text-align:right;">
-                            <span class="dev-lock-badge" style="font-size:10px; font-weight:700; padding:3px 8px; border-radius:6px; background:${isAutoMaster ? '#3b82f6' : isDevUnlocked ? '#10b981' : '#ef4444'}; color:#ffffff; display:inline-flex; align-items:center; gap:4px; box-shadow:0 2px 6px rgba(0,0,0,0.2);">
+                            <span data-i18n="${isAutoMaster ? 'account.master' : isDevUnlocked ? 'account.unlocked' : 'account.locked'}" class="dev-lock-badge" style="font-size:10px; font-weight:700; padding:3px 8px; border-radius:6px; background:${isAutoMaster ? '#3b82f6' : isDevUnlocked ? '#10b981' : '#ef4444'}; color:#ffffff; display:inline-flex; align-items:center; gap:4px; box-shadow:0 2px 6px rgba(0,0,0,0.2);">
                                 ${isAutoMaster ? '👑 Autor Mestre' : isDevUnlocked ? '🔓 Desbloqueado' : '🔒 Trava Ativa'}
                             </span>
                         </div>
@@ -15681,7 +16080,7 @@ console.log('Userscript carregado');`;
                         const cloudNoticeHtml = isLoggedIn ? `
                 <div id="cloudSyncStatusNotice" class="cloud-status-pill online" role="status" aria-live="polite">
                     🟢 <span>Seus scripts e configurações estão sincronizados na Nuvem do Google.</span>
-                    <div style="font-size:10.5px; opacity:0.8; margin-top:3px;"><span>Última sincronização:</span> <span>${lastSyncFormatted}</span></div>
+                    <div style="font-size:10.5px; opacity:0.8; margin-top:3px;"><span data-i18n="account.sync">Última sincronização:</span> <span>${lastSyncFormatted}</span></div>
                 </div>
             ` : `
                 <div id="cloudSyncStatusNotice" class="cloud-status-pill offline" role="status" aria-live="polite">
@@ -15799,6 +16198,11 @@ console.log('Userscript carregado');`;
                     </div>
                 </div>
             `;
+
+            overlay.querySelector('.vm-body').prepend(documentLanguageControl());
+            const recoveryButton=document.createElement('button');
+            recoveryButton.className='io-btn'; recoveryButton.dataset.i18n='recovery.open'; recoveryButton.textContent=appUiText('recovery.open');
+            recoveryButton.onclick=()=>openRecoveryPoints(); overlay.querySelector('.vm-body').append(recoveryButton);
 
             // Listeners do Bloqueio do Desenvolvedor (v3.1.1)
             const lockActionBtn = overlay.querySelector('#btnDevLockAction');
@@ -15995,26 +16399,18 @@ console.log('Userscript carregado');`;
                 btn.textContent = '⏳ Salvando na Nuvem...';
                 btn.disabled = true;
                 try {
-                    const saved = await syncToCloud();
-                    if (!saved) {
-                        btn.textContent = '⚠️ Envio não confirmado';
-                        btn.disabled = false;
-                        if (typeof showToast === 'function') {
-                            showToast('Os dados continuam salvos localmente. A nuvem ainda não confirmou o envio; tente novamente quando a conexão estiver estável.', 'warning', 5000);
-                        } else {
-                            appAlert('Os dados continuam salvos localmente, mas a nuvem ainda não confirmou o envio.');
-                        }
-                        return;
-                    }
-                    btn.textContent = '✅ Salvo com Sucesso!';
-                    setTimeout(() => {
-                        overlay.remove();
-                        if (typeof showToast === 'function') {
-                            showToast(`✅ ${localStats.totalWorkspaces} Áreas e ${localStats.totalScripts} scripts salvos na Nuvem!`, 'success', 3000);
-                        } else {
-                            appAlert(`Todas as ${localStats.totalWorkspaces} Áreas de Trabalho e ${localStats.totalScripts} scripts foram salvos na Nuvem do Google com sucesso!`);
-                        }
-                    }, 500);
+                    const snap=await firebaseDb.collection('users').doc(currentUser.uid).collection('settings').doc('app_data').get();
+                    const remote=snap.exists?validateCloudPayload(snap.data()):{workspaces:[],scripts:{}};
+                    const local=buildSyncPayload();
+                    showSyncComparison(remote,local,async()=>{
+                        const latest=await firebaseDb.collection('users').doc(currentUser.uid).collection('settings').doc('app_data').get();
+                        const fresh=latest.exists?validateCloudPayload(latest.data()):{workspaces:[],scripts:{}};
+                        if(syncFingerprint(fresh)!==syncFingerprint(remote))throw new Error(appUiText('sync.stale'));
+                        acknowledgedRemoteFingerprint=syncFingerprint(fresh);
+                        const saved=await syncToCloud();if(!saved)throw new Error(appUiText('sync.error'));overlay.remove();
+                    },{cloudReview:true});
+                    btn.disabled=false; btn.textContent=window.translateAppText('🚀 Confirmar e Salvar na Nuvem');
+                    return;
                 } catch (err) {
                     appAlert('Falha ao salvar na nuvem: ' + (err.message || err));
                     btn.textContent = '🚀 Confirmar e Salvar na Nuvem';
@@ -16081,6 +16477,7 @@ console.log('Userscript carregado');`;
                 }
 
                 // Estatísticas consolidadas da Nuvem e Locais
+                cloudData = validateCloudPayload(cloudData);
                 const cloudStats = getWorkspacesUnifiedStats(cloudData.workspaces, cloudData.scripts, cloudData.tabOrder);
                 const localStats = getWorkspacesUnifiedStats();
                 const cloudDateStr = cloudData.updatedAt ? new Date(cloudData.updatedAt).toLocaleString() : 'Data não registrada';
@@ -16157,21 +16554,9 @@ console.log('Userscript carregado');`;
                 `;
 
                 overlay.querySelector('#btnConfirmDownloadAction').onclick = () => {
-                    pushUndoSnapshot('Download da Nuvem');
-                    applyCloudDataToLocal(cloudData);
-                    localStorage.setItem(LAST_LOCAL_UPDATE_KEY, String(Date.now()));
-                    renderWorkspacesList();
-                    loadAppData();
-                    updateStorageIndicator();
-                    updateUndoButton();
-                    initAlarmConfigUI();
-
+                    showSyncComparison(buildSyncPayload(),cloudData,()=>acceptReviewedCloudData(cloudData,isTeamDefault),{cloudReview:true});
                     overlay.remove();
-                    if (typeof showToast === 'function') {
-                        showToast(`✅ ${cloudStats.totalWorkspaces} Áreas e ${cloudStats.totalScripts} scripts restaurados da Nuvem!`, 'success', 3000);
-                    } else {
-                        appAlert(`✅ ${cloudStats.totalWorkspaces} Áreas de Trabalho e ${cloudStats.totalScripts} scripts restaurados da Nuvem com sucesso!`);
-                    }
+
                 };
 
                 document.body.appendChild(overlay);
@@ -16309,96 +16694,87 @@ console.log('Userscript carregado');`;
             const rulesText = `rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    function signedIn() {
-      return request.auth != null;
+    function googleUser() {
+      return request.auth != null && request.auth.token.email_verified == true &&
+        request.auth.token.firebase.sign_in_provider == 'google.com';
     }
-
-    function userExists(uid) {
-      return signedIn() && exists(/databases/$(database)/documents/users/$(uid));
-    }
-
+    function userExists(uid) { return exists(/databases/$(database)/documents/users/$(uid)); }
     function activeUser() {
-      return userExists(request.auth.uid) &&
+      return googleUser() && userExists(request.auth.uid) &&
         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.status == 'active';
     }
-
-    // Administradores mestres são definidos por e-mail verificado pelo Google.
-    // Administradores adicionais só são reconhecidos após promoção por um admin.
-    function isMasterAdmin() {
-      return signedIn() && request.auth.token.email_verified == true &&
-        request.auth.token.email in ['leogabfx@gmail.com', 'leonardo3dtelecom@gmail.com'];
+    function masterEmail() {
+      return googleUser() && request.auth.token.email in ['leogabfx@gmail.com', 'leonardo3dtelecom@gmail.com'];
     }
-
-    function isAdmin() {
-      return isMasterAdmin() || (activeUser() &&
+    function masterAdmin() {
+      return masterEmail() && (!userExists(request.auth.uid) || activeUser());
+    }
+    function admin() {
+      return activeUser() && (masterEmail() ||
         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin');
     }
-
-    function canUseApp() {
-      return activeUser();
+    function validProfile(data) {
+      return data.keys().hasAll(['uid', 'email', 'displayName', 'photoURL', 'createdAt', 'lastLogin', 'role', 'status', 'scriptCopies']) &&
+        data.keys().hasOnly(['uid', 'email', 'displayName', 'photoURL', 'createdAt', 'lastLogin', 'role', 'status', 'scriptCopies']) &&
+        data.uid is string && data.email is string && data.email.size() <= 320 &&
+        data.displayName is string && data.displayName.size() <= 120 &&
+        data.photoURL is string && data.photoURL.size() <= 2048 &&
+        data.createdAt is string && data.createdAt.size() <= 40 &&
+        data.lastLogin is string && data.lastLogin.size() <= 40 &&
+        data.role in ['user','admin'] && data.status in ['active','blocked'] &&
+        data.scriptCopies is int && data.scriptCopies >= 0;
     }
-
+    function validBackup(data) {
+      return data.keys().hasOnly(['schemaVersion','revision','deviceId','updatedBy','updatedAt','workspaces',
+        'activeWorkspaceId','scripts','tabOrder','customDefaults','clients','scratchpad','trash',
+        'customKeywords','keywordsEnabled','soundConfig','settings']) &&
+        data.scripts is map && data.scripts.size() <= 60 &&
+        data.workspaces is list && data.workspaces.size() <= 40 &&
+        data.clients is list && data.clients.size() <= 500 &&
+        data.scratchpad is string && data.scratchpad.size() <= 200000 &&
+        data.revision is int && data.revision >= 0 &&
+        data.deviceId is string && data.deviceId.size() <= 120;
+    }
     match /users/{userId} {
-      allow get: if signedIn() && (request.auth.uid == userId || isAdmin());
-      allow list: if isAdmin();
-
-      allow create: if signedIn() && request.auth.uid == userId &&
-        request.resource.data.keys().hasOnly([
-          'uid', 'email', 'displayName', 'photoURL', 'createdAt', 'lastLogin',
-          'role', 'status', 'scriptCopies'
-        ]) &&
-        request.resource.data.uid == request.auth.uid &&
-        request.resource.data.email == request.auth.token.email &&
-        request.resource.data.status == 'active' &&
-        request.resource.data.role == (isMasterAdmin() ? 'admin' : 'user') &&
-        request.resource.data.displayName is string &&
-        request.resource.data.displayName.size() <= 120 &&
-        request.resource.data.photoURL is string &&
-        request.resource.data.photoURL.size() <= 2048 &&
-        request.resource.data.scriptCopies is number;
-
-      allow update: if isAdmin() || (canUseApp() && request.auth.uid == userId &&
-        request.resource.data.diff(resource.data).affectedKeys().hasOnly([
-          'lastLogin', 'displayName', 'photoURL', 'scriptCopies'
-        ]) &&
-        request.resource.data.role == resource.data.role &&
-        request.resource.data.status == resource.data.status &&
-        request.resource.data.displayName is string &&
-        request.resource.data.displayName.size() <= 120 &&
-        request.resource.data.photoURL is string &&
-        request.resource.data.photoURL.size() <= 2048 &&
-        request.resource.data.scriptCopies is number);
-
-      allow delete: if isMasterAdmin();
-
-      match /settings/{docId} {
-        allow read, write: if canUseApp() && request.auth.uid == userId || isAdmin();
+      allow get: if googleUser() && (request.auth.uid == userId || admin());
+      allow list: if admin();
+      allow create: if googleUser() && request.auth.uid == userId && validProfile(request.resource.data) &&
+        request.resource.data.uid == userId && request.resource.data.email == request.auth.token.email &&
+        request.resource.data.status == 'active' && request.resource.data.role == (masterEmail() ? 'admin' : 'user');
+      allow update: if validProfile(request.resource.data) &&
+        request.resource.data.uid == resource.data.uid && request.resource.data.email == resource.data.email &&
+        request.resource.data.createdAt == resource.data.createdAt &&
+        (admin() || (activeUser() && request.auth.uid == userId &&
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['lastLogin','displayName','photoURL','scriptCopies'])));
+      allow delete: if masterAdmin();
+      match /settings/{documentId} {
+        allow read: if documentId == 'app_data' && (admin() || (activeUser() && request.auth.uid == userId));
+        allow create, update: if documentId == 'app_data' && validBackup(request.resource.data) &&
+          (admin() || (activeUser() && request.auth.uid == userId));
+        allow delete: if masterAdmin();
       }
     }
-
-    match /templates/{docId} {
-      allow read: if canUseApp();
-      allow write: if isAdmin();
+    match /templates/{documentId} {
+      allow read: if activeUser() && documentId == 'default_scripts';
+      allow create, update: if admin() && documentId == 'default_scripts' && validBackup(request.resource.data);
+      allow delete: if masterAdmin();
     }
-
-    match /global_settings/{docId} {
-      allow read: if canUseApp();
-      allow write: if isAdmin();
+    match /global_settings/{documentId} {
+      allow read: if activeUser() && documentId == 'default_scripts';
+      allow create, update: if admin() && documentId == 'default_scripts' && validBackup(request.resource.data);
+      allow delete: if masterAdmin();
     }
-
     match /audit_logs/{logId} {
-      allow create: if isAdmin();
-      allow read: if isAdmin();
+      allow create: if admin() && request.resource.data.performedBy == request.auth.uid &&
+        request.resource.data.keys().hasOnly(['action','targetId','targetEmail','details','performedBy',
+          'performedByEmail','deviceId','appVersion','userAgent','createdAt']);
+      allow read: if admin();
       allow update, delete: if false;
     }
-
-    // Negação explícita para qualquer coleção não declarada acima.
-    match /{document=**} {
-      allow read, write: if false;
-    }
+    match /{document=**} { allow read, write: if false; }
   }
-}`;
+}
+`;
 
             overlay.innerHTML = `
                 <div class="var-modal-box vm-box" style="width: min(640px, 95vw); max-height: 90vh;">
@@ -16633,7 +17009,7 @@ service cloud.firestore {
                         <td><small style="opacity:0.8;">${escapeHtml(lastLoginStr)}</small></td>
                         <td><strong>${parseInt(u.scriptCopies) || 0}</strong> cópias</td>
                         <td>
-                            <span class="admin-badge ${isAdmin ? 'role-admin' : 'role-user'}">${isAdmin ? '🛡️ Admin' : '👤 Usuário'}</span>
+                            <span data-i18n="${isAdmin ? 'account.admin' : 'account.user'}" class="admin-badge ${isAdmin ? 'role-admin' : 'role-user'}">${isAdmin ? '🛡️ Admin' : '👤 Usuário'}</span>
                         </td>
                         <td>
                             <span class="admin-badge ${isBlocked ? 'status-blocked' : 'status-active'}">${isBlocked ? '🚫 Bloqueado' : '✅ Ativo'}</span>
@@ -18421,7 +18797,7 @@ service cloud.firestore {
 
         function isDeveloperUnlocked() {
             const user = (typeof currentUser !== 'undefined' && currentUser) ? currentUser : null;
-            if (!user || user.emailVerified !== true || !user.email) return false;
+            if (!isVerifiedGoogleUser(user) || !user.email) return false;
             const email = user.email.toLowerCase().trim();
             return email === 'leogabfx@gmail.com' || email === 'leonardo3dtelecom@gmail.com';
         }
@@ -20085,9 +20461,9 @@ service cloud.firestore {
         const externalRoots = new Set();
         const externalObservers = new WeakMap();
         const normalize = value => String(value || '').replace(/\s+/g, ' ').trim();
-        const translateUiText = (value, inChangelog = false) => {
+        const translateUiText = (value, inChangelog = false, language = currentLanguage) => {
             const original = String(value ?? '');
-            if (currentLanguage !== 'en') return original;
+            if (language !== 'en') return original;
             const key = normalize(original);
             if (inChangelog && changelogTranslations[key]) return changelogTranslations[key];
             if (inChangelog && /Versão \d/.test(key)) return key.replace(/Versão/g, "Version");
@@ -20144,7 +20520,7 @@ service cloud.firestore {
         // Only known suggestion fields are localized. Names, notes, scripts,
         // credentials and arbitrary modal inputs are never inferred as presets.
         const presetFieldIds = new Set([
-            'tkCorTipo','tkEquip','tkTitleLentidao','tkProblemaLentidao','tkTitleSemAcesso',
+            'tkCost','tkCorTipo','tkEquip','tkTitleLentidao','tkProblemaLentidao','tkTitleSemAcesso',
             'tkProblemaSemAcesso','tkAssuntoCabo','tkOndeCabo','tkObsCabo',
             'tkCobrancaCabo','tkRedeEvento','tkValorEvento','tkTitleGeral','tkProblemaGeral',
             'tstRelato','tstExtrato','tstAjustes','tstReiniciado','tstMtu','tstWan','tstDns','tstResumo',
@@ -20198,6 +20574,18 @@ service cloud.firestore {
             displayPreset(el, String(value), manual);
         }
         window.getAppFormValue = getFormValue;
+        window.translateAppTextForLanguage = (text, language) => translateUiText(text, false, language);
+        window.getAppDocumentValue = (el, language) => {
+            if (!el) return '';
+            const original = getFormValue(el);
+            const record = presetValues.get(el);
+            if (el.tagName === 'SELECT' && el.value !== '__custom__') return translateUiText(original,false,language);
+            if (record && !record.manual && el.value === record.display) {
+                if (/^(tst|sideTst)Ajustes$/.test(el.id)) return original.split(',').map(t=>translateUiText(t.trim(),false,language)).join(', ');
+                return translateUiText(original,false,language);
+            }
+            return original;
+        };
         window.setAppPresetValue = setPresetValue;
         window.saveAppFormEdits = (root, state) => savedUserFields.set(state, new Map(getUserFields(root)));
         window.restoreAppFormEdits = (root, state) => {
@@ -20205,6 +20593,7 @@ service cloud.firestore {
         };
         const excluded = node => {
             const el = node && (node.nodeType === 1 ? node : node.parentElement);
+            if (el && el.closest('[data-i18n]')) return true;
             if (el && el.closest('.changelog-box')) return !!el.closest('script,style,textarea,input');
             return !el || !!el.closest('script,style,textarea,input,code,pre,.comp-card-text,.item-text,.item-textarea,.scratchpad-textarea,[contenteditable="true"],[data-user-content="true"],[data-document-content]');
         };
@@ -20226,16 +20615,22 @@ service cloud.firestore {
             if (node.nodeValue !== target) node.nodeValue = target;
             textLast.set(node, target);
         }
-        const attrNames = ['title','aria-label','placeholder'];
+        const attrNames = ['title','aria-label','placeholder','data-i18n','data-i18n-title','data-i18n-aria-label'];
         function translateElement(el) {
             if (!el || el.nodeType !== 1 || el.closest('script,style,code,.comp-card-text,[contenteditable="true"],[data-user-content="true"],[data-document-content]')) return;
+            if(el.dataset.i18nAriaLabel && APP_UI_MESSAGES[el.dataset.i18nAriaLabel]){const text=appUiText(el.dataset.i18nAriaLabel,currentLanguage);if(el.getAttribute('aria-label')!==text)el.setAttribute('aria-label',text);}
+            if(el.dataset.i18nTitle && APP_UI_MESSAGES[el.dataset.i18nTitle]){const text=appUiText(el.dataset.i18nTitle,currentLanguage);if(el.title!==text)el.title=text;}
+            if (el.dataset.i18n && APP_UI_MESSAGES[el.dataset.i18n]) {
+                const target=appUiText(el.dataset.i18n,currentLanguage);
+                if(el.textContent!==target)el.textContent=target;
+            }
             if (el.tagName === 'OPTION' && !el.hasAttribute('value')) el.setAttribute('value', el.textContent);
             let originals = attrOriginals.get(el);
             if (!originals) { originals = {}; attrOriginals.set(el, originals); }
             let lasts = attrLast.get(el);
             if (!lasts) { lasts = {}; attrLast.set(el, lasts); }
             for (const attr of attrNames) {
-                if (!el.hasAttribute(attr)) continue;
+                if (attr === 'data-i18n' || attr === 'data-i18n-title' || attr==='data-i18n-aria-label' || (attr==='aria-label'&&el.dataset.i18nAriaLabel) || (attr==='title'&&el.dataset.i18nTitle) || !el.hasAttribute(attr)) continue;
                 const live = el.getAttribute(attr);
                 if (!(attr in originals) || (attr in lasts && live !== lasts[attr])) originals[attr] = live;
                 const original = originals[attr];
