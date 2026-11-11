@@ -4427,7 +4427,7 @@ mark.custom-keyword-highlight:hover {
         <!-- Grupo Superior: Marca e Módulos Principais -->
         <div class="sidebar-group sidebar-top">
             <div class="sidebar-top-bar">
-                <div class="sidebar-brand-card" onclick="openChangelogModal()" role="button" tabindex="0" title="Central de Scripts v3.1.1 - Clique para ver o Histórico e Novidades">
+                <div class="sidebar-brand-card" onclick="openChangelogModal()" role="button" tabindex="0" title="Central de Scripts v3.1.3 - Clique para ver o Histórico e Novidades">
                     <svg class="header-logo-icon" width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:8px; box-shadow:0 2px 8px rgba(0,122,255,0.35); flex-shrink:0;">
                         <defs>
                             <linearGradient id="appleLogoGradSidebar" x1="0" y1="0" x2="1" y2="1">
@@ -4442,7 +4442,7 @@ mark.custom-keyword-highlight:hover {
                     </svg>
                     <div class="sidebar-brand-info">
                         <span class="sidebar-brand-title">Central de Scripts</span>
-                        <span class="sidebar-brand-badge">v3.1.1</span>
+                        <span class="sidebar-brand-badge">v3.1.3</span>
                     </div>
                 </div>
                 <button type="button" class="sidebar-collapse-toggle-btn" id="sidebarCollapseToggleBtn" onclick="toggleSidebarCollapse()" title="Recolher Barra Lateral (Ctrl+B)" aria-label="Recolher Barra Lateral">
@@ -4670,8 +4670,6 @@ mark.custom-keyword-highlight:hover {
         const DEV_AUTHOR_NAME = "Leonardo Gabriel De Camargo Pisoni (FirestrykerFx)";
         const DEV_AUTHOR_EMAIL = "leogabfx@gmail.com";
         const DEV_LICENSE_ID = "LGP-FSFX-2026-BR";
-        const DEV_PIN_STORAGE_KEY = "scripts_dev_pin_v1";
-        const DEFAULT_DEV_PIN = "2026";
 
         /* Função global segura de escape HTML */
         function escapeHtml(str) {
@@ -4706,8 +4704,9 @@ mark.custom-keyword-highlight:hover {
             return String(str).replace(/([ #;&,.+*~':"!^$\[\]()=>|\/@])/g, '\\$1');
         }
 
-        const APP_VERSION = '3.1.1';
+        const APP_VERSION = '3.1.3';
         const UPDATE_MANIFEST_URL = 'https://firestrykerfx.github.io/version.json';
+        // O manifesto de atualização deve incluir sha256 (64 caracteres hexadecimais) do HTML publicado.
         const UPDATE_CHECK_INTERVAL = 6 * 60 * 60 * 1000;
 
         // Chaves e Constantes de Segurança e Funcionalidades (v3.1.1)
@@ -5869,55 +5868,59 @@ mark.custom-keyword-highlight:hover {
 
         /* ===== Módulo de Gestão de Áreas de Trabalho (Estilo Trello) ===== */
         function getWorkspaces() {
+            let recoveryData = null;
+            try {
+                const rawMain = localStorage.getItem(STORAGE_KEY);
+                if (rawMain) {
+                    const parsedMain = JSON.parse(rawMain);
+                    if (isValidData(parsedMain)) recoveryData = normalizeData(parsedMain);
+                }
+            } catch (err) {}
+            if (!recoveryData) {
+                try { recoveryData = normalizeData(JSON.parse(JSON.stringify(defaultData))); }
+                catch (err) { recoveryData = defaultData; }
+            }
+
             try {
                 const raw = localStorage.getItem(WORKSPACES_STORAGE_KEY);
                 if (raw) {
                     const parsed = JSON.parse(raw);
                     if (Array.isArray(parsed) && parsed.length > 0) {
-                        let modified = false;
-                        parsed.forEach(ws => {
-                            if (!ws || !ws.data || !isValidData(ws.data)) {
-                                let recoveryData = null;
-                                try {
-                                    const rawMain = localStorage.getItem(STORAGE_KEY);
-                                    if (rawMain) {
-                                        const parsedMain = JSON.parse(rawMain);
-                                        if (isValidData(parsedMain)) recoveryData = parsedMain;
-                                    }
-                                } catch (err) {}
-                                if (!recoveryData) {
-                                    try { recoveryData = JSON.parse(JSON.stringify(defaultData)); } catch (err) { recoveryData = defaultData; }
-                                }
-                                normalizeData(recoveryData);
-                                ws.data = recoveryData;
-                                ws.tabOrder = Object.keys(recoveryData);
-                                modified = true;
-                            }
+                        const seenIds = new Set();
+                        const repaired = parsed.map((candidate, index) => {
+                            const ws = candidate && typeof candidate === 'object' && !Array.isArray(candidate)
+                                ? candidate : {};
+                            let id = typeof ws.id === 'string' && ws.id.trim()
+                                ? ws.id.trim() : `ws_recovered_${index + 1}`;
+                            if (seenIds.has(id)) id = `${id}_${index + 1}`;
+                            seenIds.add(id);
+
+                            const data = ws.data && isValidData(ws.data)
+                                ? normalizeData(ws.data)
+                                : normalizeData(JSON.parse(JSON.stringify(recoveryData)));
+                            const tabOrder = Array.isArray(ws.tabOrder)
+                                ? ws.tabOrder.filter(tabId => typeof tabId === 'string' && Object.prototype.hasOwnProperty.call(data, tabId))
+                                : Object.keys(data);
+
+                            return {
+                                ...ws,
+                                id,
+                                name: typeof ws.name === 'string' && ws.name.trim() ? ws.name.trim() : `Área de Trabalho ${index + 1}`,
+                                icon: typeof ws.icon === 'string' ? ws.icon : '📁',
+                                data,
+                                tabOrder
+                            };
                         });
-                        if (modified) {
-                            try { localStorage.setItem(WORKSPACES_STORAGE_KEY, JSON.stringify(parsed)); } catch (err) {}
+                        if (JSON.stringify(repaired) !== JSON.stringify(parsed)) {
+                            try { localStorage.setItem(WORKSPACES_STORAGE_KEY, JSON.stringify(repaired)); }
+                            catch (err) { console.warn('Não foi possível persistir a recuperação das áreas de trabalho:', err); }
                         }
-                        return parsed;
+                        return repaired;
                     }
                 }
             } catch (e) {
-                console.warn('Erro ao carregar workspaces:', e);
+                console.warn('Erro ao carregar workspaces; iniciando recuperação segura:', e);
             }
-
-            // Migração transparente da base atual para a Área Principal
-            let existingData = null;
-            try {
-                const rawData = localStorage.getItem(STORAGE_KEY);
-                if (rawData) {
-                    const parsedData = JSON.parse(rawData);
-                    if (isValidData(parsedData)) existingData = parsedData;
-                }
-            } catch (e) {}
-
-            if (!existingData) {
-                try { existingData = JSON.parse(JSON.stringify(defaultData)); } catch (e) { existingData = defaultData; }
-            }
-            normalizeData(existingData);
 
             let existingTabOrder = [];
             try {
@@ -5925,26 +5928,26 @@ mark.custom-keyword-highlight:hover {
                 if (rawOrder) existingTabOrder = JSON.parse(rawOrder);
             } catch (e) {}
             if (!Array.isArray(existingTabOrder) || existingTabOrder.length === 0) {
-                existingTabOrder = Object.keys(existingData);
+                existingTabOrder = Object.keys(recoveryData);
             }
 
             const defaultWs = {
                 id: DEFAULT_WORKSPACE_ID,
                 name: 'Suporte Principal',
                 icon: '💼',
-                data: existingData,
-                tabOrder: existingTabOrder,
+                data: recoveryData,
+                tabOrder: existingTabOrder.filter(id => Object.prototype.hasOwnProperty.call(recoveryData, id)),
                 createdAt: Date.now()
             };
-
             const initialWorkspaces = [defaultWs];
             try {
                 localStorage.setItem(WORKSPACES_STORAGE_KEY, JSON.stringify(initialWorkspaces));
                 if (!localStorage.getItem(ACTIVE_WORKSPACE_KEY)) {
                     localStorage.setItem(ACTIVE_WORKSPACE_KEY, DEFAULT_WORKSPACE_ID);
                 }
-            } catch (e) {}
-
+            } catch (e) {
+                console.warn('Não foi possível persistir a área de trabalho recuperada:', e);
+            }
             return initialWorkspaces;
         }
 
@@ -7083,28 +7086,37 @@ mark.custom-keyword-highlight:hover {
         }
 
         function normalizeData(d) {
+            if (!d || typeof d !== 'object' || Array.isArray(d)) return {};
             Object.entries(d).forEach(([tabKey, t]) => {
-                if (!t || typeof t !== 'object') return;
-                if (!Array.isArray(t.groups)) t.groups = [{ title: 'Geral', items: Array.isArray(t.items) ? t.items : [] }];
+                if (!t || typeof t !== 'object' || Array.isArray(t)) {
+                    d[tabKey] = t = { name: String(tabKey), groups: [] };
+                }
+                if (!Array.isArray(t.groups)) {
+                    t.groups = [{ title: 'Geral', items: Array.isArray(t.items) ? t.items : [] }];
+                }
+                t.groups = t.groups.filter(g => g && typeof g === 'object' && !Array.isArray(g));
                 t.groups.forEach((g, gIdx) => {
                     g.title = typeof g.title === 'string' ? g.title : '';
-                    g.items = (g.items || []).map((i, itemIdx) => {
+                    const sourceItems = Array.isArray(g.items) ? g.items : [];
+                    g.items = sourceItems.map((i, itemIdx) => {
                         const fallbackId = 'card_' + tabKey + '_' + gIdx + '_' + itemIdx;
                         if (typeof i === 'string') {
                             return { id: fallbackId, text: i === OLD_PLACEHOLDER ? '' : i, tags: [], alarm: '', favorite: false, color: '', copies: 0 };
                         }
+                        if (!i || typeof i !== 'object' || Array.isArray(i)) i = {};
                         return {
                             id: (typeof i.id === 'string' && i.id.trim()) ? i.id.trim() : fallbackId,
-                            text: (i.text === OLD_PLACEHOLDER ? '' : (i.text || '')),
-                            tags: Array.isArray(i.tags) ? i.tags : [],
-                            alarm: i.alarm || '',
+                            text: (typeof i.text === 'string' && i.text !== OLD_PLACEHOLDER) ? i.text : '',
+                            tags: Array.isArray(i.tags) ? i.tags.filter(tag => typeof tag === 'string').slice(0, 15) : [],
+                            alarm: typeof i.alarm === 'string' ? i.alarm : '',
                             favorite: !!i.favorite,
-                            color: i.color || '',
-                            copies: parseInt(i.copies) || 0
+                            color: typeof i.color === 'string' ? i.color : '',
+                            copies: Number.isFinite(Number(i.copies)) ? Math.max(0, parseInt(i.copies, 10) || 0) : 0
                         };
                     });
                 });
                 t.items = t.groups.flatMap(g => g.items);
+                if (typeof t.name !== 'string') t.name = String(tabKey);
             });
             return d;
         }
@@ -7696,20 +7708,58 @@ mark.custom-keyword-highlight:hover {
                     </div>
                     <div class="vm-body" style="padding: 16px 20px; overflow-y: auto;">
                         
-                                                                                                                                                                        <!-- Versão 3.1.1 Oficial -->
+                        <!-- Versão 3.1.3 Oficial -->
                         <div class="changelog-version-card" style="border-color: #eab308;">
                             <div class="changelog-version-header">
                                 <div class="changelog-version-title">
-                                    <span>🛡️ Versão 3.1.1</span>
+                                    <span>🔐 Versão 3.1.3</span>
                                     <span class="changelog-badge" style="background:#eab308; color:#000; font-weight:800;">Versão Atual</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">11/11/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>🔐 Regras Firestore reforçadas:</strong> bloqueio de contas inativas, perfil com campos editáveis limitados, promoção administrativa protegida e negação padrão para caminhos não declarados. As regras precisam ser publicadas no Console do Firebase.</li>
+                                <li><strong>🧩 Userscripts:</strong> execução exige @match/@include explícito, bloqueia padrão universal e limita o código a 100 KB; scripts continuam exigindo confiança e ativação explícitas.</li>
+                                <li><strong>⬇️ Atualizações verificadas:</strong> origem restrita ao domínio oficial e verificação SHA-256 obrigatória antes do download. O version.json precisa conter o hash do arquivo HTML.</li>
+                                <li><strong>🧰 Recuperação de Áreas de Trabalho:</strong> Tratamento de registros inválidos ou incompletos no armazenamento local, evitando falhas quando uma área está nula, sem ID ou com dados inconsistentes.</li>
+                                <li><strong>🧹 Normalização defensiva dos cards:</strong> Validação de grupos, itens, textos, tags, alarmes e contadores antes de reconstruir os dados da interface.</li>
+                                <li><strong>🧪 Validação estática:</strong> Arquivo JavaScript validado sintaticamente e estrutura HTML conferida; testes de navegador e Firebase real ainda dependem do ambiente de execução.</li>
+                                <li><strong>☁️ Fila Firebase:</strong> Correção de concorrência para preservar as edições mais recentes quando uma tentativa de sincronização falha durante novas alterações locais.</li>
+                                <li><strong>📣 Confirmação de salvamento:</strong> As telas de envio agora só exibem sucesso quando a fila confirma a gravação; falhas mantêm os dados locais e mostram aviso de envio não confirmado.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versão 3.1.2 Anterior -->
+                        <div class="changelog-version-card">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>🛠️ Versão 3.1.2</span>
+                                    <span class="changelog-badge" style="background:#6b7280; color:#fff;">Versão Anterior</span>
+                                </div>
+                                <span style="font-size:11px; opacity:0.75;">11/11/2026</span>
+                            </div>
+                            <ul class="changelog-list">
+                                <li><strong>🧰 Recuperação de Áreas de Trabalho:</strong> tratamento de registros inválidos ou incompletos no armazenamento local.</li>
+                                <li><strong>🧹 Normalização defensiva:</strong> validação de grupos, itens, textos, tags, alarmes e contadores.</li>
+                                <li><strong>☁️ Fila Firebase:</strong> preservação das edições locais mais recentes quando uma tentativa de sincronização falha.</li>
+                                <li><strong>📣 Confirmação de salvamento:</strong> sucesso somente quando a gravação é confirmada.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Versão 3.1.1 Anterior -->
+                        <div class="changelog-version-card">
+                            <div class="changelog-version-header">
+                                <div class="changelog-version-title">
+                                    <span>🛡️ Versão 3.1.1</span>
+                                    <span class="changelog-badge" style="background:#6b7280; color:#fff;">Versão Anterior</span>
                                 </div>
                                 <span style="font-size:11px; opacity:0.75;">03/11/2026</span>
                             </div>
                             <ul class="changelog-list">
                                 <li><strong>🛡️ Assinatura Oficial do Desenvolvedor:</strong> Inclusão do card de autoria oficial e certificado de licença em <em>Conta & Config</em>: <strong>Leonardo Gabriel De Camargo Pisoni (FirestrykerFx)</strong>, contato oficial <code>leogabfx@gmail.com</code> e registro <code>LGP-FSFX-2026-BR</code>.</li>
-                                <li><strong>🔒 Bloqueio de Software Anti-Roubo & Trava de Edição:</strong> Para proteger os scripts contra modificações e apropriação indevida, o Modo Edição e as funções estruturais do sistema (exclusão de áreas de trabalho e resets) ficam bloqueados por chave mestre. O desenvolvedor é reconhecido automaticamente pela conta Google ou pode desbloquear a qualquer momento com o <strong>PIN Mestre (Padrão: 2026)</strong>.</li>
-                                <li><strong>⚙️ Gestão de PIN e Sincronização em Nuvem:</strong> Possibilidade de alterar o PIN mestre diretamente no card de segurança, salvando a configuração localmente e na Nuvem do Firebase.</li>
-                                <li><strong>📦 Proteção de Integridade & Metadados de Autoria:</strong> Cópias e backups gerados pelo sistema agora embutem a assinatura inviolável de autoria de Leonardo Gabriel, garantindo comprovação de desenvolvimento em qualquer arquivo exportado.</li>
+                                <li><strong>🔒 Bloqueio de Software Anti-Roubo & Trava de Edição:</strong> O Modo Edição e funções estruturais possuem bloqueio de interface por conta Google autorizada ou PIN de desenvolvedor.</li>
+                                <li><strong>⚙️ Gestão de PIN:</strong> Possibilidade de alterar o PIN mestre nas configurações de autoria.</li>
+                                <li><strong>📦 Metadados de Autoria:</strong> Cópias e backups incluem metadados de autoria.</li>
                             </ul>
                         </div>
 
@@ -14105,16 +14155,16 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 
         function userscriptMatches(source, url = location.href) {
             const meta = parseUserscriptMeta(source);
-            let matches = meta.match || meta.include || '*';
+            let matches = meta.match || meta.include;
+            if (!matches) return false; // Sem @match/@include explícito, o script não executa.
             if (!Array.isArray(matches)) matches = [matches];
 
             return matches.some(pattern => {
-                if (!pattern || pattern === '*') return true;
-                if (pattern.startsWith('http://') || pattern.startsWith('https://') || pattern.startsWith('file://')) {
-                    const escaped = pattern.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*');
-                    try { return new RegExp('^' + escaped + '$', 'i').test(url); } catch (e) { return false; }
-                }
-                return false;
+                if (typeof pattern !== 'string' || !pattern.trim() || pattern.trim() === '*') return false;
+                // Scripts locais/file:// e protocolos não web são bloqueados.
+                if (!pattern.startsWith('http://') && !pattern.startsWith('https://')) return false;
+                const escaped = pattern.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*');
+                try { return new RegExp('^' + escaped + '$', 'i').test(url); } catch (e) { return false; }
             });
         }
 
@@ -14172,6 +14222,9 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         }
 
         function runUserscript(source, targetWindow = window) {
+            if (typeof source !== 'string' || !source.trim() || source.length > 100 * 1024) {
+                return { ok: false, reason: 'Userscript inválido ou acima do limite de 100 KB.' };
+            }
             const foundScript = getUserscripts().find(item => item.source === source);
             if (foundScript && foundScript.trusted !== true) {
                 return { ok: false, reason: 'Este userscript ainda não foi marcado como confiável pelo atendente.' };
@@ -14519,19 +14572,45 @@ console.log('Userscript carregado');`;
                 </div>`;
             document.body.appendChild(overlay);
             overlay.querySelector('[data-update-later]').onclick = () => overlay.remove();
-            overlay.querySelector('[data-update-now]').onclick = () => {
+            overlay.querySelector('[data-update-now]').onclick = async () => {
                 const target = manifest.url || manifest.downloadURL;
                 if (!target) return;
+                const button = overlay.querySelector('[data-update-now]');
+                button.disabled = true;
+                button.textContent = 'Verificando integridade...';
                 try {
                     const parsedUrl = new URL(String(target), window.location.href);
-                    const isLocal = parsedUrl.hostname === 'localhost' || parsedUrl.hostname === '127.0.0.1';
-                    if (parsedUrl.protocol === 'https:' || (isLocal && parsedUrl.protocol === 'http:')) {
-                        window.location.href = parsedUrl.href;
-                    } else {
-                        alert('⚠️ URL de atualização bloqueada por segurança (requer HTTPS).');
+                    const expectedHash = String(manifest.sha256 || '').trim().toLowerCase().replace(/^sha256[-:]/, '');
+                    if (parsedUrl.protocol !== 'https:' || parsedUrl.origin !== 'https://firestrykerfx.github.io' || parsedUrl.username || parsedUrl.password) {
+                        throw new Error('Origem da atualização não autorizada. Use exclusivamente HTTPS em firestrykerfx.github.io.');
                     }
+                    if (!/^[a-f0-9]{64}$/.test(expectedHash)) {
+                        throw new Error('O manifesto version.json precisa informar sha256 com 64 caracteres hexadecimais. Atualização bloqueada por falta de verificação de integridade.');
+                    }
+                    if (!window.crypto || !crypto.subtle || typeof crypto.subtle.digest !== 'function') {
+                        throw new Error('Este navegador não oferece verificação SHA-256 segura.');
+                    }
+                    const updateResponse = await fetch(parsedUrl.href, { cache: 'no-store', credentials: 'omit' });
+                    if (!updateResponse.ok) throw new Error('Falha ao baixar atualização: HTTP ' + updateResponse.status);
+                    const updateBytes = await updateResponse.arrayBuffer();
+                    const digest = await crypto.subtle.digest('SHA-256', updateBytes);
+                    const actualHash = Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
+                    if (actualHash !== expectedHash) throw new Error('A integridade do arquivo não confere com o SHA-256 do manifesto. O arquivo não foi aceito.');
+                    const blob = new Blob([updateBytes], { type: 'text/html;charset=utf-8' });
+                    const blobUrl = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = blobUrl;
+                    link.download = 'Central_de_Scripts_' + String(manifest.version).replace(/[^0-9.]/g, '') + '.html';
+                    document.body.appendChild(link);
+                    link.click();
+                    link.remove();
+                    setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
+                    alert('Integridade SHA-256 confirmada. O arquivo foi baixado; substitua sua versão atual após conferir o backup.');
+                    overlay.remove();
                 } catch (e) {
-                    alert('⚠️ URL de atualização inválida.');
+                    alert('Atualização bloqueada: ' + (e.message || e));
+                    button.disabled = false;
+                    button.textContent = 'Atualizar agora';
                 }
             };
         }
@@ -14979,8 +15058,15 @@ console.log('Userscript carregado');`;
                 keepBtn.onclick = async () => {
                     modal.closeModal();
                     markLocalChange();
-                    await syncToCloud();
-                    if (typeof showToast === 'function') showToast('Versão local gravada na nuvem com sucesso!', 'success');
+                    const saved = await syncToCloud();
+                    if (typeof showToast === 'function') {
+                        showToast(
+                            saved
+                                ? 'Versão local gravada na nuvem com sucesso!'
+                                : 'Versão local preservada neste computador, mas a nuvem ainda não confirmou o envio.',
+                            saved ? 'success' : 'warning'
+                        );
+                    }
                 };
             }
         }
@@ -15240,9 +15326,14 @@ console.log('Userscript carregado');`;
                 }
             } catch (err) {
                 console.warn('Erro ao processar sincronização na nuvem:', err);
-                pendingSyncPayload = payloadToSync;
+                // Se houve novas edições durante a tentativa que falhou, nunca recoloca
+                // na fila o snapshot antigo: preserva o estado local mais recente.
+                const retryPayload = localRevision !== revisionAtStart
+                    ? buildSyncPayload()
+                    : payloadToSync;
+                pendingSyncPayload = retryPayload;
                 updateSyncStatusUI(navigator.onLine ? 'error' : 'offline');
-                scheduleSyncRetry(payloadToSync);
+                scheduleSyncRetry(retryPayload);
             } finally {
                 isCloudSyncing = false;
             }
@@ -15287,10 +15378,11 @@ console.log('Userscript carregado');`;
         window.pushCurrentScriptsAsTeamDefault = pushCurrentScriptsAsTeamDefault;
 
         async function syncToCloud() {
-            if (!currentUser || !firebaseDb) return;
+            if (!currentUser || !firebaseDb) return false;
             pendingSyncPayload = buildSyncPayload();
             updateSyncStatusUI('pending');
             await processSyncQueue();
+            return syncStatus === 'synced' && pendingSyncPayload === null;
         }
 
         function syncToCloudDebounced() {
@@ -15407,9 +15499,9 @@ console.log('Userscript carregado');`;
                     <!-- Ações de Bloqueio/Desbloqueio -->
                     <div style="display:flex; gap:8px; align-items:center; margin-top:2px;">
                         <button type="button" class="io-btn" id="btnDevLockAction" style="flex:1; background:${isDevUnlocked ? '#334155' : 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)'}; color:#fff; font-size:11.5px; padding:7px 12px; font-weight:700; justify-content:center; border-radius:8px; gap:6px;">
-                            ${isDevUnlocked ? '🔒 Bloquear Novamente (Modo Seguro)' : '🔑 Inserir PIN do Desenvolvedor'}
+                            ${isDevUnlocked ? '🔐 Acesso Google mestre ativo' : '🔒 Acesso de desenvolvedor restrito'}
                         </button>
-                        <button type="button" class="io-btn" id="btnChangeDevPin" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:#e2e8f0; font-size:11.5px; padding:7px 10px; font-weight:600; border-radius:8px;" title="Alterar PIN do Desenvolvedor (Padrão: 2026)">
+                        <button type="button" class="io-btn" id="btnChangeDevPin" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:#e2e8f0; font-size:11.5px; padding:7px 10px; font-weight:600; border-radius:8px;" title="PIN local desativado; autorização vinculada à conta Google mestre">
                             ⚙️ PIN
                         </button>
                     </div>
@@ -15543,8 +15635,7 @@ console.log('Userscript carregado');`;
             if (lockActionBtn) {
                 lockActionBtn.onclick = () => {
                     if (isDevUnlocked) {
-                        lockDeveloperSession();
-                        if (typeof showToast === 'function') showToast('🔒 Modo Seguro Reativado! Edição protegida.', 'info');
+                        alert('O acesso de desenvolvedor permanece vinculado à conta Google mestre enquanto ela estiver conectada. Para encerrar o acesso, saia da conta Google.');
                     } else {
                         promptDeveloperUnlock('o Modo de Desenvolvedor');
                     }
@@ -15556,19 +15647,7 @@ console.log('Userscript carregado');`;
             const changePinBtn = overlay.querySelector('#btnChangeDevPin');
             if (changePinBtn) {
                 changePinBtn.onclick = () => {
-                    const currentPin = prompt('Digite o PIN ATUAL do Desenvolvedor (Padrão: 2026):');
-                    if (currentPin === null) return;
-                    if (!verifyDeveloperPin(currentPin)) {
-                        alert('❌ PIN atual incorreto.');
-                        return;
-                    }
-                    const newPin = prompt('Digite o NOVO PIN do Desenvolvedor (4 a 8 caracteres):');
-                    if (!newPin || !newPin.trim()) return;
-                    setDeveloperPin(newPin.trim());
-                    unlockDeveloperSession();
-                    alert('✅ Novo PIN do Desenvolvedor salvo com sucesso!');
-                    overlay.remove();
-                    openUserAccountModal();
+                    alert('O PIN local foi desativado porque poderia ser lido ou alterado pelo navegador. O acesso de desenvolvedor agora depende de uma conta Google mestre verificada.');
                 };
             }
 
@@ -15746,7 +15825,17 @@ console.log('Userscript carregado');`;
                 btn.textContent = '⏳ Salvando na Nuvem...';
                 btn.disabled = true;
                 try {
-                    await syncToCloud();
+                    const saved = await syncToCloud();
+                    if (!saved) {
+                        btn.textContent = '⚠️ Envio não confirmado';
+                        btn.disabled = false;
+                        if (typeof showToast === 'function') {
+                            showToast('Os dados continuam salvos localmente. A nuvem ainda não confirmou o envio; tente novamente quando a conexão estiver estável.', 'warning', 5000);
+                        } else {
+                            alert('Os dados continuam salvos localmente, mas a nuvem ainda não confirmou o envio.');
+                        }
+                        return;
+                    }
                     btn.textContent = '✅ Salvo com Sucesso!';
                     setTimeout(() => {
                         overlay.remove();
@@ -16051,59 +16140,92 @@ console.log('Userscript carregado');`;
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Função auxiliar: identifica administradores autorizados pela lista mestra
-    function isAdmin() {
-      return request.auth != null && (
-        request.auth.token.email in ['leogabfx@gmail.com', 'leonardo3dtelecom@gmail.com'] ||
-        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
-         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin')
-      );
+    function signedIn() {
+      return request.auth != null;
     }
 
-    // Regras de segurança granulares da coleção de usuários
+    function userExists(uid) {
+      return signedIn() && exists(/databases/$(database)/documents/users/$(uid));
+    }
+
+    function activeUser() {
+      return userExists(request.auth.uid) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.status == 'active';
+    }
+
+    // Administradores mestres são definidos por e-mail verificado pelo Google.
+    // Administradores adicionais só são reconhecidos após promoção por um admin.
+    function isMasterAdmin() {
+      return signedIn() && request.auth.token.email_verified == true &&
+        request.auth.token.email in ['leogabfx@gmail.com', 'leonardo3dtelecom@gmail.com'];
+    }
+
+    function isAdmin() {
+      return isMasterAdmin() || (activeUser() &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin');
+    }
+
+    function canUseApp() {
+      return activeUser();
+    }
+
     match /users/{userId} {
-      // Leitura permitida para o próprio usuário e para administradores
-      allow read: if request.auth != null && (request.auth.uid == userId || isAdmin());
+      allow get: if signedIn() && (request.auth.uid == userId || isAdmin());
+      allow list: if isAdmin();
 
-      // Criação inicial no primeiro login: role deve ser 'user' (ou admin apenas se for admin mestre)
-      allow create: if request.auth != null && request.auth.uid == userId &&
-        (request.resource.data.role == 'user' || request.auth.token.email in ['leogabfx@gmail.com', 'leonardo3dtelecom@gmail.com']) &&
-        request.resource.data.status == 'active';
+      allow create: if signedIn() && request.auth.uid == userId &&
+        request.resource.data.keys().hasOnly([
+          'uid', 'email', 'displayName', 'photoURL', 'createdAt', 'lastLogin',
+          'role', 'status', 'scriptCopies'
+        ]) &&
+        request.resource.data.uid == request.auth.uid &&
+        request.resource.data.email == request.auth.token.email &&
+        request.resource.data.status == 'active' &&
+        request.resource.data.role == (isMasterAdmin() ? 'admin' : 'user') &&
+        request.resource.data.displayName is string &&
+        request.resource.data.displayName.size() <= 120 &&
+        request.resource.data.photoURL is string &&
+        request.resource.data.photoURL.size() <= 2048 &&
+        request.resource.data.scriptCopies is number;
 
-      // Atualização de perfil: administradores podem alterar qualquer campo;
-      // Usuários comuns NÃO podem alterar 'role' nem 'status' no seu próprio perfil.
-      allow update: if request.auth != null && (
-        isAdmin() || (
-          request.auth.uid == userId &&
-          !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role', 'status'])
-        )
-      );
+      allow update: if isAdmin() || (canUseApp() && request.auth.uid == userId &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'lastLogin', 'displayName', 'photoURL', 'scriptCopies'
+        ]) &&
+        request.resource.data.role == resource.data.role &&
+        request.resource.data.status == resource.data.status &&
+        request.resource.data.displayName is string &&
+        request.resource.data.displayName.size() <= 120 &&
+        request.resource.data.photoURL is string &&
+        request.resource.data.photoURL.size() <= 2048 &&
+        request.resource.data.scriptCopies is number);
 
-      // Exclusão permitida apenas para administradores mestres
-      allow delete: if isAdmin();
+      allow delete: if isMasterAdmin();
 
-      // Subcoleção de scripts e configurações privadas do atendente
       match /settings/{docId} {
-        allow read, write: if request.auth != null && (request.auth.uid == userId || isAdmin());
+        allow read, write: if canUseApp() && request.auth.uid == userId || isAdmin();
       }
     }
 
-    // Modelos oficiais e scripts corporativos globais da equipe
     match /templates/{docId} {
-      allow read: if request.auth != null;
+      allow read: if canUseApp();
       allow write: if isAdmin();
     }
 
     match /global_settings/{docId} {
-      allow read: if request.auth != null;
+      allow read: if canUseApp();
       allow write: if isAdmin();
     }
 
-    // Trilha de auditoria administrativa (somente gravação e leitura por administradores)
     match /audit_logs/{logId} {
       allow create: if isAdmin();
       allow read: if isAdmin();
       allow update, delete: if false;
+    }
+
+    // Negação explícita para qualquer coleção não declarada acima.
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }`;
@@ -16116,7 +16238,7 @@ service cloud.firestore {
                     </div>
                     <div class="vm-body" style="padding: 18px 20px; gap: 12px; overflow-y:auto;">
                         <div style="font-size:12px; line-height:1.5; opacity:0.9;">
-                            Para que os atendentes consigam salvar seu perfil e o painel de administrador consiga listar toda a equipe, acesse o <strong>Console do Firebase → Firestore Database → aba Regras (Rules)</strong>, substitua o texto pelas regras abaixo e clique em <strong>Publicar</strong>:
+                            Para que os atendentes consigam salvar seu perfil e o painel de administrador consiga listar toda a equipe, acesse o <strong>Console do Firebase → Firestore Database → aba Regras (Rules)</strong>, substitua o texto pelas regras abaixo e clique em <strong>Publicar</strong>. Faça isso somente após revisar as permissões do seu projeto: regras do Firestore são aplicadas no servidor e não são alteradas por este HTML:
                         </div>
                         <textarea id="txtFirestoreRules" class="var-modal-input" readonly style="height:240px; font-family:monospace; font-size:11.5px; background:var(--textarea-bg); color:var(--text-color); border:1px solid var(--border-color); line-height:1.45;">${rulesText}</textarea>
                     </div>
@@ -18114,70 +18236,30 @@ service cloud.firestore {
            ========================================================================== */
         // Constantes de autoria e PIN inicializadas no topo
 
-        function getDeveloperPin() {
-            try {
-                return localStorage.getItem(DEV_PIN_STORAGE_KEY) || DEFAULT_DEV_PIN;
-            } catch (e) {
-                return DEFAULT_DEV_PIN;
-            }
-        }
+        // A autorização de desenvolvedor não usa PIN local nem sessionStorage,
+        // pois ambos podem ser alterados pelo próprio usuário no navegador.
+        function getDeveloperPin() { return null; }
 
-        function setDeveloperPin(newPin) {
-            try {
-                localStorage.setItem(DEV_PIN_STORAGE_KEY, String(newPin));
-                if (typeof markLocalChange === 'function') markLocalChange();
-                if (typeof syncToCloudDebounced === 'function') syncToCloudDebounced();
-            } catch (e) {}
+        function setDeveloperPin() {
+            alert('O PIN local foi desativado por segurança. O acesso de desenvolvedor depende de uma conta Google mestre verificada.');
+            return false;
         }
 
         function isDeveloperUnlocked() {
-            // Reconhecimento automático se logado com o e-mail do Leonardo
-            const user = (typeof currentUser !== 'undefined' && currentUser) ? currentUser : (typeof window !== 'undefined' ? window.currentUser : null);
-            if (user && user.email) {
-                const em = user.email.toLowerCase().trim();
-                if (em === 'leogabfx@gmail.com' || em === 'leonardo3dtelecom@gmail.com') {
-                    return true;
-                }
-            }
-            // Caso contrário, verifica se a sessão local foi liberada via PIN
-            try {
-                return sessionStorage.getItem('scripts_dev_unlocked_v1') === 'true';
-            } catch (e) {
-                return false;
-            }
+            const user = (typeof currentUser !== 'undefined' && currentUser) ? currentUser : null;
+            if (!user || user.emailVerified !== true || !user.email) return false;
+            const email = user.email.toLowerCase().trim();
+            return email === 'leogabfx@gmail.com' || email === 'leonardo3dtelecom@gmail.com';
         }
 
-        function verifyDeveloperPin(inputPin) {
-            const expected = getDeveloperPin();
-            return String(inputPin).trim() === String(expected).trim();
-        }
-
-        function unlockDeveloperSession() {
-            try {
-                sessionStorage.setItem('scripts_dev_unlocked_v1', 'true');
-            } catch (e) {}
-        }
-
-        function lockDeveloperSession() {
-            try {
-                sessionStorage.removeItem('scripts_dev_unlocked_v1');
-            } catch (e) {}
-        }
+        function verifyDeveloperPin() { return false; }
+        function unlockDeveloperSession() { return false; }
+        function lockDeveloperSession() { return false; }
 
         function promptDeveloperUnlock(actionName = 'esta ação') {
             if (isDeveloperUnlocked()) return true;
-            const pin = prompt(`🔒 SOFTWARE PROTEGIDO — AUTORIA DE LEONARDO GABRIEL (FIRESTYKERFX)\n\nO software possui trava de segurança contra alteração de scripts e roubo de autoria.\n\nPara liberar ${actionName}, digite o PIN do Desenvolvedor:`);
-            if (pin === null) return false;
-            if (verifyDeveloperPin(pin)) {
-                unlockDeveloperSession();
-                if (typeof showToast === 'function') {
-                    showToast('🔓 Acesso de Desenvolvedor desbloqueado com sucesso!', 'success');
-                }
-                return true;
-            } else {
-                alert('❌ PIN de Desenvolvedor incorreto! Acesso negado e proteção mantida.');
-                return false;
-            }
+            alert(`Acesso de desenvolvedor negado para ${actionName}. Entre com uma das contas Google mestre verificadas para liberar esta função.`);
+            return false;
         }
 
         // Verificação Anti-Adulteração de Autoria (Anti-Tamper Integrity Guard)
