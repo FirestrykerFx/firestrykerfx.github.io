@@ -4502,7 +4502,7 @@ mark.custom-keyword-highlight:hover {
         <!-- Grupo Superior: Marca e Módulos Principais -->
         <div class="sidebar-group sidebar-top">
             <div class="sidebar-top-bar">
-                <div class="sidebar-brand-card" onclick="openChangelogModal()" role="button" tabindex="0" title="Central de Scripts v3.1.13 - Clique para ver o Histórico e Novidades">
+                <div class="sidebar-brand-card" onclick="openChangelogModal()" role="button" tabindex="0" title="Central de Scripts v3.1.14 - Clique para ver o Histórico e Novidades">
                     <svg class="header-logo-icon" width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:8px; box-shadow:0 2px 8px rgba(0,122,255,0.35); flex-shrink:0;">
                         <defs>
                             <linearGradient id="appleLogoGradSidebar" x1="0" y1="0" x2="1" y2="1">
@@ -4517,7 +4517,7 @@ mark.custom-keyword-highlight:hover {
                     </svg>
                     <div class="sidebar-brand-info">
                         <span class="sidebar-brand-title">Central de Scripts</span>
-                        <span class="sidebar-brand-badge">v3.1.13</span>
+                        <span class="sidebar-brand-badge">v3.1.14</span>
                     </div>
                 </div>
                 <button type="button" class="sidebar-collapse-toggle-btn" id="sidebarCollapseToggleBtn" onclick="toggleSidebarCollapse()" title="Recolher Barra Lateral (Ctrl+B)" aria-label="Recolher Barra Lateral">
@@ -4786,7 +4786,7 @@ mark.custom-keyword-highlight:hover {
             return String(str).replace(/([ #;&,.+*~':"!^$\[\]()=>|\/@])/g, '\\$1');
         }
 
-        const APP_VERSION = '3.1.13';
+        const APP_VERSION = '3.1.14';
         // Localize application dialogs without changing browser APIs or user data.
         function appMessage(message) {
             return window.translateAppMessage ? window.translateAppMessage(message) : message;
@@ -7798,9 +7798,14 @@ mark.custom-keyword-highlight:hover {
                     </div>
                     <div class="vm-body" style="padding: 16px 20px; overflow-y: auto;">
                         
+                        <!-- Versão 3.1.14 -->
+                        <div class="changelog-version-card" style="border-color:#22c55e;">
+                            <div class="changelog-version-header"><div class="changelog-version-title"><span>🌐 Versão 3.1.14</span><span class="changelog-badge">Versão Atual</span></div><span style="font-size:11px;opacity:0.75;">11/11/2026</span></div>
+                            <ul class="changelog-list"><li>Corrigidas as traduções da conta conectada, badges de administrador e autor mestre, última sincronização e modo atendimento ativo.</li></ul>
+                        </div>
                         <!-- Versão 3.1.13 -->
                         <div class="changelog-version-card" style="border-color:#22c55e;">
-                            <div class="changelog-version-header"><div class="changelog-version-title"><span>🌐 Versão 3.1.13</span><span class="changelog-badge">Versão Atual</span></div><span style="font-size:11px;opacity:0.75;">11/11/2026</span></div>
+                            <div class="changelog-version-header"><div class="changelog-version-title"><span>🌐 Versão 3.1.13</span><span class="changelog-badge">Versão Anterior</span></div><span style="font-size:11px;opacity:0.75;">11/11/2026</span></div>
                             <ul class="changelog-list"><li>Versão do cabeçalho sincronizada com a versão do sistema.</li><li>Seleção de idioma por bandeiras à direita da busca, com indicação do idioma ativo.</li><li>Tradução integral do changelog e revisão dos controles de Clientes & Alarmes, dicas, avisos e configurações.</li></ul>
                         </div>
                         <!-- Versão 3.1.12 -->
@@ -15591,8 +15596,8 @@ console.log('Userscript carregado');`;
                 <div style="display:flex; align-items:center; gap:14px; background:var(--tab-bg); padding:14px; border-radius:12px; border:1px solid var(--border-color);">
                     ${photo ? `<img src="${safeImageUrl(photo)}" style="width:52px; height:52px; border-radius:50%; object-fit:cover; border:2px solid var(--accent-color);" referrerpolicy="no-referrer">` : `<div style="width:52px; height:52px; border-radius:50%; background:var(--accent-color); color:#fff; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:700;">${(fullName[0] || 'U').toUpperCase()}</div>`}
                     <div style="flex:1; min-width:0;">
-                        <div style="font-weight:700; font-size:15px; color:var(--title-color);">${escapeHtml(fullName)}</div>
-                        <div style="font-size:12px; opacity:0.8; word-break:break-all;">${escapeHtml(emailStr)}</div>
+                        <div data-user-content="true" style="font-weight:700; font-size:15px; color:var(--title-color);">${escapeHtml(fullName)}</div>
+                        <div data-user-content="true" style="font-size:12px; opacity:0.8; word-break:break-all;">${escapeHtml(emailStr)}</div>
                         <div style="margin-top:6px; display:flex; gap:6px; align-items:center;">
                             <span class="admin-badge ${isAdmin ? 'role-admin' : 'role-user'}">${isAdmin ? '🛡️ Administrador' : '👤 Usuário'}</span>
                             <span class="admin-badge status-active">🟢 Conectado à Nuvem</span>
@@ -15676,7 +15681,7 @@ console.log('Userscript carregado');`;
                         const cloudNoticeHtml = isLoggedIn ? `
                 <div id="cloudSyncStatusNotice" class="cloud-status-pill online" role="status" aria-live="polite">
                     🟢 <span>Seus scripts e configurações estão sincronizados na Nuvem do Google.</span>
-                    <div style="font-size:10.5px; opacity:0.8; margin-top:3px;">Última sincronização: ${lastSyncFormatted}</div>
+                    <div style="font-size:10.5px; opacity:0.8; margin-top:3px;"><span>Última sincronização:</span> <span>${lastSyncFormatted}</span></div>
                 </div>
             ` : `
                 <div id="cloudSyncStatusNotice" class="cloud-status-pill offline" role="status" aria-live="polite">
@@ -20047,6 +20052,25 @@ service cloud.firestore {
         };
 
         Object.assign(translations, {"Crie ou importe um userscript primeiro.": "Create or import a userscript first.", "Ativação cancelada pelo usuário.": "Activation canceled by the user.", "Userscript salvo com segurança.": "Userscript saved securely.", "Executado com sucesso.": "Executed successfully."});
+        // Connected-account and active service mode labels (v3.1.14).
+        Object.assign(translations, {
+            "🛡️ Administrador": "🛡️ Administrator",
+            "👤 Usuário": "👤 User",
+            "🟢 Conectado à Nuvem": "🟢 Connected to Cloud",
+            "👑 Autor Mestre": "👑 Master Owner",
+            "🔓 Desbloqueado": "🔓 Unlocked",
+            "Atendimento Ativo": "Service Mode Active",
+            "Atendimento: Ativo 🎧": "Service Mode: Active 🎧",
+            "Ativado 🎧": "Enabled 🎧",
+            "Desativado": "Disabled",
+            "🎧 Modo Atendimento Ativado: Interface limpa para foco no cliente.": "🎧 Service Mode enabled: clean interface to focus on the customer.",
+            "Modo Gestão Ativado: Ferramentas completas disponíveis.": "Management Mode enabled: all tools available.",
+            "👤 Minha Conta": "👤 My Account",
+            "🌐 Versão 3.1.14": "🌐 Version 3.1.14",
+            "Corrigidas as traduções da conta conectada, badges de administrador e autor mestre, última sincronização e modo atendimento ativo.": "Fixed translations for the connected account, administrator and master owner badges, last synchronization and active service mode.",
+            "PIN local desativado; autorização vinculada à conta Google mestre": "Local PIN disabled; authorization linked to the master Google account"
+});
+
         const textOriginals = new WeakMap();
         const textLast = new WeakMap();
         const attrOriginals = new WeakMap();
@@ -20069,6 +20093,9 @@ service cloud.firestore {
             // Only UI counters and labels have parameterized translations.
             // Script bodies and user-owned content are excluded by the walker.
             const patterns = [
+                [/^Conectado como: (.+) \((Administrador|Usuário)\) Clique para abrir Minha Conta e Sincronização$/, 'Signed in as: $1 ($2) — Click to open My Account and Synchronization'],
+                [/^Conectado como: (.+) \((Administrador|Usuário)\) Clique para abrir Minha Conta e Configurações$/, 'Signed in as: $1 ($2) — Click to open My Account and Settings'],
+
                 [/^Não executado: (.+)$/, 'Not executed: $1'],
 
                 [/^⏮️ Restaurar Versão: (.+)$/, '⏮️ Restore Version: $1'],
@@ -20108,7 +20135,7 @@ service cloud.firestore {
                 [/^Central de Scripts v([\d.]+) - Clique para ver o Histórico e Novidades$/, 'Scripts Hub v$1 - Click to view History and Updates']
             ];
             for (const [pattern, replacement] of patterns) {
-                if (pattern.test(key)) return key.replace(pattern, replacement).replace('(Todas as Abas)', '(All Tabs)');
+                if (pattern.test(key)) return key.replace(pattern, replacement).replace('(Todas as Abas)', '(All Tabs)').replace('(Administrador)', '(Administrator)').replace('(Usuário)', '(User)');
             }
             return original;
         };
