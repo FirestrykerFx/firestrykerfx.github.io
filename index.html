@@ -4119,6 +4119,58 @@
             margin-right: 0 !important;
         }
 
+        .header-search-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 0 1 450px;
+            min-width: 260px;
+            margin-left: auto;
+        }
+        .header-search-controls .header-search-wrap {
+            max-width: none;
+            flex: 1;
+            min-width: 0;
+            margin: 0 !important;
+        }
+        .language-flags {
+            display: inline-flex;
+            flex-shrink: 0;
+            gap: 2px;
+            padding: 2px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background: var(--tab-bg);
+        }
+        .language-flags button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 28px;
+            padding: 0;
+            border: 1px solid transparent;
+            border-radius: 7px;
+            background: transparent;
+            font-size: 19px;
+            line-height: 1;
+            cursor: pointer;
+        }
+        .language-flags svg { display: block; border-radius: 2px; }
+        .language-flags button[aria-pressed="true"] {
+            background: color-mix(in srgb, var(--accent-color) 18%, transparent);
+            border-color: var(--accent-color);
+        }
+        .language-flags button:focus-visible {
+            outline: 2px solid var(--accent-color);
+            outline-offset: 2px;
+        }
+        @media (max-width: 1100px) {
+            .app-main-area > header { flex-wrap: wrap !important; gap: 10px; }
+            .app-main-area > header .header-actions { flex-wrap: wrap !important; }
+            .header-search-controls { flex: 1 1 100%; min-width: 0; }
+        }
+
         /* ===== Áreas de Trabalho Estilo Trello na Barra Lateral ===== */
         .sidebar-ws-header {
             display: flex;
@@ -4450,7 +4502,7 @@ mark.custom-keyword-highlight:hover {
         <!-- Grupo Superior: Marca e Módulos Principais -->
         <div class="sidebar-group sidebar-top">
             <div class="sidebar-top-bar">
-                <div class="sidebar-brand-card" onclick="openChangelogModal()" role="button" tabindex="0" title="Central de Scripts v3.1.12 - Clique para ver o Histórico e Novidades">
+                <div class="sidebar-brand-card" onclick="openChangelogModal()" role="button" tabindex="0" title="Central de Scripts v3.1.13 - Clique para ver o Histórico e Novidades">
                     <svg class="header-logo-icon" width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:8px; box-shadow:0 2px 8px rgba(0,122,255,0.35); flex-shrink:0;">
                         <defs>
                             <linearGradient id="appleLogoGradSidebar" x1="0" y1="0" x2="1" y2="1">
@@ -4465,7 +4517,7 @@ mark.custom-keyword-highlight:hover {
                     </svg>
                     <div class="sidebar-brand-info">
                         <span class="sidebar-brand-title">Central de Scripts</span>
-                        <span class="sidebar-brand-badge">v3.1.12</span>
+                        <span class="sidebar-brand-badge">v3.1.13</span>
                     </div>
                 </div>
                 <button type="button" class="sidebar-collapse-toggle-btn" id="sidebarCollapseToggleBtn" onclick="toggleSidebarCollapse()" title="Recolher Barra Lateral (Ctrl+B)" aria-label="Recolher Barra Lateral">
@@ -4582,16 +4634,13 @@ mark.custom-keyword-highlight:hover {
                 <button class="shortcut-pill shortcut-pill-tool" id="companionHeaderBtn" onclick="toggleCompanion()" title="Docker / Área de Transferência estilo Win+V (Atalho: Alt+V ou Alt+Shift+P)">
                     🪟 Docker (Alt+V)
                 </button>
-                <select id="languageSelector" class="theme-select" aria-label="Idioma da aplicação" title="Alterar idioma / Change language">
-                    <option value="pt-BR">🇧🇷 Português</option>
-                    <option value="en">🇺🇸 English</option>
-                </select>
             </div>
 
             <input type="file" id="importFile" style="display: none" accept=".json" onchange="importScripts(event)">
             <input type="file" id="userscriptFile" style="display: none" accept=".js,.user.js,.txt" multiple="" onchange="importUserscripts(event)">
 
             <!-- 2. Campo de Busca Posicionado na Direita -->
+            <div class="header-search-controls">
             <div class="header-search-wrap">
                 <svg class="search-icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="11" cy="11" r="8"></circle>
@@ -4606,6 +4655,12 @@ mark.custom-keyword-highlight:hover {
                         <button type="button" class="search-recent-clear-btn" onclick="clearRecentSearches()">Limpar</button>
                     </div>
                     <div class="search-recent-chips" id="searchRecentChipsList"></div>
+                </div>
+            </div>
+
+                <div id="languageSelector" class="language-flags" role="group" aria-label="Idioma da aplicação">
+                    <button type="button" data-language="pt-BR" aria-label="Português (Brasil)" title="Português (Brasil)" aria-pressed="true"><svg viewBox="0 0 100 70" width="24" height="16" aria-hidden="true" focusable="false"><rect width="100" height="70" fill="#009c3b"/><path d="M8 35 50 8 92 35 50 62Z" fill="#ffdf00"/><circle cx="50" cy="35" r="17" fill="#002776"/><path d="M34 29q17-3 32 10" fill="none" stroke="#fff" stroke-width="2.4"/><g fill="#fff"><circle cx="43" cy="38" r="1"/><circle cx="49" cy="43" r="1"/><circle cx="57" cy="39" r="1"/><circle cx="53" cy="48" r=".8"/><circle cx="60" cy="43" r=".8"/><circle cx="47" cy="34" r=".7"/></g></svg></button>
+                    <button type="button" data-language="en" aria-label="English (United States)" title="English (United States)" aria-pressed="false"><svg viewBox="0 0 190 100" width="24" height="16" aria-hidden="true" focusable="false"><rect width="190" height="100" fill="#fff"/><rect y="0.000" width="190" height="7.692" fill="#b22234"/><rect y="15.385" width="190" height="7.692" fill="#b22234"/><rect y="30.769" width="190" height="7.692" fill="#b22234"/><rect y="46.154" width="190" height="7.692" fill="#b22234"/><rect y="61.538" width="190" height="7.692" fill="#b22234"/><rect y="76.923" width="190" height="7.692" fill="#b22234"/><rect y="92.308" width="190" height="7.692" fill="#b22234"/><rect width="76" height="53.85" fill="#3c3b6e"/><defs><path id="languageUsStar" d="M0,-2.5 .56,-.77 2.38,-.77 .91,.29 1.47,2.02 0,.95 -1.47,2.02 -.91,.29 -2.38,-.77 -.56,-.77Z" fill="#fff"/></defs><use href="#languageUsStar" transform="translate(6.33 5.38)"/><use href="#languageUsStar" transform="translate(19.00 5.38)"/><use href="#languageUsStar" transform="translate(31.67 5.38)"/><use href="#languageUsStar" transform="translate(44.34 5.38)"/><use href="#languageUsStar" transform="translate(57.01 5.38)"/><use href="#languageUsStar" transform="translate(69.68 5.38)"/><use href="#languageUsStar" transform="translate(12.66 10.76)"/><use href="#languageUsStar" transform="translate(25.33 10.76)"/><use href="#languageUsStar" transform="translate(38.00 10.76)"/><use href="#languageUsStar" transform="translate(50.67 10.76)"/><use href="#languageUsStar" transform="translate(63.34 10.76)"/><use href="#languageUsStar" transform="translate(6.33 16.14)"/><use href="#languageUsStar" transform="translate(19.00 16.14)"/><use href="#languageUsStar" transform="translate(31.67 16.14)"/><use href="#languageUsStar" transform="translate(44.34 16.14)"/><use href="#languageUsStar" transform="translate(57.01 16.14)"/><use href="#languageUsStar" transform="translate(69.68 16.14)"/><use href="#languageUsStar" transform="translate(12.66 21.52)"/><use href="#languageUsStar" transform="translate(25.33 21.52)"/><use href="#languageUsStar" transform="translate(38.00 21.52)"/><use href="#languageUsStar" transform="translate(50.67 21.52)"/><use href="#languageUsStar" transform="translate(63.34 21.52)"/><use href="#languageUsStar" transform="translate(6.33 26.90)"/><use href="#languageUsStar" transform="translate(19.00 26.90)"/><use href="#languageUsStar" transform="translate(31.67 26.90)"/><use href="#languageUsStar" transform="translate(44.34 26.90)"/><use href="#languageUsStar" transform="translate(57.01 26.90)"/><use href="#languageUsStar" transform="translate(69.68 26.90)"/><use href="#languageUsStar" transform="translate(12.66 32.28)"/><use href="#languageUsStar" transform="translate(25.33 32.28)"/><use href="#languageUsStar" transform="translate(38.00 32.28)"/><use href="#languageUsStar" transform="translate(50.67 32.28)"/><use href="#languageUsStar" transform="translate(63.34 32.28)"/><use href="#languageUsStar" transform="translate(6.33 37.66)"/><use href="#languageUsStar" transform="translate(19.00 37.66)"/><use href="#languageUsStar" transform="translate(31.67 37.66)"/><use href="#languageUsStar" transform="translate(44.34 37.66)"/><use href="#languageUsStar" transform="translate(57.01 37.66)"/><use href="#languageUsStar" transform="translate(69.68 37.66)"/><use href="#languageUsStar" transform="translate(12.66 43.04)"/><use href="#languageUsStar" transform="translate(25.33 43.04)"/><use href="#languageUsStar" transform="translate(38.00 43.04)"/><use href="#languageUsStar" transform="translate(50.67 43.04)"/><use href="#languageUsStar" transform="translate(63.34 43.04)"/><use href="#languageUsStar" transform="translate(6.33 48.42)"/><use href="#languageUsStar" transform="translate(19.00 48.42)"/><use href="#languageUsStar" transform="translate(31.67 48.42)"/><use href="#languageUsStar" transform="translate(44.34 48.42)"/><use href="#languageUsStar" transform="translate(57.01 48.42)"/><use href="#languageUsStar" transform="translate(69.68 48.42)"/></svg></button>
                 </div>
             </div>
 
@@ -4731,7 +4786,15 @@ mark.custom-keyword-highlight:hover {
             return String(str).replace(/([ #;&,.+*~':"!^$\[\]()=>|\/@])/g, '\\$1');
         }
 
-        const APP_VERSION = '3.1.12';
+        const APP_VERSION = '3.1.13';
+        // Localize application dialogs without changing browser APIs or user data.
+        function appMessage(message) {
+            return window.translateAppMessage ? window.translateAppMessage(message) : message;
+        }
+        function appAlert(message) { return window.alert(appMessage(message)); }
+        function appConfirm(message) { return window.confirm(appMessage(message)); }
+        function appPrompt(message, defaultValue = '') { return window.prompt(appMessage(message), defaultValue); }
+
         const UPDATE_MANIFEST_URL = 'https://firestrykerfx.github.io/version.json';
         // O manifesto de atualização deve incluir sha256 (64 caracteres hexadecimais) do HTML publicado.
         const UPDATE_CHECK_INTERVAL = 6 * 60 * 60 * 1000;
@@ -6273,7 +6336,7 @@ mark.custom-keyword-highlight:hover {
                          ondrop="handleWsDrop(event, '${escapeHtml(ws.id)}')">
                         <div class="sidebar-ws-item-left">
                             <span class="sidebar-ws-item-icon" style="color:${wsColor};">${safeIcon}</span>
-                            <span class="sidebar-ws-item-name">${safeName}</span>
+                            <span class="sidebar-ws-item-name" data-user-content="true">${safeName}</span>
                         </div>
                         <div class="sidebar-ws-item-actions" onclick="event.stopPropagation()">
                             <button type="button" 
@@ -6836,7 +6899,7 @@ mark.custom-keyword-highlight:hover {
 
             const history = Array.isArray(ws.history) ? ws.history : [];
             if (history.length === 0) {
-                alert(`Ainda não há pontos de restauração gravados para a área "${ws.name}". Conforme você for utilizando e editando, o sistema salvará versões automáticas.`);
+                appAlert(`Ainda não há pontos de restauração gravados para a área "${ws.name}". Conforme você for utilizando e editando, o sistema salvará versões automáticas.`);
                 return;
             }
 
@@ -6891,7 +6954,7 @@ mark.custom-keyword-highlight:hover {
             if (!ws || !Array.isArray(ws.history) || !ws.history[snapIndex]) return;
 
             const snap = ws.history[snapIndex];
-            if (!confirm(`Restaurar a área "${ws.name}" para a versão de ${new Date(snap.timestamp).toLocaleString()} (${snap.tabsCount} abas, ${snap.scriptsCount} scripts)?`)) {
+            if (!appConfirm(`Restaurar a área "${ws.name}" para a versão de ${new Date(snap.timestamp).toLocaleString()} (${snap.tabsCount} abas, ${snap.scriptsCount} scripts)?`)) {
                 return;
             }
 
@@ -6939,7 +7002,7 @@ mark.custom-keyword-highlight:hover {
             const ws = workspaces.find(w => w.id === wsId);
             if (!ws) return;
 
-            if (!confirm(`Tem certeza que deseja excluir a área de trabalho "${ws.name}"?\nTodos os scripts e abas dela serão apagados permanentemente.`)) {
+            if (!appConfirm(`Tem certeza que deseja excluir a área de trabalho "${ws.name}"?\nTodos os scripts e abas dela serão apagados permanentemente.`)) {
                 return;
             }
 
@@ -6952,7 +7015,7 @@ mark.custom-keyword-highlight:hover {
                 loadAppData();
                 showToast(`Área de trabalho excluída com sucesso!`, 'info', 2200);
             } else {
-                alert('Não foi possível excluir esta área.');
+                appAlert('Não foi possível excluir esta área.');
             }
         }
 
@@ -7194,7 +7257,7 @@ mark.custom-keyword-highlight:hover {
                 }
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
             }
-            catch (e) { alert('Não foi possível salvar no navegador. Exporte um backup.'); }
+            catch (e) { appAlert('Não foi possível salvar no navegador. Exporte um backup.'); }
         }
 
         let saveTimer = null;
@@ -7421,7 +7484,7 @@ mark.custom-keyword-highlight:hover {
             if (!activeTargetCard) return;
             const textarea = activeTargetCard.querySelector('.item-textarea');
             copyTextToClipboard(textarea.value).then(ok => {
-                alert(ok ? 'Texto bruto copiado para a área de transferência!' : 'Falha ao copiar.');
+                appAlert(ok ? 'Texto bruto copiado para a área de transferência!' : 'Falha ao copiar.');
                 closeAllHeaderDropdowns();
             });
         }
@@ -7430,7 +7493,7 @@ mark.custom-keyword-highlight:hover {
             if (!activeTargetCard) return;
             const textarea = activeTargetCard.querySelector('.item-textarea');
             const hasText = textarea.value.trim() !== '';
-            if (hasText && !confirm('Excluir este card permanentemente?')) return;
+            if (hasText && !appConfirm('Excluir este card permanentemente?')) return;
             pushUndoSnapshot('Excluir Card');
             activeTargetCard.remove();
             saveAppData();
@@ -7735,9 +7798,14 @@ mark.custom-keyword-highlight:hover {
                     </div>
                     <div class="vm-body" style="padding: 16px 20px; overflow-y: auto;">
                         
+                        <!-- Versão 3.1.13 -->
+                        <div class="changelog-version-card" style="border-color:#22c55e;">
+                            <div class="changelog-version-header"><div class="changelog-version-title"><span>🌐 Versão 3.1.13</span><span class="changelog-badge">Versão Atual</span></div><span style="font-size:11px;opacity:0.75;">11/11/2026</span></div>
+                            <ul class="changelog-list"><li>Versão do cabeçalho sincronizada com a versão do sistema.</li><li>Seleção de idioma por bandeiras à direita da busca, com indicação do idioma ativo.</li><li>Tradução integral do changelog e revisão dos controles de Clientes & Alarmes, dicas, avisos e configurações.</li></ul>
+                        </div>
                         <!-- Versão 3.1.12 -->
                         <div class="changelog-version-card" style="border-color:#22c55e;">
-                            <div class="changelog-version-header"><div class="changelog-version-title"><span>🌐 Versão 3.1.12</span><span class="changelog-badge">Versão Atual</span></div><span style="font-size:11px;opacity:0.75;">11/11/2026</span></div>
+                            <div class="changelog-version-header"><div class="changelog-version-title"><span>🌐 Versão 3.1.12</span><span class="changelog-badge">Versão Anterior</span></div><span style="font-size:11px;opacity:0.75;">11/11/2026</span></div>
                             <ul class="changelog-list">
                                 <li>Sugestões e preenchimentos automáticos traduzidos na OS, no Teste Técnico e no painel lateral.</li>
                                 <li>Textos digitados preservados ao alternar idioma e modelo; documentos copiados mantêm os valores operacionais em português.</li>
@@ -8574,13 +8642,13 @@ mark.custom-keyword-highlight:hover {
             try {
                 let history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
                 if (history.length === 0) {
-                    alert('Nenhuma ação recente para desfazer.');
+                    appAlert('Nenhuma ação recente para desfazer.');
                     return;
                 }
                 const snapshot = history.shift();
                 localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
 
-                if (!confirm(`Desfazer "${snapshot.label}" e restaurar o estado de ${snapshot.time}?`)) {
+                if (!appConfirm(`Desfazer "${snapshot.label}" e restaurar o estado de ${snapshot.time}?`)) {
                     history.unshift(snapshot);
                     localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
                     return;
@@ -8593,9 +8661,9 @@ mark.custom-keyword-highlight:hover {
                 updateUndoButton();
                 initSidebarCollapse();
                 initAlarmConfigUI();
-                alert(`Estado restaurado com sucesso para: ${snapshot.time} (${snapshot.label})`);
+                appAlert(`Estado restaurado com sucesso para: ${snapshot.time} (${snapshot.label})`);
             } catch (e) {
-                alert('Erro ao desfazer alteração.');
+                appAlert('Erro ao desfazer alteração.');
             }
         }
 
@@ -8614,7 +8682,7 @@ mark.custom-keyword-highlight:hover {
         function exportClientsCsv() {
             const clients = getClientsData();
             if (clients.length === 0) {
-                alert('Nenhum cliente cadastrado para exportar.');
+                appAlert('Nenhum cliente cadastrado para exportar.');
                 return;
             }
             const sanitizeCsvCell = (val) => {
@@ -8918,7 +8986,7 @@ mark.custom-keyword-highlight:hover {
 - Resumo: ${testModalState.resumo || ''}`;
 
                 copyTextToClipboard(text).then(ok => {
-                    alert(ok ? 'Teste de atendimento copiado com sucesso!' : 'Falha ao copiar.');
+                    appAlert(ok ? 'Teste de atendimento copiado com sucesso!' : 'Falha ao copiar.');
                     overlay.remove();
                 });
             };
@@ -9551,7 +9619,7 @@ Localização: ${tkState.localizacao || '...'}
 Já foram levados os equipamentos?: ${tkState.equipamentos || '...'}`;
 
                         copyTextToClipboard(clientMsg).then(ok => {
-                            alert(ok ? 'Script para o cliente copiado com sucesso!' : 'Falha ao copiar.');
+                            appAlert(ok ? 'Script para o cliente copiado com sucesso!' : 'Falha ao copiar.');
                         });
                     };
 
@@ -9922,7 +9990,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                         }
 
                         copyTextToClipboard(text).then(ok => {
-                            alert(ok ? 'Chamado copiado com sucesso! Pronto para colar no Integrator.' : 'Falha ao copiar.');
+                            appAlert(ok ? 'Chamado copiado com sucesso! Pronto para colar no Integrator.' : 'Falha ao copiar.');
                             overlay.remove();
                         });
                     };
@@ -9974,7 +10042,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 - Resumo: ${resumo}`;
 
                 copyTextToClipboard(text).then(ok => {
-                    alert(ok ? 'Teste de atendimento copiado com sucesso!' : 'Falha ao copiar.');
+                    appAlert(ok ? 'Teste de atendimento copiado com sucesso!' : 'Falha ao copiar.');
                 });
             };
 
@@ -10269,6 +10337,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 
                 const titleSpan = document.createElement('span');
                 titleSpan.className = 'tab-title';
+                titleSpan.setAttribute('data-user-content', 'true');
                 titleSpan.textContent = tabInfo.name;
                 titleSpan.style.pointerEvents = 'none'; // Garante que arrastar o texto da aba acione o dragstart do elemento pai .tab
                 tabEl.appendChild(titleSpan);
@@ -10305,6 +10374,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                 
                 const label = document.createElement('div');
                 label.className = 'tab-label';
+                label.setAttribute('data-user-content', 'true');
                 label.textContent = tabInfo.name;
                 const board = document.createElement('div');
                 board.className = 'board';
@@ -10461,9 +10531,9 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td><strong>${escapeHtml(c.name)}</strong></td>
-                    <td>${escapeHtml(c.contact)}</td>
-                    <td>${alarmDate ? alarmDate.toLocaleString() : 'Sem alarme'}</td>
+                    <td data-user-content="true"><strong>${escapeHtml(c.name)}</strong></td>
+                    <td data-user-content="true">${escapeHtml(c.contact)}</td>
+                    <td>${alarmDate ? alarmDate.toLocaleString(window.getAppLanguage ? window.getAppLanguage() : 'pt-BR') : 'Sem alarme'}</td>
                     <td>${recurrenceLabels[c.recurrence || 'none']}</td>
                     <td><span class="client-alarm-status ${statusClass}">${statusText}</span></td>
                     <td>
@@ -10483,11 +10553,11 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             const recurrence = document.getElementById('clientRecurrenceSelect').value;
 
             if (!name) {
-                alert('Informe o nome do cliente ou assunto.');
+                appAlert(window.translateAppText('Informe o nome do cliente ou assunto.'));
                 return;
             }
             if (!alarm) {
-                alert('Informe a data e horário do alarme.');
+                appAlert(window.translateAppText('Informe a data e horário do alarme.'));
                 return;
             }
 
@@ -10584,11 +10654,12 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 
             const client = doc.createElement('div');
             client.className = 'companion-alarm-client';
+            client.setAttribute('data-user-content', 'true');
             client.textContent = clientName || 'Cliente';
 
             const contact = doc.createElement('div');
             contact.className = 'companion-alarm-contact';
-            contact.textContent = 'Contato: ' + (clientContact || 'Nenhum contato especificado');
+            contact.innerHTML = '<strong>Contato:</strong> ' + (clientContact ? '<span data-user-content="true">' + escapeHtml(clientContact) + '</span>' : '<span>Nenhum contato especificado</span>');
 
             const btn = doc.createElement('button');
             btn.textContent = '✅ Concluir';
@@ -10665,11 +10736,12 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 
             const client = document.createElement('div');
             client.className = 'alarm-popup-client';
+            client.setAttribute('data-user-content', 'true');
             client.textContent = clientName || 'Cliente';
 
             const contact = document.createElement('div');
             contact.className = 'alarm-popup-contact';
-            contact.innerHTML = '<strong>Contato / Detalhes:</strong> ' + escapeHtml(clientContact || 'Nenhum contato especificado');
+            contact.innerHTML = '<strong>Contato / Detalhes:</strong> ' + (clientContact ? '<span data-user-content="true">' + escapeHtml(clientContact) + '</span>' : '<span>Nenhum contato especificado</span>');
 
             const snoozeBox = document.createElement('div');
             snoozeBox.className = 'alarm-snooze-row';
@@ -10694,7 +10766,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 
             if ('Notification' in window && Notification.permission === 'granted') {
                 try {
-                    new Notification(`Alarme: ${clientName}`, { body: `Contato: ${clientContact || ''}` });
+                    new Notification(window.translateAppText('Alarme:') + ' ' + clientName, { body: window.translateAppText('Contato:') + ' ' + (clientContact || '') });
                 } catch (e) {}
             }
         }
@@ -11302,7 +11374,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         function deleteColumn(col) {
             pushUndoSnapshot('Exclusão de Coluna');
             const hasText = [...col.querySelectorAll('.item-textarea')].some(t => t.value.trim());
-            if (hasText && !confirm('Excluir esta coluna e todos os cards dentro dela?')) return;
+            if (hasText && !appConfirm('Excluir esta coluna e todos os cards dentro dela?')) return;
             col.remove();
             saveAppData();
         }
@@ -11415,7 +11487,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         }
 
         function addNewTab() {
-            const tabName = prompt("Digite o nome da nova aba:");
+            const tabName = appPrompt("Digite o nome da nova aba:");
             if (!tabName) return;
 
             const tabId = 'tab_' + Date.now();
@@ -11444,7 +11516,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
         function openMoveTabToWorkspaceModal(tabId) {
             const workspaces = getWorkspaces();
             if (workspaces.length <= 1) {
-                alert('Crie primeiro outra Área de Trabalho (botão + em "Áreas de Trabalho" na barra lateral) para poder transferir abas entre elas.');
+                appAlert('Crie primeiro outra Área de Trabalho (botão + em "Áreas de Trabalho" na barra lateral) para poder transferir abas entre elas.');
                 return;
             }
             const currentWsId = getActiveWorkspaceId();
@@ -11493,7 +11565,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             const titleEl = tabEl.querySelector('.tab-title');
             const currentName = titleEl.textContent;
             
-            const newName = prompt("Renomear aba para:", currentName);
+            const newName = appPrompt("Renomear aba para:", currentName);
             if (!newName || newName.trim() === "") return;
 
             titleEl.textContent = newName.trim();
@@ -11507,11 +11579,11 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             const data = getAppData();
 
             if (Object.keys(data).length <= 1) {
-                alert("Você não pode excluir a última aba restante!");
+                appAlert("Você não pode excluir a última aba restante!");
                 return;
             }
 
-            if (confirm("Tem certeza que deseja excluir esta aba e todos os seus itens?")) {
+            if (appConfirm("Tem certeza que deseja excluir esta aba e todos os seus itens?")) {
                 delete data[tabId];
                 const order = getSavedTabOrder(data).filter(id => id !== tabId);
                 saveTabOrder(order);
@@ -11878,7 +11950,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 
         function insertCommand(cmd) {
             if (!isEditing) {
-                alert("Ative o 'Modo Edição' para inserir comandos diretamente nos campos de texto.");
+                appAlert("Ative o 'Modo Edição' para inserir comandos diretamente nos campos de texto.");
                 return;
             }
             const activeTabContent = document.getElementById(currentActiveTabId);
@@ -11994,7 +12066,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                     showToast('📋 Script copiado para a área de transferência!', 'success');
                 }
             }).catch(err => {
-                alert('Não foi possível copiar: permissão de área de transferência negada pelo navegador.');
+                appAlert('Não foi possível copiar: permissão de área de transferência negada pelo navegador.');
             }).finally(() => {
                 setTimeout(() => { button.dataset.isCopying = 'false'; }, 400);
             });
@@ -12015,7 +12087,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             const card = button.closest('.item-card');
             const ta = card.querySelector('.item-textarea');
             const hasText = ta && ta.value.trim() !== '';
-            if (hasText && !confirm('Excluir este card e mover para a Lixeira?')) return;
+            if (hasText && !appConfirm('Excluir este card e mover para a Lixeira?')) return;
             if (typeof moveToTrash === 'function') {
                 moveToTrash(card);
             }
@@ -12410,7 +12482,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                 if (typeof showToast === 'function') {
                     showToast(`⚡ Substituídas ${count} ocorrência(s) com sucesso!`, 'success');
                 } else {
-                    alert(`⚡ Substituídas ${count} ocorrência(s) com sucesso!`);
+                    appAlert(`⚡ Substituídas ${count} ocorrência(s) com sucesso!`);
                 }
             };
 
@@ -12485,7 +12557,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             if (typeof showToast === 'function') {
                 showToast('📦 Backup completo do sistema exportado com sucesso!', 'success');
             } else {
-                alert('Backup completo do sistema exportado com sucesso!');
+                appAlert('Backup completo do sistema exportado com sucesso!');
             }
         }
 
@@ -12857,7 +12929,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             if (!file) return;
             const MAX_FILE_SIZE = 6 * 1024 * 1024; // 6 MB
             if (file.size > MAX_FILE_SIZE) {
-                alert('⚠️ O arquivo selecionado é muito grande (limite máximo de 6 MB).');
+                appAlert('⚠️ O arquivo selecionado é muito grande (limite máximo de 6 MB).');
                 event.target.value = '';
                 return;
             }
@@ -12870,13 +12942,13 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                     // Validação abrangente de limites, tipos e integridade
                     const validation = validateImportPayload(parsed);
                     if (!validation.valid) {
-                        alert('⚠️ ' + validation.reason);
+                        appAlert('⚠️ ' + validation.reason);
                         return;
                     }
 
                     // Cenário 1: Backup Completo Versionado
                     if (parsed && parsed.type === 'CENTRAL_DE_SCRIPTS_FULL_BACKUP' && parsed.scripts) {
-                        if (!confirm(`Importar Backup Completo (v${parsed.version || '2.x'}) gravado em ${new Date(parsed.exportedAt || Date.now()).toLocaleString()}?\n\nIsso restaurará scripts, abas, clientes, variáveis e preferências.`)) return;
+                        if (!appConfirm(`Importar Backup Completo (v${parsed.version || '2.x'}) gravado em ${new Date(parsed.exportedAt || Date.now()).toLocaleString()}?\n\nIsso restaurará scripts, abas, clientes, variáveis e preferências.`)) return;
 
                         const clean = sanitizeFullBackup(validation.sanitizedData || parsed);
                         if (Array.isArray(parsed.workspaces) && parsed.workspaces.length > 0) {
@@ -12930,7 +13002,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                         if (typeof showToast === 'function') {
                             showToast('✅ Backup completo restaurado com sucesso!', 'success');
                         } else {
-                            alert('✅ Backup completo restaurado com sucesso!');
+                            appAlert('✅ Backup completo restaurado com sucesso!');
                         }
                         return;
                     }
@@ -12959,7 +13031,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                     }
 
                     if (!importedWsData || !isValidData(importedWsData)) {
-                        alert('⚠️ Arquivo incompatível: nenhuma estrutura válida de abas ou área de trabalho encontrada.');
+                        appAlert('⚠️ Arquivo incompatível: nenhuma estrutura válida de abas ou área de trabalho encontrada.');
                         return;
                     }
 
@@ -12979,10 +13051,10 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                     if (typeof showToast === 'function') {
                         showToast('Scripts importados com sucesso!', 'success');
                     } else {
-                        alert('Scripts importados com sucesso!');
+                        appAlert('Scripts importados com sucesso!');
                     }
                 } catch (err) {
-                    alert('Erro ao processar arquivo: ' + err.message);
+                    appAlert('Erro ao processar arquivo: ' + err.message);
                 }
             };
             reader.readAsText(file);
@@ -13040,7 +13112,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 
         function restoreDefaults() {
             pushUndoSnapshot('Restauração de Padrão');
-            if (!confirm('Restaurar TODOS os scripts e abas padrão deste arquivo (11 abas completas)? Suas alterações atuais serão substituídas.')) return;
+            if (!appConfirm('Restaurar TODOS os scripts e abas padrão deste arquivo (11 abas completas)? Suas alterações atuais serão substituídas.')) return;
             
             // Limpa chave de storage e de ordem para forçar a carga integral do defaultData
             localStorage.removeItem(STORAGE_KEY);
@@ -13067,7 +13139,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             if (typeof showToast === 'function') {
                 showToast(`✅ Todos os scripts e abas padrão (${defaultOrder.length} abas) foram restaurados com sucesso!`, 'success');
             } else {
-                alert(`✅ Todos os scripts e abas padrão (${defaultOrder.length} abas) foram restaurados com sucesso!`);
+                appAlert(`✅ Todos os scripts e abas padrão (${defaultOrder.length} abas) foram restaurados com sucesso!`);
             }
         }
 
@@ -13155,7 +13227,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 
         function clearAllScripts() {
             pushUndoSnapshot('Zerar Tudo');
-            if (!confirm('⚠️ ATENÇÃO: Deseja realmente excluir TODOS os cards e abas, deixando a central totalmente zerada?\n\n(Recomendamos exportar um backup antes caso queira guardar seus scripts atuais).')) {
+            if (!appConfirm('⚠️ ATENÇÃO: Deseja realmente excluir TODOS os cards e abas, deixando a central totalmente zerada?\n\n(Recomendamos exportar um backup antes caso queira guardar seus scripts atuais).')) {
                 return;
             }
             const emptyData = {
@@ -13177,7 +13249,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             updateStorageIndicator();
             updateUndoButton();
             initAlarmConfigUI();
-            alert('Todos os cards foram excluídos. A central está zerada!');
+            appAlert('Todos os cards foram excluídos. A central está zerada!');
         }
 
         function clearFinishedAlarms() {
@@ -13185,16 +13257,16 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             const pendingOnly = clients.filter(c => c.status !== 'done');
             const removedCount = clients.length - pendingOnly.length;
             if (removedCount === 0) {
-                alert('Não há alarmes concluídos no histórico para remover.');
+                appAlert('Não há alarmes concluídos no histórico para remover.');
                 return;
             }
-            if (confirm(`Remover ${removedCount} alarme(s) já concluído(s) do histórico?`)) {
+            if (appConfirm(`Remover ${removedCount} alarme(s) já concluído(s) do histórico?`)) {
                 setClientsData(pendingOnly);
                 renderClientTable();
                 updateStorageIndicator();
             updateUndoButton();
             initAlarmConfigUI();
-                alert(`${removedCount} alarme(s) concluído(s) removido(s) com sucesso!`);
+                appAlert(`${removedCount} alarme(s) concluído(s) removido(s) com sucesso!`);
             }
         }
 
@@ -13614,7 +13686,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
             // Botão de ação secundária (Limpar tudo / Compacto)
             refs.actionBtn.addEventListener('click', () => {
                 if (companion.activeView === 'recents') {
-                    if (confirm('Deseja limpar todo o histórico de scripts copiados recentemente?')) {
+                    if (appConfirm('Deseja limpar todo o histórico de scripts copiados recentemente?')) {
                         clearRecentCopies();
                     }
                 } else if (companion.query) {
@@ -13715,7 +13787,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
                 const contact = active.querySelector('.alarm-popup-contact');
                 renderCompanionAlarm(
                     client ? client.textContent : 'Cliente',
-                    contact ? contact.textContent.replace(/^Contato \/ Detalhes:\s*/i, '') : '',
+                    contact ? (contact.querySelector('[data-user-content]')?.textContent || '') : '',
                     activeAlarmClientIndex
                 );
             }
@@ -14226,7 +14298,7 @@ Valor: ${tkState.valor_evento || '500$ (ciente)'}
 
         function setUserscripts(list) {
             try { localStorage.setItem(USERSCRIPTS_KEY, JSON.stringify(list)); }
-            catch (e) { alert('Não foi possível salvar os userscripts.'); }
+            catch (e) { appAlert('Não foi possível salvar os userscripts.'); }
         }
 
         function parseUserscriptMeta(source) {
@@ -14491,7 +14563,7 @@ console.log('Userscript carregado');`;
                 const wantsEnable = enabled.querySelector('input').checked;
                 let isTrusted = prev.trusted === true;
                 if (wantsEnable && !isTrusted) {
-                    const approved = confirm(
+                    const approved = appConfirm(
                         '⚠️ Aviso de Segurança:\n\nEste script poderá executar código JavaScript na Central de Scripts.\nVocê confia na integridade e origem deste código?'
                     );
                     if (!approved) {
@@ -14526,7 +14598,7 @@ console.log('Userscript carregado');`;
                 if (selected < 0) return;
                 const wantsEnable = enabled.querySelector('input').checked;
                 if (wantsEnable && scripts[selected].trusted !== true) {
-                    const approved = confirm(
+                    const approved = appConfirm(
                         '⚠️ Aviso de Segurança:\n\nEste script poderá executar código JavaScript na Central de Scripts.\nVocê confia na integridade e origem deste código?'
                     );
                     if (!approved) {
@@ -14578,9 +14650,9 @@ console.log('Userscript carregado');`;
                     const source = String(e.target.result || '');
                     const error = validateUserscriptSource(source);
                     if (error) {
-                        alert(`⚠️ ${file.name}: ${error}`);
+                        appAlert(`⚠️ ${file.name}: ${error}`);
                     } else if (scripts.length >= MAX_USERSCRIPTS) {
-                        alert(`⚠️ Limite máximo de ${MAX_USERSCRIPTS} userscripts atingido.`);
+                        appAlert(`⚠️ Limite máximo de ${MAX_USERSCRIPTS} userscripts atingido.`);
                     } else {
                         const meta = parseUserscriptMeta(source);
                         const id = (typeof crypto !== 'undefined' && crypto.randomUUID)
@@ -14605,7 +14677,7 @@ console.log('Userscript carregado');`;
                             if (typeof showToast === 'function') {
                                 showToast(`${importedCount} userscript(s) importado(s) com segurança (desativados).`, 'info');
                             } else {
-                                alert(`${importedCount} userscript(s) importado(s) em modo seguro (desativados por padrão).`);
+                                appAlert(`${importedCount} userscript(s) importado(s) em modo seguro (desativados por padrão).`);
                             }
                         }
                     }
@@ -14698,10 +14770,10 @@ console.log('Userscript carregado');`;
                     link.click();
                     link.remove();
                     setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
-                    alert('Integridade SHA-256 confirmada. O arquivo foi baixado; substitua sua versão atual após conferir o backup.');
+                    appAlert('Integridade SHA-256 confirmada. O arquivo foi baixado; substitua sua versão atual após conferir o backup.');
                     overlay.remove();
                 } catch (e) {
-                    alert('Atualização bloqueada: ' + (e.message || e));
+                    appAlert('Atualização bloqueada: ' + (e.message || e));
                     button.disabled = false;
                     button.textContent = 'Atualizar agora';
                 }
@@ -14716,11 +14788,11 @@ console.log('Userscript carregado');`;
                 if (!manifest || !manifest.version) return false;
                 const newer = compareVersions(manifest.version, APP_VERSION) > 0;
                 if (newer) showUpdateDialog(manifest);
-                else if (showWhenCurrent) alert('Você já está usando a versão mais recente (' + APP_VERSION + ').');
+                else if (showWhenCurrent) appAlert('Você já está usando a versão mais recente (' + APP_VERSION + ').');
                 localStorage.setItem('lastUpdateCheck', String(Date.now()));
                 return newer;
             } catch (err) {
-                if (showWhenCurrent) alert('Não foi possível verificar atualizações agora. Verifique sua conexão e a configuração do endereço de atualização.');
+                if (showWhenCurrent) appAlert('Não foi possível verificar atualizações agora. Verifique sua conexão e a configuração do endereço de atualização.');
                 return false;
             }
         }
@@ -14954,7 +15026,7 @@ console.log('Userscript carregado');`;
                     const existingData = (userDoc && userDoc.exists) ? userDoc.data() : {};
                     
                     if (existingData.status === 'blocked') {
-                        alert('⚠️ Esta conta foi suspensa pelo administrador.');
+                        appAlert('⚠️ Esta conta foi suspensa pelo administrador.');
                         await firebaseAuth.signOut();
                         currentUser = null;
                         currentUserProfile = null;
@@ -15023,14 +15095,14 @@ console.log('Userscript carregado');`;
 
         async function loginWithGoogle() {
             if (!isFirebaseConfigured()) {
-                alert('A sincronização em nuvem não está configurada neste ambiente. Solicite ao administrador da equipe a ativação das credenciais do Firebase.');
+                appAlert('A sincronização em nuvem não está configurada neste ambiente. Solicite ao administrador da equipe a ativação das credenciais do Firebase.');
                 return;
             }
             if (!firebaseAuth) {
                 initFirebaseApp();
             }
             if (!firebaseAuth) {
-                alert('Não foi possível inicializar a autenticação na Nuvem. Verifique com o administrador da equipe.');
+                appAlert('Não foi possível inicializar a autenticação na Nuvem. Verifique com o administrador da equipe.');
                 if (typeof isCurrentUserAdmin === 'function' && isCurrentUserAdmin()) {
                     openFirebaseConfigModal();
                 }
@@ -15047,10 +15119,10 @@ console.log('Userscript carregado');`;
                         const provider = new firebase.auth.GoogleAuthProvider();
                         await firebaseAuth.signInWithRedirect(provider);
                     } catch (rErr) {
-                        alert('Erro ao autenticar com o Google: ' + (rErr.message || rErr));
+                        appAlert('Erro ao autenticar com o Google: ' + (rErr.message || rErr));
                     }
                 } else {
-                    alert('Erro ao autenticar: ' + (err.message || err));
+                    appAlert('Erro ao autenticar: ' + (err.message || err));
                 }
             }
         }
@@ -15062,7 +15134,7 @@ console.log('Userscript carregado');`;
             currentUser = null;
             currentUserProfile = null;
             updateAuthUI();
-            alert('Você saiu da sua conta Google. O sistema continua operando normalmente no Modo Offline (Local).');
+            appAlert('Você saiu da sua conta Google. O sistema continua operando normalmente no Modo Offline (Local).');
         }
 
         function handleAuthButtonClick() {
@@ -15440,10 +15512,10 @@ console.log('Userscript carregado');`;
         /* Função para o Administrador publicar seus scripts atuais como padrão global para toda a equipe */
         async function pushCurrentScriptsAsTeamDefault() {
             if (!isCurrentUserAdmin()) {
-                alert('Apenas administradores podem definir o padrão corporativo da equipe.');
+                appAlert('Apenas administradores podem definir o padrão corporativo da equipe.');
                 return;
             }
-            if (!confirm('Deseja publicar TODOS os seus scripts atuais como o modelo padrão oficial da equipe no Firestore?\n\nTodos os novos atendentes que entrarem na Central receberão exatamente esta base de 11 abas.')) return;
+            if (!appConfirm('Deseja publicar TODOS os seus scripts atuais como o modelo padrão oficial da equipe no Firestore?\n\nTodos os novos atendentes que entrarem na Central receberão exatamente esta base de 11 abas.')) return;
             
             try {
                 const payload = buildSyncPayload();
@@ -15462,10 +15534,10 @@ console.log('Userscript carregado');`;
                 if (typeof showToast === 'function') {
                     showToast('🚀 Scripts publicados como padrão oficial da equipe com sucesso!', 'success');
                 } else {
-                    alert('🚀 Scripts publicados como padrão oficial da equipe com sucesso!');
+                    appAlert('🚀 Scripts publicados como padrão oficial da equipe com sucesso!');
                 }
             } catch (err) {
-                alert('Erro ao publicar scripts como padrão da equipe: ' + (err.message || err));
+                appAlert('Erro ao publicar scripts como padrão da equipe: ' + (err.message || err));
             }
         }
         window.pushCurrentScriptsAsTeamDefault = pushCurrentScriptsAsTeamDefault;
@@ -15728,7 +15800,7 @@ console.log('Userscript carregado');`;
             if (lockActionBtn) {
                 lockActionBtn.onclick = () => {
                     if (isDevUnlocked) {
-                        alert('O acesso de desenvolvedor permanece vinculado à conta Google mestre enquanto ela estiver conectada. Para encerrar o acesso, saia da conta Google.');
+                        appAlert('O acesso de desenvolvedor permanece vinculado à conta Google mestre enquanto ela estiver conectada. Para encerrar o acesso, saia da conta Google.');
                     } else {
                         promptDeveloperUnlock('o Modo de Desenvolvedor');
                     }
@@ -15740,7 +15812,7 @@ console.log('Userscript carregado');`;
             const changePinBtn = overlay.querySelector('#btnChangeDevPin');
             if (changePinBtn) {
                 changePinBtn.onclick = () => {
-                    alert('O PIN local foi desativado porque poderia ser lido ou alterado pelo navegador. O acesso de desenvolvedor agora depende de uma conta Google mestre verificada.');
+                    appAlert('O PIN local foi desativado porque poderia ser lido ou alterado pelo navegador. O acesso de desenvolvedor agora depende de uma conta Google mestre verificada.');
                 };
             }
 
@@ -15925,7 +15997,7 @@ console.log('Userscript carregado');`;
                         if (typeof showToast === 'function') {
                             showToast('Os dados continuam salvos localmente. A nuvem ainda não confirmou o envio; tente novamente quando a conexão estiver estável.', 'warning', 5000);
                         } else {
-                            alert('Os dados continuam salvos localmente, mas a nuvem ainda não confirmou o envio.');
+                            appAlert('Os dados continuam salvos localmente, mas a nuvem ainda não confirmou o envio.');
                         }
                         return;
                     }
@@ -15935,11 +16007,11 @@ console.log('Userscript carregado');`;
                         if (typeof showToast === 'function') {
                             showToast(`✅ ${localStats.totalWorkspaces} Áreas e ${localStats.totalScripts} scripts salvos na Nuvem!`, 'success', 3000);
                         } else {
-                            alert(`Todas as ${localStats.totalWorkspaces} Áreas de Trabalho e ${localStats.totalScripts} scripts foram salvos na Nuvem do Google com sucesso!`);
+                            appAlert(`Todas as ${localStats.totalWorkspaces} Áreas de Trabalho e ${localStats.totalScripts} scripts foram salvos na Nuvem do Google com sucesso!`);
                         }
                     }, 500);
                 } catch (err) {
-                    alert('Falha ao salvar na nuvem: ' + (err.message || err));
+                    appAlert('Falha ao salvar na nuvem: ' + (err.message || err));
                     btn.textContent = '🚀 Confirmar e Salvar na Nuvem';
                     btn.disabled = false;
                 }
@@ -15951,7 +16023,7 @@ console.log('Userscript carregado');`;
         /* Modal com Prévia antes de Baixar da Nuvem (Consolidado de Todas as Áreas de Trabalho) */
         async function openCloudDownloadPreviewModal() {
             if (!currentUser || !firebaseDb) {
-                alert('Você precisa estar conectado com sua conta Google para baixar da nuvem.');
+                appAlert('Você precisa estar conectado com sua conta Google para baixar da nuvem.');
                 return;
             }
 
@@ -15999,7 +16071,7 @@ console.log('Userscript carregado');`;
                 const hasValidCloudScripts = cloudData && cloudData.scripts && isValidData(cloudData.scripts);
 
                 if (!cloudData || (!hasValidCloudWs && !hasValidCloudScripts)) {
-                    alert('Nenhum backup de scripts encontrado na nuvem para a sua conta Google.\n\nDica: use o botão "Salvar meus Scripts na Nuvem" primeiro para enviar seus scripts atuais.');
+                    appAlert('Nenhum backup de scripts encontrado na nuvem para a sua conta Google.\n\nDica: use o botão "Salvar meus Scripts na Nuvem" primeiro para enviar seus scripts atuais.');
                     return;
                 }
 
@@ -16093,7 +16165,7 @@ console.log('Userscript carregado');`;
                     if (typeof showToast === 'function') {
                         showToast(`✅ ${cloudStats.totalWorkspaces} Áreas e ${cloudStats.totalScripts} scripts restaurados da Nuvem!`, 'success', 3000);
                     } else {
-                        alert(`✅ ${cloudStats.totalWorkspaces} Áreas de Trabalho e ${cloudStats.totalScripts} scripts restaurados da Nuvem com sucesso!`);
+                        appAlert(`✅ ${cloudStats.totalWorkspaces} Áreas de Trabalho e ${cloudStats.totalScripts} scripts restaurados da Nuvem com sucesso!`);
                     }
                 };
 
@@ -16101,14 +16173,14 @@ console.log('Userscript carregado');`;
 
             } catch (err) {
                 loadOverlay.remove();
-                alert('Erro ao buscar backup na nuvem: ' + (err.message || err));
+                appAlert('Erro ao buscar backup na nuvem: ' + (err.message || err));
             }
         }
 
         /* Modal de Configuração do Firebase (Acesso Restrito a Administradores) */
         function openFirebaseConfigModal() {
             if (!currentUser || !isCurrentUserAdmin()) {
-                alert('Acesso restrito: somente administradores autenticados podem visualizar ou gerenciar as credenciais do Firebase.');
+                appAlert('Acesso restrito: somente administradores autenticados podem visualizar ou gerenciar as credenciais do Firebase.');
                 return;
             }
             const overlay = document.createElement('div');
@@ -16202,7 +16274,7 @@ console.log('Userscript carregado');`;
                 };
 
                 if (!cfg.apiKey || !cfg.projectId) {
-                    alert('Informe ao menos a apiKey e o projectId do Firebase.');
+                    appAlert('Informe ao menos a apiKey e o projectId do Firebase.');
                     return;
                 }
 
@@ -16210,10 +16282,10 @@ console.log('Userscript carregado');`;
                 overlay.remove();
                 const ok = initFirebaseApp();
                 if (ok) {
-                    alert('Firebase configurado com sucesso! Agora você pode fazer login com o Google.');
+                    appAlert('Firebase configurado com sucesso! Agora você pode fazer login com o Google.');
                     loginWithGoogle();
                 } else {
-                    alert('Configurações salvas. Caso ocorra erro de conexão, verifique se o domínio do VS Code Live Server (localhost) está autorizado no Firebase.');
+                    appAlert('Configurações salvas. Caso ocorra erro de conexão, verifique se o domínio do VS Code Live Server (localhost) está autorizado no Firebase.');
                 }
             };
 
@@ -16348,7 +16420,7 @@ service cloud.firestore {
                 const ta = overlay.querySelector('#txtFirestoreRules');
                 ta.select();
                 copyTextToClipboard(rulesText).then(ok => {
-                    alert(ok ? 'Regras copiadas para a área de transferência! Cole na aba Regras do Firestore no Firebase Console.' : 'Falha ao copiar.');
+                    appAlert(ok ? 'Regras copiadas para a área de transferência! Cole na aba Regras do Firestore no Firebase Console.' : 'Falha ao copiar.');
                 });
             };
 
@@ -16357,7 +16429,7 @@ service cloud.firestore {
 
         async function openAdminPanelModal() {
             if (!isCurrentUserAdmin()) {
-                alert('Acesso restrito: somente administradores podem acessar este painel.');
+                appAlert('Acesso restrito: somente administradores podem acessar este painel.');
                 return;
             }
 
@@ -16582,7 +16654,7 @@ service cloud.firestore {
                 const target = allUsersList.find(u => u.id === userId);
                 if (!target) return;
                 const newRole = currentRole === 'admin' ? 'user' : 'admin';
-                if (!confirm(`Alterar cargo de "${target.displayName || target.email}" para ${newRole.toUpperCase()}?`)) return;
+                if (!appConfirm(`Alterar cargo de "${target.displayName || target.email}" para ${newRole.toUpperCase()}?`)) return;
                 try {
                     await firebaseDb.collection('users').doc(userId).update({ role: newRole });
                     target.role = newRole;
@@ -16594,7 +16666,7 @@ service cloud.firestore {
                     renderAdminUsersTable();
                     if (typeof showToast === 'function') showToast(`Cargo de ${target.displayName || target.email} atualizado para ${newRole}.`, 'success');
                 } catch(e) {
-                    alert('Erro ao atualizar cargo: ' + (e.message || e));
+                    appAlert('Erro ao atualizar cargo: ' + (e.message || e));
                 }
             };
 
@@ -16602,7 +16674,7 @@ service cloud.firestore {
                 const target = allUsersList.find(u => u.id === userId);
                 if (!target) return;
                 const newStatus = currentStatus === 'blocked' ? 'active' : 'blocked';
-                if (!confirm(`${newStatus === 'blocked' ? 'Bloquear acesso de' : 'Reativar conta de'} "${target.displayName || target.email}"?`)) return;
+                if (!appConfirm(`${newStatus === 'blocked' ? 'Bloquear acesso de' : 'Reativar conta de'} "${target.displayName || target.email}"?`)) return;
                 try {
                     await firebaseDb.collection('users').doc(userId).update({ status: newStatus });
                     target.status = newStatus;
@@ -16614,7 +16686,7 @@ service cloud.firestore {
                     renderAdminUsersTable();
                     if (typeof showToast === 'function') showToast(`Conta de ${target.displayName || target.email} foi ${newStatus === 'blocked' ? 'bloqueada' : 'ativada'}.`, 'warning');
                 } catch(e) {
-                    alert('Erro ao atualizar status: ' + (e.message || e));
+                    appAlert('Erro ao atualizar status: ' + (e.message || e));
                 }
             };
 
@@ -16623,7 +16695,7 @@ service cloud.firestore {
             overlay.querySelector('#admBtnFirestoreRules').onclick = openFirestoreRulesModal;
 
             overlay.querySelector('#admBtnPushDefaults').onclick = async () => {
-                if (!confirm('Deseja salvar a lista atual de scripts como o modelo padrão global da empresa no Firestore? Novos atendentes que conectarem receberão esta base.')) return;
+                if (!appConfirm('Deseja salvar a lista atual de scripts como o modelo padrão global da empresa no Firestore? Novos atendentes que conectarem receberão esta base.')) return;
                 try {
                     const appData = getAppData();
                     const payload = {
@@ -16646,10 +16718,10 @@ service cloud.firestore {
                     if (typeof showToast === 'function') {
                         showToast('Scripts padrão corporativos atualizados na nuvem com sucesso!', 'success');
                     } else {
-                        alert('Scripts padrão corporativos atualizados na nuvem com sucesso!');
+                        appAlert('Scripts padrão corporativos atualizados na nuvem com sucesso!');
                     }
                 } catch(e) {
-                    alert('Erro ao salvar scripts corporativos: ' + (e.message || e));
+                    appAlert('Erro ao salvar scripts corporativos: ' + (e.message || e));
                 }
             };
 
@@ -16838,7 +16910,7 @@ service cloud.firestore {
                 if (ok && typeof showToast === 'function') {
                     showToast('🔗 Link direto do card copiado!', 'success');
                 } else {
-                    alert('Link direto copiado para a área de transferência:\n' + directUrl);
+                    appAlert('Link direto copiado para a área de transferência:\n' + directUrl);
                 }
                 closeAllHeaderDropdowns();
             });
@@ -16905,7 +16977,7 @@ service cloud.firestore {
             const currentText = currentTa ? currentTa.value : '';
 
             if (history.length === 0) {
-                alert('Nenhuma versão anterior registrada para este card nesta sessão.');
+                appAlert('Nenhuma versão anterior registrada para este card nesta sessão.');
                 return;
             }
 
@@ -17334,7 +17406,7 @@ service cloud.firestore {
             overlay.querySelector('#btnCopyEquipBudget').onclick = () => {
                 const { text, count } = generateBudgetText();
                 if (count === 0) {
-                    alert('Selecione ao menos 1 item para copiar.');
+                    appAlert('Selecione ao menos 1 item para copiar.');
                     return;
                 }
                 copyTextToClipboard(text).then(ok => {
@@ -17342,11 +17414,11 @@ service cloud.firestore {
                         if (typeof showToast === 'function') {
                             showToast('📋 Orçamento de equipamentos copiado com sucesso!', 'success');
                         } else {
-                            alert('Valores e equipamentos copiados com sucesso!');
+                            appAlert('Valores e equipamentos copiados com sucesso!');
                         }
                         overlay.remove();
                     } else {
-                        alert('Falha ao copiar para a área de transferência.');
+                        appAlert('Falha ao copiar para a área de transferência.');
                     }
                 });
             };
@@ -17584,7 +17656,7 @@ service cloud.firestore {
                                     ` : keywords.map((kw, idx) => `
                                         <div style="display:flex; justify-content:space-between; align-items:center; background:var(--card-bg); border:1px solid var(--border-color); padding:8px 12px; border-radius:8px;">
                                             <div style="display:flex; align-items:center; gap:10px;">
-                                                <span class="custom-keyword-highlight" style="background:${kw.bg || 'rgba(0,0,0,0.1)'}; color:${kw.color || '#333'}; font-weight:700; padding:2px 8px; border-radius:4px; border:1px solid ${kw.color || '#333'}; font-size:12px;">
+                                                <span class="custom-keyword-highlight" data-user-content="true" style="background:${kw.bg || 'rgba(0,0,0,0.1)'}; color:${kw.color || '#333'}; font-weight:700; padding:2px 8px; border-radius:4px; border:1px solid ${kw.color || '#333'}; font-size:12px;">
                                                     ${escapeHtml(kw.word)}
                                                 </span>
                                             </div>
@@ -17645,7 +17717,7 @@ service cloud.firestore {
                 const resetBtn = overlay.querySelector('#resetKwBtn');
                 if (resetBtn) {
                     resetBtn.onclick = () => {
-                        if (confirm('Restaurar as palavras-chave padrão do sistema?')) {
+                        if (appConfirm('Restaurar as palavras-chave padrão do sistema?')) {
                             saveCustomKeywords(DEFAULT_KEYWORDS);
                             renderModalContent();
                         }
@@ -17827,7 +17899,7 @@ service cloud.firestore {
         }
 
         function emptyTrash() {
-            if (confirm('Tem certeza de que deseja esvaziar permanentemente toda a lixeira? Esta ação não pode ser desfeita.')) {
+            if (appConfirm('Tem certeza de que deseja esvaziar permanentemente toda a lixeira? Esta ação não pode ser desfeita.')) {
                 saveTrashItems([]);
                 if (typeof showToast === 'function') {
                     showToast('🧹 Lixeira totalmente esvaziada.', 'info');
@@ -17897,13 +17969,13 @@ service cloud.firestore {
                                         <div class="trash-card-item">
                                             <div class="trash-meta-row">
                                                 <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
-                                                    <span class="trash-location-badge">📁 ${escapeHtml(item.workspaceName || 'Área')}</span>
-                                                    <span class="trash-location-badge">📑 ${escapeHtml(item.tabName || 'Aba')}</span>
-                                                    <span class="trash-location-badge">🏷️ ${escapeHtml(item.columnTitle || 'Coluna')}</span>
+                                                    <span class="trash-location-badge" data-user-content="true">📁 ${escapeHtml(item.workspaceName || 'Área')}</span>
+                                                    <span class="trash-location-badge" data-user-content="true">📑 ${escapeHtml(item.tabName || 'Aba')}</span>
+                                                    <span class="trash-location-badge" data-user-content="true">🏷️ ${escapeHtml(item.columnTitle || 'Coluna')}</span>
                                                 </div>
                                                 <span style="font-size:11px; opacity:0.75;">🕒 ${dateStr}</span>
                                             </div>
-                                            <div style="background:var(--tab-bg); border:1px solid var(--border-color); border-radius:6px; padding:8px 10px; font-size:12px; font-family:inherit; white-space:pre-wrap; word-break:break-word; max-height:100px; overflow-y:auto; line-height:1.4;">${renderFormattedItemText(item.text || '')}</div>
+                                            <div data-user-content="true" style="background:var(--tab-bg); border:1px solid var(--border-color); border-radius:6px; padding:8px 10px; font-size:12px; font-family:inherit; white-space:pre-wrap; word-break:break-word; max-height:100px; overflow-y:auto; line-height:1.4;">${renderFormattedItemText(item.text || '')}</div>
                                             <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:2px;">
                                                 <button type="button" class="del-perm-btn io-btn" data-id="${item.id}" style="background:transparent; border:1px solid #ef4444; color:#ef4444; font-size:11px; padding:4px 10px; font-weight:600;">
                                                     ✕ Excluir Definitivo
@@ -18338,7 +18410,7 @@ service cloud.firestore {
         function getDeveloperPin() { return null; }
 
         function setDeveloperPin() {
-            alert('O PIN local foi desativado por segurança. O acesso de desenvolvedor depende de uma conta Google mestre verificada.');
+            appAlert('O PIN local foi desativado por segurança. O acesso de desenvolvedor depende de uma conta Google mestre verificada.');
             return false;
         }
 
@@ -18355,7 +18427,7 @@ service cloud.firestore {
 
         function promptDeveloperUnlock(actionName = 'esta ação') {
             if (isDeveloperUnlocked()) return true;
-            alert(`Acesso de desenvolvedor negado para ${actionName}. Entre com uma das contas Google mestre verificadas para liberar esta função.`);
+            appAlert(`Acesso de desenvolvedor negado para ${actionName}. Entre com uma das contas Google mestre verificadas para liberar esta função.`);
             return false;
         }
 
@@ -18991,6 +19063,990 @@ service cloud.firestore {
             "Verificar no local": "Check on site"
 });
 
+        Object.assign(translations, {
+            '🌐 Versão 3.1.13': '🌐 Version 3.1.13',
+            'Tradução integral do changelog e revisão dos controles de Clientes & Alarmes, dicas, avisos e configurações.': 'Full changelog translation and review of Clients & Reminders controls, tooltips, alerts and settings.',
+            'Versão do cabeçalho sincronizada com a versão do sistema.': 'Header version synchronized with the application version.',
+            'Seleção de idioma por bandeiras à direita da busca, com indicação do idioma ativo.': 'Flag language buttons to the right of search, with an active language indicator.',
+            'Português (Brasil)': 'Portuguese (Brazil)'
+        });
+
+        // Release notes have their own vocabulary, including historical examples.
+        const changelogTranslations = {
+            "🛡️ Visão Administrativa Completa": "🛡️ Full Administrative View",
+            "Alternador exclusivo que oculta menus administrativos, edição, chaves e ferramentas secundárias durante a operação, reduzindo drasticamente estímulos e riscos de edições acidentais durante a ligação.": "Dedicated toggle that hides administrative menus, editing, keys and secondary tools during service, reducing distractions and the risk of accidental edits during calls.",
+            "⌨️ Central de Comandos Global (Ctrl+K):": "⌨️ Global Command Center (Ctrl+K):",
+            "Paleta de comandos instantânea estilo Spotlight/Raycast com busca integrada de scripts e execução direta de chamados, testes, trocas de tema, backup e alarmes via teclado.": "Instant Spotlight/Raycast-style command palette with integrated script search and direct keyboard access to tickets, tests, theme switching, backups and reminders.",
+            "⋯ Cabeçalho Descomprimido & Menu \"Mais\":": "⋯ Streamlined Header & More Menu:",
+            "Reorganização visual limpa no padrão Apple, agrupando ferramentas secundárias e preservando simetria e clareza no topo da tela.": "Clean Apple-style visual organization, grouping secondary tools while preserving symmetry and clarity at the top of the screen.",
+            "📋 Botão Copiar com Largura Estável e Feedback:": "📋 Fixed-Width Copy Button with Feedback:",
+            "Largura mínima fixa (96px) impedindo que o layout pule ao virar": "Fixed minimum width (96px) prevents layout jumps when changing to",
+            "✓ Copiado": "✓ Copied",
+            "Falha": "Failed",
+            "🔍 Barra de Filtros Ativos da Busca:": "🔍 Active Search Filters Bar:",
+            "Indicação explícita da contagem de resultados, termos pesquisados e chips clicáveis para remoção rápida de filtros ativos.": "Explicit result count, search terms and clickable chips to quickly remove active filters.",
+            "🔗 Links Diretos para Cards (Deep Linking):": "🔗 Direct Card Links (Deep Linking):",
+            "Compartilhamento direto de cartões específicos via URL (": "Direct sharing of specific cards through a URL (",
+            ") com rolagem suave e destaque luminoso.": ") with smooth scrolling and a bright highlight.",
+            "🕒 Histórico Local por Card (Micro-Snapshots):": "🕒 Local Card History (Micro-Snapshots):",
+            "Captura de versões anteriores no foco de edição, permitindo restaurar edições anteriores do próprio card sem resetar a central.": "Captures previous versions when editing gains focus, allowing earlier card edits to be restored without resetting the application.",
+            "♿ Acessibilidade e Redução de Movimento:": "♿ Accessibility and Reduced Motion:",
+            "Suporte nativo completo a": "Full native support for",
+            "para transições estáticas e suaves.": "for static and gentle transitions.",
+            "🔄 Fila Concorrente de Sincronização & Payload Centralizado:": "🔄 Concurrent Synchronization Queue & Centralized Payload:",
+            "Controle atômico por": "Atomic control using",
+            "vs": "versus",
+            "em": "in",
+            "⚠️ Detecção Inteligente de Conflito Multi-Dispositivo:": "⚠️ Smart Multi-Device Conflict Detection:",
+            "Comparação automática por timestamp e": "Automatic comparison using timestamps and a unique remote",
+            "único remoto com diálogo interativo.": "with an interactive dialog.",
+            "💎 Versão 2.6.5 Consolidada:": "💎 Consolidated Version 2.6.5:",
+            "Alinhamento uniforme no código-fonte, cabeçalhos, manifestos e backups.": "Consistent alignment across source code, headers, manifests and backups.",
+            "📜 Histórico de Atualizações": "📜 Update History",
+            "👤 Visão do Atendente": "👤 Agent View",
+            "Tradução de campos, modelos, filtros, orientações e botões das janelas Ordem de Serviço e Teste Técnico.": "Translated fields, templates, filters, guidance and buttons in the Work Order and Technical Test windows.",
+            "Preservados identificadores internos, valores monetários, funcionalidades e dados digitados pelo operador.": "Preserved internal identifiers, currency amounts, features and operator-entered data.",
+            "🌐 Correção do idioma:": "🌐 Language fix:",
+            "corrigido ciclo infinito no MutationObserver que reescrevia nós de texto mesmo quando o conteúdo não mudava, podendo congelar a interface e impedir cliques e interações.": "fixed an infinite MutationObserver loop that rewrote text nodes even when their content had not changed, potentially freezing the interface and preventing clicks and interactions.",
+            "⚙️ Atualização seletiva:": "⚙️ Selective updates:",
+            "o tradutor agora só altera o texto quando o valor de destino é diferente do conteúdo atual, evitando eventos de mutação desnecessários.": "the translator now changes text only when the target value differs from the current content, avoiding unnecessary mutation events.",
+            "🌐 Idioma:": "🌐 Language:",
+            "adicionada opção para alternar entre Português (Brasil) e English, com preferência salva neste dispositivo.": "added an option to switch between Portuguese (Brazil) and English, with the preference saved on this device.",
+            "🔄 Interface dinâmica:": "🔄 Dynamic interface:",
+            "textos de menus, controles, dicas e janelas geradas dinamicamente recebem tradução quando disponíveis; conteúdo pessoal dos cartões e rascunhos permanece inalterado.": "menus, controls, tooltips and dynamically generated windows receive available translations; personal card content and notes remain unchanged.",
+            "♿ Acessibilidade:": "♿ Accessibility:",
+            "seletor de idioma com rótulo acessível e atualização do atributo lang do documento.": "language control with an accessible label and updates to the document's lang attribute.",
+            "🔐 Regras Firestore reforçadas:": "🔐 Stronger Firestore rules:",
+            "bloqueio de contas inativas, perfil com campos editáveis limitados, promoção administrativa protegida e negação padrão para caminhos não declarados. As regras precisam ser publicadas no Console do Firebase.": "inactive accounts blocked, profile fields limited for editing, protected administrative promotion and default denial for undeclared paths. The rules must be published in the Firebase Console.",
+            "🧩 Userscripts:": "🧩 Userscripts:",
+            "execução exige @match/@include explícito, bloqueia padrão universal e limita o código a 100 KB; scripts continuam exigindo confiança e ativação explícitas.": "execution requires explicit @match/@include metadata, blocks universal patterns and limits code to 100 KB; scripts still require explicit trust and activation.",
+            "⬇️ Atualizações verificadas:": "⬇️ Verified updates:",
+            "origem restrita ao domínio oficial e verificação SHA-256 obrigatória antes do download. O version.json precisa conter o hash do arquivo HTML.": "updates restricted to the official domain, with mandatory SHA-256 verification before download. The version.json file must contain the HTML file hash.",
+            "🧰 Recuperação de Áreas de Trabalho:": "🧰 Workspace recovery:",
+            "Tratamento de registros inválidos ou incompletos no armazenamento local, evitando falhas quando uma área está nula, sem ID ou com dados inconsistentes.": "Handled invalid or incomplete local storage records, preventing failures when a workspace is null, lacks an ID or contains inconsistent data.",
+            "🧹 Normalização defensiva dos cards:": "🧹 Defensive card normalization:",
+            "Validação de grupos, itens, textos, tags, alarmes e contadores antes de reconstruir os dados da interface.": "Validated groups, items, text, tags, reminders and counters before rebuilding interface data.",
+            "🧪 Validação estática:": "🧪 Static validation:",
+            "Arquivo JavaScript validado sintaticamente e estrutura HTML conferida; testes de navegador e Firebase real ainda dependem do ambiente de execução.": "JavaScript syntax validated and HTML structure checked; browser and live Firebase tests still depend on the runtime environment.",
+            "☁️ Fila Firebase:": "☁️ Firebase queue:",
+            "Correção de concorrência para preservar as edições mais recentes quando uma tentativa de sincronização falha durante novas alterações locais.": "Fixed concurrency to preserve the latest edits when a synchronization attempt fails during new local changes.",
+            "📣 Confirmação de salvamento:": "📣 Save confirmation:",
+            "As telas de envio agora só exibem sucesso quando a fila confirma a gravação; falhas mantêm os dados locais e mostram aviso de envio não confirmado.": "Upload screens now show success only when the queue confirms the write; failures preserve local data and display an unconfirmed upload warning.",
+            "tratamento de registros inválidos ou incompletos no armazenamento local.": "handling of invalid or incomplete local storage records.",
+            "🧹 Normalização defensiva:": "🧹 Defensive normalization:",
+            "validação de grupos, itens, textos, tags, alarmes e contadores.": "validation of groups, items, text, tags, reminders and counters.",
+            "preservação das edições locais mais recentes quando uma tentativa de sincronização falha.": "preservation of the latest local edits when a synchronization attempt fails.",
+            "sucesso somente quando a gravação é confirmada.": "success shown only after the write is confirmed.",
+            "🛡️ Assinatura Oficial do Desenvolvedor:": "🛡️ Official developer signature:",
+            "Inclusão do card de autoria oficial e certificado de licença em": "Added the official authorship card and license certificate in",
+            ", contato oficial": ", official contact",
+            "e registro": "and registration",
+            "🔒 Bloqueio de Software Anti-Roubo & Trava de Edição:": "🔒 Anti-theft software protection & editing lock:",
+            "O Modo Edição e funções estruturais possuem bloqueio de interface por conta Google autorizada ou PIN de desenvolvedor.": "Edit Mode and structural functions have an interface lock requiring an authorized Google account or developer PIN.",
+            "⚙️ Gestão de PIN:": "⚙️ PIN management:",
+            "Possibilidade de alterar o PIN mestre nas configurações de autoria.": "The master PIN can be changed in the authorship settings.",
+            "📦 Metadados de Autoria:": "📦 Authorship metadata:",
+            "Cópias e backups incluem metadados de autoria.": "Copies and backups include authorship metadata.",
+            "🏷️ Destaque Visual de Palavras-Chave Customizadas:": "🏷️ Custom keyword highlighting:",
+            "Agora você pode cadastrar termos e palavras-chave personalizadas (como": "You can now register custom terms and keywords (such as",
+            "urgente": "urgent",
+            "chave pix": "PIX key",
+            "senha": "password",
+            "protocolo": "ticket number",
+            ", etc.) com cores de destaque vivas. Os termos são destacados automaticamente no corpo de todos os cards para visualização imediata durante o atendimento. Acesso direto em": ", etc.) with vivid highlight colors. Terms are highlighted automatically in all card bodies for immediate visibility during service. Access directly in",
+            "Conta & Config > Palavras-Chave": "Account & Settings > Keywords",
+            "com paleta de cores e ativação/desativação rápida.": "with a color palette and quick enable/disable control.",
+            "🗑️ Lixeira com Retenção Temporária de 30 Dias & Sincronização em Nuvem (Firebase):": "🗑️ Trash with 30-day retention & cloud synchronization (Firebase):",
+            "Ao excluir um card, ele não é mais perdido imediatamente. O card é enviado para a Lixeira da Central, guardando seu texto completo, variáveis, tags, cores e localização exata (Área, Aba e Coluna) por até 30 dias.": "Deleting a card no longer removes it immediately. The card goes to Trash, preserving its full text, variables, tags, colors and exact location (Workspace, Tab and Column) for up to 30 days.",
+            "100% sincronizada com o Firebase Firestore:": "Fully synchronized with Firebase Firestore:",
+            "qualquer exclusão ou restauração é salva automaticamente na Nuvem do Google junto com suas Áreas de Trabalho. Botão com contador acessível na barra lateral sob": "any deletion or restoration is saved automatically to Google Cloud alongside your Workspaces. A button with a counter is available in the sidebar under",
+            "Sistema > Lixeira": "System > Trash",
+            "e em": "and in",
+            "🔊 Feedback Sonoro Opcional ao Copiar:": "🔊 Optional copy sound feedback:",
+            "Confirmação sonora suave ao copiar qualquer card no aplicativo ou pelo Docker. 100% nativo com Web Audio API (sem arquivos externos ou lentidão). Disponível em": "A soft sound confirms copying any card in the application or Clipboard. Fully native Web Audio API (no external files or slowdowns). Available in",
+            "Conta & Config > Som ao Copiar": "Account & Settings > Copy Sound",
+            "com 4 perfis agradáveis definindo o": "with four pleasant profiles, using",
+            "Blip Moderno": "Modern Blip",
+            "como padrão (além de": "as the default (along with",
+            "Acorde Suave": "Soft Chord",
+            "Clique Mecânico": "Mechanical Click",
+            "e": "and",
+            "Bolha d'Água": "Water Bubble",
+            "), além de controle de volume e botão de demonstração.": "), plus volume control and a demo button.",
+            "🕒 Histórico de Buscas Recentes:": "🕒 Recent search history:",
+            "O campo de busca rápida do cabeçalho agora memoriza suas últimas pesquisas mais frequentes (como": "The quick search field in the header now remembers your most frequent recent searches (such as",
+            "estorno": "refund",
+            "visita técnica": "technical visit",
+            "). Ao clicar no campo de busca, chips clicáveis aparecem logo abaixo para repetir buscas anteriores instantaneamente, com opção de remover itens individuais ou limpar o histórico.": "). Clicking the search field displays clickable chips below it to repeat previous searches instantly, with options to remove individual items or clear the history.",
+            "🎨 Cores de Destaque por Área de Trabalho:": "🎨 Workspace accent colors:",
+            "Agora você pode escolher uma cor de destaque personalizada (Azul Suporte, Verde Financeiro, Roxo Comercial, Laranja Campo, Vermelho Alertas, Dourado VIP, Ciano N2 ou Rosa Comunicação) ao criar ou editar uma Área de Trabalho. A cor colore com elegância a borda e o fundo da área na barra lateral esquerda e reflete no seletor de áreas do Docker.": "You can now choose a custom accent color (Support Blue, Finance Green, Sales Purple, Field Orange, Alert Red, VIP Gold, N2 Cyan or Communication Pink) when creating or editing a Workspace. The color highlights the workspace border and background in the left sidebar and appears in the Clipboard workspace selector.",
+            "⏮️ Ponto de Restauração Individual por Área de Trabalho:": "⏮️ Individual workspace restore points:",
+            "Cada Área de Trabalho agora salva seus próprios snapshots automáticos conforme você edita e utiliza os scripts. No menu de opções da área (": "Each Workspace now saves its own automatic snapshots as you edit and use scripts. In the workspace options menu (",
+            "), o botão": "), the button",
+            "Restaurar Versão Anterior": "Restore Previous Version",
+            "permite recuperar o estado anterior daquela área específica sem alterar as demais.": "restores that specific workspace's previous state without affecting the others.",
+            "📤 Compartilhamento Rápido de Área Específica:": "📤 Quick sharing of individual workspaces:",
+            "No menu de opções de qualquer Área de Trabalho, o botão": "In any Workspace's options menu, the button",
+            "Exportar / Compartilhar esta Área (.json)": "Export / Share This Workspace (.json)",
+            "gera um arquivo leve e individual com apenas as abas e cards daquele setor para enviar a colegas de equipe.": "generates a small, individual file containing only that department's tabs and cards to share with teammates.",
+            "📥 Importação Inteligente com Pergunta de Destino:": "📥 Smart import with destination selection:",
+            "Ao carregar qualquer arquivo": "When loading any",
+            "de área ou scripts, a Central abre uma janela de escolha interativa:": "workspace or script file, the application opens an interactive selection window:",
+            "Opção A (Nova Área)": "Option A (New Workspace)",
+            "para criar uma área separada sem alterar seus scripts atuais, ou": "to create a separate workspace without changing your current scripts, or",
+            "Opção B (Mesclar)": "Option B (Merge)",
+            "para adicionar as abas dentro da Área de Trabalho em que você já está trabalhando sem apagar nada.": "to add tabs to the Workspace you are currently using without deleting anything.",
+            "☁️ Resumo e Salvamento Unificado de Todas as Áreas na Nuvem:": "☁️ Unified cloud summary and saving for all workspaces:",
+            "Os modais de prévia de salvamento e download na Nuvem do Google foram 100% unificados, exibindo o total consolidado de todas as Áreas de Trabalho, abas e contagem total de scripts somados em um único backup seguro.": "The Google Cloud save and download preview dialogs were fully unified, showing consolidated totals for all Workspaces, tabs and scripts in one secure backup.",
+            "↔️ Inversão da Barra Superior:": "↔️ Top bar alignment reversed:",
+            "Botões de ação rápida e filtros (Favoritos, Cores, Recentes, Desfazer e Docker) alinhados à esquerda; campo de busca Spotlight posicionado à direita da tela.": "Quick actions and filters (Favorites, Colors, Recent, Undo and Clipboard) aligned to the left; Spotlight search positioned on the right.",
+            "👤 Centralização em \"Conta & Config\":": "👤 Centralized in \"Account & Settings\":",
+            "O menu": "The",
+            "⋯ Mais": "⋯ More",
+            "foi removido do topo para deixar o cabeçalho 100% limpo; o": "menu was removed from the top to keep the header completely clean; the",
+            "Gerenciador de Userscripts": "Userscript Manager",
+            "e o": "and",
+            "agora ficam centralizados dentro da janela de Conta.": "are now centralized in the Account window.",
+            "🪟 Docker no Estilo Área de Transferência com Seletor de Áreas:": "🪟 Clipboard-style Docker with workspace selector:",
+            "O Docker foi redesenhado no estilo Fluent do Windows (Win + V), com suporte a ver": "The Clipboard was redesigned in Windows Fluent style (Win + V), with support for viewing",
+            "e menu suspenso integrado para trocar de Área de Trabalho direto de dentro do Docker.": "and an integrated dropdown to switch Workspaces directly inside the Clipboard.",
+            "🔄 Arrastar Cards e Abas entre Áreas de Trabalho:": "🔄 Drag cards and tabs between workspaces:",
+            "Agora você pode arrastar tanto cards individuais quanto abas inteiras diretamente para qualquer Área de Trabalho na barra lateral esquerda.": "You can now drag both individual cards and entire tabs directly to any Workspace in the left sidebar.",
+            "Atualização Anterior": "Previous Update",
+            "🔄 Arraste de Abas entre Áreas de Trabalho (Drag & Drop):": "🔄 Drag tabs between workspaces (Drag & Drop):",
+            "Agora você pode mover qualquer aba de scripts (ex:": "You can now move any script tab (e.g.",
+            "Telefone": "Phone",
+            "Script Visita": "Service Visit Script",
+            ", etc.) de uma Área de Trabalho para outra apenas arrastando a aba e soltando sobre o nome ou ícone da área desejada na barra lateral esquerda. Todos os grupos, colunas e cards são transferidos instantaneamente e salvos de forma automática.": ", etc.) from one Workspace to another by dragging the tab and dropping it onto the destination workspace name or icon in the left sidebar. All groups, columns and cards are transferred instantly and saved automatically.",
+            "🧹 Acesso ao Changelog Exclusivo na Versão & Cabeçalho Despoluído:": "🧹 Changelog access through the version badge & cleaner header:",
+            "Conforme solicitado, o acesso ao histórico e novidades foi desvinculado de menus secundários e centralizado exclusivamente no clique sobre o badge de versão (": "As requested, history and updates were removed from secondary menus and made accessible exclusively by clicking the version badge (",
+            ") na marca da barra lateral esquerda. O botão redundante": ") in the left sidebar brand area. The redundant",
+            "⋯ Mais ▾": "⋯ More ▾",
+            "foi removido do topo para deixar o cabeçalho 100% limpo e focado no atendimento.": "button was removed from the top to keep the header clean and focused on service.",
+            "👤 Correção da Conta no Rodapé Lateral:": "👤 Sidebar account footer fix:",
+            "Corrigido o status da conta de usuário no rodapé da barra lateral que exibia incorretamente \"Modo Offline\" mesmo com o atendente autenticado na Conta Google/Firebase. Agora o nome do atendente, foto/iniciais e indicador de sincronização em nuvem são atualizados em tempo real.": "Fixed the account status in the sidebar footer incorrectly showing \"Offline Mode\" even when the agent was signed in with Google/Firebase. The agent name, photo/initials and cloud synchronization indicator now update in real time.",
+            "🧩 Gerenciador de Userscripts Integrado à Conta:": "🧩 Userscript Manager integrated into Account:",
+            "O Gerenciador de Userscripts foi transferido para dentro da janela de": "The Userscript Manager was moved into the",
+            "Minha Conta": "My Account",
+            ", despoluindo o menu superior e mantendo extensões, scripts de automação e dados de armazenamento centralizados em um só lugar.": "window, decluttering the top menu and centralizing extensions, automation scripts and storage data in one place.",
+            "◀️ Barra Lateral Retrátil & Recolhível (Modo Compacto):": "◀️ Collapsible sidebar (Compact Mode):",
+            "Novo botão de alternância suave no topo da barra lateral (e atalho de teclado": "New smooth toggle at the top of the sidebar (and keyboard shortcut",
+            ") que permite encolher a barra para o modo trilho de ícones (~58px) ou expandi-la com os rótulos completos, com memorização automática da sua preferência no navegador.": ") to shrink the sidebar to an icon rail (~58px) or expand it with full labels, automatically remembering your browser preference.",
+            "📂 Áreas de Trabalho Estilo Trello:": "📂 Trello-style workspaces:",
+            "Crie, organize e alterne instantaneamente entre múltiplas áreas de trabalho personalizadas (ex:": "Create, organize and instantly switch between multiple custom workspaces (e.g.",
+            "Suporte Principal": "Main Support",
+            "Atendimento N2": "N2 Support",
+            "Comercial": "Sales",
+            "Cobrança": "Billing",
+            "ou": "or",
+            "Projetos": "Projects",
+            ") na barra lateral esquerda. Cada área mantém suas próprias abas de categorias, colunas e cards de forma 100% isolada.": ") in the left sidebar. Each workspace keeps its category tabs, columns and cards fully isolated.",
+            "➕ Criação e Gestão Completa de Áreas:": "➕ Full workspace creation and management:",
+            "Botão dedicado": "Dedicated",
+            "para criar novas áreas a partir de um modelo em branco ou duplicando todos os scripts da área atual. Menu de opções rápido (": "button to create workspaces from a blank template or by duplicating all scripts in the current workspace. Quick options menu (",
+            ") para renomear, trocar ícone, duplicar ou excluir áreas com segurança.": ") to safely rename, change the icon, duplicate or delete workspaces.",
+            "🎯 Cabeçalho Enxuto & Sem Redundância:": "🎯 Streamlined header without redundancy:",
+            "Remoção definitiva do título duplicado \"Central de Scripts\" do topo da tela, centralizando a identidade da marca com elegância e exclusividade na barra lateral esquerda da aplicação. O campo de busca agora alinha-se harmoniosamente à esquerda do cabeçalho.": "Removed the duplicate \"Central de Scripts\" title from the top, consolidating the brand identity in the application's left sidebar. Search now aligns to the left of the header.",
+            "🍎 Barra Lateral Apple HIG:": "🍎 Apple HIG sidebar:",
+            "Nova barra lateral vertical esquerda expansiva (~210px) no padrão de design Apple (macOS / iPadOS), com acabamento em vidro translúcido (frosted glass), ícones compactos refinados e rótulos textuais elegantes ao lado de cada ferramenta para navegação clara e ágil.": "New expandable left sidebar (~210px) following Apple design conventions (macOS / iPadOS), with frosted glass, refined compact icons and clear text labels beside each tool for quick navigation.",
+            "⚡ Acesso Rápido a Ferramentas no Trilho Lateral:": "⚡ Quick tool access in the sidebar rail:",
+            "Ícones dedicados no topo da barra lateral para": "Dedicated icons at the top of the sidebar for",
+            "Chamado OS (📝)": "Work Order (📝)",
+            "Teste Técnico (🧪)": "Technical Test (🧪)",
+            "Valores & Equipamentos (🔌)": "Pricing & Equipment (🔌)",
+            "Dock Flutuante (🪟)": "Floating Clipboard (🪟)",
+            "🎛️ Controles de Sistema na Base:": "🎛️ System controls at the bottom:",
+            "Alarme de Clientes (🔔), Alternador Rápido de Temas (Cinza 🌘, OLED 🌑, Claro ☀️), Modo Atendimento (🎧), Modo Edição (✏️) e Foto/Avatar do Atendente com status de sincronização da nuvem.": "Client reminders (🔔), quick theme switch (Gray 🌘, OLED 🌑, Light ☀️), Service Mode (🎧), Edit Mode (✏️) and agent photo/avatar with cloud synchronization status.",
+            "📐 Descompressão do Topo (Fim da Linha 2):": "📐 More space at the top (second row removed):",
+            "A antiga linha de atalhos secundária foi completamente eliminada da parte superior da tela. As ações de filtro (⭐ Favoritos, 🎨 Cores ▾, 🕒 Recentes ▾ e ↩️ Desfazer) foram incorporadas elegantemente ao cabeçalho ao lado do campo de busca, liberando espaço vertical valioso para os scripts.": "The old secondary shortcut row was removed from the top of the screen. Filters (⭐ Favorites, 🎨 Colors ▾, 🕒 Recent ▾ and ↩️ Undo) were incorporated into the header beside search, freeing valuable vertical space for scripts.",
+            "🛡️ Auditoria de Segurança & Debug Completo:": "🛡️ Full security audit & debugging:",
+            "Blindagem contra DOM XSS (autocomplete, modais, filtros e painel administrativo), proteção contra Prototype Pollution em backups JSON, sanitização contra CSV Formula Injection, validação estrita de Userscripts/URLs e correção definitiva na preservação de IDs dos cards, movimentação entre abas, sincronização na nuvem e destaque de busca sem quebrar tags HTML.": "Protection against DOM XSS (autocomplete, dialogs, filters and admin panel), Prototype Pollution protection for JSON backups, CSV Formula Injection sanitization, strict Userscript/URL validation and fixes for card ID preservation, tab movement, cloud synchronization and search highlighting without breaking HTML tags.",
+            "🎯 Menu \"⋯ Mais\" Descomprimido & Focado:": "🎯 Streamlined, focused \"⋯ More\" menu:",
+            "Remoção de todas as opções redundantes ou duplicadas (Backup & Armazenamento, Orçamento de Equipamentos, Central de Comandos, Dock de Scripts, Valores de Variáveis e Localizar/Substituir), mantendo o menu enxuto e livre de poluição visual.": "Removed all redundant or duplicate options (Backup & Storage, Equipment Quote, Command Center, Script Clipboard, Variable Values and Find & Replace), keeping the menu compact and uncluttered.",
+            "🪟 Dock de Scripts com Acesso Direto no Cabeçalho:": "🪟 Script Clipboard with direct header access:",
+            "O Dock flutuante agora possui seu próprio botão e ícone dedicado no topo da tela (": "The floating Clipboard now has its own dedicated button and icon at the top (",
+            "), posicionado ao lado do menu ⋯ Mais, com atalho rápido": "), beside the ⋯ More menu, with the quick shortcut",
+            "🔍 Localizar e Substituir em Massa Integrado ao Ctrl+K:": "🔍 Bulk Find & Replace integrated with Ctrl+K:",
+            "A tecla de atalho": "The",
+            "e o badge do campo de busca agora abrem diretamente a ferramenta de Localizar e Substituir em Massa, permitindo atualizar telefones de plantão, links e termos em todos os scripts com agilidade.": "shortcut and search badge now open Bulk Find & Replace directly, allowing quick updates to on-call phone numbers, links and terms across all scripts.",
+            "⚙️ Configuração de Variáveis Movida para \"Conta\":": "⚙️ Variable settings moved to \"Account\":",
+            "A gestão de": "Management of",
+            "Valores de Variáveis Padrão": "Default Variable Values",
+            "foi incorporada à janela de Conta / Armazenamento Local, facilitando o acesso centralizado tanto para usuários logados quanto em modo offline.": "was integrated into the Account / Local Storage window for centralized access by both signed-in and offline users.",
+            "📜 Histórico e Novidades via Clique na Versão:": "📜 History and updates by clicking the version:",
+            "O badge": "The",
+            "no cabeçalho superior tornou-se interativo — basta clicar sobre ele para abrir instantaneamente esta janela de novidades.": "badge in the top header is now interactive — click it to open this updates window instantly.",
+            "📑 Localização Rápida de Abas Restaurada:": "📑 Quick tab navigation restored:",
+            "O botão": "The",
+            "📑 Localizar Aba ▾": "📑 Find Tab ▾",
+            "na barra de ações abre instantaneamente o popover com busca e lista completa de abas para troca ágil de categoria.": "button in the action bar instantly opens a popover with search and a complete tab list for quick category switching.",
+            "🎯 Topo Descomprimido & Organização em 3 Níveis Claros:": "🎯 Streamlined top area & three clear levels:",
+            "Fim definitivo da confusão visual do print. A interface organiza-se em 3 níveis harmoniosos: Cabeçalho Global (Nível 1), Barra de Ações Rápidas em chips esbeltos de 34px (Nível 2) e Abas de Categorias (Nível 3).": "Resolved the visual clutter shown in the screenshot. The interface now has three balanced levels: Global Header (Level 1), slim 34px Quick Action Chips (Level 2) and Category Tabs (Level 3).",
+            "🔍 Unificação Completa de Localizar Aba & Scripts (Ctrl+K):": "🔍 Unified tab and script search (Ctrl+K):",
+            "📑 Localizar Aba": "📑 Find Tab",
+            "agora abre diretamente a Central de Comandos integrada. Com o campo vazio, exibe todas as abas disponíveis no topo com contagem de scripts para troca imediata; ao digitar, pesquisa instantaneamente tanto nomes de abas quanto o texto dos scripts dentro de cada aba, além de comandos do sistema.": "now opens the integrated Command Center directly. An empty search shows all available tabs at the top with script counts for immediate switching; typing searches tab names, script text within each tab and system commands instantly.",
+            "🎨 Fundo Transparente sem Blur:": "🎨 Transparent background without blur:",
+            "Fundo dos modais (Chamado, Testes, Orçamento e Paleta de Comandos) ajustado para transparência nítida (": "Dialog backgrounds (Tickets, Tests, Quotes and Command Palette) adjusted to clear transparency (",
+            ") sem qualquer desfoque (blur), permitindo ler com total clareza os scripts e a interface por trás do modal enquanto preenche os formulários.": ") without blur, so scripts and the interface behind the dialog remain clearly readable while filling out forms.",
+            "👤 Centralização de Armazenamento e Painel Admin em \"Minha Conta\":": "👤 Storage and admin panel centralized in \"My Account\":",
+            "O acesso ao": "Access to",
+            "Gerenciamento de Armazenamento & JSON": "Storage & JSON Management",
+            "e o botão do": "and the",
+            "Painel Administrativo da Equipe": "Team Administration Panel",
+            "foram transferidos para dentro da janela de Conta, limpando botões administrativos soltos da barra superior.": "button were moved into the Account window, removing scattered administrative buttons from the top bar.",
+            "🔒 Blindagem de Chaves do Firebase:": "🔒 Firebase key protection:",
+            "A opção de configurar chaves do Firebase foi completamente removida da visão de usuários offline e não-administradores, ficando estritamente restrita a administradores autenticados com permissão": "Firebase key configuration was removed entirely from offline and non-administrator views, remaining strictly limited to authenticated administrators with",
+            "✨ Primeira Linha Limpa & Reorganizada:": "✨ Clean, reorganized first row:",
+            "Reformulação completa do cabeçalho superior para eliminar poluição visual, estabelecendo 3 zonas equilibradas (Marca à esquerda, Busca centralizada com atalho": "Redesigned the top header to remove clutter, with three balanced areas (Brand on the left, centered Search with the",
+            "e Controles agrupados à direita).": "shortcut and grouped Controls on the right).",
+            "🔍 Busca Centralizada com Badge:": "🔍 Centered search with badge:",
+            "Campo de busca modernizado no padrão Safari/macOS com ícone SVG integrado e atalho em badge clicável para a Central de Comandos.": "Modernized search in Safari/macOS style with an integrated SVG icon and clickable shortcut badge for the Command Center.",
+            "🎛️ Cápsulas Segmentadas Uniformes:": "🎛️ Consistent segmented controls:",
+            "Controles de operação (": "Operation controls (",
+            "Atendimento": "Service",
+            "Edição": "Editing",
+            ") e visual (": ") and appearance controls (",
+            "Temas": "Themes",
+            ") unificados em altura padrão (34px) com bordas suaves e sem encaixes duplicados.": ") unified at a standard height (34px), with soft borders and no duplicate frames.",
+            "📦 Descompressão da Barra Superior:": "📦 More space in the top bar:",
+            "Botões de manutenção secundária (": "Secondary maintenance buttons (",
+            "Backup & Armazenamento": "Backup & Storage",
+            ") organizados de forma limpa dentro do menu": ") neatly organized inside the",
+            ", liberando mais de 300px de espaço útil na tela.": "menu, freeing over 300px of usable screen space.",
+            "💰 Cabeçalho Limpo no Orçamento:": "💰 Clean quote header:",
+            "Remoção da identificação institucional no título gerado, mantendo estritamente": "Removed institutional identification from the generated title, keeping only",
+            "💰 VALORES & EQUIPAMENTOS": "💰 PRICING & EQUIPMENT",
+            "📏 Quantidades Padrão Unitárias (1x / 1 metro):": "📏 Default unit quantities (1 item / 1 meter):",
+            "Todos os itens do catálogo inicializam agora com quantidade": "All catalog items now start with quantity",
+            ", permitindo passar a cotação padrão unitária imediatamente ao cliente.": ", allowing an immediate standard per-unit quote for the customer.",
+            "📊 Opção de Total como Estimativa Técnica:": "📊 Technical estimate total option:",
+            "Nova caixa de seleção": "New checkbox",
+            "para enviar o valor total ao cliente como estimativa que será avaliada e confirmada no local pelo técnico.": "to send the total to the customer as an estimate to be assessed and confirmed on site by the technician.",
+            "➖ Marcadores Universais:": "➖ Universal list markers:",
+            "Linhas dos itens formatadas com traço (": "Item lines formatted with a dash (",
+            ") para compatibilidade nativa em WhatsApp e chats de atendimento.": ") for native compatibility with WhatsApp and service chats.",
+            "🔌 Seletor Interativo de Equipamentos & Valores (Planilha Oficial):": "🔌 Interactive equipment and pricing selector (Official Spreadsheet):",
+            "Modal com caixas de seleção (checkboxes) e controle de quantidade/metragem baseado na planilha de valores da 3D Telecom.": "Dialog with checkboxes and quantity/length controls based on the 3D Telecom price spreadsheet.",
+            "📦 Desmembramento dos Cards de Valores:": "📦 Pricing cards split by category:",
+            "Scripts da aba": "Scripts in the",
+            "💰Valores & Equipamentos": "💰Pricing & Equipment",
+            "separados em cards menores por categoria.": "tab split into smaller cards by category.",
+            "⚡ Atalho Central de Comandos (Ctrl+K):": "⚡ Command Center shortcut (Ctrl+K):",
+            "Acesso instantâneo digitando": "Instant access by typing",
+            "equipamentos": "equipment",
+            "valores": "pricing",
+            "🎧 Modo Atendimento (Foco Limpo):": "🎧 Service Mode (Clean Focus):",
+            "Botão de 1 clique no topo para deixar a tela ultra-limpa durante o atendimento, escondendo botões avançados para você focar apenas em atender e copiar.": "One-click button at the top to declutter the screen during service, hiding advanced buttons so you can focus on helping customers and copying scripts.",
+            "⌨️ Central de Comandos (Ctrl+K):": "⌨️ Command Center (Ctrl+K):",
+            "Pressione Ctrl+K no teclado para abrir uma busca rápida e executar qualquer ação ou copiar procedimentos sem usar o mouse.": "Press Ctrl+K to open quick search and execute any action or copy procedures without using the mouse.",
+            "⋯ Cabeçalho Mais Organizado:": "⋯ Better-organized header:",
+            "Menu \"Mais ▾\" reunindo opções secundárias para o topo ficar limpo, espaçoso e confortável aos olhos.": "\"More ▾\" menu groups secondary options to keep the top area clean, spacious and comfortable to read.",
+            "📋 Botão Copiar Estável:": "📋 Stable Copy button:",
+            "O botão agora mantém o tamanho fixo ao copiar, evitando que o texto do card dê tranco ou pule na tela.": "The button now keeps a fixed size when copying, preventing card text from shifting or jumping on screen.",
+            "🔍 Barra de Resultados de Busca:": "🔍 Search results bar:",
+            "Ao pesquisar ou filtrar por tags, uma barra mostra quantos scripts foram encontrados e permite limpar os filtros com 1 clique.": "Searching or filtering by tags displays the number of scripts found and lets you clear filters with one click.",
+            "🔗 Links Compartilháveis:": "🔗 Shareable links:",
+            "Opção de copiar o link direto de um card específico para mandar a um colega no chat.": "Option to copy a direct link to a specific card and send it to a teammate in chat.",
+            "🕒 Histórico do Card:": "🕒 Card history:",
+            "Se você alterar um texto por engano, pode abrir o histórico daquele card e restaurar a versão anterior.": "If you accidentally change text, open that card's history and restore the previous version.",
+            "🔄 Blindagem Concorrente da Fila:": "🔄 Concurrency protection for the queue:",
+            "Controle rigoroso por número de revisão em": "Strict revision-number control in",
+            "♿ Acessibilidade WCAG:": "♿ WCAG accessibility:",
+            "Focus trap nos modais e navegação aprimorada com teclado.": "Focus trapping in dialogs and improved keyboard navigation.",
+            "🎨 Troca Instantânea de Tema:": "🎨 Instant theme switching:",
+            "Inicialização ultra-rápida no": "Fast initialization in",
+            "e dupla aplicação de classes em": "and classes applied to both",
+            ", eliminando recarga de página.": ", eliminating page reloads.",
+            "💾 Backup & Armazenamento Acessível:": "💾 Accessible Backup & Storage:",
+            "Botão fixo no cabeçalho liberado para operação autônoma mesmo quando deslogado.": "Fixed header button available for independent operation even when signed out.",
+            "🧪 Teste de Atendimento & Diagnóstico:": "🧪 Service test & diagnostics:",
+            "Ping pré-fixado de 3 a 10 ms (com perda 0%); opções rápidas de MRU (": "Preset ping from 3 to 10 ms (with 0% packet loss); quick MRU options (",
+            "); ajuste de Wi-Fi atualizado para": "); Wi-Fi adjustment updated to",
+            "💾 Acesso Completo no Modo Offline:": "💾 Full offline access:",
+            "Botão": "The",
+            "💾 Backup & Armazenamento": "💾 Backup & Storage",
+            "no cabeçalho superior e acesso universal à janela de perfil mesmo deslogado.": "button in the top header and universal profile window access even when signed out.",
+            "☁️ Persistência de Abas (tabOrder):": "☁️ Tab order persistence (tabOrder):",
+            "Auditoria completa garantindo fidelidade de ordem visual das abas no Google Firestore.": "Full audit to ensure visual tab order is preserved accurately in Google Firestore.",
+            "🎯 Versão Oficial Consolidada (2.6.1):": "🎯 Consolidated official version (2.6.1):",
+            "Atualização uniforme de versão em todo o sistema, registro de changelog e manifesto de atualizações.": "Consistent version update throughout the application, changelog and update manifest.",
+            "🛡️ Estabilidade & Auditoria de Governança:": "🛡️ Stability & governance audit:",
+            "Sistema com carga local imediata livre de bloqueios assíncronos e histórico de integridade operacional.": "Immediate local loading without asynchronous blocking, plus an operational integrity history.",
+            "👑 Publicação de Scripts Padrão para Toda a Equipe:": "👑 Publish default scripts for the entire team:",
+            "Botão de 1 clique em": "One-click button in",
+            "para administradores salvarem sua base completa de scripts diretamente em": "for administrators to save their complete script collection directly to",
+            "no Firestore.": "in Firestore.",
+            "♻️ Restauração Integral de 11 Abas:": "♻️ Full restoration of 11 tabs:",
+            "O botão de restaurar padrão agora carrega de forma garantida todas as 11 abas completas com dezenas de colunas e scripts.": "The restore defaults button now reliably loads all 11 complete tabs with dozens of columns and scripts.",
+            "🌘☀️ Correção e Estabilidade dos Temas Cinza e Claro:": "🌘☀️ Gray and Light theme fixes and stability:",
+            "Variáveis CSS com especificidade prioritária para": "CSS variables with priority specificity for",
+            ", corrigindo a alternância visual instantânea entre os 3 modos.": ", fixing instant visual switching between the three modes.",
+            "⚡ Inicialização Desacoplada:": "⚡ Decoupled initialization:",
+            "Renderização imediata dos cards locais sem congelamento da tela durante a conexão ao Firebase.": "Immediate local card rendering without screen freezes during Firebase connection.",
+            "📦 Atualização do Modelo Padrão Oficial (11 Abas):": "📦 Official default template updated (11 tabs):",
+            "O arquivo JSON enviado com todas as 11 abas completas foi integrado diretamente como a nova base nativa de restauração do sistema.": "The supplied JSON file with all 11 complete tabs was integrated directly as the application's new native restoration baseline.",
+            "📤 Botão de Envio Padrão Corporativo para Administradores:": "📤 Corporate default upload button for administrators:",
+            "Novo botão direto em": "New direct button in",
+            "📤 Definir meus Scripts como Padrão para Todos": "📤 Set My Scripts as Defaults for Everyone",
+            ") permitindo publicar a base oficial do administrador para toda a equipe no Firestore com 1 clique.": ") to publish the administrator's official collection to the entire team in Firestore with one click.",
+            "🌘☀️ Correção Total dos Temas Cinza e Claro:": "🌘☀️ Complete Gray and Light theme fix:",
+            "Reestruturação e especificação explícita das variáveis CSS com diretivas prioritárias para o Modo Cinza (": "Restructured and explicitly defined CSS variables with priority directives for Gray Mode (",
+            ") e Modo Claro (": ") and Light Mode (",
+            "), garantindo transição visual instantânea ao clicar nos ícones.": "), ensuring an instant visual transition when clicking the icons.",
+            "🎯 Alinhamento Oficial de Versão (2.5.7):": "🎯 Official version alignment (2.5.7):",
+            "Sincronização uniforme de todo o versionamento do sistema, changelogs e verificador de atualizações.": "Consistent synchronization of all application versions, changelogs and the update checker.",
+            "📝 Blindagem Definitiva do Bloco de Rascunho:": "📝 Scratchpad persistence protection:",
+            "Remoção de flags transitórias do DOM e inicialização imediata no startup, assegurando que anotações provisórias de clientes nunca sejam apagadas ao salvar cópias HTML ou recarregar a tela.": "Removed transient DOM flags and initialized the Scratchpad immediately at startup, ensuring temporary customer notes are not deleted when saving HTML copies or reloading the page.",
+            "🪟 Paridade Total da Dock de Scripts com o Site:": "🪟 Full Script Clipboard parity with the website:",
+            "O menu suspenso de abas e a lista de scripts da Dock seguem rigorosamente a mesma ordenação do site principal (inclusive com agrupamento visual por coluna).": "The Clipboard tab dropdown and script list strictly follow the same order as the main website, including visual grouping by column.",
+            "⚡ Ordenação Crescente de Planos (200 MB a 1.5 GB):": "⚡ Plans sorted by speed (200 MB to 1.5 GB):",
+            "Chips e seletores do gerador de chamados organizados em ordem estrita de velocidade.": "Ticket generator chips and selectors organized in strictly increasing speed order.",
+            "🔤 Correção Tipográfica no Cabeçalho do Chamado:": "🔤 Ticket header typography fix:",
+            "Eliminação de letras maiúsculas forçadas no seletor de modelos de chamado, mantendo formatação padrão e agradável.": "Removed forced uppercase from the ticket template selector for a natural, readable appearance.",
+            "🌐 Fila de Sincronização Offline com Retry:": "🌐 Offline synchronization queue with retry:",
+            "Alterações feitas sem internet entram em fila automática e sincronizam com backoff exponencial quando a conexão é restabelecida.": "Offline changes enter an automatic queue and synchronize with exponential backoff when connectivity returns.",
+            "🚦 Indicadores Visuais de Status da Nuvem:": "🚦 Visual cloud status indicators:",
+            "Estados nítidos no perfil e na janela Minha Conta (Sincronizado, Sincronizando, Pendente, Falha e Offline).": "Clear states in the profile and My Account window (Synced, Syncing, Pending, Failed and Offline).",
+            "📋 Botão Copiar com Acessibilidade:": "📋 Accessible Copy button:",
+            "Anúncio em tempo real para leitores de tela (": "Real-time screen-reader announcement (",
+            ") e proteção contra cliques rápidos repetidos.": ") and protection against rapid repeated clicks.",
+            "🔒 Validador de Segurança na Importação:": "🔒 Secure import validation:",
+            "Limites rígidos de tamanho e integridade para barrar arquivos corrompidos ou maliciosos.": "Strict size and integrity limits to block corrupted or malicious files.",
+            "📦 Backup Completo e Versionado do Sistema:": "📦 Full versioned application backup:",
+            "Exportação integral em JSON contendo scripts, abas, clientes, variáveis, userscripts, rascunhos e preferências visuais.": "Full JSON export containing scripts, tabs, clients, variables, userscripts, notes and appearance preferences.",
+            "♿ Acessibilidade Plena (WAI-ARIA):": "♿ Full accessibility (WAI-ARIA):",
+            "Abas navegáveis por teclado (Setas, Home, End), fechamento com Escape em modais e botões acessíveis para reordenar abas sem arrastar.": "Keyboard-accessible tabs (Arrow keys, Home, End), Escape to close dialogs and accessible buttons for reordering tabs without dragging.",
+            "🔒 Segurança Reforçada do Firestore:": "🔒 Stronger Firestore security:",
+            "Regras granulares que impedem usuários de alterarem seu próprio papel (": "Granular rules preventing users from changing their own role (",
+            ") ou situação (": ") or account state (",
+            "). Apenas administradores pré-autorizados na lista mestra podem gerenciar privilégios ou aplicar cargos no perfil.": "). Only administrators preauthorized in the master list can manage privileges or assign profile roles.",
+            "📦 Backup Unificado Completo & Versionado (JSON v2.5.3):": "📦 Full unified versioned backup (JSON v2.5.3):",
+            "Novo sistema de exportação com suporte a backup total da central (scripts, abas, ordem, clientes, alarmes, variáveis, userscripts e preferências visuais), com validação rigorosa na importação e compatibilidade retroativa com backups antigos só de scripts.": "New export system supporting a full application backup (scripts, tabs, order, clients, reminders, variables, userscripts and appearance preferences), with strict import validation and backward compatibility with older script-only backups.",
+            "♿ Acessibilidade Plena (WAI-ARIA & Navegação por Teclado):": "♿ Full accessibility (WAI-ARIA & keyboard navigation):",
+            "Abas agora contam com semântica": "Tabs now include",
+            "navegáveis via Setas Esquerda/Direita, Home e End. Campo de busca com": "semantics and navigation with Left/Right Arrow, Home and End. Search includes",
+            "e modais com captura de foco (Trap Focus) e tecla": "and dialogs include focus trapping and the",
+            "↔️ Reordenação Alternativa de Abas sem Arrastar:": "↔️ Alternative tab reordering without dragging:",
+            "Novos botões de seta": "New arrow buttons",
+            "no modo de edição para mover abas sem depender de arrastar com o mouse, garantindo acessibilidade a todos os atendentes.": "in Edit Mode to move tabs without mouse dragging, ensuring accessibility for all agents.",
+            "🔍 Localizar e Substituir em Massa (Global):": "🔍 Bulk Find & Replace (Global):",
+            "Novo botão": "New",
+            "🔍 Substituir": "🔍 Replace",
+            "no cabeçalho para atualizar telefones de plantão, links antigos, taxas ou chaves PIX em todos os cards de uma vez (com opção de diferenciar maiúsculas/minúsculas e escopo por aba).": "button in the header to update on-call phone numbers, old links, fees or PIX keys across all cards at once, with case-sensitive matching and tab scope options.",
+            "☁️ Sincronização do Rascunho (*Scratchpad*) na Nuvem:": "☁️ Cloud synchronization for the Scratchpad:",
+            "As anotações rápidas e dados de diagnóstico do cliente agora são salvos e sincronizados com a Nuvem do Google Firestore.": "Quick notes and customer diagnostic data are now saved and synchronized with Google Cloud Firestore.",
+            "⭐ Filtro de Favoritos Ativo no Cabeçalho:": "⭐ Active Favorites filter in the header:",
+            "Acesso em 1 clique na barra de atalhos para focar imediatamente apenas nos scripts marcados com estrela.": "One-click shortcut to immediately show only starred scripts.",
+            "🧹 Higienização de Quebras de Linha ao Copiar:": "🧹 Line break cleanup when copying:",
+            "Remoção inteligente de quebras duplas/triplas e espaços soltos para deixar as mensagens prontas para WhatsApp e WebChat.": "Smart removal of double/triple line breaks and stray spaces to prepare messages for WhatsApp and WebChat.",
+            "🪟 Dock de Scripts:": "🪟 Script Clipboard:",
+            "Renomeação oficial da antiga Janela Companheira para": "The former Companion Window was officially renamed to",
+            "Dock de Scripts": "Script Clipboard",
+            "(atalho": "(shortcut",
+            "), com design mais moderno e discreto.": "), with a more modern, discreet design.",
+            "🎛️ Cabeçalho em Cápsulas (*Segmented Controls*):": "🎛️ Header capsules (Segmented Controls):",
+            "Reorganização dos botões superiores em grupos visuais limpos (Ferramentas, Controles de Visual e Área do Usuário).": "Reorganized top buttons into clean visual groups (Tools, Appearance Controls and User Area).",
+            "🌘🌑☀️ Seletor com 1 Ícone por Tema:": "🌘🌑☀️ One icon per theme:",
+            "Substituição do menu suspenso por botões individuais dedicados com ícones para os 3 modos (Cinza, OLED e Claro).": "Replaced the dropdown with dedicated icon buttons for all three modes (Gray, OLED and Light).",
+            "👤 Foto de Perfil & Ponto de Status da Nuvem:": "👤 Profile photo & cloud status dot:",
+            "O botão do Google agora mostra a foto oficial da conta do atendente, seu primeiro nome e indicador de conexão em tempo real (🟢 Conectado).": "The Google button now shows the agent's official account photo, first name and live connection indicator (🟢 Connected).",
+            "☁️ Sincronização com Prévia Detalhada:": "☁️ Synchronization with detailed previews:",
+            "Novos botões de": "New",
+            "Salvar na Nuvem": "Save to Cloud",
+            "Baixar da Nuvem": "Download from Cloud",
+            "com telas de prévia e comparação antes de qualquer alteração nos scripts.": "buttons with preview and comparison screens before any changes to scripts.",
+            "🔒 Acesso Restrito a Chaves do Firebase:": "🔒 Restricted Firebase key access:",
+            "Usuários comuns da equipe não têm acesso às chaves nem ao painel de administração.": "Regular team members cannot access keys or the administration panel.",
+            "🍞 Toasts Flutuantes:": "🍞 Floating toasts:",
+            "Notificações elegantes e não intrusivas para cópia de scripts e avisos rápidos, eliminando caixas de alerta que travavam a tela.": "Elegant, nonintrusive notifications for script copying and quick notices, replacing alert boxes that blocked the screen.",
+            "💾 Armazenamento e Salvar HTML Unificados:": "💾 Unified Storage and Save HTML:",
+            "O indicador de espaço do navegador e o download do arquivo HTML agora ficam organizados dentro de": "The browser storage indicator and HTML download are now organized inside",
+            "📌 Persistência Total da Ordem das Abas & Configurações:": "📌 Full tab order & settings persistence:",
+            "A ordem personalizada das abas arrastadas pelo atendente agora é preservada com precisão tanto no navegador quanto na Nuvem do Google (Firestore), juntamente com o tema ativo, modo de exibição (Grade/Lista), zoom e última aba ativa, impedindo que a página resete a disposição ao atualizar.": "The agent's custom dragged tab order is now accurately preserved both in the browser and Google Cloud (Firestore), along with the active theme, Grid/List view, zoom and last active tab, preventing layout resets on refresh.",
+            "☁️ Integração com Google Firebase (Nuvem & Local):": "☁️ Google Firebase integration (Cloud & Local):",
+            "Suporte a autenticação Google via Firebase Auth e sincronização automática de scripts e configurações no Firestore.": "Support for Google sign-in via Firebase Auth and automatic script and settings synchronization in Firestore.",
+            "📶 Modo Offline Preservado (Local-First):": "📶 Offline Mode preserved (Local-First):",
+            "Quem não quiser logar ou estiver sem internet continua usando 100% offline via cache e localStorage sem interrupções.": "Users who do not sign in or lack internet connectivity can continue working offline through cache and localStorage without interruption.",
+            "🛡️ Painel de Administração Integrado:": "🛡️ Integrated administration panel:",
+            "Acesso exclusivo para os administradores configurados (": "Exclusive access for configured administrators (",
+            ") para gerenciamento completo de usuários:": ") for full user management:",
+            "• Listagem de membros da equipe com foto, e-mail Google, cadastro e último acesso.": "• Team member list with photo, Google email, registration and last access.",
+            "• Métricas de utilização em tempo real (total de cópias de scripts por usuário).": "• Real-time usage metrics (total script copies per user).",
+            "• Controle de acesso (bloquear / desbloquear usuários da equipe).": "• Access control (block / unblock team members).",
+            "• Gerenciamento de funções (promover atendente a administrador).": "• Role management (promote agents to administrators).",
+            "• Publicação de scripts padrão corporativos para toda a equipe.": "• Publish corporate default scripts for the entire team.",
+            "💻 Compatibilidade com VS Code Test Server & GitHub Pages:": "💻 VS Code Test Server & GitHub Pages compatibility:",
+            "SDK oficial do Firebase em modo compatível direto no navegador, funcionando tanto em": "Official Firebase SDK in browser compatibility mode, working both on",
+            "quanto na web.": "and on the web.",
+            "🔽 Menus dos chamados:": "🔽 Ticket dropdowns:",
+            "os campos de seleção dos chamados passaram a usar": "ticket selection fields now use native",
+            "nativo, evitando o problema de listas": "controls, avoiding the issue of",
+            "que não abriam de forma consistente.": "lists not opening consistently.",
+            "✅ Chips selecionáveis:": "✅ Selectable chips:",
+            "opções clicadas passam a permanecer visualmente marcadas conforme o valor atual do campo, incluindo ajustes cumulativos.": "clicked options remain visually selected according to the current field value, including cumulative adjustments.",
+            "📶 Ajustes de Wi-Fi:": "📶 Wi-Fi adjustments:",
+            "inclusão de": "added",
+            "setado canal auto": "auto channel set",
+            "ajustado 2.4 GHz para 20 MHz": "2.4 GHz adjusted to 20 MHz",
+            "ajustado DNS": "DNS adjusted",
+            ", além do ajuste de 5 GHz.": ", alongside the 5 GHz adjustment.",
+            "status separado em": "status split into",
+            "Não OK": "Not OK",
+            ", deixando claro se houve problema/correção no DNS.": ", making DNS problems or corrections clear.",
+            "🔧 Correção de atualização:": "🔧 Update fix:",
+            "o manifesto agora aponta para": "the manifest now points to",
+            ", compatível com o GitHub Pages na raiz.": ", compatible with root-level GitHub Pages hosting.",
+            "🪟 Painel Lado a Lado (Chamado + Teste):": "🪟 Side-by-side panel (Ticket + Test):",
+            "🧪 Abrir Teste ao Lado": "🧪 Open Test Side by Side",
+            "no gerador de chamado expande a janela em visualização dupla (lado a lado), permitindo preencher a OS e o teste de atendimento na mesma tela sem alternar de janela.": "in the ticket generator expands the window into a split view, allowing the work order and service test to be filled out on one screen without switching windows.",
+            "🔧 Ajustes Cumulativos com Vírgula:": "🔧 Cumulative comma-separated adjustments:",
+            "No Teste de Atendimento, clicar nos chips de Ajustes agora concatena automaticamente os itens com vírgula (ex:": "In the Service Test, clicking adjustment chips now automatically joins items with commas (e.g.",
+            "setado canal auto, unificado rede wifi": "auto channel set, Wi-Fi network unified",
+            ") e permite desmarcar com um segundo clique.": ") and lets you deselect an item with a second click.",
+            "📶 Sinal Óptico com Menos Automático:": "📶 Optical signal with automatic minus sign:",
+            "Ao digitar no campo de Sinal, o sistema insere e mantém automaticamente o sinal de menos (ex: digitou": "When typing in the Signal field, the system automatically inserts and maintains the minus sign (e.g. entering",
+            "vira": "becomes",
+            "🎯 Ping Dividido (Média e Perda %):": "🎯 Separate ping fields (Average and Packet Loss %):",
+            "Campos dedicados independentes para digitação da média em ms e porcentagem de perda, formatando automaticamente para": "Independent fields for the average in ms and packet loss percentage, automatically formatted as",
+            "média 6 perda 0%": "average 6 loss 0%",
+            "🌐 DNS (Corrigido / Não Corrigido):": "🌐 DNS (Corrected / Not Corrected):",
+            "Chips específicos para indicar estritamente se o DNS foi corrigido ou não.": "Dedicated chips to indicate precisely whether DNS was corrected.",
+            "🚨 Sem Acesso Expandido:": "🚨 Expanded No Connection template:",
+            "Inclusão dos relatos mais solicitados:": "Added the most requested reported issues:",
+            "PON piscando": "PON blinking",
+            "roteador não liga": "router does not turn on",
+            "onu não liga": "ONU does not turn on",
+            "⏰ Horário Cumulativo:": "⏰ Cumulative scheduling:",
+            "Chips de horário (Manhã, Tarde e Sábado) agora somam opções ao clicar (ex:": "Time chips (Morning, Afternoon and Saturday) now combine options when clicked (e.g.",
+            "Manhã, Tarde, Sábado": "Morning, Afternoon, Saturday",
+            "📍 Ponto de Acesso em Todos os Chamados:": "📍 Access point in all tickets:",
+            "Campo padronizado em todos os modelos de OS com chips rápidos (": "Standardized field across all work order templates with quick chips (",
+            "Ponto principal": "Main access point",
+            ") e digitação manual.": ") and manual input.",
+            "🔽 Correção de Menus Suspensos:": "🔽 Dropdown fix:",
+            "Ajuste nos elementos": "Adjusted",
+            "para garantir abertura imediata tanto ao clicar na seta quanto no corpo do campo.": "to ensure immediate opening when clicking either the arrow or the field body.",
+            "🧪 Novo Gerador de Teste de Atendimento:": "🧪 New service test generator:",
+            "Criação do botão": "Added the",
+            "🧪 Teste": "🧪 Test",
+            "na barra de atalhos e modal dedicado para registro do diagnóstico técnico interno do suporte (Contato, Relato, Sinal óptico, Ping/Perda, Extrato, Ajustes, Reiniciado, MTU/MRU, WAN, DNS e Resumo).": "button in the shortcut bar and a dedicated dialog for internal support diagnostics (Contact, Reported Issue, Optical Signal, Ping/Loss, Connection History, Adjustments, Restarted, MTU/MRU, WAN, DNS and Summary).",
+            "📝 Chamado Técnico Desacoplado:": "📝 Separate technical ticket form:",
+            "Abertura de chamado (": "Creating a ticket (",
+            "📝 Chamado": "📝 Ticket",
+            ") agora contém exclusivamente informações de Ordem de Serviço (Título, Descrição, Telefone, Plano mais vendido, Ponto de acesso, Melhor horário e Valor da visita) para todos os modelos, sem misturar com os parâmetros do teste técnico interno.": ") now contains only Work Order information (Title, Description, Phone, Plan, Access Point, Preferred Time and Visit Fee) for all templates, without mixing in internal technical test parameters.",
+            "Integração Rápida entre Modais:": "Quick integration between dialogs:",
+            "Atalho dentro do chamado de Lentidão para abrir diretamente o gerador de Teste de Atendimento caso o atendente necessite registrar apenas os testes preliminares.": "Shortcut inside the Slow Connection ticket to open the Service Test generator directly when the agent needs to record only preliminary tests.",
+            "🚀 Ícone Oficial no Cabeçalho (Apple Squircle):": "🚀 Official header icon (Apple Squircle):",
+            "Substituição definitiva de pseudo-elementos CSS por elemento": "Replaced CSS pseudo-elements with an inline vector",
+            "vetorial inline diretamente no DOM, com gradiente azul Apple e sincronia perfeita com o favicon.": "element directly in the DOM, with an Apple blue gradient matching the favicon.",
+            "⚡ Planos Mais Vendidos (em MB e GB):": "⚡ Popular plans (in MB and GB):",
+            "Inclusão dos planos mais vendidos solicitados (": "Added the requested popular plans (",
+            ") com chips rápidos e digitação livre.": ") with quick chips and free text input.",
+            "📋 Chamados Dinâmicos por Template:": "📋 Dynamic ticket templates:",
+            "agora adapta automaticamente os campos de acordo com o modelo selecionado:": "now adapts fields automatically to the selected template:",
+            "🚨 Sem Acesso / LOS:": "🚨 No Connection / LOS:",
+            "Título, relato de LOS piscando vermelho com tentativa de reinício sem sucesso, contato com máscara, plano, ponto de acesso e valor.": "Title, blinking red LOS report with unsuccessful restart, masked contact number, plan, access point and fee.",
+            "🐢 Lentidão / Diagnóstico:": "🐢 Slow Connection / Diagnostics:",
+            "Diagnóstico de rede completo com sinal óptico (dBm), ping/perda de pacotes, extrato, ajustes efetuados (canal auto/5GHz), reinicialização, MTU/MRU, porta WAN e DNS.": "Full network diagnostics with optical signal (dBm), ping/packet loss, connection history, adjustments (auto channel/5GHz), restart, MTU/MRU, WAN port and DNS.",
+            "🏠 Mudança de Endereço:": "🏠 Address Change:",
+            "Coleta todos os dados do script operacional (rua e número, bairro, cidade, ponto de referência, cor da casa/alvenaria ou madeira, telefone, horário, localização GPS, equipamentos e cortesia) com": "Collects all operational details (street and number, neighborhood, city, landmark, house color/material, phone, preferred time, GPS location, equipment and no-charge status), with",
+            "botão duplo": "two buttons",
+            "Copiar Chamado (Técnico)": "Copy Work Order (Technician)",
+            "Copiar Script p/ Cliente": "Copy Message for Customer",
+            "(para WhatsApp/WebChat).": "(for WhatsApp/WebChat).",
+            "Assunto, onde é feito o serviço (mesmo cômodo, galpão no mesmo lote, painel solar com vídeo), telefone, plano, horário e cobrança de materiais / R$ 90,00.": "Subject, job location (same room, shed on the same property, solar panel with video), phone, plan, schedule and material charges / R$ 90,00.",
+            "Endereço, localização, data/hora, tipo de rede privada/pública, Wi-Fi/senha, quantidade de pessoas, contato e valor de R$ 500,00 (ciente).": "Address, location, date/time, private/public network, Wi-Fi/password, number of attendees, contact and R$ 500,00 fee (customer informed).",
+            "📝 Geral / Outro:": "📝 General / Other:",
+            "Formulário flexível para chamados técnicos gerais.": "Flexible form for general technical tickets.",
+            "Preservação de Dados ao Trocar de Modelo:": "Preserve data when switching templates:",
+            "Campos comuns como telefone, horário e plano permanecem preenchidos ao alternar entre os templates.": "Common fields such as phone, preferred time and plan remain filled when switching between templates.",
+            "Design Apple": "Apple Design",
+            "🍎 Apple Design System Completo:": "🍎 Full Apple Design System:",
+            "Reformulação estética inspirada no macOS e iOS (Human Interface Guidelines).": "Visual redesign inspired by macOS and iOS Human Interface Guidelines.",
+            "Tipografia Nativa Apple:": "Native Apple typography:",
+            "Fontes": "Fonts",
+            "com espaçamento e pesos equilibrados.": "with balanced spacing and weights.",
+            "Vidro Fosco Profundo:": "Deep frosted glass:",
+            "Cabeçalho e menus com desfoque de 24px e saturação a 180% (frosted glass).": "Header and menus with 24px blur and 180% saturation (frosted glass).",
+            "Cantos Arredondados Orgânicos (Squircles):": "Organic rounded corners (Squircles):",
+            "Curvaturas suaves de 16px nos cards e modais, e pílulas completas (999px) nos botões de ação e tags.": "Soft 16px curves on cards and dialogs, with full pills (999px) on action buttons and tags.",
+            "Controles Segmentados nas Abas:": "Segmented tab controls:",
+            "Barra de navegação com acabamento de cápsula e destaque deslizante para a aba ativa.": "Navigation bar with a capsule finish and sliding highlight for the active tab.",
+            "Campo de Busca Estilo Safari / Spotlight:": "Safari / Spotlight-style search:",
+            "Input em formato de pílula com anel de foco dinâmico em azul Apple (": "Pill-shaped input with a dynamic Apple blue focus ring (",
+            "Micro-interações Hápticas:": "Haptic microinteractions:",
+            "Efeito de compressão suave ao clicar (": "Soft compression effect on click (",
+            ") e sombras naturais multicamadas.": ") and natural multilayer shadows.",
+            "🏷️ Destaque Visual de Variáveis nos Cards:": "🏷️ Visual variable highlighting in cards:",
+            "Formatação visual destacada para variáveis como": "Highlighted formatting for variables such as",
+            "e valores monetários para rápida conferência.": "and currency amounts for quick checking.",
+            "🔍 Destaque dos Termos Pesquisados (Search Highlight):": "🔍 Search term highlighting:",
+            "Marcação visual em amarelo nos termos correspondentes dentro dos cards durante a busca.": "Matching terms inside cards are highlighted in yellow during search.",
+            "📝 Bloco de Notas / Rascunho Rápido (Scratchpad):": "📝 Quick notepad / Scratchpad:",
+            "Gaveta flutuante retrátil no canto da tela para anotações temporárias do cliente com salvamento automático.": "Collapsible floating drawer in the corner for temporary customer notes with automatic saving.",
+            "🧹 Limpeza Automática de Linhas Vazias ao Copiar:": "🧹 Automatic empty-line cleanup on copy:",
+            "Eliminação de quebras de linha duplas e triplas excessivas ao copiar, mantendo as mensagens limpas.": "Removed excessive double and triple line breaks when copying to keep messages clean.",
+            "🎨 Filtro Rápido pelas Cores de Categoria:": "🎨 Quick category color filter:",
+            "Seletor no cabeçalho para filtrar cards pelas cores de borda (Verde, Amarelo, Vermelho, Azul, Roxo).": "Header selector to filter cards by border colors (Green, Yellow, Red, Blue, Purple).",
+            "🛡️ Resumo Prévio ao Importar JSON:": "🛡️ Preview summary before JSON import:",
+            "Diálogo com contagem de abas e scripts antes de confirmar a restauração de backup com ponto de restauração automático.": "Dialog with tab and script counts before confirming backup restoration, with an automatic restore point.",
+            "↩️ Histórico de Versões Local & Desfazer:": "↩️ Local version history & Undo:",
+            "Criação de pontos de restauração automáticos (snapshots) antes de exclusões ou alterações críticas; botão e atalho": "Automatic restore points (snapshots) before deletions or critical changes; button and",
+            "para desfazer.": "shortcut to undo.",
+            "📝 Formulário Rápido de Chamado:": "📝 Quick ticket form:",
+            "Modal interativo para preenchimento ágil de modelos de visita técnica com cópia padronizada em 1 clique para Integrator / Chatmix.": "Interactive dialog to quickly fill technical visit templates with standardized one-click copying for Integrator / Chatmix.",
+            "🎨 Cores de Categoria nos Cards:": "🎨 Category colors on cards:",
+            "Personalização da borda lateral dos cards (Verde, Amarelo, Vermelho, Azul, Roxo) pelo menu de opções (⋮) para rápida identificação visual.": "Customize card borders (Green, Yellow, Red, Blue, Purple) through the options menu (⋮) for quick visual identification.",
+            "🔊 Controle de Volume e Timbres do Alarme:": "🔊 Reminder volume and sound controls:",
+            "Configuração de som (Bipe suave, Alarme padrão, Sirene urgente) com controle deslizante de volume e botão de teste.": "Sound settings (Soft Beep, Standard Alarm, Urgent Siren) with a volume slider and test button.",
+            "📊 Contador de Usos por Script:": "📊 Script usage counter:",
+            "Métrica automática de cópias em cada card (ex:": "Automatic copy count on each card (e.g.",
+            ") para acompanhar os scripts mais eficientes da equipe.": ") to track the team's most effective scripts.",
+            "📄 Exportação da Lista de Clientes em CSV:": "📄 Export client list as CSV:",
+            "Download em planilha": "Download a",
+            "para prestação de contas de plantão e fechamento de turno.": "spreadsheet for on-call reporting and shift handover.",
+            "👤 Variáveis de Tratamento:": "👤 Forms of address variables:",
+            "Suporte a": "Support for",
+            "com resolução automática.": "with automatic resolution.",
+            "Limpeza & Otimização do Código:": "Code cleanup & optimization:",
+            "Remoção de todos os estilos e atributos residuais do Dark Reader, deixando o arquivo mais leve, rápido e sem conflitos visuais.": "Removed residual Dark Reader styles and attributes, making the file smaller, faster and free of visual conflicts.",
+            "Servidor de Atualizações:": "Update server:",
+            "Repositório oficial apontado para": "Official repository set to",
+            "Cards Favoritos e Fixados (⭐):": "Favorite and pinned cards (⭐):",
+            "Botão de estrela para favoritar scripts em cada card (e na Janela Companheira), com destaque dourado e fixação automática no topo da coluna.": "Star button to favorite scripts on each card and in the Companion Window, with a gold highlight and automatic pinning at the top of the column.",
+            "Filtro Estrito por Tags:": "Strict tag filtering:",
+            "Busca refinada com suporte a": "Refined search supporting",
+            ", além de tags clicáveis nos cards para filtrar instantaneamente.": ", plus clickable tags on cards for instant filtering.",
+            "Máscaras e Formatação Automática:": "Automatic masks and formatting:",
+            "Aplicação de máscaras em tempo real para Telefone": "Real-time formatting for phone numbers",
+            ", CPF e CNPJ nos modais de preenchimento.": ", CPF and CNPJ tax IDs in input dialogs.",
+            "Prévia da Mensagem Resolvida:": "Resolved message preview:",
+            "Tooltip flutuante ao passar o mouse sobre o botão \"Copiar\", mostrando o texto pronto com saudação, data e variáveis preenchidas.": "Floating tooltip when hovering over \"Copy\", showing the prepared text with greeting, date and resolved variables.",
+            "Gestão de Clientes & Alarmes:": "Client & Reminder management:",
+            "• Botões de Soneca rápida (+5m, +15m, +30m, +1h) no alarme sonoro e na Janela Companheira.": "• Quick snooze buttons (+5m, +15m, +30m, +1h) in the reminder popup and Companion Window.",
+            "• Desbloqueio pró-ativo de áudio no primeiro clique para evitar bloqueios do navegador.": "• Proactive audio unlock on the first click to avoid browser restrictions.",
+            "• Filtro por status na lista de clientes (Todos, Pendentes, Concluídos) com contadores em tempo real.": "• Client list status filter (All, Pending, Completed) with live counters.",
+            "Segurança e Uso do Armazenamento:": "Storage safety and usage:",
+            "• Medidor visual de memória (localStorage) em tempo real no cabeçalho.": "• Live visual localStorage memory indicator in the header.",
+            "• Centralização de Backup (Exportar JSON, Importar JSON e Salvar HTML) dentro do modal de Armazenamento.": "• Backup actions (Export JSON, Import JSON and Save HTML) centralized in the Storage dialog.",
+            "• Botão de segurança para": "• Safety button to",
+            "Restaurar Scripts Padrão": "Restore Default Scripts",
+            "e opção de": "and an option to",
+            "Zerar Tudo": "Reset Everything",
+            "para limpar a central.": "to clear the application.",
+            "Menu Unificado de Visual (🎨):": "Unified Appearance menu (🎨):",
+            "Agrupamento de Tema (Cinza, OLED, Claro), Disposição (Quadro / Lista) e Zoom dos cards em um popover moderno.": "Groups Theme (Gray, OLED, Light), Layout (Board / List) and card Zoom in a modern popover.",
+            "Navegador Rápido de Abas (📑):": "Quick tab navigator (📑):",
+            "Menu dropdown com busca para troca imediata de aba sem rolagem horizontal.": "Searchable dropdown for instant tab switching without horizontal scrolling.",
+            "Filtro Rápido de Favoritos:": "Quick Favorites filter:",
+            "Botão no cabeçalho para exibir somente os cards favoritados de todas as abas.": "Header button to show only favorited cards from all tabs.",
+            "Histórico de Recentes (🕒):": "Recent history (🕒):",
+            "Registro dos últimos scripts copiados com atalho de cópia instantânea.": "Records recently copied scripts with an instant copy shortcut.",
+            "Menu de Ações do Card (⋮):": "Card actions menu (⋮):",
+            "Opções para Duplicar Card, Mover para Outra Aba, Copiar Texto Bruto e Excluir.": "Options to Duplicate Card, Move to Another Tab, Copy Raw Text and Delete.",
+            "Autocomplete de Variáveis:": "Variable autocomplete:",
+            "Sugestão inteligente de variáveis ao digitar": "Smart variable suggestions when typing",
+            "no campo de texto de edição.": "in the editing text field.",
+            "Correção de Transparência e Sobreposição:": "Transparency and layering fix:",
+            "Menus popovers com posicionamento fixo, prioridade de camada (z-index) e fundo 100% opaco adaptável ao tema.": "Popovers with fixed positioning, z-index priority and fully opaque theme-aware backgrounds.",
+            "Janela Companheira:": "Companion Window:",
+            "Modo flutuante Picture-in-Picture e Popup independente com atalho": "Floating Picture-in-Picture mode and independent popup with shortcut",
+            "Userscripts Integrados:": "Integrated Userscripts:",
+            "Suporte para execução de scripts de terceiros compatíveis com o formato Tampermonkey.": "Support for running third-party scripts compatible with the Tampermonkey format.",
+            "Aba Permanente de Clientes:": "Permanent Clients tab:",
+            "Cadastro de clientes com agendamento de retorno e disparo de alarme sonoro contínuo.": "Client registration with callback scheduling and a continuous audible reminder.",
+            "Base do Sistema": "Application Foundation",
+            "Quadro Kanban:": "Kanban board:",
+            "Suporte a arrastar e soltar (drag & drop) de cards e colunas no modo de edição.": "Drag-and-drop support for cards and columns in Edit Mode.",
+            "Persistência Autônoma em HTML:": "Standalone HTML persistence:",
+            "Recurso \"Salvar HTML\" para gerar arquivo independente atualizado.": "\"Save HTML\" feature to generate an updated independent file.",
+            "Suporte a Temas:": "Theme support:",
+            "Modo Cinza, Modo Escuro OLED puro e Modo Claro.": "Gray Mode, pure OLED Dark Mode and Light Mode."
+};
+
+        // v3.1.13: complete reminder controls and remaining settings UI.
+        Object.assign(translations, {
+            "+ Nova Aba": "+ New Tab",
+            "+ Nova coluna": "+ New column",
+            "➕ Adicionar Cliente com Alarme (Único ou Recorrente)": "➕ Add Client Reminder (One-Time or Recurring)",
+            "Único (Sem repetição)": "One-Time (No Repeat)",
+            "Único": "One-Time",
+            "Diário": "Daily",
+            "Semanal": "Weekly",
+            "Mensal": "Monthly",
+            "Salvar Alarme": "Save Reminder",
+            "Filtrar lista:": "Filter list:",
+            "Todos (": "All (",
+            "Pendentes (": "Pending (",
+            "Concluídos (": "Completed (",
+            "📊 Exportar CSV": "📊 Export CSV",
+            "Som do Alarme:": "Reminder Sound:",
+            "Alarme Padrão (Forte)": "Standard Alarm (Loud)",
+            "Bipe Suave (Fone de Ouvido)": "Soft Beep (Headphones)",
+            "Sirene Dupla (Urgente)": "Dual Siren (Urgent)",
+            "▶ Testar Som": "▶ Test Sound",
+            "Cliente / Assunto": "Client / Subject",
+            "Contato / Detalhes": "Contact / Details",
+            "Horário do Alarme": "Reminder Time",
+            "Recorrência": "Recurrence",
+            "Ações": "Actions",
+            "Nenhum cliente ou alarme nesta visualização.": "No clients or reminders in this view.",
+            "Nome do cliente / Assunto": "Client Name / Subject",
+            "Contato / Telefone / Protocolo": "Contact / Phone / Ticket Number",
+            "Data e hora do alarme": "Reminder date and time",
+            "Exportar clientes em formato CSV (Excel)": "Export clients as CSV (Excel)",
+            "✅ Concluído (Log)": "✅ Completed (Log)",
+            "🚨 DISPARADO": "🚨 TRIGGERED",
+            "Sem alarme": "No reminder",
+            "⏰ ALARME DISPARADO!": "⏰ REMINDER TRIGGERED!",
+            "Cliente": "Client",
+            "Nenhum contato especificado": "No contact specified",
+            "Contato:": "Contact:",
+            "Alarme:": "Reminder:",
+            "✅ Concluir": "✅ Complete",
+            "⏰ ALARME DE CLIENTE DISPARADO!": "⏰ CLIENT REMINDER TRIGGERED!",
+            "Contato / Detalhes:": "Contact / Details:",
+            "Adiar / Soneca:": "Postpone / Snooze:",
+            "⏰ +1 hora": "⏰ +1 hour",
+            "✅ Parar Alarme / Concluir": "✅ Stop Reminder / Complete",
+            "Recolher Barra Lateral (Ctrl+B)": "Collapse Sidebar (Ctrl+B)",
+            "Recolher Barra Lateral": "Collapse Sidebar",
+            "Expandir Barra Lateral (Ctrl+B)": "Expand Sidebar (Ctrl+B)",
+            "Expandir Barra Lateral": "Expand Sidebar",
+            "Criar nova Área de Trabalho (+)": "Create New Workspace (+)",
+            "Opções da Área (Cores, Exportar, Restaurar, Duplicar, Excluir)": "Workspace Options (Colors, Export, Restore, Duplicate, Delete)",
+            "Modo Atendimento (Foco Limpo)": "Service Mode (Clean Focus)",
+            "Minha Conta, Modo Offline & Configurações (Clique para abrir)": "My Account, Offline Mode & Settings (Click to open)",
+            "Docker / Área de Transferência estilo Win+V (Atalho: Alt+V ou Alt+Shift+P)": "Windows-style Clipboard (Shortcut: Alt+V or Alt+Shift+P)",
+            "🔍 Filtrar aba...": "🔍 Filter tabs...",
+            "Insere (saudacao): Bom dia, Boa tarde ou Boa noite": "Inserts (saudacao): Good morning, Good afternoon or Good evening",
+            "Insere (data): data de hoje": "Inserts (data): today's date",
+            "Insere (hora): hora atual": "Inserts (hora): current time",
+            "Insere (hora+2): hora atual + 2 horas": "Inserts (hora+2): current time + 2 hours",
+            "Insere (prazo): 3 dias úteis a partir de hoje": "Inserts (prazo): 3 business days from today",
+            "Mover aba para a direita": "Move tab right",
+            "Mover aba para a esquerda": "Move tab left",
+            "Mover aba para outra Área de Trabalho": "Move tab to another Workspace",
+            "Renomear": "Rename",
+            "Arraste para mover a coluna": "Drag to move the column",
+            "Título da coluna": "Column title",
+            "Excluir coluna": "Delete column",
+            "Arraste para mover": "Drag to move",
+            "+ tag (Enter)": "+ tag (Enter)",
+            "Definir alarme/data limite": "Set reminder / deadline",
+            "Digite seu novo script ou texto aqui...": "Enter your new script or text here...",
+            "Favoritar e fixar no topo": "Favorite and pin to the top",
+            "Mais opções do card": "More card options",
+            "Remover tag": "Remove tag",
+            "Clique para expandir/recolher": "Click to expand/collapse",
+            "🏷️ Destaque Visual de Palavras-Chave": "🏷️ Keyword Highlighting",
+            "Ativar Destaque Automático": "Enable Automatic Highlighting",
+            "Destaca termos críticos diretamente na visualização dos cards.": "Highlights critical terms directly in card previews.",
+            "+ Adicionar Nova Palavra ou Expressão": "+ Add New Word or Phrase",
+            "+ Adicionar": "+ Add",
+            "Cor de destaque:": "Highlight color:",
+            "Ex: urgente, chave pix, cancelamento...": "e.g. urgent, PIX key, cancellation...",
+            "Vermelho Alerta": "Alert Red",
+            "Laranja Aviso": "Warning Orange",
+            "Amarelo Atenção": "Attention Yellow",
+            "Verde Sucesso": "Success Green",
+            "Ciano N2": "N2 Cyan",
+            "Azul Info": "Info Blue",
+            "Roxo VIP": "VIP Purple",
+            "Rosa Destaque": "Highlight Pink",
+            "Remover palavra": "Remove word",
+            "🔍 Localizar e Substituir em Massa": "🔍 Bulk Find & Replace",
+            "Altere termos, telefones de plantão, links ou valores em todos os cards e colunas de uma só vez. Um ponto de restauração (": "Change terms, on-call phone numbers, links or amounts across all cards and columns at once. A restore point (",
+            ") será criado antes de aplicar.": ") will be created before applying changes.",
+            "Texto a Localizar:": "Find Text:",
+            "Substituir Por:": "Replace With:",
+            "Diferenciar Maiúsculas/Minúsculas": "Match Case",
+            "Apenas na Aba Ativa": "Active Tab Only",
+            "Digite um termo acima para visualizar as ocorrências encontradas.": "Enter a term above to preview matches.",
+            "⚡ Substituir Ocorrências": "⚡ Replace Matches",
+            "Ex: 0800 123 4567 ou linkantigo.com.br": "e.g. 0800 123 4567 or oldlink.com.br",
+            "Ex: 0800 987 6543 ou novolink.com.br": "e.g. 0800 987 6543 or newlink.com.br",
+            "Ver e restaurar cards excluídos": "View and restore deleted cards",
+            "Exportar backup completo de todos os dados e configurações em JSON": "Export a complete JSON backup of all data and settings",
+            "Exportar apenas a lista de scripts para arquivo JSON": "Export only the script list as JSON",
+            "Importar backup completo ou arquivo de scripts em JSON": "Import a full backup or script JSON file",
+            "Salvar arquivo HTML autônomo com as alterações": "Save a standalone HTML file with changes",
+            "Recarrega todas as 11 abas e centenas de scripts padrão inclusos": "Reload all 11 tabs and hundreds of included default scripts",
+            "Apaga todos os cards e deixa a central totalmente vazia": "Delete all cards and leave the application empty",
+            "Limpar histórico de alarmes concluídos": "Clear completed reminder history",
+            "nome (ex: usuario)": "name (e.g. username)",
+            "valor padrão": "default value",
+            "Remover variável": "Remove variable",
+            "⚙️ Opções da Área de Trabalho": "⚙️ Workspace Options",
+            "Nome da Área:": "Workspace Name:",
+            "Ícone:": "Icon:",
+            "Cor de Destaque (Barra Lateral e Docker):": "Accent Color (Sidebar and Clipboard):",
+            "📤 Exportar / Compartilhar esta Área (.json)": "📤 Export / Share This Workspace (.json)",
+            "📋 Duplicar esta Área de Trabalho": "📋 Duplicate This Workspace",
+            "⚠️ Você não pode excluir a única área de trabalho restante.": "⚠️ You cannot delete the only remaining workspace.",
+            "Salvar Alterações": "Save Changes",
+            "Azul (Padrão Suporte)": "Blue (Support Default)",
+            "Verde (Financeiro / Ativo)": "Green (Finance / Active)",
+            "Roxo (Comercial / Vendas)": "Purple (Sales)",
+            "Laranja (Campo / Plantão)": "Orange (Field / On-Call)",
+            "Vermelho (Alertas / Crítico)": "Red (Alerts / Critical)",
+            "Dourado (VIP / Destaque)": "Gold (VIP / Highlight)",
+            "Ciano (Técnico / N2)": "Cyan (Technical / N2)",
+            "Rosa (Comunicação)": "Pink (Communication)",
+            "📥 Importação Inteligente de Scripts": "📥 Smart Script Import",
+            "Identificamos": "We found",
+            "e": "and",
+            "no arquivo importado (": "in the imported file (",
+            "Como você deseja importar estes dados?": "How would you like to import this data?",
+            "Opção A: Criar como Nova Área de Trabalho": "Option A: Create a New Workspace",
+            "🔄 Nova versão disponível": "🔄 New Version Available",
+            "Verificando integridade...": "Verifying integrity...",
+            "Informe o nome do cliente ou assunto.": "Enter the client name or subject.",
+            "Informe a data e horário do alarme.": "Enter the reminder date and time."
+});
+
+        Object.assign(translations, {
+            "⏮️ Restaurar Versão:": "⏮️ Restore Version:",
+            "Selecione um ponto de restauração anterior desta Área de Trabalho.": "Select a previous restore point for this Workspace.",
+            "As demais áreas de trabalho não serão alteradas.": "Other workspaces will remain unchanged.",
+            "✕ Excluir Definitivo": "✕ Delete Permanently",
+            "♻️ Restaurar Card": "♻️ Restore Card",
+            "🗑️ Esvaziar Lixeira": "🗑️ Empty Trash",
+            "🔍 Filtrar itens excluídos por texto, área ou coluna...": "🔍 Filter deleted items by text, workspace or column...",
+            "encontradas em": "found in",
+            "Detectamos que a sua conta foi atualizada em outro computador ou navegador com alterações mais recentes:": "Your account has newer changes from another computer or browser:",
+            "☁️ Versão da Nuvem (Mais recente)": "☁️ Cloud Version (Newer)",
+            "💻 Versão deste Computador": "💻 This Computer’s Version",
+            "área(s) de trabalho": "workspace(s)",
+            "abas": "tabs",
+            "• Atualizado em:": "• Updated at:",
+            "• Alterações locais não sincronizadas": "• Unsynchronized local changes",
+            "Escolha se deseja aceitar a versão da nuvem ou manter as alterações deste computador e sobrescrever a nuvem:": "Choose whether to accept the cloud version or keep this computer’s changes and overwrite the cloud:",
+            "☁️ Aceitar Versão da Nuvem": "☁️ Accept Cloud Version",
+            "💻 Manter Versão Deste Computador": "💻 Keep This Computer’s Version",
+            "⚠️ Conflito de Sincronização entre Dispositivos": "⚠️ Synchronization Conflict Between Devices",
+            "Dispositivo remoto": "Remote device",
+            "Data não informada": "Date not provided",
+            "➕ Nova Área de Trabalho": "➕ New Workspace",
+            "Criar Área de Trabalho": "Create Workspace",
+            "Nome da Área de Trabalho:": "Workspace Name:",
+            "Modelo Inicial:": "Initial Template:",
+            "Em Branco (Sem scripts)": "Blank (No scripts)",
+            "Duplicar Área Atual": "Duplicate Current Workspace",
+            "Mais opções / Ver completo": "More options / View full text",
+            "Limpar pesquisa": "Clear search",
+            "Em execução...": "Running...",
+            "Desativado": "Disabled",
+            "Não confiável": "Untrusted",
+            "Confiável": "Trusted",
+            "🔒 Não confiável": "🔒 Untrusted",
+            "Nenhuma palavra-chave configurada.": "No keywords configured.",
+            "🗑️ Excluir Área de Trabalho": "🗑️ Delete Workspace",
+            "📋 Mover Card para Outra Aba": "📋 Move Card to Another Tab",
+            "Selecione a aba de destino:": "Select the destination tab:"
+});
+
+        Object.assign(translations, {
+            "Não foi possível excluir esta área.": "Could not delete this workspace.",
+            "Não foi possível salvar no navegador. Exporte um backup.": "Could not save in the browser. Export a backup.",
+            "Texto bruto copiado para a área de transferência!": "Raw text copied to the clipboard!",
+            "Falha ao copiar.": "Copy failed.",
+            "Excluir este card permanentemente?": "Permanently delete this card?",
+            "Nenhuma ação recente para desfazer.": "No recent action to undo.",
+            "Erro ao desfazer alteração.": "Could not undo the change.",
+            "Nenhum cliente cadastrado para exportar.": "No registered clients to export.",
+            "Teste de atendimento copiado com sucesso!": "Service test copied successfully!",
+            "Script para o cliente copiado com sucesso!": "Customer message copied successfully!",
+            "Chamado copiado com sucesso! Pronto para colar no Integrator.": "Work order copied successfully! Ready to paste into Integrator.",
+            "Excluir esta coluna e todos os cards dentro dela?": "Delete this column and all cards inside it?",
+            "Digite o nome da nova aba:": "Enter the new tab name:",
+            "Crie primeiro outra Área de Trabalho (botão + em \"Áreas de Trabalho\" na barra lateral) para poder transferir abas entre elas.": "First create another Workspace (the + button under Workspaces in the sidebar) to transfer tabs between them.",
+            "Renomear aba para:": "Rename tab to:",
+            "Você não pode excluir a última aba restante!": "You cannot delete the last remaining tab!",
+            "Tem certeza que deseja excluir esta aba e todos os seus itens?": "Are you sure you want to delete this tab and all its items?",
+            "Ative o 'Modo Edição' para inserir comandos diretamente nos campos de texto.": "Enable Edit Mode to insert commands directly into text fields.",
+            "Não foi possível copiar: permissão de área de transferência negada pelo navegador.": "Could not copy: clipboard permission was denied by the browser.",
+            "Excluir este card e mover para a Lixeira?": "Delete this card and move it to Trash?",
+            "Backup completo do sistema exportado com sucesso!": "Full application backup exported successfully!",
+            "⚠️ O arquivo selecionado é muito grande (limite máximo de 6 MB).": "⚠️ The selected file is too large (maximum 6 MB).",
+            "✅ Backup completo restaurado com sucesso!": "✅ Full backup restored successfully!",
+            "⚠️ Arquivo incompatível: nenhuma estrutura válida de abas ou área de trabalho encontrada.": "⚠️ Incompatible file: no valid tab or workspace structure found.",
+            "Scripts importados com sucesso!": "Scripts imported successfully!",
+            "Restaurar TODOS os scripts e abas padrão deste arquivo (11 abas completas)? Suas alterações atuais serão substituídas.": "Restore ALL default scripts and tabs from this file (11 complete tabs)? Your current changes will be replaced.",
+            "⚠️ ATENÇÃO: Deseja realmente excluir TODOS os cards e abas, deixando a central totalmente zerada? (Recomendamos exportar um backup antes caso queira guardar seus scripts atuais).": "⚠️ WARNING: Do you really want to delete ALL cards and tabs, leaving the application completely empty?\n\n(Export a backup first if you want to keep your current scripts.)",
+            "Todos os cards foram excluídos. A central está zerada!": "All cards have been deleted. The application is now empty!",
+            "Não há alarmes concluídos no histórico para remover.": "There are no completed reminders to remove from history.",
+            "Deseja limpar todo o histórico de scripts copiados recentemente?": "Clear the entire history of recently copied scripts?",
+            "Não foi possível salvar os userscripts.": "Could not save userscripts.",
+            "⚠️ Aviso de Segurança: Este script poderá executar código JavaScript na Central de Scripts. Você confia na integridade e origem deste código?": "⚠️ Security Warning:\n\nThis script can execute JavaScript in Scripts Hub.\nDo you trust the integrity and source of this code?",
+            "Integridade SHA-256 confirmada. O arquivo foi baixado; substitua sua versão atual após conferir o backup.": "SHA-256 integrity verified. The file was downloaded; replace your current version after checking your backup.",
+            "Não foi possível verificar atualizações agora. Verifique sua conexão e a configuração do endereço de atualização.": "Could not check for updates now. Check your connection and update URL settings.",
+            "⚠️ Esta conta foi suspensa pelo administrador.": "⚠️ This account has been suspended by the administrator.",
+            "A sincronização em nuvem não está configurada neste ambiente. Solicite ao administrador da equipe a ativação das credenciais do Firebase.": "Cloud synchronization is not configured in this environment. Ask your team administrator to activate the Firebase credentials.",
+            "Não foi possível inicializar a autenticação na Nuvem. Verifique com o administrador da equipe.": "Could not initialize cloud authentication. Contact your team administrator.",
+            "Você saiu da sua conta Google. O sistema continua operando normalmente no Modo Offline (Local).": "You signed out of your Google account. The application continues to work normally in Offline (Local) Mode.",
+            "Apenas administradores podem definir o padrão corporativo da equipe.": "Only administrators can set the team’s corporate defaults.",
+            "Deseja publicar TODOS os seus scripts atuais como o modelo padrão oficial da equipe no Firestore? Todos os novos atendentes que entrarem na Central receberão exatamente esta base de 11 abas.": "Publish ALL your current scripts as the team’s official default template in Firestore?\n\nAll new agents who join will receive this exact collection of 11 tabs.",
+            "🚀 Scripts publicados como padrão oficial da equipe com sucesso!": "🚀 Scripts published as the team’s official defaults successfully!",
+            "O acesso de desenvolvedor permanece vinculado à conta Google mestre enquanto ela estiver conectada. Para encerrar o acesso, saia da conta Google.": "Developer access remains linked to the master Google account while it is signed in. Sign out of Google to end access.",
+            "O PIN local foi desativado porque poderia ser lido ou alterado pelo navegador. O acesso de desenvolvedor agora depende de uma conta Google mestre verificada.": "The local PIN was disabled because the browser could read or modify it. Developer access now requires a verified master Google account.",
+            "Os dados continuam salvos localmente, mas a nuvem ainda não confirmou o envio.": "Your data remains saved locally, but the cloud has not yet confirmed the upload.",
+            "Você precisa estar conectado com sua conta Google para baixar da nuvem.": "You must be signed in with your Google account to download from the cloud.",
+            "Nenhum backup de scripts encontrado na nuvem para a sua conta Google. Dica: use o botão \"Salvar meus Scripts na Nuvem\" primeiro para enviar seus scripts atuais.": "No cloud script backup found for your Google account.\n\nTip: first use \"Save My Scripts to Cloud\" to upload your current scripts.",
+            "Acesso restrito: somente administradores autenticados podem visualizar ou gerenciar as credenciais do Firebase.": "Restricted access: only authenticated administrators can view or manage Firebase credentials.",
+            "Informe ao menos a apiKey e o projectId do Firebase.": "Enter at least the Firebase apiKey and projectId.",
+            "Firebase configurado com sucesso! Agora você pode fazer login com o Google.": "Firebase configured successfully! You can now sign in with Google.",
+            "Configurações salvas. Caso ocorra erro de conexão, verifique se o domínio do VS Code Live Server (localhost) está autorizado no Firebase.": "Settings saved. If a connection error occurs, check that the VS Code Live Server domain (localhost) is authorized in Firebase.",
+            "Regras copiadas para a área de transferência! Cole na aba Regras do Firestore no Firebase Console.": "Rules copied to the clipboard! Paste them into the Firestore Rules tab in the Firebase Console.",
+            "Acesso restrito: somente administradores podem acessar este painel.": "Restricted access: only administrators can access this panel.",
+            "Deseja salvar a lista atual de scripts como o modelo padrão global da empresa no Firestore? Novos atendentes que conectarem receberão esta base.": "Save the current script list as the company’s global default template in Firestore? New agents who sign in will receive this collection.",
+            "Scripts padrão corporativos atualizados na nuvem com sucesso!": "Corporate default scripts updated in the cloud successfully!",
+            "Nenhuma versão anterior registrada para este card nesta sessão.": "No previous version recorded for this card in this session.",
+            "Selecione ao menos 1 item para copiar.": "Select at least one item to copy.",
+            "Valores e equipamentos copiados com sucesso!": "Pricing and equipment copied successfully!",
+            "Falha ao copiar para a área de transferência.": "Could not copy to the clipboard.",
+            "Restaurar as palavras-chave padrão do sistema?": "Restore the default application keywords?",
+            "Tem certeza de que deseja esvaziar permanentemente toda a lixeira? Esta ação não pode ser desfeita.": "Are you sure you want to permanently empty Trash? This action cannot be undone.",
+            "O PIN local foi desativado por segurança. O acesso de desenvolvedor depende de uma conta Google mestre verificada.": "The local PIN was disabled for security. Developer access requires a verified master Google account."
+});
+        const dialogTemplates = [
+            [
+                        "Ainda não há pontos de restauração gravados para a área \"{0}\". Conforme você for utilizando e editando, o sistema salvará versões automáticas.",
+                        "No restore points have been saved for workspace \"{0}\" yet. Automatic versions will be saved as you use and edit it."
+            ],
+            [
+                        "Restaurar a área \"{0}\" para a versão de {1} ({2} abas, {3} scripts)?",
+                        "Restore workspace \"{0}\" to the version from {1} ({2} tabs, {3} scripts)?"
+            ],
+            [
+                        "Tem certeza que deseja excluir a área de trabalho \"{0}\"?\nTodos os scripts e abas dela serão apagados permanentemente.",
+                        "Are you sure you want to delete workspace \"{0}\"?\nAll its scripts and tabs will be permanently deleted."
+            ],
+            [
+                        "Desfazer \"{0}\" e restaurar o estado de {1}?",
+                        "Undo \"{0}\" and restore the state from {1}?"
+            ],
+            [
+                        "Estado restaurado com sucesso para: {0} ({1})",
+                        "State restored successfully to: {0} ({1})"
+            ],
+            [
+                        "⚡ Substituídas {0} ocorrência(s) com sucesso!",
+                        "⚡ Replaced {0} match(es) successfully!"
+            ],
+            [
+                        "Importar Backup Completo (v{0}) gravado em {1}?\n\nIsso restaurará scripts, abas, clientes, variáveis e preferências.",
+                        "Import Full Backup (v{0}) saved on {1}?\n\nThis will restore scripts, tabs, clients, variables and preferences."
+            ],
+            [
+                        "Erro ao processar arquivo: {0}",
+                        "Error processing file: {0}"
+            ],
+            [
+                        "✅ Todos os scripts e abas padrão ({0} abas) foram restaurados com sucesso!",
+                        "✅ All default scripts and tabs ({0} tabs) restored successfully!"
+            ],
+            [
+                        "Remover {0} alarme(s) já concluído(s) do histórico?",
+                        "Remove {0} completed reminder(s) from history?"
+            ],
+            [
+                        "{0} alarme(s) concluído(s) removido(s) com sucesso!",
+                        "{0} completed reminder(s) removed successfully!"
+            ],
+            [
+                        "⚠️ Limite máximo de {0} userscripts atingido.",
+                        "⚠️ Maximum limit of {0} userscripts reached."
+            ],
+            [
+                        "{0} userscript(s) importado(s) em modo seguro (desativados por padrão).",
+                        "{0} userscript(s) imported in safe mode (disabled by default)."
+            ],
+            [
+                        "Atualização bloqueada: {0}",
+                        "Update blocked: {0}"
+            ],
+            [
+                        "Você já está usando a versão mais recente ({0}).",
+                        "You are already using the latest version ({0})."
+            ],
+            [
+                        "Erro ao autenticar com o Google: {0}",
+                        "Google authentication error: {0}"
+            ],
+            [
+                        "Erro ao autenticar: {0}",
+                        "Authentication error: {0}"
+            ],
+            [
+                        "Erro ao publicar scripts como padrão da equipe: {0}",
+                        "Error publishing team default scripts: {0}"
+            ],
+            [
+                        "Todas as {0} Áreas de Trabalho e {1} scripts foram salvos na Nuvem do Google com sucesso!",
+                        "All {0} Workspaces and {1} scripts saved to Google Cloud successfully!"
+            ],
+            [
+                        "Falha ao salvar na nuvem: {0}",
+                        "Cloud save failed: {0}"
+            ],
+            [
+                        "✅ {0} Áreas de Trabalho e {1} scripts restaurados da Nuvem com sucesso!",
+                        "✅ {0} Workspaces and {1} scripts restored from the Cloud successfully!"
+            ],
+            [
+                        "Erro ao buscar backup na nuvem: {0}",
+                        "Error retrieving cloud backup: {0}"
+            ],
+            [
+                        "Alterar cargo de \"{0}\" para {1}?",
+                        "Change the role of \"{0}\" to {1}?"
+            ],
+            [
+                        "Bloquear acesso de \"{0}\"?",
+                        "Block access for \"{0}\"?"
+            ],
+            [
+                        "Reativar conta de \"{0}\"?",
+                        "Reactivate the account of \"{0}\"?"
+            ],
+            [
+                        "Erro ao atualizar cargo: {0}",
+                        "Error updating role: {0}"
+            ],
+            [
+                        "Erro ao atualizar status: {0}",
+                        "Error updating status: {0}"
+            ],
+            [
+                        "Erro ao salvar scripts corporativos: {0}",
+                        "Error saving corporate scripts: {0}"
+            ],
+            [
+                        "Link direto copiado para a área de transferência:\n{0}",
+                        "Direct link copied to the clipboard:\n{0}"
+            ],
+            [
+                        "Acesso de desenvolvedor negado para {0}. Entre com uma das contas Google mestre verificadas para liberar esta função.",
+                        "Developer access denied for {0}. Sign in with a verified master Google account to enable this feature."
+            ]
+];
+        const localizedDialogPatterns = dialogTemplates.map(([source, target]) => {
+            const parts = source.split(/\{\d+\}/);
+            const escapePattern = text => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            return [new RegExp('^' + parts.map(escapePattern).join('([\\s\\S]*?)') + '$'), target];
+        });
+        window.translateAppMessage = message => {
+            const text = String(message ?? '');
+            if (currentLanguage !== 'en') return text;
+            for (const [pattern, target] of localizedDialogPatterns) {
+                const match = text.match(pattern);
+                if (match) return target.replace(/\{(\d+)\}/g, (_, index) => match[Number(index) + 1]);
+            }
+            return translateUiText(text);
+        };
+
+        Object.assign(translations, {"Crie ou importe um userscript primeiro.": "Create or import a userscript first.", "Ativação cancelada pelo usuário.": "Activation canceled by the user.", "Userscript salvo com segurança.": "Userscript saved securely.", "Executado com sucesso.": "Executed successfully."});
         const textOriginals = new WeakMap();
         const textLast = new WeakMap();
         const attrOriginals = new WeakMap();
@@ -19003,14 +20059,42 @@ service cloud.firestore {
         const externalRoots = new Set();
         const externalObservers = new WeakMap();
         const normalize = value => String(value || '').replace(/\s+/g, ' ').trim();
-        const translateUiText = value => {
+        const translateUiText = (value, inChangelog = false) => {
             const original = String(value ?? '');
             if (currentLanguage !== 'en') return original;
             const key = normalize(original);
+            if (inChangelog && changelogTranslations[key]) return changelogTranslations[key];
+            if (inChangelog && /Versão \d/.test(key)) return key.replace(/Versão/g, "Version");
             if (translations[key]) return translations[key];
             // Only UI counters and labels have parameterized translations.
             // Script bodies and user-owned content are excluded by the walker.
             const patterns = [
+                [/^Não executado: (.+)$/, 'Not executed: $1'],
+
+                [/^⏮️ Restaurar Versão: (.+)$/, '⏮️ Restore Version: $1'],
+                [/^Nenhum item encontrado com o termo "(.*)"\.$/, 'No items found for "$1".'],
+                [/^⚠️ Nenhuma ocorrência de "(.*)" encontrada\.$/, '⚠️ No matches found for "$1".'],
+                [/^✓ (\d+) ocorrência\(s\)$/, '✓ $1 match(es)'],
+                [/^(.*) • (\d+) abas • (\d+) scripts$/, '$1 • $2 tabs • $3 scripts'],
+                [/^Dispositivo: (.+)$/, 'Device: $1'],
+
+                [/^Adiar por (\d+) minutos$/, 'Snooze for $1 minutes'],
+                [/^Palavras Configuradas \((\d+)\)$/, 'Configured Keywords ($1)'],
+                [/^⏮️ Restaurar Versão Anterior desta Área \((\d+)\)$/, '⏮️ Restore Previous Workspace Version ($1)'],
+                [/^Área de Trabalho: (.*) \(Ativa\)$/, 'Workspace: $1 (Active)'],
+                [/^Área de Trabalho: (.*)$/, 'Workspace: $1'],
+                [/^Insere (\([^)]*\))$/, 'Inserts $1'],
+                [/^Mover aba (.+) para a direita$/, 'Move tab $1 right'],
+                [/^Mover aba (.+) para a esquerda$/, 'Move tab $1 left'],
+                [/^Mover aba para outra Área de Trabalho aba (.+)$/, 'Move tab $1 to another Workspace'],
+                [/^Renomear aba (.+)$/, 'Rename tab $1'],
+                [/^Excluir aba (.+)$/, 'Delete tab $1'],
+                [/^(.+) — Clique para abrir ou arraste até uma Área de Trabalho na barra lateral para transferir a aba inteira$/, '$1 — Click to open or drag to a Workspace in the sidebar to transfer the entire tab'],
+                [/^Clique para filtrar por (.+)$/, 'Click to filter by $1'],
+                [/^Opção B: Mesclar na Área Atual \("(.*)"\)$/, 'Option B: Merge into Current Workspace ("$1")'],
+                [/^Cria uma área separada \("(.*)"\) sem alterar sua área atual \("(.*)"\)\.$/, 'Creates a separate workspace ("$1") without changing your current workspace ("$2").'],
+                [/^Adiciona as (\d+) aba\(s\) importadas junto com as abas que você já possui nesta área, sem apagar nada\.$/, 'Adds the $1 imported tab(s) alongside your existing tabs in this workspace, without deleting anything.'],
+
                 [/^(\d+) item\(ns\) selecionado\(s\)$/, '$1 item(s) selected'],
                 [/^(\d+) de (\d+) script\(s\)( \(Todas as Abas\))?$/, '$1 of $2 script(s)$3'],
                 [/^(\d+) aba\(s\)$/, '$1 tab(s)'],
@@ -19092,6 +20176,7 @@ service cloud.firestore {
         };
         const excluded = node => {
             const el = node && (node.nodeType === 1 ? node : node.parentElement);
+            if (el && el.closest('.changelog-box')) return !!el.closest('script,style,textarea,input');
             return !el || !!el.closest('script,style,textarea,input,code,pre,.comp-card-text,.item-text,.item-textarea,.scratchpad-textarea,[contenteditable="true"],[data-user-content="true"],[data-document-content]');
         };
         function translateTextNode(node) {
@@ -19104,7 +20189,7 @@ service cloud.firestore {
             if (currentLanguage === 'en') {
                 const leading = (original.match(/^\s*/) || [''])[0];
                 const trailing = (original.match(/\s*$/) || [''])[0];
-                const translated = translateUiText(normalize(original));
+                const translated = translateUiText(normalize(original), !!node.parentElement.closest('.changelog-box'));
                 target = leading + translated + trailing;
             }
             // Avoid writing an unchanged value: MutationObserver would otherwise
@@ -19114,7 +20199,7 @@ service cloud.firestore {
         }
         const attrNames = ['title','aria-label','placeholder'];
         function translateElement(el) {
-            if (!el || el.nodeType !== 1 || el.closest('script,style,code,pre,.comp-card-text,.item-text,.item-textarea,[contenteditable="true"],[data-user-content="true"],[data-document-content]')) return;
+            if (!el || el.nodeType !== 1 || el.closest('script,style,code,.comp-card-text,[contenteditable="true"],[data-user-content="true"],[data-document-content]')) return;
             if (el.tagName === 'OPTION' && !el.hasAttribute('value')) el.setAttribute('value', el.textContent);
             let originals = attrOriginals.get(el);
             if (!originals) { originals = {}; attrOriginals.set(el, originals); }
@@ -19174,6 +20259,7 @@ service cloud.firestore {
             try { localStorage.setItem(STORAGE_KEY, currentLanguage); } catch (_) {}
             document.documentElement.lang = currentLanguage;
             document.documentElement.dataset.language = currentLanguage;
+            if (typeof renderClientTable === 'function') renderClientTable();
             walk(document.body);
             externalRoots.forEach(root => {
                 const doc = root && root.ownerDocument;
@@ -19189,7 +20275,9 @@ service cloud.firestore {
                 walk(root);
             });
             const selector = document.getElementById('languageSelector');
-            if (selector && selector.value !== currentLanguage) selector.value = currentLanguage;
+            if (selector) selector.querySelectorAll('[data-language]').forEach(button => {
+                button.setAttribute('aria-pressed', String(button.dataset.language === currentLanguage));
+            });
             document.title = currentLanguage === 'en' ? 'Scripts Hub' : 'Central de Scripts';
         }
         function observeAppLanguageRoot(root) {
@@ -19222,12 +20310,14 @@ service cloud.firestore {
         window.translateAppText = translateUiText;
 
         function init() {
+            document.querySelectorAll('.sidebar-brand-badge').forEach(badge => { badge.textContent = 'v' + APP_VERSION; });
             const selector = document.getElementById('languageSelector');
             let saved = 'pt-BR';
             try { saved = localStorage.getItem(STORAGE_KEY) || 'pt-BR'; } catch (_) {}
             if (selector) {
-                selector.value = saved === 'en' ? 'en' : 'pt-BR';
-                selector.addEventListener('change', () => setLanguage(selector.value));
+                selector.querySelectorAll('[data-language]').forEach(button => {
+                    button.addEventListener('click', () => setLanguage(button.dataset.language));
+                });
             }
             setLanguage(saved);
             const observer = new MutationObserver(records => {
