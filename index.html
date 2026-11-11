@@ -4486,6 +4486,52 @@ mark.custom-keyword-highlight:hover {
     color: var(--title-color, #374151);
 }
 
+        /* Selectable synchronization review: readable cards, never raw configuration JSON. */
+        .sync-review .vm-box { max-height:92vh; }
+        .sync-review-body { overflow:auto; max-height:68vh; padding:18px 20px; }
+        .sync-review .vm-foot { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+        .sync-selection-count { margin-right:auto; font-size:12px; }
+        .sync-review-intro p { margin:0 0 6px; font-size:13px; line-height:1.5; }
+        .sync-review-intro small,.sync-delete-notice { opacity:.75; font-size:11.5px; }
+        .sync-change-totals { display:flex; gap:8px; flex-wrap:wrap; margin:14px 0; }
+        .sync-total-pill { display:inline-flex; gap:5px; align-items:center; border:1px solid var(--border-color); border-radius:999px; padding:6px 10px; font-size:11.5px; background:var(--tab-bg); }
+        .sync-review-tools { display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap; }
+        .sync-search { flex:1; min-width:180px; display:flex; flex-direction:column; gap:5px; font-size:11px; }
+        .sync-search input { border:1px solid var(--border-color); border-radius:9px; padding:9px 11px; font:inherit; font-size:13px; background:var(--textarea-bg); color:var(--text-color); width:100%; box-sizing:border-box; }
+        .sync-bulk { display:flex; gap:6px; flex-wrap:wrap; }
+        .sync-review-group h3 { margin:18px 0 10px; font-size:13px; }
+        .sync-change-card { border:1px solid var(--border-color); border-radius:12px; margin:10px 0; overflow:hidden; background:var(--card-bg); }
+        .sync-change-card.is-selected { border-color:var(--accent-color); box-shadow:0 0 0 1px color-mix(in srgb,var(--accent-color) 20%,transparent); }
+        .sync-change-heading { display:flex; align-items:center; gap:10px; padding:12px; background:var(--tab-bg); cursor:pointer; }
+        .sync-change-heading input { width:18px; height:18px; flex-shrink:0; accent-color:var(--accent-color); }
+        .sync-change-heading-text { min-width:0; flex:1; display:flex; flex-wrap:wrap; align-items:center; gap:7px; }
+        .sync-change-heading strong { font-size:12.5px; overflow-wrap:anywhere; }
+        .sync-change-badge { font-size:10px; font-weight:700; background:color-mix(in srgb,var(--accent-color) 12%,transparent); border-radius:5px; padding:3px 6px; color:var(--accent-color); }
+        .sync-change-card[data-change="removed"] .sync-change-badge { color:#dc2626; background:rgba(239,68,68,.1); }
+        .sync-required { font-size:10px; opacity:.7; max-width:130px; }
+        .sync-preview-columns { display:grid; grid-template-columns:1fr 1fr; }
+        .sync-preview { padding:12px; min-width:0; }
+        .sync-proposed { border-left:1px solid var(--border-color); background:color-mix(in srgb,var(--accent-color) 3%,transparent); }
+        .sync-preview-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; opacity:.65; margin-bottom:8px; }
+        .sync-card-path { font-size:11.5px; opacity:.65; margin-bottom:9px; overflow-wrap:anywhere; }
+        .sync-card-text,.sync-value { white-space:pre-wrap; overflow-wrap:anywhere; max-height:210px; overflow:auto; font-size:13px; line-height:1.65; }
+        .sync-empty { font-size:12px; padding:16px 0; opacity:.55; }
+        .sync-friendly-fields { margin:10px 0 0; display:grid; gap:6px; font-size:11px; }
+        .sync-friendly-fields>div { display:grid; grid-template-columns:minmax(65px,auto) 1fr; gap:10px; }
+        .sync-friendly-fields dt { opacity:.65; }
+        .sync-friendly-fields dd { margin:0; white-space:pre-wrap; overflow-wrap:anywhere; }
+        .sync-review [hidden] { display:none !important; }
+        @media(max-width:600px) {
+            .sync-preview-columns { grid-template-columns:1fr; }
+            .sync-proposed { border-left:0; border-top:1px solid var(--border-color); }
+            .sync-review-body { padding:12px; }
+            .sync-review .vm-foot { padding:12px; }
+            .sync-selection-count { width:100%; }
+            .sync-review .vm-foot [data-sync-apply] { flex:1 1 100%; justify-content:center; }
+            .sync-change-heading { align-items:flex-start; }
+            .sync-required { max-width:90px; }
+        }
+
 </style>
 
 
@@ -4502,7 +4548,7 @@ mark.custom-keyword-highlight:hover {
         <!-- Grupo Superior: Marca e Módulos Principais -->
         <div class="sidebar-group sidebar-top">
             <div class="sidebar-top-bar">
-                <div class="sidebar-brand-card" onclick="openChangelogModal()" role="button" tabindex="0" title="Central de Scripts v3.2.0 - Clique para ver o Histórico e Novidades">
+                <div class="sidebar-brand-card" onclick="openChangelogModal()" role="button" tabindex="0" title="Central de Scripts v3.2.1 - Clique para ver o Histórico e Novidades">
                     <svg class="header-logo-icon" width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:8px; box-shadow:0 2px 8px rgba(0,122,255,0.35); flex-shrink:0;">
                         <defs>
                             <linearGradient id="appleLogoGradSidebar" x1="0" y1="0" x2="1" y2="1">
@@ -4517,7 +4563,7 @@ mark.custom-keyword-highlight:hover {
                     </svg>
                     <div class="sidebar-brand-info">
                         <span class="sidebar-brand-title">Central de Scripts</span>
-                        <span class="sidebar-brand-badge">v3.2.0</span>
+                        <span class="sidebar-brand-badge">v3.2.1</span>
                     </div>
                 </div>
                 <button type="button" class="sidebar-collapse-toggle-btn" id="sidebarCollapseToggleBtn" onclick="toggleSidebarCollapse()" title="Recolher Barra Lateral (Ctrl+B)" aria-label="Recolher Barra Lateral">
@@ -4786,7 +4832,7 @@ mark.custom-keyword-highlight:hover {
             return String(str).replace(/([ #;&,.+*~':"!^$\[\]()=>|\/@])/g, '\\$1');
         }
 
-        const APP_VERSION = '3.2.0';
+        const APP_VERSION = '3.2.1';
         // Localize application dialogs without changing browser APIs or user data.
         function appMessage(message) {
             return window.translateAppMessage ? window.translateAppMessage(message) : message;
@@ -7798,9 +7844,14 @@ mark.custom-keyword-highlight:hover {
                     </div>
                     <div class="vm-body" style="padding: 16px 20px; overflow-y: auto;">
                         
+                        <!-- Versão 3.2.1 -->
+                        <div class="changelog-version-card" style="border-color:#22c55e;">
+                            <div class="changelog-version-header"><div class="changelog-version-title"><span data-i18n="release.321">🌐 Versão 3.2.1</span><span class="changelog-badge">Versão Atual</span></div><span style="font-size:11px;opacity:0.75;">11/11/2026</span></div>
+                            <ul class="changelog-list"><li data-i18n="release.selection">Comparação visual com cards, áreas, abas, preferências e alarmes; seleção individual sem exibir código.</li><li data-i18n="release.selectionSafety">Alterações desmarcadas são preservadas, com recuperação e verificação de versões antes de confirmar.</li></ul>
+                        </div>
                         <!-- Versão 3.2.0 -->
                         <div class="changelog-version-card" style="border-color:#22c55e;">
-                            <div class="changelog-version-header"><div class="changelog-version-title"><span data-i18n="release.320">🌐 Versão 3.2.0</span><span class="changelog-badge">Versão Atual</span></div><span style="font-size:11px;opacity:0.75;">11/11/2026</span></div>
+                            <div class="changelog-version-header"><div class="changelog-version-title"><span data-i18n="release.320">🌐 Versão 3.2.0</span><span class="changelog-badge">Versão Anterior</span></div><span style="font-size:11px;opacity:0.75;">11/11/2026</span></div>
                             <ul class="changelog-list"><li data-i18n="release.language">Idioma dos documentos separado da interface; novos controles traduzidos por identificadores fixos.</li><li data-i18n="release.required">Campos obrigatórios nos modelos de OS e Teste Técnico, com indicação e validação antes de copiar.</li><li data-i18n="release.sync">Comparação detalhada antes das substituições, revalidação de versões e transações para conflitos entre computadores.</li><li data-i18n="release.backup">Backups completos preservam variáveis, lixeira e preferências; substituições ganham recuperação e reversão em caso de falha.</li><li data-i18n="release.debug">Testes automatizados adicionados; corrigido o fuso horário de recorrência e soneca dos alarmes.</li><li data-i18n="release.security">Regras candidatas do Firestore e manifesto de atualização preparados para revisão; nenhum serviço foi publicado.</li></ul>
                         </div>
                         <!-- Versão 3.1.14 -->
@@ -8787,6 +8838,9 @@ mark.custom-keyword-highlight:hover {
 
         /* v3.2.0 — Explicit UI messages, independent documents and safe comparisons. */
         const APP_UI_MESSAGES = {
+            'release.321':['🌐 Versão 3.2.1','🌐 Version 3.2.1'],
+            'release.selection':['Comparação visual com cards, áreas, abas, preferências e alarmes; seleção individual sem exibir código.','Visual comparison for cards, workspaces, tabs, preferences and reminders; individual selection without code.'],
+            'release.selectionSafety':['Alterações desmarcadas são preservadas, com recuperação e verificação de versões antes de confirmar.','Unchecked changes are preserved, with recovery and version checks before confirmation.'],
             'documents.language': ['Idioma dos documentos', 'Document language'],
             "release.320": ["🌐 Versão 3.2.0", "🌐 Version 3.2.0"],
             "release.language": ["Idioma dos documentos separado da interface; novos controles traduzidos por identificadores fixos.", "Document language separated from the interface; new controls translated by stable message identifiers."],
@@ -8953,41 +9007,144 @@ mark.custom-keyword-highlight:hover {
             if (Array.isArray(value)) return '[' + value.map(stableSerialize).join(',') + ']';
             return '{' + Object.keys(value).sort().map(key => JSON.stringify(key)+':'+stableSerialize(value[key])).join(',') + '}';
         }
+        function syncClientKeys(before=[],after=[]) {
+            const left=new Array(before.length),right=new Array(after.length);let next=0;
+            function matchBy(field) {
+                const a=new Map(),b=new Map();
+                before.forEach((client,index)=>{if(!left[index]&&client[field]){const value=String(client[field]);if(!a.has(value))a.set(value,[]);a.get(value).push(index);}});
+                after.forEach((client,index)=>{if(!right[index]&&client[field]){const value=String(client[field]);if(!b.has(value))b.set(value,[]);b.get(value).push(index);}});
+                for(const [value,indices]of a){const others=b.get(value);if(indices.length!==1||others?.length!==1)continue;const i=indices[0],j=others[0];if(field!=='id'&&before[i].id&&after[j].id&&before[i].id!==after[j].id)continue;left[i]=right[j]='client:matched:'+next++;}
+            }
+            matchBy('id');matchBy('name');matchBy('contact');
+            // Duplicate registrations are matched by exact content before falling back
+            // to explicit additions/removals; an array shift is never an implicit edit.
+            before.forEach((client,i)=>{if(left[i])return;const j=after.findIndex((other,index)=>!right[index]&&stableSerialize(other)===stableSerialize(client));if(j>=0)left[i]=right[j]='client:matched:'+next++;});
+            before.forEach((_,index)=>{left[index]||='client:before:'+index;});after.forEach((_,index)=>{right[index]||='client:after:'+index;});
+            return {left,right};
+        }
         function buildSyncComparison(before, after) {
+            const clientKeys=syncClientKeys(before.clients||[],after.clients||[]);
             const duplicateCardIds=new Set();
             for(const payload of [before,after]) {
                 const counts=new Map();
                 const workspaces=Array.isArray(payload.workspaces)&&payload.workspaces.length?payload.workspaces:[{data:payload.scripts||{}}];
                 for(const ws of workspaces)for(const tab of Object.values(ws.data||{}))for(const group of tab.groups||[])for(const item of group.items||[])if(item&&typeof item==='object'&&item.id){const count=(counts.get(item.id)||0)+1;counts.set(item.id,count);if(count>1)duplicateCardIds.add(item.id);}
             }
-            function index(payload) {
+            function index(payload,clientIds) {
                 const result = new Map();
-                const workspaces = Array.isArray(payload.workspaces) && payload.workspaces.length ? payload.workspaces : [{id:'legacy',name:'Scripts',data:payload.scripts || {}}];
+                const workspaces = Array.isArray(payload.workspaces) && payload.workspaces.length ? payload.workspaces : Object.keys(payload.scripts||{}).length?[{id:'legacy',name:'Scripts',data:payload.scripts}]:[];
                 workspaces.forEach(ws => {
-                    result.set('workspace:'+ws.id, {kind:'workspace',name:ws.name,value:{name:ws.name,icon:ws.icon,color:ws.color,tabOrder:ws.tabOrder}});
+                    result.set('workspace:'+ws.id, {kind:'workspace',workspaceId:ws.id,name:ws.name,value:{name:ws.name,icon:ws.icon,color:ws.color,tabOrder:ws.tabOrder}});
                     Object.entries(ws.data || {}).forEach(([id,tab]) => {
-                        result.set('tab:'+ws.id+':'+id, {kind:'tab',name:tab.name,value:{name:tab.name,groups:(tab.groups||[]).map(g=>g.title)}});
+                        result.set('tab:'+ws.id+':'+id, {kind:'tab',workspaceId:ws.id,tabId:id,name:tab.name,value:{name:tab.name,groups:(tab.groups||[]).map(g=>g.title)}});
                         (tab.groups || []).forEach((group,gi) => (group.items || []).forEach((item,ii) => {
                             const value = typeof item === 'string' ? {text:item} : item;
                             const key = value.id && !duplicateCardIds.has(value.id) ? 'card:'+value.id : 'card:'+ws.id+':'+id+':'+gi+':'+ii+(value.id?':'+value.id:'');
-                            result.set(key,{kind:'card',name:tab.name,location:[ws.id,id,gi,ii],value});
+                            result.set(key,{kind:'card',workspaceId:ws.id,tabId:id,name:tab.name,workspaceName:ws.name,columnName:group.title,location:[ws.id,id,gi,ii],raw:item,value});
                         }));
                     });
                 });
-                ['clients','customDefaults','scratchpad','trash','customKeywords','keywordsEnabled','soundConfig','settings'].forEach(key => {
+                ['customDefaults','scratchpad','trash','customKeywords','keywordsEnabled','soundConfig','userscripts','documentLanguage'].forEach(key => {
                     if (Object.hasOwn(payload,key)) result.set(key,{kind:key,name:key,value:payload[key]});
                 });
+                (payload.clients||[]).forEach((client,index)=>result.set(clientIds[index],{kind:'client',name:client.name,index,value:client}));
+                for(const [key,value]of Object.entries(payload.settings||{}))result.set('settings:'+key,{kind:'setting',workspaceId:payload.settings.activeWorkspaceId||payload.activeWorkspaceId,settingKey:key,name:key,value});
                 return result;
             }
-            const left = index(before), right = index(after), entries=[];
+            const left = index(before,clientKeys.left), right = index(after,clientKeys.right), entries=[];
             for (const key of new Set([...left.keys(),...right.keys()])) {
                 const a=left.get(key), b=right.get(key);
                 let change = !a ? 'added' : !b ? 'removed' : stableSerialize(a.value)!==stableSerialize(b.value) ? 'changed' : a.location && stableSerialize(a.location)!==stableSerialize(b.location) ? 'moved' : null;
-                if (change) entries.push({key,change,kind:(b||a).kind,name:(b||a).name,before:a?.value,after:b?.value});
+                if (change) entries.push({key,change,kind:(b||a).kind,name:(b||a).name,workspaceId:(b||a).workspaceId,tabId:(b||a).tabId,settingKey:(b||a).settingKey,beforeLocation:a?.location,afterLocation:b?.location,beforeWorkspaceName:a?.workspaceName,afterWorkspaceName:b?.workspaceName,beforeColumnName:a?.columnName,afterColumnName:b?.columnName,rawBefore:a?.raw,rawAfter:b?.raw,beforeIndex:a?.index,afterIndex:b?.index,before:a?.value,after:b?.value});
             }
             const counts={added:0,changed:0,removed:0,moved:0}; entries.forEach(e=>counts[e.change]++);
             return {counts,entries};
         }
+        function normalizeSyncSelection(entries, selected) {
+            // A selected card needs its destination workspace/tab, but never a deletion.
+            const byKey=new Map(entries.map(entry=>[entry.key,entry]));
+            for(const entry of entries)if(entry.kind==='card'&&selected.has(entry.key)&&entry.afterLocation) {
+                const [ws,tab]=entry.afterLocation;
+                for(const key of ['workspace:'+ws,'tab:'+ws+':'+tab])if(byKey.get(key)?.change==='added')selected.add(key);
+            }
+            const tab=byKey.get('settings:activeTabId');
+            if(tab&&selected.has(tab.key)&&byKey.has('settings:activeWorkspaceId'))selected.add('settings:activeWorkspaceId');
+            const workspace=byKey.get('settings:activeWorkspaceId');
+            if(workspace&&selected.has(workspace.key)&&byKey.get('workspace:'+workspace.after)?.change==='added')selected.add('workspace:'+workspace.after);
+            if(tab&&selected.has(tab.key)&&byKey.get('tab:'+tab.workspaceId+':'+tab.after)?.change==='added')selected.add('tab:'+tab.workspaceId+':'+tab.after);
+            return selected;
+        }
+        function mergeSelectedSyncChanges(before, after, selectedKeys, comparison=buildSyncComparison(before,after)) {
+            const clone=value=>value===undefined?undefined:JSON.parse(JSON.stringify(value));
+            const selected=normalizeSyncSelection(comparison.entries,new Set(selectedKeys));
+            if(!selected.size)return clone(before);
+            if(comparison.entries.every(entry=>selected.has(entry.key)))return clone(after);
+            const result=clone(before);
+            const source=Array.isArray(after.workspaces)&&after.workspaces.length?after.workspaces:[{id:'legacy',name:'Scripts',data:after.scripts||{}}];
+            if(!Array.isArray(result.workspaces)||!result.workspaces.length)result.workspaces=Object.keys(before.scripts||{}).length?[{id:'legacy',name:'Scripts',data:clone(before.scripts)}]:[];
+            const references=new Map();
+            for(const entry of comparison.entries)if(entry.kind==='card'&&entry.beforeLocation){const [ws,tab,group,item]=entry.beforeLocation;const items=result.workspaces.find(w=>w.id===ws)?.data?.[tab]?.groups?.[group]?.items;references.set(entry.key,{items,index:item});}
+            function ensure(location) {
+                const [wsId,tabId,groupIndex]=location;
+                const sourceWs=source.find(ws=>ws.id===wsId);if(!sourceWs)throw new Error(appUiText('sync.error'));
+                let ws=result.workspaces.find(ws=>ws.id===wsId);
+                if(!ws){ws=clone(sourceWs);ws.data={};ws.tabOrder=[];ws.history=[];result.workspaces.push(ws);}
+                if(!ws.data[tabId]){ws.data[tabId]=clone(sourceWs.data[tabId]);ws.data[tabId].groups=(ws.data[tabId].groups||[]).map(group=>({...group,items:[]}));}
+                const groups=ws.data[tabId].groups;
+                while(groups.length<=groupIndex){const template=sourceWs.data[tabId].groups[groups.length];groups.push({...clone(template||{title:''}),items:[]});}
+                return groups[groupIndex].items;
+            }
+            // Create/update structure first; selected structure never discards retained cards.
+            for(const entry of comparison.entries)if(selected.has(entry.key)&&entry.kind==='workspace'&&entry.change!=='removed'){
+                const template=source.find(ws=>ws.id===entry.workspaceId);let ws=result.workspaces.find(ws=>ws.id===entry.workspaceId);
+                if(!ws){ws=clone(template);ws.data={};ws.history=[];result.workspaces.push(ws);}
+                for(const key of ['name','icon','color','tabOrder'])if(Object.hasOwn(template,key))ws[key]=clone(template[key]);
+            }
+            for(const entry of comparison.entries)if(selected.has(entry.key)&&entry.kind==='tab'&&entry.change!=='removed'){
+                const template=source.find(ws=>ws.id===entry.workspaceId)?.data[entry.tabId];
+                ensure([entry.workspaceId,entry.tabId,0]);
+                const tab=result.workspaces.find(ws=>ws.id===entry.workspaceId).data[entry.tabId];
+                for(const [key,val]of Object.entries(template))if(key!=='groups')tab[key]=clone(val);
+                template.groups.forEach((group,index)=>{ensure([entry.workspaceId,entry.tabId,index]);for(const[key,val]of Object.entries(group))if(key!=='items')tab.groups[index][key]=clone(val);});
+                tab.groups=tab.groups.filter((group,index)=>index<template.groups.length||group.items.length);
+            }
+            // Remove by original object identity so earlier removals cannot shift another card.
+            const removals=comparison.entries.filter(entry=>selected.has(entry.key)&&entry.kind==='card'&&entry.beforeLocation).sort((a,b)=>b.beforeLocation[3]-a.beforeLocation[3]);
+            for(const entry of removals){const reference=references.get(entry.key);if(reference?.items)reference.items.splice(reference.index,1);}
+            const insertions=comparison.entries.filter(entry=>selected.has(entry.key)&&entry.kind==='card'&&entry.afterLocation).sort((a,b)=>a.afterLocation[3]-b.afterLocation[3]);
+            for(const entry of insertions){const items=ensure(entry.afterLocation);items.splice(Math.min(entry.afterLocation[3],items.length),0,clone(entry.rawAfter ?? entry.after));}
+            for(const entry of comparison.entries)if(selected.has(entry.key)&&entry.change==='removed'){
+                const ws=result.workspaces.find(ws=>ws.id===entry.workspaceId);if(!ws)continue;
+                if(entry.kind==='tab'&&!(ws.data[entry.tabId]?.groups||[]).some(group=>group.items.length))delete ws.data[entry.tabId];
+                if(entry.kind==='workspace'&&!Object.values(ws.data).some(tab=>tab.groups.some(group=>group.items.length)))result.workspaces=result.workspaces.filter(item=>item!==ws);
+            }
+            const clientChanges=comparison.entries.filter(entry=>entry.kind==='client'&&selected.has(entry.key));
+            if(clientChanges.length){
+                result.clients=clone(before.clients||[]);
+                clientChanges.filter(entry=>entry.beforeIndex!==undefined).sort((a,b)=>b.beforeIndex-a.beforeIndex).forEach(entry=>result.clients.splice(entry.beforeIndex,1));
+                clientChanges.filter(entry=>entry.afterIndex!==undefined).sort((a,b)=>a.afterIndex-b.afterIndex).forEach(entry=>result.clients.splice(Math.min(entry.afterIndex,result.clients.length),0,clone(entry.after)));
+            }
+            for(const entry of comparison.entries)if(selected.has(entry.key)){
+                if(entry.kind==='setting'){
+                    result.settings||={};if(entry.after===undefined)delete result.settings[entry.settingKey];else result.settings[entry.settingKey]=clone(entry.after);
+                }else if(!['workspace','tab','card','client'].includes(entry.kind)){
+                    if(entry.after===undefined)delete result[entry.key];else result[entry.key]=clone(entry.after);
+                }
+            }
+            if(!result.workspaces.length&&source.length){const template=clone(source[0]);template.data={};template.history=[];result.workspaces.push(template);}
+            for(const ws of result.workspaces){
+                if(!Object.keys(ws.data).length){const template=source.find(item=>item.id===ws.id);const first=Object.keys(template?.data||{})[0];if(first){ws.data[first]=clone(template.data[first]);ws.data[first].groups.forEach(group=>group.items=[]);}}
+                const order=ws.tabOrder||[];ws.tabOrder=[...new Set([...order.filter(id=>Object.hasOwn(ws.data,id)),...Object.keys(ws.data)])];}
+            if(result.workspaces.length){
+                const target=result.workspaces.find(ws=>ws.id===(result.settings?.activeWorkspaceId||result.activeWorkspaceId))||result.workspaces[0];
+                result.activeWorkspaceId=target.id;result.scripts=clone(target.data);result.tabOrder=clone(target.tabOrder);
+                result.settings||={};result.settings.activeWorkspaceId=target.id;
+                if(!Object.hasOwn(target.data,result.settings.activeTabId)&&result.settings.activeTabId!=='tab_clients_alarm')result.settings.activeTabId=target.tabOrder[0]||'';
+            }
+            for(const key of ['schemaVersion','revision','deviceId','updatedBy','updatedAt'])if(Object.hasOwn(after,key))result[key]=clone(after[key]);
+            return result;
+        }
+
         const RECOVERY_POINTS_KEY = 'scripts_recovery_points_v1';
         function getRecoveryPoints() { try { const data=JSON.parse(localStorage.getItem(RECOVERY_POINTS_KEY)||'[]'); return Array.isArray(data)?data:[]; } catch { return []; } }
         function saveRecoveryPoint() {
@@ -9004,14 +9161,22 @@ mark.custom-keyword-highlight:hover {
             const modal=createAccessibleModal({id:'recoveryPointsModal',title:appUiText('recovery.open'),contentHtml:points.length?points.map(p=>`<button type="button" class="var-modal-btn" data-recovery-id="${escapeHtml(p.id)}">${escapeHtml(p.time)}</button>`).join(''):`<p data-i18n="recovery.empty">${appUiText('recovery.empty')}</p>`,footerHtml:''});
             modal.overlay.querySelectorAll('[data-recovery-id]').forEach(button=>button.onclick=()=>{
                 const point=points.find(p=>p.id===button.dataset.recoveryId);
-                const before=buildSyncPayload(); const candidate={};
+                const before={...buildSyncPayload(),userscripts:getUserscripts(),documentLanguage:getDocumentLanguage()}; const candidate={};
                 // Preview the complete raw backup without writing until confirmation.
                 const data=Object.fromEntries(applicationStorageKeys().map(key=>[key,typeof point.data?.[key]==='string'?point.data[key]:null]));
                 candidate.workspaces=JSON.parse(data[WORKSPACES_STORAGE_KEY]||'[]'); candidate.scripts=JSON.parse(data[STORAGE_KEY]||'{}');
                 for(const [field,key] of Object.entries({customDefaults:VARS_KEY,clients:CLIENTS_KEY,trash:TRASH_STORAGE_KEY,customKeywords:KEYWORDS_STORAGE_KEY,soundConfig:SOUND_STORAGE_KEY}))if(data[key]!==null)candidate[field]=JSON.parse(data[key]);
                 candidate.scratchpad=data[SCRATCHPAD_KEY]||'';
-                candidate.settings={theme:data[THEME_KEY]||'dark',layout:data[LAYOUT_KEY]||'grid',scale:Number(data[SCALE_KEY]||1)};
-                showSyncComparison(before,candidate,()=>{
+                candidate.userscripts=JSON.parse(data[USERSCRIPTS_KEY]||'[]');candidate.documentLanguage=data[DOCUMENT_LANGUAGE_KEY]==='en'?'en':'pt-BR';
+                candidate.activeWorkspaceId=data[ACTIVE_WORKSPACE_KEY]||candidate.workspaces[0]?.id;
+                candidate.settings={theme:data[THEME_KEY]||'dark',layout:data[LAYOUT_KEY]||'grid',scale:Number(data[SCALE_KEY]||1),activeWorkspaceId:candidate.activeWorkspaceId,activeTabId:data[ACTIVE_TAB_KEY]||'',alarmConfig:JSON.parse(data[ALARM_CONFIG_KEY]||'null')||before.settings.alarmConfig};
+                showSyncComparison(before,candidate,(selected,selection)=>{
+                    if(!selection.selectedKeys.length)return;
+                    if(!selection.allSelected){
+                        const clean=sanitizeFullBackup(validateCloudPayload(selected));
+                        clean.userscripts=selected.userscripts||[];clean.documentLanguage=selected.documentLanguage||'pt-BR';
+                        saveRecoveryPoint();withLocalStorageRollback(()=>restoreFullBackup(clean));location.reload();return;
+                    }
                     const rollback=Object.fromEntries(Object.keys(data).map(key=>[key,localStorage.getItem(key)]));
                     saveRecoveryPoint();
                     try { Object.entries(data).forEach(([key,value])=>value===null?localStorage.removeItem(key):localStorage.setItem(key,value)); }
@@ -9023,24 +9188,374 @@ mark.custom-keyword-highlight:hover {
         let pendingCloudReview = null;
         let cloudReviewCommitting = false;
         let acknowledgedRemoteFingerprint = null;
+        Object.assign(APP_UI_MESSAGES, {
+            'sync.review': ['Escolha as alterações que deseja aplicar', 'Choose which changes to apply'],
+            'sync.apply': ['Aplicar seleção', 'Apply selection'],
+            'sync.help': ['Marque o que deseja atualizar. O que ficar desmarcado será mantido como está.', 'Select what you want to update. Unchecked items will stay as they are.'],
+            'sync.uploadHelp': ['Escolha a versão que ficará neste dispositivo e na nuvem. Sua versão anterior terá um ponto de recuperação.', 'Choose the version to keep on this device and in the cloud. Your previous version will have a recovery point.'],
+            'sync.cards': ['Cards de atendimento', 'Service cards'],
+            'sync.preferences': ['Preferências', 'Preferences'],
+            'sync.other': ['Áreas, abas e outros dados', 'Workspaces, tabs and other data'],
+            'sync.search': ['Buscar por texto, aba ou área', 'Search by text, tab or workspace'],
+            'sync.selectVisible': ['Selecionar exibidos', 'Select visible'],
+            'sync.clear': ['Limpar seleção', 'Clear selection'],
+            'sync.selected': ['Selecionadas', 'Selected'],
+            'sync.total': ['de', 'of'],
+            'sync.current': ['Versão atual', 'Current version'],
+            'sync.proposed': ['Versão proposta', 'Proposed version'],
+            'sync.noCard': ['Sem card nesta versão', 'No card in this version'],
+            'sync.empty': ['Sem conteúdo', 'No content'],
+            'sync.noResults': ['Nenhuma alteração corresponde à busca.', 'No changes match your search.'],
+            'sync.dependency': ['Necessário para os cards selecionados', 'Required by the selected cards'],
+            'sync.choose': ['Aplicar esta alteração', 'Apply this change'],
+            'sync.deleteNotice': ['As exclusões só serão aplicadas se forem marcadas.', 'Deletions are applied only when selected.'],
+            'sync.untitled': ['Card sem título', 'Untitled card'],
+            'sync.field.theme': ['Tema visual', 'Appearance'],
+            'sync.field.layout': ['Modo de exibição', 'View mode'],
+            'sync.field.scale': ['Tamanho dos cards', 'Card size'],
+            'sync.field.activeTabId': ['Aba aberta', 'Open tab'],
+            'sync.field.activeWorkspaceId': ['Área de trabalho aberta', 'Open workspace'],
+            'sync.field.alarmConfig': ['Som e volume dos alarmes', 'Reminder sound and volume'],
+            'sync.field.volume': ['Volume', 'Volume'],
+            'sync.field.soundType': ['Som', 'Sound'],
+            'sync.field.name': ['Nome', 'Name'],
+            'sync.field.icon': ['Ícone', 'Icon'],
+            'sync.field.color': ['Cor', 'Color'],
+            'sync.field.tags': ['Tags', 'Tags'],
+            'sync.field.favorite': ['Favorito', 'Favorite'],
+            'sync.field.copies': ['Vezes copiado', 'Copy count'],
+            'sync.field.alarm': ['Alarme', 'Reminder'],
+            'sync.field.groups': ['Colunas', 'Columns'],
+            'sync.field.tabOrder': ['Ordem das abas', 'Tab order'],
+            'sync.field.workspace': ['Área de trabalho', 'Workspace'],
+            'sync.field.tab': ['Aba', 'Tab'],
+            'sync.field.clients': ['Clientes e alarmes', 'Clients and reminders'],
+            'sync.field.customDefaults': ['Variáveis de atendimento', 'Service variables'],
+            'sync.field.scratchpad': ['Rascunho', 'Scratchpad'],
+            'sync.field.trash': ['Lixeira', 'Trash'],
+            'sync.field.customKeywords': ['Palavras destacadas', 'Highlighted keywords'],
+            'sync.field.keywordsEnabled': ['Destaque de palavras', 'Keyword highlighting'],
+            'sync.field.soundConfig': ['Som ao copiar', 'Copy sound'],
+            'sync.field.userscripts': ['Userscripts', 'Userscripts'],
+            'sync.field.documentLanguage': ['Idioma dos documentos', 'Document language'],
+            'sync.yes': ['Sim', 'Yes'], 'sync.no': ['Não', 'No'],
+            'sync.value.light': ['Claro', 'Light'], 'sync.value.dark': ['Cinza', 'Gray'], 'sync.value.oled': ['OLED', 'OLED'],
+            'sync.value.grid': ['Quadro', 'Board'], 'sync.value.list': ['Lista', 'List'],
+            'sync.value.standard': ['Alarme padrão', 'Standard alarm'], 'sync.value.soft': ['Bipe suave', 'Soft beep'], 'sync.value.siren': ['Sirene', 'Siren'],
+            'sync.value.blip': ['Blip moderno', 'Modern blip'], 'sync.value.chord': ['Acorde suave', 'Soft chord'], 'sync.value.click': ['Clique', 'Click'], 'sync.value.bubble': ['Bolha', 'Bubble'],
+            'sync.value.green': ['Verde', 'Green'], 'sync.value.yellow': ['Amarelo', 'Yellow'], 'sync.value.red': ['Vermelho', 'Red'], 'sync.value.blue': ['Azul', 'Blue'], 'sync.value.purple': ['Roxo', 'Purple']
+        });
+        Object.assign(APP_UI_MESSAGES,{
+            "sync.cards": [
+                        "💬 Cards de atendimento",
+                        "💬 Service cards"
+            ],
+            "sync.preferences": [
+                        "⚙️ Preferências",
+                        "⚙️ Preferences"
+            ],
+            "sync.other": [
+                        "🗂️ Áreas, abas e outros dados",
+                        "🗂️ Workspaces, tabs and other data"
+            ],
+            "sync.field.theme": [
+                        "🎨 Tema visual",
+                        "🎨 Appearance"
+            ],
+            "sync.field.layout": [
+                        "▦ Modo de exibição",
+                        "▦ View mode"
+            ],
+            "sync.field.scale": [
+                        "🔍 Tamanho dos cards",
+                        "🔍 Card size"
+            ],
+            "sync.field.activeTabId": [
+                        "📑 Aba aberta",
+                        "📑 Open tab"
+            ],
+            "sync.field.activeWorkspaceId": [
+                        "💼 Área de trabalho aberta",
+                        "💼 Open workspace"
+            ],
+            "sync.field.alarmConfig": [
+                        "🔔 Som e volume dos alarmes",
+                        "🔔 Reminder sound and volume"
+            ],
+            "sync.field.soundType": [
+                        "🎵 Som",
+                        "🎵 Sound"
+            ],
+            "sync.field.volume": [
+                        "🔊 Volume",
+                        "🔊 Volume"
+            ],
+            "sync.field.name": [
+                        "👤 Nome",
+                        "👤 Name"
+            ],
+            "sync.field.contact": [
+                        "📞 Contato",
+                        "📞 Contact"
+            ],
+            "sync.field.tags": [
+                        "🏷️ Tags",
+                        "🏷️ Tags"
+            ],
+            "sync.field.favorite": [
+                        "⭐ Favorito",
+                        "⭐ Favorite"
+            ],
+            "sync.field.copies": [
+                        "📋 Vezes copiado",
+                        "📋 Copy count"
+            ],
+            "sync.field.alarm": [
+                        "🔔 Alarme",
+                        "🔔 Reminder"
+            ],
+            "sync.field.groups": [
+                        "▦ Colunas",
+                        "▦ Columns"
+            ],
+            "sync.field.tabOrder": [
+                        "📑 Ordem das abas",
+                        "📑 Tab order"
+            ],
+            "sync.field.icon": [
+                        "✨ Ícone",
+                        "✨ Icon"
+            ],
+            "sync.field.color": [
+                        "🎨 Cor",
+                        "🎨 Color"
+            ],
+            "sync.field.clients": [
+                        "👥 Clientes e alarmes",
+                        "👥 Clients and reminders"
+            ],
+            "sync.field.customDefaults": [
+                        "🧩 Variáveis de atendimento",
+                        "🧩 Service variables"
+            ],
+            "sync.field.scratchpad": [
+                        "📝 Rascunho",
+                        "📝 Scratchpad"
+            ],
+            "sync.field.trash": [
+                        "🗑️ Lixeira",
+                        "🗑️ Trash"
+            ],
+            "sync.field.customKeywords": [
+                        "🏷️ Palavras destacadas",
+                        "🏷️ Highlighted keywords"
+            ],
+            "sync.field.keywordsEnabled": [
+                        "🏷️ Destaque de palavras",
+                        "🏷️ Keyword highlighting"
+            ],
+            "sync.field.soundConfig": [
+                        "🔊 Som ao copiar",
+                        "🔊 Copy sound"
+            ],
+            "sync.field.type": [
+                        "🎵 Efeito sonoro",
+                        "🎵 Sound effect"
+            ],
+            "sync.field.enabled": [
+                        "🔘 Ativado",
+                        "🔘 Enabled"
+            ],
+            "sync.field.mode": [
+                        "🧩 Preenchimento",
+                        "🧩 Input mode"
+            ],
+            "sync.field.recurrence": [
+                        "🔁 Repetição",
+                        "🔁 Repeat"
+            ],
+            "sync.field.status": [
+                        "📌 Situação",
+                        "📌 Status"
+            ],
+            "sync.field.obs": [
+                        "📝 Observações",
+                        "📝 Notes"
+            ],
+            "sync.customColor": [
+                        "Cor personalizada",
+                        "Custom color"
+            ],
+            "sync.preference": [
+                        "Preferência",
+                        "Preference"
+            ],
+            "sync.noReminder": [
+                        "Sem alarme",
+                        "No reminder"
+            ],
+            "sync.value.pending": [
+                        "⏳ Pendente",
+                        "⏳ Pending"
+            ],
+            "sync.value.done": [
+                        "✅ Concluído",
+                        "✅ Completed"
+            ],
+            "sync.value.none": [
+                        "Uma vez",
+                        "One time"
+            ],
+            "sync.value.daily": [
+                        "Diariamente",
+                        "Daily"
+            ],
+            "sync.value.weekly": [
+                        "Semanalmente",
+                        "Weekly"
+            ],
+            "sync.value.monthly": [
+                        "Mensalmente",
+                        "Monthly"
+            ],
+            "sync.value.auto": [
+                        "Preencher automaticamente",
+                        "Fill automatically"
+            ],
+            "sync.value.popup": [
+                        "Perguntar ao copiar",
+                        "Ask when copying"
+            ],
+            "sync.keepCurrent": [
+                        "Manter versão atual",
+                        "Keep current version"
+            ]
+});
+        Object.assign(APP_UI_MESSAGES,{'sync.field.id':['🆔 Identificação','🆔 Identification'],'sync.identified':['Identificação disponível','Identification available']});
+        Object.assign(APP_UI_MESSAGES,{'sync.change.added':['Novo','New'],'sync.change.changed':['Atualização','Update'],'sync.change.removed':['Exclusão','Deletion'],'sync.change.moved':['Movimentação','Move'],'sync.applying':['Aplicando…','Applying…']});
+        function syncEntryTitle(entry) {
+            if(entry.kind==='card')return String(entry.after?.text||entry.before?.text||'').split('\n').find(line=>line.trim())?.trim().slice(0,110)||appUiText('sync.untitled');
+            if(entry.kind==='client')return entry.name;
+            if(entry.kind==='setting')return appUiText(APP_UI_MESSAGES['sync.field.'+entry.settingKey]?'sync.field.'+entry.settingKey:'sync.preference');
+            return ['workspace','tab'].includes(entry.kind)?entry.name:appUiText('sync.field.'+entry.kind);
+        }
+        function syncFriendlyValue(value, key, payload) {
+            if(value===undefined||value===null||value==='')return '—';
+            if(typeof value==='boolean')return appUiText(value?'sync.yes':'sync.no');
+            if(key==='id')return appUiText('sync.identified');
+            if(key==='alarm'){const date=new Date(value);return Number.isNaN(date.getTime())?appUiText('sync.noReminder'):date.toLocaleString(window.getAppLanguage?window.getAppLanguage():'pt-BR');}
+            if(key==='color'&&/^#[0-9a-f]{3,8}$/i.test(value))return appUiText('sync.customColor');
+            if(['status','recurrence','mode','type'].includes(key)&&APP_UI_MESSAGES['sync.value.'+value])return appUiText('sync.value.'+value);
+            if(key==='scale'||key==='volume')return Math.round(Number(value)*100)+'%';
+            if(key==='activeWorkspaceId')return payload.workspaces?.find(ws=>ws.id===value)?.name||'—';
+            if(key==='activeTabId'){
+                if(value==='tab_clients_alarm')return appUiText('sync.field.clients');
+                const active=payload.workspaces?.find(ws=>ws.id===(payload.activeWorkspaceId||payload.settings?.activeWorkspaceId));
+                return active?.data?.[value]?.name||payload.workspaces?.flatMap(ws=>Object.entries(ws.data||{})).find(([id])=>id===value)?.[1]?.name||payload.scripts?.[value]?.name||'—';
+            }
+            if(key==='documentLanguage')return value==='en'?'English (US)':'Português (Brasil)';
+            if(['theme','layout','soundType','color'].includes(key)&&APP_UI_MESSAGES['sync.value.'+value])return appUiText('sync.value.'+value);
+            if(Array.isArray(value))return value.map(item=>typeof item==='object'?(item.text||item.word||item.name||item.val||'—'):String(item)).join('\n');
+            return typeof value==='object'?Object.entries(value).map(([field,val])=>(APP_UI_MESSAGES['sync.field.'+field]?appUiText('sync.field.'+field):appUiText('sync.preference'))+': '+syncFriendlyValue(val,field,payload)).join('\n'):String(value);
+        }
+        function syncPreviewHtml(entry, which, payload) {
+            const value=entry[which],location=entry[which+'Location'];
+            if(value===undefined)return `<div class="sync-empty" data-i18n="${entry.kind==='card'?'sync.noCard':'sync.empty'}">${appUiText(entry.kind==='card'?'sync.noCard':'sync.empty')}</div>`;
+            const safe=text=>escapeHtml(String(text ?? ''));
+            const data=text=>`<span data-user-content="true">${safe(text)}</span>`;
+            if(entry.kind==='card'){
+                const workspace=payload.workspaces?.find(ws=>ws.id===location?.[0]);
+                const tab=workspace?.data?.[location?.[1]];
+                const path=[workspace?.name||entry[which+'WorkspaceName'],tab?.name||entry.name,entry[which+'ColumnName']].filter(Boolean).map((text,index)=>['💼 ','📑 ','▦ '][index]+text).join(' › ');
+                const metadata=['id','tags','favorite','color','copies','alarm'].filter(key=>value[key]!==undefined&&value[key]!==''&&(key!=='tags'||value[key].length));
+                return `<div class="sync-card-path">${data(path)}</div><div class="sync-card-text" data-user-content="true">${safe(value.text||'')}</div>${metadata.length?`<dl class="sync-friendly-fields">${metadata.map(key=>`<div><dt data-i18n="sync.field.${key}">${appUiText('sync.field.'+key)}</dt><dd>${data(syncFriendlyValue(value[key],key,payload))}</dd></div>`).join('')}</dl>`:''}`;
+            }
+            if(entry.kind==='client')return `<dl class="sync-friendly-fields">${['name','contact','alarm','recurrence','status','obs'].filter(key=>value[key]!==undefined).map(key=>`<div><dt data-i18n="sync.field.${key}">${appUiText('sync.field.'+key)}</dt><dd>${data(syncFriendlyValue(value[key],key,payload))}</dd></div>`).join('')}</dl>`;
+            if(entry.kind==='customDefaults')return `<div class="sync-variable-list">${Object.entries(value||{}).map(([key,item])=>`<div><strong data-user-content="true">${safe('('+key+')')}</strong><div class="sync-value" data-user-content="true">${safe(typeof item==='object'?item.val:item)}</div><small>${safe(syncFriendlyValue(typeof item==='object'?item.mode:'auto','mode',payload))}</small></div>`).join('')}</div>`;
+            if(entry.kind==='setting')return `<div class="sync-value" data-user-content="true">${safe(syncFriendlyValue(value,entry.settingKey,payload))}</div>`;
+            if(['workspace','tab'].includes(entry.kind))return `<dl class="sync-friendly-fields">${Object.entries(value).map(([key,item])=>{
+                let text=item;
+                if(key==='tabOrder')text=(item||[]).map(id=>payload.workspaces?.find(ws=>ws.id===entry.workspaceId)?.data?.[id]?.name||'—').join(' · ');
+                else text=syncFriendlyValue(item,key,payload);
+                return `<div><dt data-i18n="sync.field.${key}">${appUiText('sync.field.'+key)}</dt><dd>${data(text)}</dd></div>`;
+            }).join('')}</dl>`;
+            return `<div class="sync-value" data-user-content="true">${safe(syncFriendlyValue(value,entry.kind,payload))}</div>`;
+        }
         function showSyncComparison(before, after, onConfirm, options = {}) {
             if(options.cloudReview)pendingCloudReview={before,after,onConfirm,options};
-            const baseline=syncFingerprint(buildSyncPayload()); const comparison=buildSyncComparison(before,effectiveSyncPayload(before,after));
-            const content = `<p data-i18n="sync.recovery">${appUiText('sync.recovery')}</p><div>${Object.entries(comparison.counts).map(([key,count])=>`<span style="margin-right:12px;"><span data-i18n="sync.${key}">${appUiText('sync.'+key)}</span>: ${count}</span>`).join('')}</div><div style="max-height:45vh;overflow:auto;">${comparison.entries.map(e=>`<details style="margin-top:8px;"><summary><span data-i18n="sync.${e.change}">${appUiText('sync.'+e.change)}</span> · <span data-user-content="true">${escapeHtml(e.name || e.key)}</span></summary><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"><div><span data-i18n="sync.before">${appUiText('sync.before')}</span><pre data-user-content="true" style="white-space:pre-wrap;word-break:break-word;max-height:220px;overflow:auto;">${escapeHtml(JSON.stringify(e.before ?? null,null,2))}</pre></div><div><span data-i18n="sync.after">${appUiText('sync.after')}</span><pre data-user-content="true" style="white-space:pre-wrap;word-break:break-word;max-height:220px;overflow:auto;">${escapeHtml(JSON.stringify(e.after ?? null,null,2))}</pre></div></div></details>`).join('') || `<p data-i18n="sync.none">${appUiText('sync.none')}</p>`}</div>`;
-            const modal=createAccessibleModal({id:'syncComparisonModal',title:appUiText('sync.review'),contentHtml:content,footerHtml:`<button type="button" class="var-modal-btn" data-sync-cancel data-i18n="sync.cancel">${appUiText('sync.cancel')}</button><button type="button" class="var-modal-btn var-modal-btn-confirm" data-sync-apply data-i18n="sync.apply">${appUiText('sync.apply')}</button>`,width:'min(800px,95vw)'});
+            const clone=value=>JSON.parse(JSON.stringify(value));
+            const current=clone(before),proposed=clone(effectiveSyncPayload(before,after));
+            const baseline=syncFingerprint(buildSyncPayload()),comparison=buildSyncComparison(current,proposed);
+            const selected=normalizeSyncSelection(comparison.entries,new Set(comparison.entries.filter(entry=>entry.kind==='card'&&entry.change!=='removed').map(entry=>entry.key)));
+            const safe=value=>escapeHtml(String(value));
+            function entryHtml(entry,index){
+                const title=syncEntryTitle(entry),titleKey=entry.kind==='setting'?(APP_UI_MESSAGES['sync.field.'+entry.settingKey]?'sync.field.'+entry.settingKey:'sync.preference'):!['card','client','tab','workspace'].includes(entry.kind)?'sync.field.'+entry.kind:null;
+                return `<article class="sync-change-card" data-sync-entry="${index}" data-change="${entry.change}"><label class="sync-change-heading"><input type="checkbox" data-sync-choice="${index}" aria-describedby="sync-entry-title-${index}"><span class="sync-change-heading-text"><span class="sync-change-badge" data-i18n="sync.change.${entry.change}">${appUiText('sync.change.'+entry.change)}</span><strong id="sync-entry-title-${index}" ${titleKey?`data-i18n="${titleKey}"`:'data-user-content="true"'}>${safe(title)}</strong></span><span class="sync-required" hidden data-i18n="sync.dependency">${appUiText('sync.dependency')}</span></label><div class="sync-preview-columns"><section class="sync-preview"><div class="sync-preview-label" data-i18n="sync.current">${appUiText('sync.current')}</div><div data-sync-preview="before-${index}">${syncPreviewHtml(entry,'before',current)}</div></section><section class="sync-preview sync-proposed"><div class="sync-preview-label" data-i18n="sync.proposed">${appUiText('sync.proposed')}</div><div data-sync-preview="after-${index}">${syncPreviewHtml(entry,'after',proposed)}</div></section></div></article>`;
+            }
+            const groups=[['sync.cards',entry=>entry.kind==='card'],['sync.field.clients',entry=>entry.kind==='client'],['sync.preferences',entry=>entry.kind==='setting'],['sync.other',entry=>!['card','client','setting'].includes(entry.kind)]];
+            const content=`<div class="sync-review-intro"><p data-i18n="${options.direction==='upload'?'sync.uploadHelp':'sync.help'}">${appUiText(options.direction==='upload'?'sync.uploadHelp':'sync.help')}</p><small data-i18n="sync.recovery">${appUiText('sync.recovery')}</small></div><div class="sync-change-totals">${Object.entries(comparison.counts).map(([key,count])=>`<span class="sync-total-pill"><b>${count}</b> <span data-i18n="sync.${key}">${appUiText('sync.'+key)}</span></span>`).join('')}</div>${comparison.entries.length?`<div class="sync-review-tools"><label class="sync-search"><span data-i18n="sync.search">${appUiText('sync.search')}</span><input type="search" data-sync-search></label><div class="sync-bulk"><button type="button" class="var-modal-btn" data-sync-select-visible data-i18n="sync.selectVisible">${appUiText('sync.selectVisible')}</button><button type="button" class="var-modal-btn" data-sync-clear data-i18n="sync.clear">${appUiText('sync.clear')}</button></div></div><p class="sync-delete-notice" data-i18n="sync.deleteNotice">${appUiText('sync.deleteNotice')}</p>${groups.map(([key,filter])=>{const entries=comparison.entries.map((entry,index)=>({entry,index})).filter(({entry})=>filter(entry));return entries.length?`<section class="sync-review-group"><h3 data-i18n="${key}">${appUiText(key)}</h3>${entries.map(({entry,index})=>entryHtml(entry,index)).join('')}</section>`:''}).join('')}<p hidden data-sync-empty data-i18n="sync.noResults">${appUiText('sync.noResults')}</p>`:`<p data-i18n="sync.none">${appUiText('sync.none')}</p>`}`;
+            const modal=createAccessibleModal({id:'syncComparisonModal',title:appUiText('sync.review'),contentHtml:content,footerHtml:`<div class="sync-selection-count" role="status" aria-live="polite"><span data-i18n="sync.selected">${appUiText('sync.selected')}</span>: <b data-sync-count>0</b> <span data-i18n="sync.total">${appUiText('sync.total')}</span> ${comparison.entries.length}</div><button type="button" class="var-modal-btn" data-sync-cancel data-i18n="sync.cancel">${appUiText('sync.cancel')}</button><button type="button" class="var-modal-btn" data-sync-keep-current data-i18n="sync.keepCurrent">${appUiText('sync.keepCurrent')}</button><button type="button" class="var-modal-btn var-modal-btn-confirm" data-sync-apply data-i18n="sync.apply">${appUiText('sync.apply')}</button>`,width:'min(1000px,95vw)'});
+            modal.overlay.classList.add('sync-review');
+            const body=modal.overlay.querySelector('.vm-body');body.classList.add('sync-review-body');
+            const button=modal.overlay.querySelector('[data-sync-apply]');
+            const rows=[...modal.overlay.querySelectorAll('[data-sync-entry]')];
+            const choices=[...modal.overlay.querySelectorAll('[data-sync-choice]')];
+            function update(){
+                normalizeSyncSelection(comparison.entries,selected);
+                const required=new Set();
+                comparison.entries.forEach(entry=>{if(entry.kind==='card'&&selected.has(entry.key)&&entry.afterLocation){const[ws,tab]=entry.afterLocation;required.add('workspace:'+ws);required.add('tab:'+ws+':'+tab);}});
+                if(selected.has('settings:activeTabId'))required.add('settings:activeWorkspaceId');
+                choices.forEach(input=>{const entry=comparison.entries[Number(input.dataset.syncChoice)];const dependency=(entry.change==='added'||entry.kind==='setting')&&required.has(entry.key);input.checked=selected.has(entry.key);input.disabled=dependency;const row=input.closest('[data-sync-entry]');row.classList.toggle('is-selected',input.checked);row.querySelector('.sync-required').hidden=!dependency;});
+                modal.overlay.querySelector('[data-sync-count]').textContent=selected.size;
+                button.disabled=!selected.size;
+            }
+            function select(entry,checked){
+                if(checked)selected.add(entry.key);else selected.delete(entry.key);
+                if(checked&&entry.change==='removed'&&['workspace','tab'].includes(entry.kind)){
+                    comparison.entries.forEach(child=>{const location=child.beforeLocation;if(child.change==='removed'&&(entry.kind==='workspace'?child.workspaceId===entry.workspaceId:location?.[0]===entry.workspaceId&&location?.[1]===entry.tabId))selected.add(child.key);});
+                }
+                if(!checked&&entry.kind==='card'&&entry.beforeLocation){const[ws,tab]=entry.beforeLocation;for(const key of ['workspace:'+ws,'tab:'+ws+':'+tab])if(comparison.entries.find(item=>item.key===key)?.change==='removed')selected.delete(key);}
+            }
+            choices.forEach(input=>input.onchange=()=>{select(comparison.entries[Number(input.dataset.syncChoice)],input.checked);update();});
+            const search=modal.overlay.querySelector('[data-sync-search]');
+            if(search)search.oninput=()=>{
+                const query=search.value.toLocaleLowerCase().trim();let visible=0;
+                rows.forEach(row=>{const entry=comparison.entries[Number(row.dataset.syncEntry)];const text=[syncEntryTitle(entry),entry.name,entry.beforeWorkspaceName,entry.afterWorkspaceName,entry.before?.text,entry.after?.text,entry.before?.contact,entry.after?.contact].join(' ').toLocaleLowerCase();row.hidden=!!query&&!text.includes(query);if(!row.hidden)visible++;});
+                modal.overlay.querySelectorAll('.sync-review-group').forEach(group=>{group.hidden=![...group.querySelectorAll('[data-sync-entry]')].some(row=>!row.hidden);});
+                modal.overlay.querySelector('[data-sync-empty]').hidden=!!visible;
+            };
+            modal.overlay.querySelector('[data-sync-select-visible]')?.addEventListener('click',()=>{rows.filter(row=>!row.hidden).forEach(row=>select(comparison.entries[Number(row.dataset.syncEntry)],true));update();});
+            modal.overlay.querySelector('[data-sync-clear]')?.addEventListener('click',()=>{selected.clear();update();});
             modal.overlay.querySelector('[data-sync-cancel]').onclick=()=>{modal.closeModal();options.onCancel?.();};
-            modal.overlay.querySelector('[data-sync-apply]').onclick=async event=>{
-                if (syncFingerprint(buildSyncPayload())!==baseline) { appAlert(appUiText('sync.stale')); return; }
-                event.target.disabled=true;
-                try {
+            let committing=false;
+            async function confirmSelection(keepCurrent=false){
+                if(committing)return;
+                if(!selected.size&&!keepCurrent)return;
+                if(keepCurrent)selected.clear();
+                if(syncFingerprint(buildSyncPayload())!==baseline){appAlert(appUiText('sync.stale'));return;}
+                committing=true;modal.overlay.setAttribute('aria-busy','true');button.dataset.i18n='sync.applying';button.textContent=appUiText('sync.applying');
+                modal.overlay.querySelectorAll('button,input').forEach(control=>control.disabled=true);
+                try{
                     cloudReviewCommitting=!!options.cloudReview;
-                    await onConfirm();
+                    const result=mergeSelectedSyncChanges(current,proposed,selected,comparison);
+                    await onConfirm(result,{allSelected:selected.size===comparison.entries.length,selectedKeys:[...selected]});
                     if(options.cloudReview)pendingCloudReview=null;
                     modal.closeModal();
-                } catch(error){event.target.disabled=false;appAlert(error.message || appUiText('sync.error'));}
-                finally {cloudReviewCommitting=false;}
+                }catch(error){button.dataset.i18n='sync.apply';button.textContent=appUiText('sync.apply');modal.overlay.querySelectorAll('button,input').forEach(control=>control.disabled=false);update();appAlert(error.message||appUiText('sync.error'));}
+                finally{cloudReviewCommitting=false;committing=false;modal.overlay.removeAttribute('aria-busy');}
             };
-            return modal;
+            button.onclick=()=>confirmSelection();
+            modal.overlay.querySelector('[data-sync-keep-current]').onclick=()=>confirmSelection(true);
+            function refreshPreviews(){
+                comparison.entries.forEach((entry,index)=>{
+                    for(const which of ['before','after']){const preview=modal.overlay.querySelector('[data-sync-preview="'+which+'-'+index+'"]');if(preview)preview.innerHTML=syncPreviewHtml(entry,which,which==='before'?current:proposed);}
+                });
+                search?.dispatchEvent(new Event('input'));
+            }
+            document.addEventListener('app-language-changed',refreshPreviews);
+            const cleanup=new MutationObserver(()=>{if(!modal.overlay.isConnected){document.removeEventListener('app-language-changed',refreshPreviews);cleanup.disconnect();}});
+            cleanup.observe(document.body,{childList:true});
+            update();return modal;
         }
 
         function validateExtendedPayload(payload) {
@@ -9136,12 +9651,25 @@ mark.custom-keyword-highlight:hover {
             return result;
         }
 
-        async function acceptReviewedCloudData(data, teamDefault=false) {
+        async function acceptReviewedCloudData(data, teamDefault=false, selectedData=data) {
             if(!currentUser||!firebaseDb)throw new Error(appUiText('sync.error'));
             const reference=teamDefault?firebaseDb.collection('templates').doc('default_scripts'):firebaseDb.collection('users').doc(currentUser.uid).collection('settings').doc('app_data');
             const snap=await reference.get();
             if(!snap.exists||syncFingerprint(validateCloudPayload(snap.data()))!==syncFingerprint(data))throw new Error(appUiText('sync.stale'));
-            applyCloudDataToLocal(data);
+            applyCloudDataToLocal(selectedData);
+            acknowledgedRemoteFingerprint=syncFingerprint(data);
+            if(syncFingerprint(selectedData)!==syncFingerprint(data)){localRevision=Math.max(localRevision,Number(data.revision)||0);markLocalChange();}
+        }
+        async function commitReviewedUpload(expectedRemote, selectedData) {
+            if(!currentUser||!firebaseDb)throw new Error(appUiText('sync.error'));
+            const reference=firebaseDb.collection('users').doc(currentUser.uid).collection('settings').doc('app_data');
+            const latest=await reference.get();
+            const fresh=latest.exists?validateCloudPayload(latest.data()):{workspaces:[],scripts:{}};
+            if(syncFingerprint(fresh)!==syncFingerprint(expectedRemote))throw new Error(appUiText('sync.stale'));
+            applyCloudDataToLocal(selectedData);
+            acknowledgedRemoteFingerprint=syncFingerprint(fresh);
+            markLocalChange();
+            if(!await syncToCloud())throw new Error(appUiText('sync.error'));
         }
         function syncFingerprint(payload) {
             const {updatedAt, revision, deviceId, updatedBy, ...data} = payload;
@@ -15594,7 +16122,7 @@ console.log('Userscript carregado');`;
             if (acceptBtn) {
                 acceptBtn.onclick = () => {
                     modal.closeModal();
-                    showSyncComparison(buildSyncPayload(),remoteData,()=>acceptReviewedCloudData(remoteData),{cloudReview:true});
+                    showSyncComparison(buildSyncPayload(),remoteData,selected=>acceptReviewedCloudData(remoteData,false,selected),{cloudReview:true});
 
                 };
             }
@@ -15604,13 +16132,7 @@ console.log('Userscript carregado');`;
                 keepBtn.onclick = async () => {
                     modal.closeModal();
                     const local=buildSyncPayload();
-                    showSyncComparison(remoteData,local,async()=>{
-                        const snap=await firebaseDb.collection('users').doc(currentUser.uid).collection('settings').doc('app_data').get();
-                        const fresh=snap.exists?validateCloudPayload(snap.data()):null;
-                        if(!fresh||syncFingerprint(fresh)!==syncFingerprint(remoteData))throw new Error(appUiText('sync.stale'));
-                        acknowledgedRemoteFingerprint=syncFingerprint(fresh);
-                        if(!await syncToCloud())throw new Error(appUiText('sync.error'));
-                    },{cloudReview:true});
+                    showSyncComparison(remoteData,local,selected=>commitReviewedUpload(remoteData,selected),{cloudReview:true,direction:'upload'});
                 };
             }
         }
@@ -15750,7 +16272,7 @@ console.log('Userscript carregado');`;
 
                         const local=buildSyncPayload();
                         if(buildSyncComparison(local,effectiveSyncPayload(local,cloudData)).entries.length) {
-                            showSyncComparison(local,cloudData,()=>acceptReviewedCloudData(cloudData),{cloudReview:true});
+                            showSyncComparison(local,cloudData,selected=>acceptReviewedCloudData(cloudData,false,selected),{cloudReview:true});
                             return;
                         }
                         acknowledgedRemoteFingerprint=syncFingerprint(cloudData);
@@ -15890,7 +16412,7 @@ console.log('Userscript carregado');`;
             } catch (err) {
                 if(err.code==='app/remote-conflict') {
                     pendingSyncPayload=buildSyncPayload();updateSyncStatusUI('pending');clearTimeout(syncRetryTimer);
-                    showSyncComparison(buildSyncPayload(),err.remote,()=>acceptReviewedCloudData(err.remote),{cloudReview:true});
+                    showSyncComparison(buildSyncPayload(),err.remote,selected=>acceptReviewedCloudData(err.remote,false,selected),{cloudReview:true});
                     return;
                 }
                 console.warn('Erro ao processar sincronização na nuvem:', err);
@@ -16402,13 +16924,7 @@ console.log('Userscript carregado');`;
                     const snap=await firebaseDb.collection('users').doc(currentUser.uid).collection('settings').doc('app_data').get();
                     const remote=snap.exists?validateCloudPayload(snap.data()):{workspaces:[],scripts:{}};
                     const local=buildSyncPayload();
-                    showSyncComparison(remote,local,async()=>{
-                        const latest=await firebaseDb.collection('users').doc(currentUser.uid).collection('settings').doc('app_data').get();
-                        const fresh=latest.exists?validateCloudPayload(latest.data()):{workspaces:[],scripts:{}};
-                        if(syncFingerprint(fresh)!==syncFingerprint(remote))throw new Error(appUiText('sync.stale'));
-                        acknowledgedRemoteFingerprint=syncFingerprint(fresh);
-                        const saved=await syncToCloud();if(!saved)throw new Error(appUiText('sync.error'));overlay.remove();
-                    },{cloudReview:true});
+                    showSyncComparison(remote,local,async selected=>{await commitReviewedUpload(remote,selected);overlay.remove();},{cloudReview:true,direction:'upload'});
                     btn.disabled=false; btn.textContent=window.translateAppText('🚀 Confirmar e Salvar na Nuvem');
                     return;
                 } catch (err) {
@@ -16554,7 +17070,7 @@ console.log('Userscript carregado');`;
                 `;
 
                 overlay.querySelector('#btnConfirmDownloadAction').onclick = () => {
-                    showSyncComparison(buildSyncPayload(),cloudData,()=>acceptReviewedCloudData(cloudData,isTeamDefault),{cloudReview:true});
+                    showSyncComparison(buildSyncPayload(),cloudData,selected=>acceptReviewedCloudData(cloudData,isTeamDefault,selected),{cloudReview:true});
                     overlay.remove();
 
                 };
@@ -20703,6 +21219,7 @@ service cloud.firestore {
                 button.setAttribute('aria-pressed', String(button.dataset.language === currentLanguage));
             });
             document.title = currentLanguage === 'en' ? 'Scripts Hub' : 'Central de Scripts';
+            document.dispatchEvent(new CustomEvent('app-language-changed',{detail:currentLanguage}));
         }
         function observeAppLanguageRoot(root) {
             if (!root) return;

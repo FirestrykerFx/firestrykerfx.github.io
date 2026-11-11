@@ -1,6 +1,6 @@
 # Central de Scripts
 
-Aplicação estática em `index.html`, compatível com GitHub Pages e uso local. Versão: **3.2.0**. As regras do Firebase continuam sendo candidatas para revisão separada.
+Aplicação estática em `index.html`, compatível com GitHub Pages e uso local. Versão: **3.2.1**. As regras do Firebase continuam sendo candidatas para revisão separada.
 
 ## Desenvolvimento e verificação
 
@@ -32,3 +32,11 @@ Os testes iniciam seu próprio servidor HTTP, bloqueiam serviços externos e usa
 Depois de qualquer mudança no HTML, execute `npm run manifest` para atualizar o hash SHA-256 de `version.json`, e depois `npm run check:manifest`. Os arquivos ainda são locais: o endereço de atualização público só refletirá esta versão após uma publicação autorizada. O hash garante consistência dos bytes com o manifesto; não é uma assinatura independente do autor.
 
 Leia [SECURITY_REVIEW.md](SECURITY_REVIEW.md) antes de considerar as regras candidatas de [firestore.rules](firestore.rules). As regras em produção não foram acessadas nem modificadas. Autorização no servidor, login Google e sincronização real precisam de validação adicional em projeto de testes; nenhuma credencial de produção é necessária para a suíte local.
+
+## Comparação visual — 3.2.1
+
+A revisão mostra cards lado a lado no computador e empilhados no celular, com área, aba, coluna e ícones para favoritos, tags, cópias e alarmes. Clientes e alarmes têm seleção individual; preferências mostram nomes e valores legíveis, sem JSON ou IDs internos.
+
+Cards novos/alterados começam selecionados; exclusões e preferências exigem seleção explícita. Use a busca, “Selecionar exibidos”, “Limpar seleção” ou “Manter versão atual”. A estrutura mínima necessária acompanha os cards escolhidos; desmarcar uma exclusão preserva o card e impede a remoção da aba/área que o contém.
+
+Nos envios manuais à nuvem, a seleção define a versão comum a este dispositivo e à nuvem; a versão local anterior recebe um ponto de recuperação. Nos recebimentos, alterações desmarcadas mantêm a versão local. As verificações de versão e recuperação continuam ativas. Os testes de nuvem usam um backend simulado; as regras reais do Firebase não são alteradas pela publicação do HTML.

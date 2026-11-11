@@ -1,10 +1,10 @@
 {
-  "version": "3.2.0",
+  "version": "3.2.1",
   "url": "https://firestrykerfx.github.io/index.html",
-  "sha256": "68356fcb6badc4ac3974e8caec685be717625884d60d30d956048b4701d1e2d0",
+  "sha256": "a81eabc222c2c975fcf5a9ff3d24b63fd4fef15ba870d41fe832b52897429d1e",
   "changelog": [
-    "Independent document language and required fields.",
-    "Detailed synchronization comparisons and recovery points.",
-    "Backup validation, security review and automated regression tests."
+    "Readable card comparisons with workspace, tab and column labels.",
+    "Individual card, reminder and preference selection.",
+    "Unchecked changes preserved with recovery and version checks."
   ]
 }
